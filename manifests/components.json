@@ -14650,6 +14650,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -14678,6 +14685,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -15941,6 +15989,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -15969,6 +16024,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -17218,6 +17314,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -17246,6 +17349,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -18493,6 +18637,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -18521,6 +18672,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -19789,6 +19981,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -19817,6 +20016,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -20036,13 +20276,25 @@
           "id": "components-table-columns--column-display",
           "name": "Column Display",
           "snippet": "const ColumnDisplay = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    columnDisplay />;",
-          "description": "The header ends with a tertiary icon-only Columns button. Its popup lists\nevery column with a checkbox (checked columns stay visible), a search field\nthat filters the list, and an \"All columns\" checkbox that toggles every\ncolumn at once."
+          "description": "The header ends with a tertiary icon-only Columns button. Its popup lists\nevery column with a checkbox (checked columns stay visible) and an \"All\ncolumns\" checkbox that toggles every column at once."
         },
         {
           "id": "components-table-columns--column-display-controlled",
           "name": "Column Display Controlled",
           "snippet": "const ColumnDisplayControlled = () => {\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\">\n                <DsButtonV3 variant=\"secondary\" size=\"small\" onClick={() => setColumnVisibility({})}>Show all columns\n                                        </DsButtonV3>\n            </DsStack>\n\n            <DsTable\n                columns={columns}\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columnDisplay\n                columnVisibility={columnVisibility}\n                onColumnVisibilityChange={setColumnVisibility} />\n        </DsStack>\n    );\n};",
           "description": "Control the visible columns from outside with `columnVisibility` and\n`onColumnVisibilityChange`, e.g. to persist the user's choice or reset it."
+        },
+        {
+          "id": "components-table-columns--column-reorder",
+          "name": "Column Reorder",
+          "snippet": "const ColumnReorder = () => {\n    const [columnOrder, setColumnOrder] = useState<string[]>([]);\n    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });\n\n    const [reorderColumns] = useState<ColumnDef<Person>[]>(() => [\n        {\n            id: 'identity',\n            header: 'Identity',\n            columns: [\n                { accessorKey: 'firstName', header: 'First Name', enableHiding: false },\n                { accessorKey: 'lastName', header: 'Last Name' },\n            ],\n        },\n        {\n            id: 'activity',\n            header: 'Activity',\n            columns: [\n                {\n                    id: 'engagement',\n                    header: 'Engagement',\n                    columns: [\n                        { accessorKey: 'visits', header: 'Visits' },\n                        { accessorKey: 'progress', header: 'Profile Progress' },\n                    ],\n                },\n                { accessorKey: 'status', header: 'Status' },\n            ],\n        },\n        { accessorKey: 'age', header: 'Age' },\n    ]);\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\">\n                <DsButtonV3 variant=\"secondary\" size=\"small\" onClick={() => setColumnOrder([])}>Reset column order\n                                        </DsButtonV3>\n            </DsStack>\n\n            <DsTable\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columns={reorderColumns}\n                columnDisplay\n                reorderableColumns\n                columnOrder={columnOrder}\n                onColumnOrderChange={setColumnOrder}\n                stickyColumns={stickyColumns}\n                onStickyColumnsChange={setStickyColumns} />\n        </DsStack>\n    );\n};",
+          "description": "Add `reorderableColumns` to let users drag columns by their handle in the\nColumns popup. Columns move within their own group, and groups (with all\ntheir columns) and top-level columns among themselves. Sticky columns are\nlisted first and reorder only among themselves; making a column sticky moves\nit to the end of that block, and right-sticky columns stay at the right edge.\nLocked columns (`enableHiding: false`) can still be reordered. Store\n`columnOrder` from `onColumnOrderChange` to persist the order; columns missing\nfrom it later stay inside their group, and an empty array restores the\n`columns` order."
+        },
+        {
+          "id": "components-table-columns--column-reorder-basic",
+          "name": "Column reorder basic",
+          "snippet": "const ColumnReorderBasic = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    columnDisplay\n    reorderableColumns />;",
+          "description": "The minimal opt-in: `columnDisplay` adds the Columns popup and `reorderableColumns`\na drag handle to each of its rows."
         }
       ],
       "import": "import { DsButtonV3, DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { ProgressInfographic } from './components';\nimport classnames from 'classnames';\nimport styles from './ds-table.stories.module.scss';\nimport { fn } from 'storybook/test';"
@@ -21078,6 +21330,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -21106,6 +21365,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -22360,6 +22660,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -22388,6 +22695,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -23648,6 +23996,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -23676,6 +24031,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -24925,6 +25321,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -24953,6 +25356,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -26226,6 +26670,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -26254,6 +26705,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -27551,6 +28043,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -27579,6 +28078,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -28828,6 +29368,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -28856,6 +29403,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -30116,6 +30704,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -30144,6 +30739,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -31441,6 +32077,13 @@
             },
             "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
+          "reorderableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Lets users drag columns within their group in the `columnDisplay` popup. Pinning\nmoves a column to the end of the left-sticky block, unpinning to the start of the rest.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
@@ -31469,6 +32112,47 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "columnOrder": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Leaf column ids in display order; pass with `onColumnOrderChange` to control it.\n\n- Groups stay whole; unlisted columns go after the listed ones among their siblings.\n- Utility columns keep their positions.\n\n@example\n```tsx\nconst [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);\n\n<DsTable\n  columnDisplay\n  reorderableColumns\n  columnOrder={columnOrder}\n  onColumnOrderChange={setColumnOrder}\n/>\n```"
+          },
+          "onColumnOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnOrder: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "columnOrder"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the new leaf column order after a drop, or a pin that moves a column."
           },
           "stickyColumns": {
             "required": false,
@@ -31717,8 +32401,8 @@
         {
           "id": "components-table-virtualized--virtualized-with-column-display",
           "name": "Virtualized With Column Display",
-          "snippet": "const VirtualizedWithColumnDisplay = () => {\n    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);\n\n    return (\n        <DsTable\n            columns={columns}\n            stickyHeader\n            bordered\n            fullWidth\n            expandable={false}\n            onRowClick={fn()}\n            virtualized\n            columnDisplay\n            data={data} />\n    );\n};",
-          "description": "Row virtualization with the Columns button. Hidden columns drop out of every\nvirtualized row."
+          "snippet": "const VirtualizedWithColumnDisplay = () => {\n    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);\n\n    return (\n        <DsTable\n            columns={columns}\n            stickyHeader\n            bordered\n            fullWidth\n            expandable={false}\n            onRowClick={fn()}\n            virtualized\n            columnDisplay\n            reorderableColumns\n            data={data} />\n    );\n};",
+          "description": "Row virtualization with the Columns button. Hidden columns drop out of every\nvirtualized row, and `reorderableColumns` lets users reorder columns from the popup."
         }
       ],
       "import": "import {\n  DsButtonV3,\n  DsSpinner,\n  DsStack,\n  DsTable,\n  DsTableEditCellNumber,\n  DsTableEditCellSelect,\n  DsTableEditCellText,\n  DsTypography,\n} from '@drivenets/design-system';\nimport { columns } from './common/story-data';\nimport { fn } from 'storybook/test';\nimport { DsStack } from '../../ds-stack';\nimport { DsButtonV3 } from '../../ds-button-v3';"
@@ -34035,33 +34719,45 @@
       "jsDocTags": {},
       "error": {
         "name": "No component definition found",
-        "message": "File: /home/runner/work/design-system/design-system/packages/design-system/src/components/ds-tree/ds-tree.tsx\nError:\nNo suitable component definition found.\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport { TreeView } from '@ark-ui/react/tree-view';\nimport classNames from 'classnames';\n\nimport { DsIcon } from '../ds-icon';\nimport styles from './ds-tree.module.scss';\nimport type {\n\tDsTreeBranchContentProps,\n\tDsTreeBranchControlProps,\n\tDsTreeBranchIndentGuideProps,\n\tDsTreeBranchIndicatorProps,\n\tDsTreeBranchProps,\n\tDsTreeBranchTextProps,\n\tDsTreeItemActionProps,\n\tDsTreeItemIndicatorProps,\n\tDsTreeItemProps,\n\tDsTreeItemTextProps,\n\tDsTreeNode,\n\tDsTreeNodeCheckboxProps,\n\tDsTreeRootProps,\n\tDsTreeTreeProps,\n} from './ds-tree.types';\n\nconst DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({\n\tcollection,\n\tsize = 'medium',\n\tref,\n\tclassName,\n\tstyle,\n\tchildren,\n\tselectedValue,\n\tdefaultSelectedValue,\n\tonSelectionChange,\n\tselectionMode = 'single',\n\texpandedValue,\n\tdefaultExpandedValue,\n\tonExpandedChange,\n\texpandOnClick = true,\n\tcheckedValue,\n\tdefaultCheckedValue,\n\tonCheckedChange,\n\tfocusedValue,\n\tdefaultFocusedValue,\n\tonFocusChange,\n\ttypeahead = true,\n\tlazyMount = true,\n\tunmountOnExit,\n}: DsTreeRootProps<T>) => (\n\t<TreeView.Root\n\t\tref={ref}\n\t\tcollection={collection}\n\t\tselectedValue={selectedValue}\n\t\tdefaultSelectedValue={defaultSelectedValue}\n\t\tonSelectionChange={onSelectionChange}\n\t\tselectionMode={selectionMode}\n\t\texpandedValue={expandedValue}\n\t\tdefaultExpandedValue={defaultExpandedValue}\n\t\tonExpandedChange={onExpandedChange}\n\t\texpandOnClick={expandOnClick}\n\t\tcheckedValue={checkedValue}\n\t\tdefaultCheckedValue={defaultCheckedValue}\n\t\tonCheckedChange={onCheckedChange}\n\t\tfocusedValue={focusedValue}\n\t\tdefaultFocusedValue={defaultFocusedValue}\n\t\tonFocusChange={onFocusChange}\n\t\ttypeahead={typeahead}\n\t\tlazyMount={lazyMount}\n\t\tunmountOnExit={unmountOnExit}\n\t\tclassName={classNames(styles.root, className)}\n\t\tstyle={style}\n\t\tdata-size={size}\n\t>\n\t\t{children}\n\t</TreeView.Root>\n);\n\nconst DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (\n\t<TreeView.Tree className={classNames(styles.tree, className)} style={style}>\n\t\t{children}\n\t</TreeView.Tree>\n);\n\nconst DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (\n\t<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>\n\t\t{children}\n\t</TreeView.Branch>\n);\n\nconst DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (\n\t<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>\n\t\t{children}\n\t</TreeView.BranchControl>\n);\n\nconst DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) => (\n\t<TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}>\n\t\t{children ?? <DsIcon icon=\"keyboard_arrow_right\" size=\"tiny\" />}\n\t</TreeView.BranchIndicator>\n);\n\nconst DsTreeBranchText = ({ className, style, children, ...rest }: DsTreeBranchTextProps) => (\n\t<TreeView.BranchText {...rest} className={classNames(styles.branchText, className)} style={style}>\n\t\t{children}\n\t</TreeView.BranchText>\n);\n\nconst DsTreeBranchContent = ({ className, style, children }: DsTreeBranchContentProps) => (\n\t<TreeView.BranchContent className={classNames(styles.branchContent, className)} style={style}>\n\t\t{children}\n\t</TreeView.BranchContent>\n);\n\nconst DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuideProps) => (\n\t<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />\n);\n\nconst DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (\n\t<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>\n\t\t{children}\n\t</TreeView.Item>\n);\n\nconst DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (\n\t<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>\n\t\t{children}\n\t</TreeView.ItemText>\n);\n\nconst DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) => (\n\t<span className={classNames(styles.itemIndicator, className)} style={style} aria-hidden=\"true\">\n\t\t<span className={styles.itemDot} />\n\t</span>\n);\n\nconst DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) => (\n\t<TreeView.NodeCheckbox className={classNames(styles.nodeCheckbox, className)} style={style}>\n\t\t<div className={styles.nodeCheckboxBox}>\n\t\t\t<TreeView.NodeCheckboxIndicator\n\t\t\t\tclassName={styles.nodeCheckboxIndicator}\n\t\t\t\tindeterminate={<DsIcon icon=\"check_indeterminate_small\" size=\"tiny\" variant=\"outlined\" />}\n\t\t\t>\n\t\t\t\t<DsIcon icon=\"check_small\" size=\"tiny\" variant=\"outlined\" />\n\t\t\t</TreeView.NodeCheckboxIndicator>\n\t\t</div>\n\t</TreeView.NodeCheckbox>\n);\n\nconst DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) => (\n\t<button\n\t\tclassName={classNames(styles.itemAction, className)}\n\t\tstyle={style}\n\t\ttype=\"button\"\n\t\ttabIndex={-1}\n\t\tonClick={(e) => {\n\t\t\te.stopPropagation();\n\t\t\tonClick?.(e);\n\t\t}}\n\t>\n\t\t{children}\n\t</button>\n);\n\nDsTreeRoot.displayName = 'DsTree.Root';\nDsTreeTree.displayName = 'DsTree.Tree';\nObject.defineProperty(TreeView.NodeProvider, 'displayName', { value: 'DsTree.NodeProvider' });\nObject.defineProperty(TreeView.NodeContext, 'displayName', { value: 'DsTree.NodeContext' });\nDsTreeBranch.displayName = 'DsTree.Branch';\nDsTreeBranchControl.displayName = 'DsTree.BranchControl';\nDsTreeBranchIndicator.displayName = 'DsTree.BranchIndicator';\nDsTreeBranchText.displayName = 'DsTree.BranchText';\nDsTreeBranchContent.displayName = 'DsTree.BranchContent';\nDsTreeBranchIndentGuide.displayName = 'DsTree.BranchIndentGuide';\nDsTreeItem.displayName = 'DsTree.Item';\nDsTreeItemText.displayName = 'DsTree.ItemText';\nDsTreeItemIndicator.displayName = 'DsTree.ItemIndicator';\nDsTreeItemAction.displayName = 'DsTree.ItemAction';\nDsTreeNodeCheckbox.displayName = 'DsTree.NodeCheckbox';\n\nexport const DsTree = {\n\tRoot: DsTreeRoot,\n\tTree: DsTreeTree,\n\tNodeProvider: TreeView.NodeProvider,\n\tNodeContext: TreeView.NodeContext,\n\tBranch: DsTreeBranch,\n\tBranchControl: DsTreeBranchControl,\n\tBranchIndicator: DsTreeBranchIndicator,\n\tBranchText: DsTreeBranchText,\n\tBranchContent: DsTreeBranchContent,\n\tBranchIndentGuide: DsTreeBranchIndentGuide,\n\tItem: DsTreeItem,\n\tItemText: DsTreeItemText,\n\tItemIndicator: DsTreeItemIndicator,\n\tItemAction: DsTreeItemAction,\n\tNodeCheckbox: DsTreeNodeCheckbox,\n};\n"
+        "message": "File: /home/runner/work/design-system/design-system/packages/design-system/src/components/ds-tree/ds-tree.tsx\nError:\nNo suitable component definition found.\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from 'react';\nimport { TreeView, useTreeViewContext, useTreeViewNodeContext } from '@ark-ui/react/tree-view';\nimport classNames from 'classnames';\n\nimport { DsIcon } from '../ds-icon';\nimport styles from './ds-tree.module.scss';\nimport {\n\tDsTreeDragHandle,\n\tDsTreeSortable,\n\tDsTreeSortableBranchControl,\n\tDsTreeSortableItem,\n\tuseDsTreeSortableBranchAttributes,\n\tuseDsTreeSortableContext,\n} from './ds-tree-sortable';\nimport type {\n\tDsTreeBranchContentProps,\n\tDsTreeBranchControlProps,\n\tDsTreeBranchIndentGuideProps,\n\tDsTreeBranchIndicatorProps,\n\tDsTreeBranchProps,\n\tDsTreeBranchTextProps,\n\tDsTreeCheckedState,\n\tDsTreeItemActionProps,\n\tDsTreeItemIndicatorProps,\n\tDsTreeItemProps,\n\tDsTreeItemTextProps,\n\tDsTreeNode,\n\tDsTreeNodeCheckboxProps,\n\tDsTreeRootProps,\n\tDsTreeTreeProps,\n} from './ds-tree.types';\n\nconst DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({\n\tcollection,\n\tsize = 'medium',\n\tref,\n\tclassName,\n\tstyle,\n\tchildren,\n\tselectedValue,\n\tdefaultSelectedValue,\n\tonSelectionChange,\n\tselectionMode = 'single',\n\texpandedValue,\n\tdefaultExpandedValue,\n\tonExpandedChange,\n\texpandOnClick = true,\n\tcheckedValue,\n\tdefaultCheckedValue,\n\tonCheckedChange,\n\tfocusedValue,\n\tdefaultFocusedValue,\n\tonFocusChange,\n\ttypeahead = true,\n\tlazyMount = true,\n\tunmountOnExit,\n}: DsTreeRootProps<T>) => (\n\t<TreeView.Root\n\t\tref={ref}\n\t\tcollection={collection}\n\t\tselectedValue={selectedValue}\n\t\tdefaultSelectedValue={defaultSelectedValue}\n\t\tonSelectionChange={onSelectionChange}\n\t\tselectionMode={selectionMode}\n\t\texpandedValue={expandedValue}\n\t\tdefaultExpandedValue={defaultExpandedValue}\n\t\tonExpandedChange={onExpandedChange}\n\t\texpandOnClick={expandOnClick}\n\t\tcheckedValue={checkedValue}\n\t\tdefaultCheckedValue={defaultCheckedValue}\n\t\tonCheckedChange={onCheckedChange}\n\t\tfocusedValue={focusedValue}\n\t\tdefaultFocusedValue={defaultFocusedValue}\n\t\tonFocusChange={onFocusChange}\n\t\ttypeahead={typeahead}\n\t\tlazyMount={lazyMount}\n\t\tunmountOnExit={unmountOnExit}\n\t\tclassName={classNames(styles.root, className)}\n\t\tstyle={style}\n\t\tdata-size={size}\n\t>\n\t\t{children}\n\t</TreeView.Root>\n);\n\nconst DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (\n\t<TreeView.Tree className={classNames(styles.tree, className)} style={style}>\n\t\t{children}\n\t</TreeView.Tree>\n);\n\ninterface DsTreeRowCheckbox {\n\tchecked: DsTreeCheckedState | undefined;\n}\n\ntype RegisterRowCheckbox = (checkbox: DsTreeRowCheckbox | null) => void;\n\nconst DsTreeRowCheckboxContext = createContext<RegisterRowCheckbox | null>(null);\n\nconst toAriaChecked = (checked: DsTreeCheckedState): AriaAttributes['aria-checked'] =>\n\tchecked === 'indeterminate' ? 'mixed' : checked;\n\n// Screen readers announce the treeitem, not its inner checkbox: a leaf's focused row, or a group's\n// Branch around its focused BranchControl (a `button`, which can't be checked), where Ark puts `aria-expanded`\nconst useRowCheckbox = () => {\n\tconst { checked } = useTreeViewNodeContext();\n\tconst [checkbox, setCheckbox] = useState<DsTreeRowCheckbox | null>(null);\n\n\treturn {\n\t\tregister: setCheckbox,\n\t\tariaChecked: checkbox ? toAriaChecked(checkbox.checked ?? checked) : undefined,\n\t};\n};\n\nconst toDataState = (checked: DsTreeCheckedState): 'checked' | 'unchecked' | 'indeterminate' =>\n\tchecked === 'indeterminate' ? 'indeterminate' : checked ? 'checked' : 'unchecked';\n\nconst DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => {\n\tconst sortableAttributes = useDsTreeSortableBranchAttributes();\n\tconst rowCheckbox = useRowCheckbox();\n\n\treturn (\n\t\t<DsTreeRowCheckboxContext value={rowCheckbox.register}>\n\t\t\t<TreeView.Branch\n\t\t\t\t{...rest}\n\t\t\t\t{...sortableAttributes}\n\t\t\t\taria-checked={rowCheckbox.ariaChecked}\n\t\t\t\tclassName={classNames(styles.branch, className)}\n\t\t\t\tstyle={style}\n\t\t\t>\n\t\t\t\t{children}\n\t\t\t</TreeView.Branch>\n\t\t</DsTreeRowCheckboxContext>\n\t);\n};\n\nconst DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => {\n\tconst Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;\n\n\treturn (\n\t\t<Control {...rest} className={classNames(styles.branchControl, className)} style={style}>\n\t\t\t{children}\n\t\t</Control>\n\t);\n};\n\nconst DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) => (\n\t<TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}>\n\t\t{children ?? <DsIcon icon=\"keyboard_arrow_right\" size=\"tiny\" />}\n\t</TreeView.BranchIndicator>\n);\n\nconst DsTreeBranchText = ({ className, style, children, ...rest }: DsTreeBranchTextProps) => (\n\t<TreeView.BranchText {...rest} className={classNames(styles.branchText, className)} style={style}>\n\t\t{children}\n\t</TreeView.BranchText>\n);\n\nconst DsTreeBranchContent = ({ className, style, children }: DsTreeBranchContentProps) => (\n\t<TreeView.BranchContent className={classNames(styles.branchContent, className)} style={style}>\n\t\t{children}\n\t</TreeView.BranchContent>\n);\n\nconst DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuideProps) => (\n\t<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />\n);\n\nconst DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => {\n\tconst Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;\n\tconst rowCheckbox = useRowCheckbox();\n\n\treturn (\n\t\t<DsTreeRowCheckboxContext value={rowCheckbox.register}>\n\t\t\t<Item\n\t\t\t\t{...rest}\n\t\t\t\taria-checked={rowCheckbox.ariaChecked}\n\t\t\t\tclassName={classNames(styles.item, className)}\n\t\t\t\tstyle={style}\n\t\t\t\tonClick={onClick}\n\t\t\t>\n\t\t\t\t{children}\n\t\t\t</Item>\n\t\t</DsTreeRowCheckboxContext>\n\t);\n};\n\nconst DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (\n\t<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>\n\t\t{children}\n\t</TreeView.ItemText>\n);\n\nconst DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) => (\n\t<span className={classNames(styles.itemIndicator, className)} style={style} aria-hidden=\"true\">\n\t\t<span className={styles.itemDot} />\n\t</span>\n);\n\nconst checkIcon = <DsIcon icon=\"check_small\" size=\"tiny\" variant=\"outlined\" aria-hidden />;\nconst indeterminateIcon = (\n\t<DsIcon icon=\"check_indeterminate_small\" size=\"tiny\" variant=\"outlined\" aria-hidden />\n);\n\nconst DsTreeNodeCheckbox = ({ className, style, checked, disabled = false }: DsTreeNodeCheckboxProps) => {\n\tconst { collection } = useTreeViewContext();\n\tconst nodeState = useTreeViewNodeContext();\n\tconst registerRowCheckbox = use(DsTreeRowCheckboxContext);\n\tconst name = (collection.at(nodeState.indexPath) as DsTreeNode | undefined)?.name;\n\n\tuseEffect(() => {\n\t\tregisterRowCheckbox?.({ checked });\n\n\t\treturn () => registerRowCheckbox?.(null);\n\t}, [registerRowCheckbox, checked]);\n\n\tconst overrides = {\n\t\t...(checked !== undefined && {\n\t\t\t'data-state': toDataState(checked),\n\t\t\t'aria-checked': toAriaChecked(checked),\n\t\t}),\n\t\t...(disabled && {\n\t\t\t'data-disabled': '',\n\t\t\t'aria-disabled': true,\n\t\t\t// Ark can only disable a whole node, so the click is stopped before its handler, which skips prevented clicks\n\t\t\tonClickCapture: (event: MouseEvent<HTMLSpanElement>) => {\n\t\t\t\tevent.preventDefault();\n\t\t\t\tevent.stopPropagation();\n\t\t\t},\n\t\t}),\n\t};\n\n\treturn (\n\t\t// Ark names the checkbox from nothing, and the icons' ligature text would otherwise be read\n\t\t<TreeView.NodeCheckbox\n\t\t\tclassName={classNames(styles.nodeCheckbox, className)}\n\t\t\tstyle={style}\n\t\t\taria-label={name}\n\t\t\t{...overrides}\n\t\t>\n\t\t\t<div className={styles.nodeCheckboxBox}>\n\t\t\t\t{checked === undefined ? (\n\t\t\t\t\t<TreeView.NodeCheckboxIndicator\n\t\t\t\t\t\tclassName={styles.nodeCheckboxIndicator}\n\t\t\t\t\t\tindeterminate={indeterminateIcon}\n\t\t\t\t\t>\n\t\t\t\t\t\t{checkIcon}\n\t\t\t\t\t</TreeView.NodeCheckboxIndicator>\n\t\t\t\t) : (\n\t\t\t\t\t<span className={styles.nodeCheckboxIndicator}>\n\t\t\t\t\t\t{checked === 'indeterminate' ? indeterminateIcon : checked && checkIcon}\n\t\t\t\t\t</span>\n\t\t\t\t)}\n\t\t\t</div>\n\t\t</TreeView.NodeCheckbox>\n\t);\n};\n\nconst DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) => (\n\t<button\n\t\tclassName={classNames(styles.itemAction, className)}\n\t\tstyle={style}\n\t\ttype=\"button\"\n\t\ttabIndex={-1}\n\t\tonClick={(e) => {\n\t\t\te.stopPropagation();\n\t\t\tonClick?.(e);\n\t\t}}\n\t>\n\t\t{children}\n\t</button>\n);\n\nDsTreeRoot.displayName = 'DsTree.Root';\nDsTreeTree.displayName = 'DsTree.Tree';\nObject.defineProperty(TreeView.NodeProvider, 'displayName', { value: 'DsTree.NodeProvider' });\nObject.defineProperty(TreeView.NodeContext, 'displayName', { value: 'DsTree.NodeContext' });\nDsTreeBranch.displayName = 'DsTree.Branch';\nDsTreeBranchControl.displayName = 'DsTree.BranchControl';\nDsTreeBranchIndicator.displayName = 'DsTree.BranchIndicator';\nDsTreeBranchText.displayName = 'DsTree.BranchText';\nDsTreeBranchContent.displayName = 'DsTree.BranchContent';\nDsTreeBranchIndentGuide.displayName = 'DsTree.BranchIndentGuide';\nDsTreeItem.displayName = 'DsTree.Item';\nDsTreeItemText.displayName = 'DsTree.ItemText';\nDsTreeItemIndicator.displayName = 'DsTree.ItemIndicator';\nDsTreeItemAction.displayName = 'DsTree.ItemAction';\nDsTreeNodeCheckbox.displayName = 'DsTree.NodeCheckbox';\n\nexport const DsTree = {\n\tRoot: DsTreeRoot,\n\tTree: DsTreeTree,\n\tNodeProvider: TreeView.NodeProvider,\n\tNodeContext: TreeView.NodeContext,\n\tBranch: DsTreeBranch,\n\tBranchControl: DsTreeBranchControl,\n\tBranchIndicator: DsTreeBranchIndicator,\n\tBranchText: DsTreeBranchText,\n\tBranchContent: DsTreeBranchContent,\n\tBranchIndentGuide: DsTreeBranchIndentGuide,\n\tItem: DsTreeItem,\n\tItemText: DsTreeItemText,\n\tItemIndicator: DsTreeItemIndicator,\n\tItemAction: DsTreeItemAction,\n\tNodeCheckbox: DsTreeNodeCheckbox,\n\tSortable: DsTreeSortable,\n\tDragHandle: DsTreeDragHandle,\n};\n"
       },
       "stories": [
         {
           "id": "components-tree--default",
           "name": "Default",
-          "snippet": "const Default = () => {\n    const collection = createDsTreeCollection(sideNavNodes);\n\n    return (\n        <DsTree.Root\n            collection={collection}\n            defaultExpandedValue={['network']}\n            size=\"medium\"\n            onSelectionChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => (\n                    <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />\n                ))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
+          "snippet": "const Default = () => {\n    const collection = createDsTreeCollection<DsTreeNode>([\n        {\n            id: 'network',\n            name: 'Network',\n            children: [\n                {\n                    id: 'routers',\n                    name: 'Routers',\n                    children: [\n                        { id: 'router-1', name: 'Router Alpha' },\n                        { id: 'router-2', name: 'Router Beta' },\n                        { id: 'router-3', name: 'Router Gamma' },\n                    ],\n                },\n                {\n                    id: 'switches',\n                    name: 'Switches',\n                    children: [\n                        { id: 'switch-1', name: 'Switch A' },\n                        { id: 'switch-2', name: 'Switch B' },\n                    ],\n                },\n                { id: 'firewall-1', name: 'Firewall Primary' },\n                { id: 'firewall-2', name: 'Firewall Secondary' },\n            ],\n        },\n        {\n            id: 'monitoring',\n            name: 'Monitoring',\n            children: [\n                { id: 'alerts', name: 'Alerts' },\n                { id: 'dashboards', name: 'Dashboards' },\n                { id: 'logs', name: 'Logs' },\n            ],\n        },\n        {\n            id: 'settings',\n            name: 'Settings',\n            children: [\n                { id: 'general', name: 'General' },\n                { id: 'users', name: 'Users' },\n            ],\n        },\n    ]);\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.ItemText>{node.name}</DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n\n    return (\n        <DsTree.Root\n            collection={collection}\n            defaultExpandedValue={['network']}\n            size=\"medium\"\n            onSelectionChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
         },
         {
           "id": "components-tree--controlled",
           "name": "Controlled",
-          "snippet": "const Controlled = () => {\n    const collection = createDsTreeCollection(sideNavNodes);\n    const [selectedValue, setSelectedValue] = useState<string[]>([]);\n    const [expandedValue, setExpandedValue] = useState(['network']);\n\n    return (\n        <DsStack direction=\"column\" gap={12}>\n            <DsStack direction=\"column\" gap={4}>\n                <DsTypography variant=\"body-sm-md\">Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}\n                </DsTypography>\n\n                <DsTypography variant=\"body-sm-md\">Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}\n                </DsTypography>\n            </DsStack>\n\n            <DsTree.Root\n                size=\"medium\"\n                collection={collection}\n                selectedValue={selectedValue}\n                onSelectionChange={(details: { selectedValue: string[] }) =>\n                    setSelectedValue(details.selectedValue)\n                }\n                expandedValue={expandedValue}\n                onExpandedChange={(details: { expandedValue: string[] }) => setExpandedValue(details.expandedValue)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => (\n                        <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />\n                    ))}\n                </DsTree.Tree>\n            </DsTree.Root>\n        </DsStack>\n    );\n};"
+          "snippet": "const Controlled = () => {\n    const collection = createDsTreeCollection<DsTreeNode>([\n        {\n            id: 'network',\n            name: 'Network',\n            children: [\n                {\n                    id: 'routers',\n                    name: 'Routers',\n                    children: [\n                        { id: 'router-1', name: 'Router Alpha' },\n                        { id: 'router-2', name: 'Router Beta' },\n                        { id: 'router-3', name: 'Router Gamma' },\n                    ],\n                },\n                {\n                    id: 'switches',\n                    name: 'Switches',\n                    children: [\n                        { id: 'switch-1', name: 'Switch A' },\n                        { id: 'switch-2', name: 'Switch B' },\n                    ],\n                },\n                { id: 'firewall-1', name: 'Firewall Primary' },\n                { id: 'firewall-2', name: 'Firewall Secondary' },\n            ],\n        },\n        {\n            id: 'monitoring',\n            name: 'Monitoring',\n            children: [\n                { id: 'alerts', name: 'Alerts' },\n                { id: 'dashboards', name: 'Dashboards' },\n                { id: 'logs', name: 'Logs' },\n            ],\n        },\n        {\n            id: 'settings',\n            name: 'Settings',\n            children: [\n                { id: 'general', name: 'General' },\n                { id: 'users', name: 'Users' },\n            ],\n        },\n    ]);\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.ItemText>{node.name}</DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n    const [selectedValue, setSelectedValue] = useState<string[]>([]);\n    const [expandedValue, setExpandedValue] = useState(['network']);\n\n    return (\n        <DsStack direction=\"column\" gap={12}>\n            <DsStack direction=\"column\" gap={4}>\n                <DsTypography variant=\"body-sm-md\">Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}\n                </DsTypography>\n\n                <DsTypography variant=\"body-sm-md\">Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}\n                </DsTypography>\n            </DsStack>\n\n            <DsTree.Root\n                size=\"medium\"\n                collection={collection}\n                selectedValue={selectedValue}\n                onSelectionChange={(details: { selectedValue: string[] }) =>\n                    setSelectedValue(details.selectedValue)\n                }\n                expandedValue={expandedValue}\n                onExpandedChange={(details: { expandedValue: string[] }) => setExpandedValue(details.expandedValue)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n                </DsTree.Tree>\n            </DsTree.Root>\n        </DsStack>\n    );\n};"
         },
         {
           "id": "components-tree--controlled-focus",
           "name": "Controlled Focus",
-          "snippet": "const ControlledFocus = () => {\n    const collection = createDsTreeCollection(sideNavNodes);\n    const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');\n\n    return (\n        <DsStack direction=\"column\" gap={12}>\n            <DsTypography variant=\"body-sm-md\">Focused: {focusedValue ?? 'none'}</DsTypography>\n\n            <DsTree.Root\n                size=\"medium\"\n                collection={collection}\n                defaultExpandedValue={['network']}\n                focusedValue={focusedValue}\n                onFocusChange={(details: { focusedValue: string | null }) => setFocusedValue(details.focusedValue)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => (\n                        <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />\n                    ))}\n                </DsTree.Tree>\n            </DsTree.Root>\n        </DsStack>\n    );\n};"
+          "snippet": "const ControlledFocus = () => {\n    const collection = createDsTreeCollection<DsTreeNode>([\n        {\n            id: 'network',\n            name: 'Network',\n            children: [\n                {\n                    id: 'routers',\n                    name: 'Routers',\n                    children: [\n                        { id: 'router-1', name: 'Router Alpha' },\n                        { id: 'router-2', name: 'Router Beta' },\n                        { id: 'router-3', name: 'Router Gamma' },\n                    ],\n                },\n                {\n                    id: 'switches',\n                    name: 'Switches',\n                    children: [\n                        { id: 'switch-1', name: 'Switch A' },\n                        { id: 'switch-2', name: 'Switch B' },\n                    ],\n                },\n                { id: 'firewall-1', name: 'Firewall Primary' },\n                { id: 'firewall-2', name: 'Firewall Secondary' },\n            ],\n        },\n        {\n            id: 'monitoring',\n            name: 'Monitoring',\n            children: [\n                { id: 'alerts', name: 'Alerts' },\n                { id: 'dashboards', name: 'Dashboards' },\n                { id: 'logs', name: 'Logs' },\n            ],\n        },\n        {\n            id: 'settings',\n            name: 'Settings',\n            children: [\n                { id: 'general', name: 'General' },\n                { id: 'users', name: 'Users' },\n            ],\n        },\n    ]);\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.ItemText>{node.name}</DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n    const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');\n\n    return (\n        <DsStack direction=\"column\" gap={12}>\n            <DsTypography variant=\"body-sm-md\">Focused: {focusedValue ?? 'none'}</DsTypography>\n\n            <DsTree.Root\n                size=\"medium\"\n                collection={collection}\n                defaultExpandedValue={['network']}\n                focusedValue={focusedValue}\n                onFocusChange={(details: { focusedValue: string | null }) => setFocusedValue(details.focusedValue)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n                </DsTree.Tree>\n            </DsTree.Root>\n        </DsStack>\n    );\n};"
         },
         {
           "id": "components-tree--checkbox-with-icons",
           "name": "Checkbox With Icons",
-          "snippet": "const CheckboxWithIcons = args => {\n    const collection = createDsTreeCollection(mapLayersNodes);\n\n    return (\n        <DsTree.Root\n            size={args.size}\n            collection={collection}\n            defaultCheckedValue={['data-centers', 'dc-east', 'dc-west', 'oms']}\n            defaultExpandedValue={['devices', 'optical']}\n            onCheckedChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => (\n                    <CheckboxWithIconsNode key={node.id} node={node} indexPath={[index]} />\n                ))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
+          "snippet": "const CheckboxWithIcons = () => {\n    const collection = createDsTreeCollection<DsTreeNode>([\n        {\n            id: 'facilities',\n            name: 'Facilities',\n            children: [\n                { id: 'facility-1', name: 'Data Center A' },\n                { id: 'facility-2', name: 'Data Center B' },\n                { id: 'facility-3', name: 'Data Center C' },\n            ],\n        },\n        {\n            id: 'data-centers',\n            name: 'Data Centers',\n            children: [\n                { id: 'dc-east', name: 'East' },\n                { id: 'dc-west', name: 'West' },\n            ],\n        },\n        {\n            id: 'customer-premise',\n            name: 'Customer Premise',\n            children: [\n                { id: 'cp-1', name: 'Site Alpha' },\n                { id: 'cp-2', name: 'Site Beta' },\n            ],\n        },\n        {\n            id: 'devices',\n            name: 'Devices',\n            children: [\n                {\n                    id: 'optical',\n                    name: 'Optical',\n                    children: [\n                        { id: 'olt', name: 'OLT', icon: 'layers' },\n                        { id: 'roadm', name: 'ROADM', icon: 'layers' },\n                        { id: 'oms', name: 'OMS', icon: 'layers' },\n                    ],\n                },\n                {\n                    id: 'copper',\n                    name: 'Copper',\n                    children: [\n                        { id: 'dslam', name: 'DSLAM', icon: 'layers' },\n                        { id: 'msan', name: 'MSAN', icon: 'layers' },\n                    ],\n                },\n            ],\n        },\n        {\n            id: 'routers',\n            name: 'Routers',\n            children: [\n                { id: 'router-core', name: 'Core Router' },\n                { id: 'router-edge', name: 'Edge Router' },\n            ],\n        },\n        {\n            id: 'tdm',\n            name: 'TDM',\n            children: [{ id: 'tdm-1', name: 'TDM Switch A' }],\n        },\n        {\n            id: 'network-mgmt',\n            name: 'Network Management',\n            children: [\n                { id: 'nms', name: 'NMS' },\n                { id: 'ems', name: 'EMS' },\n            ],\n        },\n        {\n            id: 'link-type',\n            name: 'Link Type',\n            children: [\n                { id: 'fiber', name: 'Fiber' },\n                { id: 'wireless', name: 'Wireless' },\n            ],\n        },\n        {\n            id: 'link-speeds',\n            name: 'Link Speeds',\n            children: [\n                { id: 'speed-1g', name: '1 Gbps' },\n                { id: 'speed-10g', name: '10 Gbps' },\n            ],\n        },\n    ]);\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.NodeCheckbox />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.NodeCheckbox />\n                    <DsTree.ItemText>\n                        {node.icon && <DsIcon icon={node.icon} size=\"tiny\" />}\n                        {node.name}\n                    </DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n\n    return (\n        <DsTree.Root\n            size=\"medium\"\n            collection={collection}\n            defaultCheckedValue={['data-centers', 'dc-east', 'dc-west', 'oms']}\n            defaultExpandedValue={['devices', 'optical']}\n            onCheckedChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
         },
         {
           "id": "components-tree--with-status-icons",
           "name": "With Status Icons",
-          "snippet": "const WithStatusIcons = args => {\n    const collection = createDsTreeCollection(workflowNodes);\n    const onNavigate = fn();\n\n    return (\n        <DsTree.Root\n            size=\"medium\"\n            collection={collection}\n            defaultExpandedValue={['workflow-1234', 'sw-running-02', 'sw-running-06']}\n            onSelectionChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => (\n                    <WorkflowDsTreeNode\n                        key={node.id}\n                        node={node}\n                        indexPath={[index]}\n                        onNavigate={onNavigate}\n                        size={args.size}\n                    />\n                ))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
+          "snippet": "const WithStatusIcons = () => {\n    const collection = createDsTreeCollection<DsTreeNode>([\n        {\n            id: 'workflow-1234',\n            name: 'Workflow 1234',\n            icon: 'home',\n            children: [\n                {\n                    id: 'sw-running-02',\n                    name: 'SW running 02',\n                    icon: 'account_tree',\n                    children: [\n                        { id: 'task-1', name: 'Task Alpha', status: 'running', icon: 'dns' },\n                        { id: 'task-2', name: 'Task Beta', status: 'running', icon: 'storage' },\n                        { id: 'task-3', name: 'Task Gamma', status: 'failed', icon: 'memory', disabled: true },\n                    ],\n                },\n                {\n                    id: 'sw-running-06',\n                    name: 'SW running 06',\n                    icon: 'account_tree',\n                    disabled: true,\n                    children: [{ id: 'task-4', name: 'Task Delta', status: 'paused', icon: 'cloud' }],\n                },\n                { id: 'error-task', name: 'Error task name', status: 'failed', icon: 'warning' },\n                { id: 'running-task', name: 'Running task name', status: 'running', icon: 'dns' },\n            ],\n        },\n    ]);\n    const onNavigate = (nodeId: string) => {\n        window.location.hash = nodeId;\n    };\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.BranchText>\n                            {node.icon && <DsIcon icon={node.icon} size=\"tiny\" />}\n                            {node.name}\n                        </DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.ItemText>\n                        {node.status && <DsFilterStatusIcon status={node.status} size=\"tiny\" />}\n                        {node.icon && <DsIcon icon={node.icon} size=\"tiny\" />}\n                        {node.name}\n                    </DsTree.ItemText>\n\n                    <DsTree.ItemAction onClick={() => onNavigate(node.id)}>\n                        <DsIcon icon=\"outbound\" size=\"tiny\" className={storyStyles.navigateIcon} />\n                    </DsTree.ItemAction>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n\n    return (\n        <DsTree.Root\n            size=\"medium\"\n            collection={collection}\n            defaultExpandedValue={['workflow-1234', 'sw-running-02', 'sw-running-06']}\n            onSelectionChange={fn()}\n            onExpandedChange={fn()}>\n            <DsTree.Tree>\n                {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n            </DsTree.Tree>\n        </DsTree.Root>\n    );\n};"
+        },
+        {
+          "id": "components-tree--sortable",
+          "name": "Sortable",
+          "snippet": "const Sortable = () => {\n    const [collection, setCollection] = useState(() =>\n        createDsTreeCollection<DsTreeNode>([\n            {\n                id: 'network',\n                name: 'Network',\n                children: [\n                    {\n                        id: 'routers',\n                        name: 'Routers',\n                        children: [\n                            { id: 'router-1', name: 'Router Alpha' },\n                            { id: 'router-2', name: 'Router Beta' },\n                            { id: 'router-3', name: 'Router Gamma', disabled: true },\n                        ],\n                    },\n                    { id: 'firewall-1', name: 'Firewall Primary' },\n                    { id: 'firewall-2', name: 'Firewall Secondary' },\n                ],\n            },\n            { id: 'archive', name: 'Archive', children: [] },\n            {\n                id: 'monitoring',\n                name: 'Monitoring',\n                children: [\n                    { id: 'alerts', name: 'Alerts' },\n                    { id: 'dashboards', name: 'Dashboards' },\n                ],\n            },\n            { id: 'logs', name: 'Logs' },\n        ]),\n    );\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.DragHandle />\n                        <DsTree.NodeCheckbox />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.DragHandle />\n                    <DsTree.NodeCheckbox />\n                    <DsTree.ItemText>{node.name}</DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n\n    return (\n        <DsTree.Root\n            size=\"medium\"\n            collection={collection}\n            defaultExpandedValue={['network', 'routers']}>\n            <DsTree.Sortable onCollectionChange={(next) => setCollection(next)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n                </DsTree.Tree>\n            </DsTree.Sortable>\n        </DsTree.Root>\n    );\n};",
+          "description": "Wrap `DsTree.Tree` in `DsTree.Sortable` to let users reorder nodes at any depth by dragging\nthe `DsTree.DragHandle`: before or after any row, into a group as its first child, or out to\nthe root level. Drop below the last row to append to the root list. The tree stays controlled:\nstore the collection passed to `onCollectionChange` and render from it. Disabled nodes can't be\ndragged, and the empty \"Archive\" group accepts drops. Next to the dragged row, where a drop would\nchange nothing, the indicator shows the row's other edge instead."
+        },
+        {
+          "id": "components-tree--sortable-same-group-only",
+          "name": "Sortable same group only",
+          "snippet": "const SortableSameGroupOnly = () => {\n    const [collection, setCollection] = useState(() =>\n        createDsTreeCollection<DsTreeNode>([\n            {\n                id: 'general',\n                name: 'General',\n                children: [\n                    { id: 'name', name: 'Name' },\n                    { id: 'status', name: 'Status' },\n                    { id: 'created', name: 'Created' },\n                ],\n            },\n            {\n                id: 'connectivity',\n                name: 'Connectivity',\n                children: [\n                    { id: 'ip-address', name: 'IP address' },\n                    { id: 'mac-address', name: 'MAC address' },\n                    { id: 'vlan', name: 'VLAN' },\n                ],\n            },\n            {\n                id: 'location',\n                name: 'Location',\n                children: [\n                    { id: 'site', name: 'Site' },\n                    { id: 'rack', name: 'Rack' },\n                ],\n            },\n        ]),\n    );\n\n    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (\n        <DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>\n            {node.children ? (\n                <DsTree.Branch>\n                    <DsTree.BranchControl>\n                        <DsTree.BranchIndicator />\n                        <DsTree.DragHandle />\n                        <DsTree.NodeCheckbox />\n                        <DsTree.BranchText>{node.name}</DsTree.BranchText>\n                    </DsTree.BranchControl>\n\n                    <DsTree.BranchContent>\n                        <DsTree.BranchIndentGuide />\n                        {node.children.map((child, index) => renderNode(child, [...indexPath, index]))}\n                    </DsTree.BranchContent>\n                </DsTree.Branch>\n            ) : (\n                <DsTree.Item>\n                    <DsTree.ItemIndicator />\n                    <DsTree.DragHandle />\n                    <DsTree.NodeCheckbox />\n                    <DsTree.ItemText>{node.name}</DsTree.ItemText>\n                </DsTree.Item>\n            )}\n        </DsTree.NodeProvider>\n    );\n\n    return (\n        <DsTree.Root\n            size=\"medium\"\n            collection={collection}\n            defaultExpandedValue={['general', 'connectivity', 'location']}\n            defaultCheckedValue={['name', 'status', 'ip-address', 'site']}>\n            <DsTree.Sortable\n                canDrop={({ position, fromParent, toParent }) =>\n                    position !== 'inside' && fromParent?.id === toParent?.id\n                }\n                onCollectionChange={(next) => setCollection(next)}>\n                <DsTree.Tree>\n                    {collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}\n                </DsTree.Tree>\n            </DsTree.Sortable>\n        </DsTree.Root>\n    );\n};",
+          "description": "Use `canDrop` to restrict where nodes may land. Here, as in a column manager, columns reorder\nonly within their own group and groups only among themselves. Over a row inside a sibling group,\nthe dragged node lands before or after that group as a whole; anything else, such as nesting, is\nrejected with a not-allowed cursor and no drop indicator."
         }
       ],
       "import": "import { DsFilterStatusIcon, DsIcon, DsStack, DsTree, DsTypography } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';"
@@ -34660,6 +35356,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5504
+    "durationMs": 4416
   }
 }

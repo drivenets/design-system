@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/104 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/104 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/104 without API description</a><span class="filter-pill ok" aria-disabled="true">638 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/638 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/104 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/104 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/104 without API description</a><span class="filter-pill ok" aria-disabled="true">642 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/642 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -20272,7 +20272,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-73-components-table-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-73-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -20301,7 +20301,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20371,6 +20371,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -20518,6 +20538,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -20608,6 +20633,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -20900,7 +20932,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-74-components-table-active-row-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -20929,7 +20961,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20999,6 +21031,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -21146,6 +21198,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -21236,6 +21293,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -21529,7 +21593,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-75-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21558,7 +21622,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21628,6 +21692,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -21775,6 +21859,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -21865,6 +21954,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -22108,7 +22204,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-76-components-table-column-groups-stories" class="badge ok as-toggle">5 stories · 4 incomplete</label>
         
@@ -22137,7 +22233,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22207,6 +22303,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -22354,6 +22470,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -22444,6 +22565,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -22744,9 +22872,9 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">52 prop types</label>
         
-        <label for="c-77-components-table-columns-stories" class="badge ok as-toggle">4 stories · 1 incomplete</label>
+        <label for="c-77-components-table-columns-stories" class="badge ok as-toggle">6 stories · 1 incomplete</label>
         
         
       </div>
@@ -22773,7 +22901,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22843,6 +22971,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -22990,6 +23138,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -23080,6 +23233,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -23333,9 +23493,8 @@ responsive layouts. Toggle a checkbox to add or remove the matching column.</div
               </div>
               
               <div class="hint">The header ends with a tertiary icon-only Columns button. Its popup lists
-every column with a checkbox (checked columns stay visible), a search field
-that filters the list, and an &quot;All columns&quot; checkbox that toggles every
-column at once.</div>
+every column with a checkbox (checked columns stay visible) and an &quot;All
+columns&quot; checkbox that toggles every column at once.</div>
               <pre><code>const ColumnDisplay = () =&gt; &lt;DsTable
     columns={columns}
     data={defaultData}
@@ -23381,6 +23540,98 @@ column at once.</div>
 };</code></pre>
               
             </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Reorder</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Add `reorderableColumns` to let users drag columns by their handle in the
+Columns popup. Columns move within their own group, and groups (with all
+their columns) and top-level columns among themselves. Sticky columns are
+listed first and reorder only among themselves; making a column sticky moves
+it to the end of that block, and right-sticky columns stay at the right edge.
+Locked columns (`enableHiding: false`) can still be reordered. Store
+`columnOrder` from `onColumnOrderChange` to persist the order; columns missing
+from it later stay inside their group, and an empty array restores the
+`columns` order.</div>
+              <pre><code>const ColumnReorder = () =&gt; {
+    const [columnOrder, setColumnOrder] = useState&lt;string[]&gt;([]);
+    const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({ left: [&#39;identity&#39;] });
+
+    const [reorderColumns] = useState&lt;ColumnDef&lt;Person&gt;[]&gt;(() =&gt; [
+        {
+            id: &#39;identity&#39;,
+            header: &#39;Identity&#39;,
+            columns: [
+                { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, enableHiding: false },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39; },
+            ],
+        },
+        {
+            id: &#39;activity&#39;,
+            header: &#39;Activity&#39;,
+            columns: [
+                {
+                    id: &#39;engagement&#39;,
+                    header: &#39;Engagement&#39;,
+                    columns: [
+                        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39; },
+                        { accessorKey: &#39;progress&#39;, header: &#39;Profile Progress&#39; },
+                    ],
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39; },
+            ],
+        },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39; },
+    ]);
+
+    return (
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsStack direction=&quot;row&quot;&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; setColumnOrder([])}&gt;Reset column order
+                                        &lt;/DsButtonV3&gt;
+            &lt;/DsStack&gt;
+
+            &lt;DsTable
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                onRowClick={fn()}
+                columns={reorderColumns}
+                columnDisplay
+                reorderableColumns
+                columnOrder={columnOrder}
+                onColumnOrderChange={setColumnOrder}
+                stickyColumns={stickyColumns}
+                onStickyColumnsChange={setStickyColumns} /&gt;
+        &lt;/DsStack&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column reorder basic</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The minimal opt-in: `columnDisplay` adds the Columns popup and `reorderableColumns`
+a drag handle to each of its rows.</div>
+              <pre><code>const ColumnReorderBasic = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    columnDisplay
+    reorderableColumns /&gt;;</code></pre>
+              
+            </div>
         </div>
     
     
@@ -23401,7 +23652,7 @@ column at once.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-78-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -23430,7 +23681,7 @@ column at once.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23500,6 +23751,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -23647,6 +23918,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -23737,6 +24013,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -24190,7 +24473,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-79-components-table-expansion-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -24219,7 +24502,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24289,6 +24572,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -24436,6 +24739,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -24526,6 +24834,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -24903,7 +25218,7 @@ after the table remounts.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-80-components-table-loading-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -24932,7 +25247,7 @@ after the table remounts.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25002,6 +25317,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -25149,6 +25484,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -25239,6 +25579,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -25443,7 +25790,7 @@ of the default bar.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-81-components-table-resizable-columns-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -25472,7 +25819,7 @@ of the default bar.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25542,6 +25889,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -25689,6 +26056,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -25779,6 +26151,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -26164,7 +26543,7 @@ width and has no resize handle.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-82-components-table-row-actions-stories" class="badge ok as-toggle">11 stories · 1 incomplete</label>
         
@@ -26193,7 +26572,7 @@ width and has no resize handle.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -26263,6 +26642,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -26410,6 +26809,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -26500,6 +26904,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -27145,7 +27556,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-83-components-table-search-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-83-components-table-search-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-83-components-table-search-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -27174,7 +27585,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27244,6 +27655,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -27391,6 +27822,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -27481,6 +27917,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -27785,7 +28228,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-84-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -27814,7 +28257,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27884,6 +28327,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -28031,6 +28494,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -28121,6 +28589,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -28442,7 +28917,7 @@ once the cap is reached.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-85-components-table-sticky-columns-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-85-components-table-sticky-columns-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-85-components-table-sticky-columns-stories" class="badge ok as-toggle">10 stories</label>
         
@@ -28471,7 +28946,7 @@ once the cap is reached.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -28541,6 +29016,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -28688,6 +29183,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -28778,6 +29278,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -29350,7 +29857,7 @@ the consumer sticky columns.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-86-components-table-virtualized-props" class="badge ok as-toggle">49 prop types</label>
+        <label for="c-86-components-table-virtualized-props" class="badge ok as-toggle">52 prop types</label>
         
         <label for="c-86-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
         
@@ -29379,7 +29886,7 @@ the consumer sticky columns.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">49 prop types</span>
+              <span class="badge ok">52 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -29449,6 +29956,26 @@ columnDisplay?: boolean
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
+
+/**
+ * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+ * 
+ * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+ * - Utility columns keep their positions.
+ * 
+ * @example
+ * ```tsx
+ * const [columnOrder, setColumnOrder] = useState([&#39;lastName&#39;, &#39;firstName&#39;]);
+ * 
+ * &lt;DsTable
+ *   columnDisplay
+ *   reorderableColumns
+ *   columnOrder={columnOrder}
+ *   onColumnOrderChange={setColumnOrder}
+ * /&gt;
+ * ```
+ */
+columnOrder?: string[]
 
 /**
  * Columns of the table
@@ -29596,6 +30123,11 @@ onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 
 /**
+ * Called with the new leaf column order after a drop, or a pin that moves a column.
+ */
+onColumnOrderChange?: (columnOrder: string[]) =&gt; void
+
+/**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
  * widths across sessions. Select, expander, reorder, row actions, and column
@@ -29686,6 +30218,13 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
  * @note This feature does not work when virtualization is enabled
  */
 reorderable?: boolean
+
+/**
+ * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+ * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+ * @default false
+ */
+reorderableColumns?: boolean
 
 /**
  * Width in px of the reorder utility column. Ignored when `reorderable` is
@@ -30224,7 +30763,7 @@ rows. Double-click a handle to restore the snapshotted width.</div>
               </div>
               
               <div class="hint">Row virtualization with the Columns button. Hidden columns drop out of every
-virtualized row.</div>
+virtualized row, and `reorderableColumns` lets users reorder columns from the popup.</div>
               <pre><code>const VirtualizedWithColumnDisplay = () =&gt; {
     const [data] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
@@ -30238,6 +30777,7 @@ virtualized row.</div>
             onRowClick={fn()}
             virtualized
             columnDisplay
+            reorderableColumns
             data={data} /&gt;
     );
 };</code></pre>
@@ -34472,7 +35012,7 @@ what each app does — the wide cards pair the branded SVG mark with a `descript
       <div class="badges">
         <label for="c-98-components-tree-err" class="badge err as-toggle">API error</label>
         <label for="c-98-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-98-components-tree-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-98-components-tree-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -34502,11 +35042,20 @@ Error:
 No suitable component definition found.
 You can debug your component file in this playground: https://react-docgen.dev/playground
 Code:
-import { TreeView } from &#39;@ark-ui/react/tree-view&#39;;
+import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from &#39;react&#39;;
+import { TreeView, useTreeViewContext, useTreeViewNodeContext } from &#39;@ark-ui/react/tree-view&#39;;
 import classNames from &#39;classnames&#39;;
 
 import { DsIcon } from &#39;../ds-icon&#39;;
 import styles from &#39;./ds-tree.module.scss&#39;;
+import {
+	DsTreeDragHandle,
+	DsTreeSortable,
+	DsTreeSortableBranchControl,
+	DsTreeSortableItem,
+	useDsTreeSortableBranchAttributes,
+	useDsTreeSortableContext,
+} from &#39;./ds-tree-sortable&#39;;
 import type {
 	DsTreeBranchContentProps,
 	DsTreeBranchControlProps,
@@ -34514,6 +35063,7 @@ import type {
 	DsTreeBranchIndicatorProps,
 	DsTreeBranchProps,
 	DsTreeBranchTextProps,
+	DsTreeCheckedState,
 	DsTreeItemActionProps,
 	DsTreeItemIndicatorProps,
 	DsTreeItemProps,
@@ -34583,17 +35133,60 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) =&gt; (
 	&lt;/TreeView.Tree&gt;
 );
 
-const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) =&gt; (
-	&lt;TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}&gt;
-		{children}
-	&lt;/TreeView.Branch&gt;
-);
+interface DsTreeRowCheckbox {
+	checked: DsTreeCheckedState | undefined;
+}
 
-const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) =&gt; (
-	&lt;TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}&gt;
-		{children}
-	&lt;/TreeView.BranchControl&gt;
-);
+type RegisterRowCheckbox = (checkbox: DsTreeRowCheckbox | null) =&gt; void;
+
+const DsTreeRowCheckboxContext = createContext&lt;RegisterRowCheckbox | null&gt;(null);
+
+const toAriaChecked = (checked: DsTreeCheckedState): AriaAttributes[&#39;aria-checked&#39;] =&gt;
+	checked === &#39;indeterminate&#39; ? &#39;mixed&#39; : checked;
+
+// Screen readers announce the treeitem, not its inner checkbox: a leaf&#39;s focused row, or a group&#39;s
+// Branch around its focused BranchControl (a `button`, which can&#39;t be checked), where Ark puts `aria-expanded`
+const useRowCheckbox = () =&gt; {
+	const { checked } = useTreeViewNodeContext();
+	const [checkbox, setCheckbox] = useState&lt;DsTreeRowCheckbox | null&gt;(null);
+
+	return {
+		register: setCheckbox,
+		ariaChecked: checkbox ? toAriaChecked(checkbox.checked ?? checked) : undefined,
+	};
+};
+
+const toDataState = (checked: DsTreeCheckedState): &#39;checked&#39; | &#39;unchecked&#39; | &#39;indeterminate&#39; =&gt;
+	checked === &#39;indeterminate&#39; ? &#39;indeterminate&#39; : checked ? &#39;checked&#39; : &#39;unchecked&#39;;
+
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) =&gt; {
+	const sortableAttributes = useDsTreeSortableBranchAttributes();
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		&lt;DsTreeRowCheckboxContext value={rowCheckbox.register}&gt;
+			&lt;TreeView.Branch
+				{...rest}
+				{...sortableAttributes}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.branch, className)}
+				style={style}
+			&gt;
+				{children}
+			&lt;/TreeView.Branch&gt;
+		&lt;/DsTreeRowCheckboxContext&gt;
+	);
+};
+
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) =&gt; {
+	const Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;
+
+	return (
+		&lt;Control {...rest} className={classNames(styles.branchControl, className)} style={style}&gt;
+			{children}
+		&lt;/Control&gt;
+	);
+};
 
 const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) =&gt; (
 	&lt;TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}&gt;
@@ -34617,11 +35210,24 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	&lt;TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} /&gt;
 );
 
-const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) =&gt; (
-	&lt;TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}&gt;
-		{children}
-	&lt;/TreeView.Item&gt;
-);
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) =&gt; {
+	const Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		&lt;DsTreeRowCheckboxContext value={rowCheckbox.register}&gt;
+			&lt;Item
+				{...rest}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.item, className)}
+				style={style}
+				onClick={onClick}
+			&gt;
+				{children}
+			&lt;/Item&gt;
+		&lt;/DsTreeRowCheckboxContext&gt;
+	);
+};
 
 const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) =&gt; (
 	&lt;TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}&gt;
@@ -34635,18 +35241,64 @@ const DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) =&g
 	&lt;/span&gt;
 );
 
-const DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) =&gt; (
-	&lt;TreeView.NodeCheckbox className={classNames(styles.nodeCheckbox, className)} style={style}&gt;
-		&lt;div className={styles.nodeCheckboxBox}&gt;
-			&lt;TreeView.NodeCheckboxIndicator
-				className={styles.nodeCheckboxIndicator}
-				indeterminate={&lt;DsIcon icon=&quot;check_indeterminate_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; /&gt;}
-			&gt;
-				&lt;DsIcon icon=&quot;check_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; /&gt;
-			&lt;/TreeView.NodeCheckboxIndicator&gt;
-		&lt;/div&gt;
-	&lt;/TreeView.NodeCheckbox&gt;
+const checkIcon = &lt;DsIcon icon=&quot;check_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; aria-hidden /&gt;;
+const indeterminateIcon = (
+	&lt;DsIcon icon=&quot;check_indeterminate_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; aria-hidden /&gt;
 );
+
+const DsTreeNodeCheckbox = ({ className, style, checked, disabled = false }: DsTreeNodeCheckboxProps) =&gt; {
+	const { collection } = useTreeViewContext();
+	const nodeState = useTreeViewNodeContext();
+	const registerRowCheckbox = use(DsTreeRowCheckboxContext);
+	const name = (collection.at(nodeState.indexPath) as DsTreeNode | undefined)?.name;
+
+	useEffect(() =&gt; {
+		registerRowCheckbox?.({ checked });
+
+		return () =&gt; registerRowCheckbox?.(null);
+	}, [registerRowCheckbox, checked]);
+
+	const overrides = {
+		...(checked !== undefined &amp;&amp; {
+			&#39;data-state&#39;: toDataState(checked),
+			&#39;aria-checked&#39;: toAriaChecked(checked),
+		}),
+		...(disabled &amp;&amp; {
+			&#39;data-disabled&#39;: &#39;&#39;,
+			&#39;aria-disabled&#39;: true,
+			// Ark can only disable a whole node, so the click is stopped before its handler, which skips prevented clicks
+			onClickCapture: (event: MouseEvent&lt;HTMLSpanElement&gt;) =&gt; {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+		}),
+	};
+
+	return (
+		// Ark names the checkbox from nothing, and the icons&#39; ligature text would otherwise be read
+		&lt;TreeView.NodeCheckbox
+			className={classNames(styles.nodeCheckbox, className)}
+			style={style}
+			aria-label={name}
+			{...overrides}
+		&gt;
+			&lt;div className={styles.nodeCheckboxBox}&gt;
+				{checked === undefined ? (
+					&lt;TreeView.NodeCheckboxIndicator
+						className={styles.nodeCheckboxIndicator}
+						indeterminate={indeterminateIcon}
+					&gt;
+						{checkIcon}
+					&lt;/TreeView.NodeCheckboxIndicator&gt;
+				) : (
+					&lt;span className={styles.nodeCheckboxIndicator}&gt;
+						{checked === &#39;indeterminate&#39; ? indeterminateIcon : checked &amp;&amp; checkIcon}
+					&lt;/span&gt;
+				)}
+			&lt;/div&gt;
+		&lt;/TreeView.NodeCheckbox&gt;
+	);
+};
 
 const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) =&gt; (
 	&lt;button
@@ -34695,6 +35347,8 @@ export const DsTree = {
 	ItemIndicator: DsTreeItemIndicator,
 	ItemAction: DsTreeItemAction,
 	NodeCheckbox: DsTreeNodeCheckbox,
+	Sortable: DsTreeSortable,
+	DragHandle: DsTreeDragHandle,
 };
 </code></pre></div>
     </div>
@@ -34730,7 +35384,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const Default = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
@@ -34740,9 +35460,7 @@ import { fn } from 'storybook/test';</code></pre>
             onSelectionChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
         &lt;/DsTree.Root&gt;
     );
@@ -34757,7 +35475,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const Controlled = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
     const [selectedValue, setSelectedValue] = useState&lt;string[]&gt;([]);
     const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
@@ -34781,9 +35565,7 @@ import { fn } from 'storybook/test';</code></pre>
                 expandedValue={expandedValue}
                 onExpandedChange={(details: { expandedValue: string[] }) =&gt; setExpandedValue(details.expandedValue)}&gt;
                 &lt;DsTree.Tree&gt;
-                    {collection.rootNode.children?.map((node, index) =&gt; (
-                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                    ))}
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
         &lt;/DsStack&gt;
@@ -34799,7 +35581,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const ControlledFocus = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
     const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
 
     return (
@@ -34813,9 +35661,7 @@ import { fn } from 'storybook/test';</code></pre>
                 focusedValue={focusedValue}
                 onFocusChange={(details: { focusedValue: string | null }) =&gt; setFocusedValue(details.focusedValue)}&gt;
                 &lt;DsTree.Tree&gt;
-                    {collection.rootNode.children?.map((node, index) =&gt; (
-                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                    ))}
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
         &lt;/DsStack&gt;
@@ -34830,21 +35676,133 @@ import { fn } from 'storybook/test';</code></pre>
               </div>
               
               
-              <pre><code>const CheckboxWithIcons = args =&gt; {
-    const collection = createDsTreeCollection(mapLayersNodes);
+              <pre><code>const CheckboxWithIcons = () =&gt; {
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;facilities&#39;,
+            name: &#39;Facilities&#39;,
+            children: [
+                { id: &#39;facility-1&#39;, name: &#39;Data Center A&#39; },
+                { id: &#39;facility-2&#39;, name: &#39;Data Center B&#39; },
+                { id: &#39;facility-3&#39;, name: &#39;Data Center C&#39; },
+            ],
+        },
+        {
+            id: &#39;data-centers&#39;,
+            name: &#39;Data Centers&#39;,
+            children: [
+                { id: &#39;dc-east&#39;, name: &#39;East&#39; },
+                { id: &#39;dc-west&#39;, name: &#39;West&#39; },
+            ],
+        },
+        {
+            id: &#39;customer-premise&#39;,
+            name: &#39;Customer Premise&#39;,
+            children: [
+                { id: &#39;cp-1&#39;, name: &#39;Site Alpha&#39; },
+                { id: &#39;cp-2&#39;, name: &#39;Site Beta&#39; },
+            ],
+        },
+        {
+            id: &#39;devices&#39;,
+            name: &#39;Devices&#39;,
+            children: [
+                {
+                    id: &#39;optical&#39;,
+                    name: &#39;Optical&#39;,
+                    children: [
+                        { id: &#39;olt&#39;, name: &#39;OLT&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;roadm&#39;, name: &#39;ROADM&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;oms&#39;, name: &#39;OMS&#39;, icon: &#39;layers&#39; },
+                    ],
+                },
+                {
+                    id: &#39;copper&#39;,
+                    name: &#39;Copper&#39;,
+                    children: [
+                        { id: &#39;dslam&#39;, name: &#39;DSLAM&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;msan&#39;, name: &#39;MSAN&#39;, icon: &#39;layers&#39; },
+                    ],
+                },
+            ],
+        },
+        {
+            id: &#39;routers&#39;,
+            name: &#39;Routers&#39;,
+            children: [
+                { id: &#39;router-core&#39;, name: &#39;Core Router&#39; },
+                { id: &#39;router-edge&#39;, name: &#39;Edge Router&#39; },
+            ],
+        },
+        {
+            id: &#39;tdm&#39;,
+            name: &#39;TDM&#39;,
+            children: [{ id: &#39;tdm-1&#39;, name: &#39;TDM Switch A&#39; }],
+        },
+        {
+            id: &#39;network-mgmt&#39;,
+            name: &#39;Network Management&#39;,
+            children: [
+                { id: &#39;nms&#39;, name: &#39;NMS&#39; },
+                { id: &#39;ems&#39;, name: &#39;EMS&#39; },
+            ],
+        },
+        {
+            id: &#39;link-type&#39;,
+            name: &#39;Link Type&#39;,
+            children: [
+                { id: &#39;fiber&#39;, name: &#39;Fiber&#39; },
+                { id: &#39;wireless&#39;, name: &#39;Wireless&#39; },
+            ],
+        },
+        {
+            id: &#39;link-speeds&#39;,
+            name: &#39;Link Speeds&#39;,
+            children: [
+                { id: &#39;speed-1g&#39;, name: &#39;1 Gbps&#39; },
+                { id: &#39;speed-10g&#39;, name: &#39;10 Gbps&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;
+                        {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                        {node.name}
+                    &lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
-            size={args.size}
+            size=&quot;medium&quot;
             collection={collection}
             defaultCheckedValue={[&#39;data-centers&#39;, &#39;dc-east&#39;, &#39;dc-west&#39;, &#39;oms&#39;]}
             defaultExpandedValue={[&#39;devices&#39;, &#39;optical&#39;]}
             onCheckedChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;CheckboxWithIconsNode key={node.id} node={node} indexPath={[index]} /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
         &lt;/DsTree.Root&gt;
     );
@@ -34858,9 +35816,72 @@ import { fn } from 'storybook/test';</code></pre>
               </div>
               
               
-              <pre><code>const WithStatusIcons = args =&gt; {
-    const collection = createDsTreeCollection(workflowNodes);
-    const onNavigate = fn();
+              <pre><code>const WithStatusIcons = () =&gt; {
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;workflow-1234&#39;,
+            name: &#39;Workflow 1234&#39;,
+            icon: &#39;home&#39;,
+            children: [
+                {
+                    id: &#39;sw-running-02&#39;,
+                    name: &#39;SW running 02&#39;,
+                    icon: &#39;account_tree&#39;,
+                    children: [
+                        { id: &#39;task-1&#39;, name: &#39;Task Alpha&#39;, status: &#39;running&#39;, icon: &#39;dns&#39; },
+                        { id: &#39;task-2&#39;, name: &#39;Task Beta&#39;, status: &#39;running&#39;, icon: &#39;storage&#39; },
+                        { id: &#39;task-3&#39;, name: &#39;Task Gamma&#39;, status: &#39;failed&#39;, icon: &#39;memory&#39;, disabled: true },
+                    ],
+                },
+                {
+                    id: &#39;sw-running-06&#39;,
+                    name: &#39;SW running 06&#39;,
+                    icon: &#39;account_tree&#39;,
+                    disabled: true,
+                    children: [{ id: &#39;task-4&#39;, name: &#39;Task Delta&#39;, status: &#39;paused&#39;, icon: &#39;cloud&#39; }],
+                },
+                { id: &#39;error-task&#39;, name: &#39;Error task name&#39;, status: &#39;failed&#39;, icon: &#39;warning&#39; },
+                { id: &#39;running-task&#39;, name: &#39;Running task name&#39;, status: &#39;running&#39;, icon: &#39;dns&#39; },
+            ],
+        },
+    ]);
+    const onNavigate = (nodeId: string) =&gt; {
+        window.location.hash = nodeId;
+    };
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;
+                            {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                            {node.name}
+                        &lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;
+                        {node.status &amp;&amp; &lt;DsFilterStatusIcon status={node.status} size=&quot;tiny&quot; /&gt;}
+                        {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                        {node.name}
+                    &lt;/DsTree.ItemText&gt;
+
+                    &lt;DsTree.ItemAction onClick={() =&gt; onNavigate(node.id)}&gt;
+                        &lt;DsIcon icon=&quot;outbound&quot; size=&quot;tiny&quot; className={storyStyles.navigateIcon} /&gt;
+                    &lt;/DsTree.ItemAction&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
@@ -34870,16 +35891,184 @@ import { fn } from 'storybook/test';</code></pre>
             onSelectionChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;WorkflowDsTreeNode
-                        key={node.id}
-                        node={node}
-                        indexPath={[index]}
-                        onNavigate={onNavigate}
-                        size={args.size}
-                    /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
+        &lt;/DsTree.Root&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sortable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Wrap `DsTree.Tree` in `DsTree.Sortable` to let users reorder nodes at any depth by dragging
+the `DsTree.DragHandle`: before or after any row, into a group as its first child, or out to
+the root level. Drop below the last row to append to the root list. The tree stays controlled:
+store the collection passed to `onCollectionChange` and render from it. Disabled nodes can&#39;t be
+dragged, and the empty &quot;Archive&quot; group accepts drops. Next to the dragged row, where a drop would
+change nothing, the indicator shows the row&#39;s other edge instead.</div>
+              <pre><code>const Sortable = () =&gt; {
+    const [collection, setCollection] = useState(() =&gt;
+        createDsTreeCollection&lt;DsTreeNode&gt;([
+            {
+                id: &#39;network&#39;,
+                name: &#39;Network&#39;,
+                children: [
+                    {
+                        id: &#39;routers&#39;,
+                        name: &#39;Routers&#39;,
+                        children: [
+                            { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                            { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                            { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39;, disabled: true },
+                        ],
+                    },
+                    { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                    { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+                ],
+            },
+            { id: &#39;archive&#39;, name: &#39;Archive&#39;, children: [] },
+            {
+                id: &#39;monitoring&#39;,
+                name: &#39;Monitoring&#39;,
+                children: [
+                    { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                    { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                ],
+            },
+            { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+        ]),
+    );
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.DragHandle /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.DragHandle /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
+
+    return (
+        &lt;DsTree.Root
+            size=&quot;medium&quot;
+            collection={collection}
+            defaultExpandedValue={[&#39;network&#39;, &#39;routers&#39;]}&gt;
+            &lt;DsTree.Sortable onCollectionChange={(next) =&gt; setCollection(next)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Sortable&gt;
+        &lt;/DsTree.Root&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sortable same group only</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use `canDrop` to restrict where nodes may land. Here, as in a column manager, columns reorder
+only within their own group and groups only among themselves. Over a row inside a sibling group,
+the dragged node lands before or after that group as a whole; anything else, such as nesting, is
+rejected with a not-allowed cursor and no drop indicator.</div>
+              <pre><code>const SortableSameGroupOnly = () =&gt; {
+    const [collection, setCollection] = useState(() =&gt;
+        createDsTreeCollection&lt;DsTreeNode&gt;([
+            {
+                id: &#39;general&#39;,
+                name: &#39;General&#39;,
+                children: [
+                    { id: &#39;name&#39;, name: &#39;Name&#39; },
+                    { id: &#39;status&#39;, name: &#39;Status&#39; },
+                    { id: &#39;created&#39;, name: &#39;Created&#39; },
+                ],
+            },
+            {
+                id: &#39;connectivity&#39;,
+                name: &#39;Connectivity&#39;,
+                children: [
+                    { id: &#39;ip-address&#39;, name: &#39;IP address&#39; },
+                    { id: &#39;mac-address&#39;, name: &#39;MAC address&#39; },
+                    { id: &#39;vlan&#39;, name: &#39;VLAN&#39; },
+                ],
+            },
+            {
+                id: &#39;location&#39;,
+                name: &#39;Location&#39;,
+                children: [
+                    { id: &#39;site&#39;, name: &#39;Site&#39; },
+                    { id: &#39;rack&#39;, name: &#39;Rack&#39; },
+                ],
+            },
+        ]),
+    );
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.DragHandle /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.DragHandle /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
+
+    return (
+        &lt;DsTree.Root
+            size=&quot;medium&quot;
+            collection={collection}
+            defaultExpandedValue={[&#39;general&#39;, &#39;connectivity&#39;, &#39;location&#39;]}
+            defaultCheckedValue={[&#39;name&#39;, &#39;status&#39;, &#39;ip-address&#39;, &#39;site&#39;]}&gt;
+            &lt;DsTree.Sortable
+                canDrop={({ position, fromParent, toParent }) =&gt;
+                    position !== &#39;inside&#39; &amp;&amp; fromParent?.id === toParent?.id
+                }
+                onCollectionChange={(next) =&gt; setCollection(next)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Sortable&gt;
         &lt;/DsTree.Root&gt;
     );
 };</code></pre>
@@ -38629,7 +39818,7 @@ selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.</di
       <div class="badges">
         <label for="c-error-4-components-tree-err" class="badge err as-toggle">API error</label>
         <label for="c-error-4-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-4-components-tree-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-error-4-components-tree-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -38659,11 +39848,20 @@ Error:
 No suitable component definition found.
 You can debug your component file in this playground: https://react-docgen.dev/playground
 Code:
-import { TreeView } from &#39;@ark-ui/react/tree-view&#39;;
+import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from &#39;react&#39;;
+import { TreeView, useTreeViewContext, useTreeViewNodeContext } from &#39;@ark-ui/react/tree-view&#39;;
 import classNames from &#39;classnames&#39;;
 
 import { DsIcon } from &#39;../ds-icon&#39;;
 import styles from &#39;./ds-tree.module.scss&#39;;
+import {
+	DsTreeDragHandle,
+	DsTreeSortable,
+	DsTreeSortableBranchControl,
+	DsTreeSortableItem,
+	useDsTreeSortableBranchAttributes,
+	useDsTreeSortableContext,
+} from &#39;./ds-tree-sortable&#39;;
 import type {
 	DsTreeBranchContentProps,
 	DsTreeBranchControlProps,
@@ -38671,6 +39869,7 @@ import type {
 	DsTreeBranchIndicatorProps,
 	DsTreeBranchProps,
 	DsTreeBranchTextProps,
+	DsTreeCheckedState,
 	DsTreeItemActionProps,
 	DsTreeItemIndicatorProps,
 	DsTreeItemProps,
@@ -38740,17 +39939,60 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) =&gt; (
 	&lt;/TreeView.Tree&gt;
 );
 
-const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) =&gt; (
-	&lt;TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}&gt;
-		{children}
-	&lt;/TreeView.Branch&gt;
-);
+interface DsTreeRowCheckbox {
+	checked: DsTreeCheckedState | undefined;
+}
 
-const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) =&gt; (
-	&lt;TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}&gt;
-		{children}
-	&lt;/TreeView.BranchControl&gt;
-);
+type RegisterRowCheckbox = (checkbox: DsTreeRowCheckbox | null) =&gt; void;
+
+const DsTreeRowCheckboxContext = createContext&lt;RegisterRowCheckbox | null&gt;(null);
+
+const toAriaChecked = (checked: DsTreeCheckedState): AriaAttributes[&#39;aria-checked&#39;] =&gt;
+	checked === &#39;indeterminate&#39; ? &#39;mixed&#39; : checked;
+
+// Screen readers announce the treeitem, not its inner checkbox: a leaf&#39;s focused row, or a group&#39;s
+// Branch around its focused BranchControl (a `button`, which can&#39;t be checked), where Ark puts `aria-expanded`
+const useRowCheckbox = () =&gt; {
+	const { checked } = useTreeViewNodeContext();
+	const [checkbox, setCheckbox] = useState&lt;DsTreeRowCheckbox | null&gt;(null);
+
+	return {
+		register: setCheckbox,
+		ariaChecked: checkbox ? toAriaChecked(checkbox.checked ?? checked) : undefined,
+	};
+};
+
+const toDataState = (checked: DsTreeCheckedState): &#39;checked&#39; | &#39;unchecked&#39; | &#39;indeterminate&#39; =&gt;
+	checked === &#39;indeterminate&#39; ? &#39;indeterminate&#39; : checked ? &#39;checked&#39; : &#39;unchecked&#39;;
+
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) =&gt; {
+	const sortableAttributes = useDsTreeSortableBranchAttributes();
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		&lt;DsTreeRowCheckboxContext value={rowCheckbox.register}&gt;
+			&lt;TreeView.Branch
+				{...rest}
+				{...sortableAttributes}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.branch, className)}
+				style={style}
+			&gt;
+				{children}
+			&lt;/TreeView.Branch&gt;
+		&lt;/DsTreeRowCheckboxContext&gt;
+	);
+};
+
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) =&gt; {
+	const Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;
+
+	return (
+		&lt;Control {...rest} className={classNames(styles.branchControl, className)} style={style}&gt;
+			{children}
+		&lt;/Control&gt;
+	);
+};
 
 const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) =&gt; (
 	&lt;TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}&gt;
@@ -38774,11 +40016,24 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	&lt;TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} /&gt;
 );
 
-const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) =&gt; (
-	&lt;TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}&gt;
-		{children}
-	&lt;/TreeView.Item&gt;
-);
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) =&gt; {
+	const Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		&lt;DsTreeRowCheckboxContext value={rowCheckbox.register}&gt;
+			&lt;Item
+				{...rest}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.item, className)}
+				style={style}
+				onClick={onClick}
+			&gt;
+				{children}
+			&lt;/Item&gt;
+		&lt;/DsTreeRowCheckboxContext&gt;
+	);
+};
 
 const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) =&gt; (
 	&lt;TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}&gt;
@@ -38792,18 +40047,64 @@ const DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) =&g
 	&lt;/span&gt;
 );
 
-const DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) =&gt; (
-	&lt;TreeView.NodeCheckbox className={classNames(styles.nodeCheckbox, className)} style={style}&gt;
-		&lt;div className={styles.nodeCheckboxBox}&gt;
-			&lt;TreeView.NodeCheckboxIndicator
-				className={styles.nodeCheckboxIndicator}
-				indeterminate={&lt;DsIcon icon=&quot;check_indeterminate_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; /&gt;}
-			&gt;
-				&lt;DsIcon icon=&quot;check_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; /&gt;
-			&lt;/TreeView.NodeCheckboxIndicator&gt;
-		&lt;/div&gt;
-	&lt;/TreeView.NodeCheckbox&gt;
+const checkIcon = &lt;DsIcon icon=&quot;check_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; aria-hidden /&gt;;
+const indeterminateIcon = (
+	&lt;DsIcon icon=&quot;check_indeterminate_small&quot; size=&quot;tiny&quot; variant=&quot;outlined&quot; aria-hidden /&gt;
 );
+
+const DsTreeNodeCheckbox = ({ className, style, checked, disabled = false }: DsTreeNodeCheckboxProps) =&gt; {
+	const { collection } = useTreeViewContext();
+	const nodeState = useTreeViewNodeContext();
+	const registerRowCheckbox = use(DsTreeRowCheckboxContext);
+	const name = (collection.at(nodeState.indexPath) as DsTreeNode | undefined)?.name;
+
+	useEffect(() =&gt; {
+		registerRowCheckbox?.({ checked });
+
+		return () =&gt; registerRowCheckbox?.(null);
+	}, [registerRowCheckbox, checked]);
+
+	const overrides = {
+		...(checked !== undefined &amp;&amp; {
+			&#39;data-state&#39;: toDataState(checked),
+			&#39;aria-checked&#39;: toAriaChecked(checked),
+		}),
+		...(disabled &amp;&amp; {
+			&#39;data-disabled&#39;: &#39;&#39;,
+			&#39;aria-disabled&#39;: true,
+			// Ark can only disable a whole node, so the click is stopped before its handler, which skips prevented clicks
+			onClickCapture: (event: MouseEvent&lt;HTMLSpanElement&gt;) =&gt; {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+		}),
+	};
+
+	return (
+		// Ark names the checkbox from nothing, and the icons&#39; ligature text would otherwise be read
+		&lt;TreeView.NodeCheckbox
+			className={classNames(styles.nodeCheckbox, className)}
+			style={style}
+			aria-label={name}
+			{...overrides}
+		&gt;
+			&lt;div className={styles.nodeCheckboxBox}&gt;
+				{checked === undefined ? (
+					&lt;TreeView.NodeCheckboxIndicator
+						className={styles.nodeCheckboxIndicator}
+						indeterminate={indeterminateIcon}
+					&gt;
+						{checkIcon}
+					&lt;/TreeView.NodeCheckboxIndicator&gt;
+				) : (
+					&lt;span className={styles.nodeCheckboxIndicator}&gt;
+						{checked === &#39;indeterminate&#39; ? indeterminateIcon : checked &amp;&amp; checkIcon}
+					&lt;/span&gt;
+				)}
+			&lt;/div&gt;
+		&lt;/TreeView.NodeCheckbox&gt;
+	);
+};
 
 const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) =&gt; (
 	&lt;button
@@ -38852,6 +40153,8 @@ export const DsTree = {
 	ItemIndicator: DsTreeItemIndicator,
 	ItemAction: DsTreeItemAction,
 	NodeCheckbox: DsTreeNodeCheckbox,
+	Sortable: DsTreeSortable,
+	DragHandle: DsTreeDragHandle,
 };
 </code></pre></div>
     </div>
@@ -38887,7 +40190,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const Default = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
@@ -38897,9 +40266,7 @@ import { fn } from 'storybook/test';</code></pre>
             onSelectionChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
         &lt;/DsTree.Root&gt;
     );
@@ -38914,7 +40281,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const Controlled = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
     const [selectedValue, setSelectedValue] = useState&lt;string[]&gt;([]);
     const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
@@ -38938,9 +40371,7 @@ import { fn } from 'storybook/test';</code></pre>
                 expandedValue={expandedValue}
                 onExpandedChange={(details: { expandedValue: string[] }) =&gt; setExpandedValue(details.expandedValue)}&gt;
                 &lt;DsTree.Tree&gt;
-                    {collection.rootNode.children?.map((node, index) =&gt; (
-                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                    ))}
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
         &lt;/DsStack&gt;
@@ -38956,7 +40387,73 @@ import { fn } from 'storybook/test';</code></pre>
               
               
               <pre><code>const ControlledFocus = () =&gt; {
-    const collection = createDsTreeCollection(sideNavNodes);
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;network&#39;,
+            name: &#39;Network&#39;,
+            children: [
+                {
+                    id: &#39;routers&#39;,
+                    name: &#39;Routers&#39;,
+                    children: [
+                        { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                        { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                        { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39; },
+                    ],
+                },
+                {
+                    id: &#39;switches&#39;,
+                    name: &#39;Switches&#39;,
+                    children: [
+                        { id: &#39;switch-1&#39;, name: &#39;Switch A&#39; },
+                        { id: &#39;switch-2&#39;, name: &#39;Switch B&#39; },
+                    ],
+                },
+                { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+            ],
+        },
+        {
+            id: &#39;monitoring&#39;,
+            name: &#39;Monitoring&#39;,
+            children: [
+                { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+            ],
+        },
+        {
+            id: &#39;settings&#39;,
+            name: &#39;Settings&#39;,
+            children: [
+                { id: &#39;general&#39;, name: &#39;General&#39; },
+                { id: &#39;users&#39;, name: &#39;Users&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
     const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
 
     return (
@@ -38970,9 +40467,7 @@ import { fn } from 'storybook/test';</code></pre>
                 focusedValue={focusedValue}
                 onFocusChange={(details: { focusedValue: string | null }) =&gt; setFocusedValue(details.focusedValue)}&gt;
                 &lt;DsTree.Tree&gt;
-                    {collection.rootNode.children?.map((node, index) =&gt; (
-                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
-                    ))}
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
         &lt;/DsStack&gt;
@@ -38987,21 +40482,133 @@ import { fn } from 'storybook/test';</code></pre>
               </div>
               
               
-              <pre><code>const CheckboxWithIcons = args =&gt; {
-    const collection = createDsTreeCollection(mapLayersNodes);
+              <pre><code>const CheckboxWithIcons = () =&gt; {
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;facilities&#39;,
+            name: &#39;Facilities&#39;,
+            children: [
+                { id: &#39;facility-1&#39;, name: &#39;Data Center A&#39; },
+                { id: &#39;facility-2&#39;, name: &#39;Data Center B&#39; },
+                { id: &#39;facility-3&#39;, name: &#39;Data Center C&#39; },
+            ],
+        },
+        {
+            id: &#39;data-centers&#39;,
+            name: &#39;Data Centers&#39;,
+            children: [
+                { id: &#39;dc-east&#39;, name: &#39;East&#39; },
+                { id: &#39;dc-west&#39;, name: &#39;West&#39; },
+            ],
+        },
+        {
+            id: &#39;customer-premise&#39;,
+            name: &#39;Customer Premise&#39;,
+            children: [
+                { id: &#39;cp-1&#39;, name: &#39;Site Alpha&#39; },
+                { id: &#39;cp-2&#39;, name: &#39;Site Beta&#39; },
+            ],
+        },
+        {
+            id: &#39;devices&#39;,
+            name: &#39;Devices&#39;,
+            children: [
+                {
+                    id: &#39;optical&#39;,
+                    name: &#39;Optical&#39;,
+                    children: [
+                        { id: &#39;olt&#39;, name: &#39;OLT&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;roadm&#39;, name: &#39;ROADM&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;oms&#39;, name: &#39;OMS&#39;, icon: &#39;layers&#39; },
+                    ],
+                },
+                {
+                    id: &#39;copper&#39;,
+                    name: &#39;Copper&#39;,
+                    children: [
+                        { id: &#39;dslam&#39;, name: &#39;DSLAM&#39;, icon: &#39;layers&#39; },
+                        { id: &#39;msan&#39;, name: &#39;MSAN&#39;, icon: &#39;layers&#39; },
+                    ],
+                },
+            ],
+        },
+        {
+            id: &#39;routers&#39;,
+            name: &#39;Routers&#39;,
+            children: [
+                { id: &#39;router-core&#39;, name: &#39;Core Router&#39; },
+                { id: &#39;router-edge&#39;, name: &#39;Edge Router&#39; },
+            ],
+        },
+        {
+            id: &#39;tdm&#39;,
+            name: &#39;TDM&#39;,
+            children: [{ id: &#39;tdm-1&#39;, name: &#39;TDM Switch A&#39; }],
+        },
+        {
+            id: &#39;network-mgmt&#39;,
+            name: &#39;Network Management&#39;,
+            children: [
+                { id: &#39;nms&#39;, name: &#39;NMS&#39; },
+                { id: &#39;ems&#39;, name: &#39;EMS&#39; },
+            ],
+        },
+        {
+            id: &#39;link-type&#39;,
+            name: &#39;Link Type&#39;,
+            children: [
+                { id: &#39;fiber&#39;, name: &#39;Fiber&#39; },
+                { id: &#39;wireless&#39;, name: &#39;Wireless&#39; },
+            ],
+        },
+        {
+            id: &#39;link-speeds&#39;,
+            name: &#39;Link Speeds&#39;,
+            children: [
+                { id: &#39;speed-1g&#39;, name: &#39;1 Gbps&#39; },
+                { id: &#39;speed-10g&#39;, name: &#39;10 Gbps&#39; },
+            ],
+        },
+    ]);
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;
+                        {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                        {node.name}
+                    &lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
-            size={args.size}
+            size=&quot;medium&quot;
             collection={collection}
             defaultCheckedValue={[&#39;data-centers&#39;, &#39;dc-east&#39;, &#39;dc-west&#39;, &#39;oms&#39;]}
             defaultExpandedValue={[&#39;devices&#39;, &#39;optical&#39;]}
             onCheckedChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;CheckboxWithIconsNode key={node.id} node={node} indexPath={[index]} /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
         &lt;/DsTree.Root&gt;
     );
@@ -39015,9 +40622,72 @@ import { fn } from 'storybook/test';</code></pre>
               </div>
               
               
-              <pre><code>const WithStatusIcons = args =&gt; {
-    const collection = createDsTreeCollection(workflowNodes);
-    const onNavigate = fn();
+              <pre><code>const WithStatusIcons = () =&gt; {
+    const collection = createDsTreeCollection&lt;DsTreeNode&gt;([
+        {
+            id: &#39;workflow-1234&#39;,
+            name: &#39;Workflow 1234&#39;,
+            icon: &#39;home&#39;,
+            children: [
+                {
+                    id: &#39;sw-running-02&#39;,
+                    name: &#39;SW running 02&#39;,
+                    icon: &#39;account_tree&#39;,
+                    children: [
+                        { id: &#39;task-1&#39;, name: &#39;Task Alpha&#39;, status: &#39;running&#39;, icon: &#39;dns&#39; },
+                        { id: &#39;task-2&#39;, name: &#39;Task Beta&#39;, status: &#39;running&#39;, icon: &#39;storage&#39; },
+                        { id: &#39;task-3&#39;, name: &#39;Task Gamma&#39;, status: &#39;failed&#39;, icon: &#39;memory&#39;, disabled: true },
+                    ],
+                },
+                {
+                    id: &#39;sw-running-06&#39;,
+                    name: &#39;SW running 06&#39;,
+                    icon: &#39;account_tree&#39;,
+                    disabled: true,
+                    children: [{ id: &#39;task-4&#39;, name: &#39;Task Delta&#39;, status: &#39;paused&#39;, icon: &#39;cloud&#39; }],
+                },
+                { id: &#39;error-task&#39;, name: &#39;Error task name&#39;, status: &#39;failed&#39;, icon: &#39;warning&#39; },
+                { id: &#39;running-task&#39;, name: &#39;Running task name&#39;, status: &#39;running&#39;, icon: &#39;dns&#39; },
+            ],
+        },
+    ]);
+    const onNavigate = (nodeId: string) =&gt; {
+        window.location.hash = nodeId;
+    };
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.BranchText&gt;
+                            {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                            {node.name}
+                        &lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.ItemText&gt;
+                        {node.status &amp;&amp; &lt;DsFilterStatusIcon status={node.status} size=&quot;tiny&quot; /&gt;}
+                        {node.icon &amp;&amp; &lt;DsIcon icon={node.icon} size=&quot;tiny&quot; /&gt;}
+                        {node.name}
+                    &lt;/DsTree.ItemText&gt;
+
+                    &lt;DsTree.ItemAction onClick={() =&gt; onNavigate(node.id)}&gt;
+                        &lt;DsIcon icon=&quot;outbound&quot; size=&quot;tiny&quot; className={storyStyles.navigateIcon} /&gt;
+                    &lt;/DsTree.ItemAction&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
 
     return (
         &lt;DsTree.Root
@@ -39027,16 +40697,184 @@ import { fn } from 'storybook/test';</code></pre>
             onSelectionChange={fn()}
             onExpandedChange={fn()}&gt;
             &lt;DsTree.Tree&gt;
-                {collection.rootNode.children?.map((node, index) =&gt; (
-                    &lt;WorkflowDsTreeNode
-                        key={node.id}
-                        node={node}
-                        indexPath={[index]}
-                        onNavigate={onNavigate}
-                        size={args.size}
-                    /&gt;
-                ))}
+                {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
             &lt;/DsTree.Tree&gt;
+        &lt;/DsTree.Root&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sortable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Wrap `DsTree.Tree` in `DsTree.Sortable` to let users reorder nodes at any depth by dragging
+the `DsTree.DragHandle`: before or after any row, into a group as its first child, or out to
+the root level. Drop below the last row to append to the root list. The tree stays controlled:
+store the collection passed to `onCollectionChange` and render from it. Disabled nodes can&#39;t be
+dragged, and the empty &quot;Archive&quot; group accepts drops. Next to the dragged row, where a drop would
+change nothing, the indicator shows the row&#39;s other edge instead.</div>
+              <pre><code>const Sortable = () =&gt; {
+    const [collection, setCollection] = useState(() =&gt;
+        createDsTreeCollection&lt;DsTreeNode&gt;([
+            {
+                id: &#39;network&#39;,
+                name: &#39;Network&#39;,
+                children: [
+                    {
+                        id: &#39;routers&#39;,
+                        name: &#39;Routers&#39;,
+                        children: [
+                            { id: &#39;router-1&#39;, name: &#39;Router Alpha&#39; },
+                            { id: &#39;router-2&#39;, name: &#39;Router Beta&#39; },
+                            { id: &#39;router-3&#39;, name: &#39;Router Gamma&#39;, disabled: true },
+                        ],
+                    },
+                    { id: &#39;firewall-1&#39;, name: &#39;Firewall Primary&#39; },
+                    { id: &#39;firewall-2&#39;, name: &#39;Firewall Secondary&#39; },
+                ],
+            },
+            { id: &#39;archive&#39;, name: &#39;Archive&#39;, children: [] },
+            {
+                id: &#39;monitoring&#39;,
+                name: &#39;Monitoring&#39;,
+                children: [
+                    { id: &#39;alerts&#39;, name: &#39;Alerts&#39; },
+                    { id: &#39;dashboards&#39;, name: &#39;Dashboards&#39; },
+                ],
+            },
+            { id: &#39;logs&#39;, name: &#39;Logs&#39; },
+        ]),
+    );
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.DragHandle /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.DragHandle /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
+
+    return (
+        &lt;DsTree.Root
+            size=&quot;medium&quot;
+            collection={collection}
+            defaultExpandedValue={[&#39;network&#39;, &#39;routers&#39;]}&gt;
+            &lt;DsTree.Sortable onCollectionChange={(next) =&gt; setCollection(next)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Sortable&gt;
+        &lt;/DsTree.Root&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sortable same group only</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use `canDrop` to restrict where nodes may land. Here, as in a column manager, columns reorder
+only within their own group and groups only among themselves. Over a row inside a sibling group,
+the dragged node lands before or after that group as a whole; anything else, such as nesting, is
+rejected with a not-allowed cursor and no drop indicator.</div>
+              <pre><code>const SortableSameGroupOnly = () =&gt; {
+    const [collection, setCollection] = useState(() =&gt;
+        createDsTreeCollection&lt;DsTreeNode&gt;([
+            {
+                id: &#39;general&#39;,
+                name: &#39;General&#39;,
+                children: [
+                    { id: &#39;name&#39;, name: &#39;Name&#39; },
+                    { id: &#39;status&#39;, name: &#39;Status&#39; },
+                    { id: &#39;created&#39;, name: &#39;Created&#39; },
+                ],
+            },
+            {
+                id: &#39;connectivity&#39;,
+                name: &#39;Connectivity&#39;,
+                children: [
+                    { id: &#39;ip-address&#39;, name: &#39;IP address&#39; },
+                    { id: &#39;mac-address&#39;, name: &#39;MAC address&#39; },
+                    { id: &#39;vlan&#39;, name: &#39;VLAN&#39; },
+                ],
+            },
+            {
+                id: &#39;location&#39;,
+                name: &#39;Location&#39;,
+                children: [
+                    { id: &#39;site&#39;, name: &#39;Site&#39; },
+                    { id: &#39;rack&#39;, name: &#39;Rack&#39; },
+                ],
+            },
+        ]),
+    );
+
+    const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode =&gt; (
+        &lt;DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}&gt;
+            {node.children ? (
+                &lt;DsTree.Branch&gt;
+                    &lt;DsTree.BranchControl&gt;
+                        &lt;DsTree.BranchIndicator /&gt;
+                        &lt;DsTree.DragHandle /&gt;
+                        &lt;DsTree.NodeCheckbox /&gt;
+                        &lt;DsTree.BranchText&gt;{node.name}&lt;/DsTree.BranchText&gt;
+                    &lt;/DsTree.BranchControl&gt;
+
+                    &lt;DsTree.BranchContent&gt;
+                        &lt;DsTree.BranchIndentGuide /&gt;
+                        {node.children.map((child, index) =&gt; renderNode(child, [...indexPath, index]))}
+                    &lt;/DsTree.BranchContent&gt;
+                &lt;/DsTree.Branch&gt;
+            ) : (
+                &lt;DsTree.Item&gt;
+                    &lt;DsTree.ItemIndicator /&gt;
+                    &lt;DsTree.DragHandle /&gt;
+                    &lt;DsTree.NodeCheckbox /&gt;
+                    &lt;DsTree.ItemText&gt;{node.name}&lt;/DsTree.ItemText&gt;
+                &lt;/DsTree.Item&gt;
+            )}
+        &lt;/DsTree.NodeProvider&gt;
+    );
+
+    return (
+        &lt;DsTree.Root
+            size=&quot;medium&quot;
+            collection={collection}
+            defaultExpandedValue={[&#39;general&#39;, &#39;connectivity&#39;, &#39;location&#39;]}
+            defaultCheckedValue={[&#39;name&#39;, &#39;status&#39;, &#39;ip-address&#39;, &#39;site&#39;]}&gt;
+            &lt;DsTree.Sortable
+                canDrop={({ position, fromParent, toParent }) =&gt;
+                    position !== &#39;inside&#39; &amp;&amp; fromParent?.id === toParent?.id
+                }
+                onCollectionChange={(next) =&gt; setCollection(next)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; renderNode(node, [index]))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Sortable&gt;
         &lt;/DsTree.Root&gt;
     );
 };</code></pre>
