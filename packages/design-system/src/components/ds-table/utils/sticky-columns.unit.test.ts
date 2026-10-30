@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-	createTable,
-	getCoreRowModel,
-	type ColumnDef,
+	constructTable,
 	type ColumnPinningState,
 	type ColumnSizingState,
-	type VisibilityState,
+	type ColumnVisibilityState,
 } from '@tanstack/react-table';
+import { storeReactivityBindings } from '@tanstack/table-core/store-reactivity-bindings';
 import { getStickyCellProps, resolveColumnPinning, toStickyColumns } from './sticky-columns';
 import {
 	COLUMN_DISPLAY_COLUMN_ID,
@@ -15,17 +14,18 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from './constants';
+import { dsTableFeatures, type DsColumnDef } from '../ds-table-features';
 
 type Row = { id: string; firstName: string; lastName: string; age: number; status: string };
 
-const flatColumns: ColumnDef<Row>[] = [
+const flatColumns: DsColumnDef<Row>[] = [
 	{ accessorKey: 'firstName', size: 160 },
 	{ accessorKey: 'lastName', size: 140 },
 	{ accessorKey: 'age', size: 100 },
 	{ accessorKey: 'status', size: 120 },
 ];
 
-const groupedColumns: ColumnDef<Row>[] = [
+const groupedColumns: DsColumnDef<Row>[] = [
 	{
 		id: 'identity',
 		header: 'Identity',
@@ -38,39 +38,30 @@ const groupedColumns: ColumnDef<Row>[] = [
 const LEFT_UTILITIES = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID];
 const RIGHT_UTILITIES = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID];
 
+const testFeatures = { ...dsTableFeatures, coreReactivityFeature: storeReactivityBindings() };
+
 const createTestTable = (
-	columns: ColumnDef<Row>[],
-	columnPinning: ColumnPinningState,
-	columnVisibility: VisibilityState = {},
+	columns: DsColumnDef<Row>[],
+	columnPinning: Partial<ColumnPinningState>,
+	columnVisibility: ColumnVisibilityState = {},
 	columnSizing: ColumnSizingState = {},
 ) =>
-	createTable<Row>({
+	constructTable<typeof dsTableFeatures, Row>({
+		features: testFeatures,
 		data: [],
 		columns,
-		getCoreRowModel: getCoreRowModel(),
 		state: {
-			columnPinning,
+			columnPinning: { start: [], end: [], ...columnPinning },
 			columnVisibility,
 			columnSizing,
-			columnOrder: [],
-			columnSizingInfo: {
-				startOffset: null,
-				startSize: null,
-				deltaOffset: null,
-				deltaPercentage: null,
-				isResizingColumn: false,
-				columnSizingStart: [],
-			},
 		},
-		onStateChange: () => undefined,
-		renderFallbackValue: null,
 	});
 
 describe('resolveColumnPinning', () => {
 	it('pins the utility columns even without consumer sticky columns', () => {
 		expect(resolveColumnPinning(undefined, flatColumns)).toEqual({
-			left: LEFT_UTILITIES,
-			right: RIGHT_UTILITIES,
+			start: LEFT_UTILITIES,
+			end: RIGHT_UTILITIES,
 		});
 	});
 
@@ -78,8 +69,8 @@ describe('resolveColumnPinning', () => {
 		expect(
 			resolveColumnPinning({ left: ['lastName', 'firstName'], right: ['status', 'age'] }, flatColumns),
 		).toEqual({
-			left: [...LEFT_UTILITIES, 'lastName', 'firstName'],
-			right: ['status', 'age', ...RIGHT_UTILITIES],
+			start: [...LEFT_UTILITIES, 'lastName', 'firstName'],
+			end: ['status', 'age', ...RIGHT_UTILITIES],
 		});
 	});
 
@@ -93,13 +84,13 @@ describe('resolveColumnPinning', () => {
 				flatColumns,
 			),
 		).toEqual({
-			left: [...LEFT_UTILITIES, 'firstName'],
-			right: ['status', ...RIGHT_UTILITIES],
+			start: [...LEFT_UTILITIES, 'firstName'],
+			end: ['status', ...RIGHT_UTILITIES],
 		});
 	});
 
 	it('pins every leaf of a top-level group when the group id is listed', () => {
-		expect(resolveColumnPinning({ left: ['identity'] }, groupedColumns).left).toEqual([
+		expect(resolveColumnPinning({ left: ['identity'] }, groupedColumns).start).toEqual([
 			...LEFT_UTILITIES,
 			'firstName',
 			'lastName',
@@ -107,7 +98,7 @@ describe('resolveColumnPinning', () => {
 	});
 
 	it('pins every leaf of a top-level group when one of its leaves is listed', () => {
-		expect(resolveColumnPinning({ right: ['lastName'] }, groupedColumns).right).toEqual([
+		expect(resolveColumnPinning({ right: ['lastName'] }, groupedColumns).end).toEqual([
 			'firstName',
 			'lastName',
 			...RIGHT_UTILITIES,
@@ -116,20 +107,20 @@ describe('resolveColumnPinning', () => {
 
 	it('keeps a column on the left when it is listed on both sides', () => {
 		expect(resolveColumnPinning({ left: ['age'], right: ['age', 'status'] }, flatColumns)).toEqual({
-			left: [...LEFT_UTILITIES, 'age'],
-			right: ['status', ...RIGHT_UTILITIES],
+			start: [...LEFT_UTILITIES, 'age'],
+			end: ['status', ...RIGHT_UTILITIES],
 		});
 	});
 
 	it('matches group leaves by the id TanStack derives from a dotted accessor key', () => {
-		const columns: ColumnDef<{ id: string; address: { city: string; zip: string } }>[] = [
+		const columns: DsColumnDef<{ id: string; address: { city: string; zip: string } }>[] = [
 			{
 				id: 'address',
 				columns: [{ accessorKey: 'address.city' }, { accessorKey: 'address.zip' }],
 			},
 		];
 
-		expect(resolveColumnPinning({ left: ['address_city'] }, columns).left).toEqual([
+		expect(resolveColumnPinning({ left: ['address_city'] }, columns).start).toEqual([
 			...LEFT_UTILITIES,
 			'address_city',
 			'address_zip',
@@ -137,7 +128,7 @@ describe('resolveColumnPinning', () => {
 	});
 
 	it('keeps ids that match no column so a later column can pick them up', () => {
-		expect(resolveColumnPinning({ left: ['unknown'] }, flatColumns).left).toEqual([
+		expect(resolveColumnPinning({ left: ['unknown'] }, flatColumns).start).toEqual([
 			...LEFT_UTILITIES,
 			'unknown',
 		]);
@@ -148,7 +139,7 @@ describe('toStickyColumns', () => {
 	it('drops utility ids so consumers only see their own columns', () => {
 		expect(
 			toStickyColumns(
-				{ left: [...LEFT_UTILITIES, 'firstName'], right: ['status', ...RIGHT_UTILITIES] },
+				{ start: [...LEFT_UTILITIES, 'firstName'], end: ['status', ...RIGHT_UTILITIES] },
 				{},
 				flatColumns,
 			),
@@ -156,14 +147,14 @@ describe('toStickyColumns', () => {
 	});
 
 	it('returns empty sides for an empty pinning state', () => {
-		expect(toStickyColumns({}, {}, flatColumns)).toEqual({ left: [], right: [] });
+		expect(toStickyColumns({ start: [], end: [] }, {}, flatColumns)).toEqual({ left: [], right: [] });
 	});
 
 	it('keeps a listed group id while all of its leaves stay pinned and appends newly pinned columns', () => {
 		const previous = { left: ['identity'] };
 		const next = {
-			left: [...LEFT_UTILITIES, 'firstName', 'lastName', 'age'],
-			right: RIGHT_UTILITIES,
+			start: [...LEFT_UTILITIES, 'firstName', 'lastName', 'age'],
+			end: RIGHT_UTILITIES,
 		};
 
 		expect(toStickyColumns(next, previous, groupedColumns)).toEqual({ left: ['identity', 'age'], right: [] });
@@ -171,14 +162,14 @@ describe('toStickyColumns', () => {
 
 	it('drops a listed group id once one of its leaves is unpinned', () => {
 		const previous = { left: ['identity', 'age'] };
-		const next = { left: [...LEFT_UTILITIES, 'age'] };
+		const next = { start: [...LEFT_UTILITIES, 'age'], end: [] };
 
 		expect(toStickyColumns(next, previous, groupedColumns)).toEqual({ left: ['age'], right: [] });
 	});
 
 	it('keeps listed ids of hidden or unknown columns', () => {
 		const previous = { left: ['unknown', 'firstName'] };
-		const next = { left: [...LEFT_UTILITIES, 'unknown', 'firstName', 'status'] };
+		const next = { start: [...LEFT_UTILITIES, 'unknown', 'firstName', 'status'], end: [] };
 
 		expect(toStickyColumns(next, previous, flatColumns)).toEqual({
 			left: ['unknown', 'firstName', 'status'],
@@ -188,7 +179,7 @@ describe('toStickyColumns', () => {
 
 	it('moves a column between sides', () => {
 		const previous = { left: ['firstName'], right: ['status'] };
-		const next = { left: [...LEFT_UTILITIES], right: ['status', 'firstName', ...RIGHT_UTILITIES] };
+		const next = { start: [...LEFT_UTILITIES], end: ['status', 'firstName', ...RIGHT_UTILITIES] };
 
 		expect(toStickyColumns(next, previous, flatColumns)).toEqual({
 			left: [],
@@ -207,13 +198,13 @@ describe('toStickyColumns', () => {
 
 describe('getStickyCellProps', () => {
 	it('returns no sticky props for a scrolling column', () => {
-		const table = createTestTable(flatColumns, { left: ['firstName'], right: ['status'] });
+		const table = createTestTable(flatColumns, { start: ['firstName'], end: ['status'] });
 
 		expect(getStickyCellProps(table, ['age'], false)).toEqual({});
 	});
 
 	it('offsets left columns by the summed width of the left columns before them', () => {
-		const table = createTestTable(flatColumns, { left: ['firstName', 'lastName'] });
+		const table = createTestTable(flatColumns, { start: ['firstName', 'lastName'] });
 
 		expect(getStickyCellProps(table, ['firstName'], false)).toEqual({
 			'data-sticky': 'left',
@@ -228,7 +219,7 @@ describe('getStickyCellProps', () => {
 	});
 
 	it('offsets right columns by the summed width of the right columns after them', () => {
-		const table = createTestTable(flatColumns, { right: ['age', 'status'] });
+		const table = createTestTable(flatColumns, { end: ['age', 'status'] });
 
 		expect(getStickyCellProps(table, ['age'], false)).toEqual({
 			'data-sticky': 'right',
@@ -243,7 +234,7 @@ describe('getStickyCellProps', () => {
 	});
 
 	it('uses the column size CSS vars once resize sizing is ready, so offsets follow a live drag', () => {
-		const table = createTestTable(flatColumns, { left: ['firstName', 'lastName', 'age'] });
+		const table = createTestTable(flatColumns, { start: ['firstName', 'lastName', 'age'] });
 
 		expect(getStickyCellProps(table, ['age'], true).style).toEqual({
 			'--ds-table-sticky-offset': 'calc((var(--col-firstName-size) + var(--col-lastName-size)) * 1px)',
@@ -253,7 +244,7 @@ describe('getStickyCellProps', () => {
 	it('skips hidden sticky columns when computing offsets and edges', () => {
 		const table = createTestTable(
 			flatColumns,
-			{ left: ['firstName', 'lastName', 'age'] },
+			{ start: ['firstName', 'lastName', 'age'] },
 			{ lastName: false },
 		);
 
@@ -265,7 +256,7 @@ describe('getStickyCellProps', () => {
 	});
 
 	it('marks a group header sticky with the offset of its first leaf and the edge of its last leaf', () => {
-		const table = createTestTable(groupedColumns, { left: ['age', 'firstName', 'lastName'] });
+		const table = createTestTable(groupedColumns, { start: ['age', 'firstName', 'lastName'] });
 
 		expect(getStickyCellProps(table, ['firstName', 'lastName'], false)).toEqual({
 			'data-sticky': 'left',
@@ -275,7 +266,7 @@ describe('getStickyCellProps', () => {
 	});
 
 	it('returns no sticky props for an empty leaf list', () => {
-		const table = createTestTable(flatColumns, { left: ['firstName'] });
+		const table = createTestTable(flatColumns, { start: ['firstName'] });
 
 		expect(getStickyCellProps(table, [], false)).toEqual({});
 	});

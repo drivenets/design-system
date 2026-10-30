@@ -4,7 +4,7 @@
  *
  * @example
  * ```tsx
- * const columns: ColumnDef<Row>[] = [
+ * const columns: DsColumnDef<Row>[] = [
  *   {
  *     id: 'equipment',
  *     header: 'Equipment',

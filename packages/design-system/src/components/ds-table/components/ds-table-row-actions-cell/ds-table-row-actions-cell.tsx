@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
@@ -8,7 +9,7 @@ import styles from './ds-table-row-actions-cell.module.scss';
 import type { DsTableRowActionsCellProps } from './ds-table-row-actions-cell.types';
 import { filterVisibleActions, resolveLabel, resolveTooltip } from './ds-table-row-actions-cell.utils';
 
-export const DsTableRowActionsCell = <TData,>({ row }: DsTableRowActionsCellProps<TData>) => {
+export const DsTableRowActionsCell = <TData extends RowData>({ row }: DsTableRowActionsCellProps<TData>) => {
 	const { primaryRowActions = [], secondaryRowActions = [], locale } = useDsTableContext<TData, unknown>();
 	const { moreRowActions } = { ...defaultDsTableLocale, ...locale };
 

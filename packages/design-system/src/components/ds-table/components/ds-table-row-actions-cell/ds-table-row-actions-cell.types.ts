@@ -1,10 +1,11 @@
-import type { Row } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { IconType } from '../../../ds-icon';
+import type { DsRow } from '../../ds-table-features';
 
 /**
  * Represents an action that can be performed on a single row
  */
-export interface RowAction<TData> {
+export interface RowAction<TData extends RowData> {
 	/**
 	 * Icon to be displayed for the action
 	 */
@@ -38,7 +39,7 @@ export interface RowAction<TData> {
 	onClick: (row: TData) => void;
 }
 
-type SecondaryRowActionBase<TData> = Omit<RowAction<TData>, 'icon' | 'onClick'> & {
+type SecondaryRowActionBase<TData extends RowData> = Omit<RowAction<TData>, 'icon' | 'onClick'> & {
 	/**
 	 * Optional icon to be displayed for the action
 	 */
@@ -50,7 +51,7 @@ type SecondaryRowActionBase<TData> = Omit<RowAction<TData>, 'icon' | 'onClick'> 
 	className?: string;
 };
 
-type SecondaryRowActionLeaf<TData> = SecondaryRowActionBase<TData> & {
+type SecondaryRowActionLeaf<TData extends RowData> = SecondaryRowActionBase<TData> & {
 	/**
 	 * Function to be called when the action is clicked, receives the row data as parameter
 	 */
@@ -58,7 +59,7 @@ type SecondaryRowActionLeaf<TData> = SecondaryRowActionBase<TData> & {
 	children?: never;
 };
 
-type SecondaryRowActionBranch<TData> = SecondaryRowActionBase<TData> & {
+type SecondaryRowActionBranch<TData extends RowData> = SecondaryRowActionBase<TData> & {
 	/**
 	 * Nested actions rendered as a cascading submenu. Mutually exclusive with `onClick`.
 	 * `hidden` and `disabled` on the parent apply to the whole submenu; a parent whose
@@ -72,14 +73,16 @@ type SecondaryRowActionBranch<TData> = SecondaryRowActionBase<TData> & {
  * Represents a secondary action that can be performed on a single row.
  * Either a leaf with `onClick`, or a parent with nested `children` that opens a submenu.
  */
-export type SecondaryRowAction<TData> = SecondaryRowActionLeaf<TData> | SecondaryRowActionBranch<TData>;
+export type SecondaryRowAction<TData extends RowData> =
+	| SecondaryRowActionLeaf<TData>
+	| SecondaryRowActionBranch<TData>;
 
 /**
  * Props for the row actions cell component
  */
-export interface DsTableRowActionsCellProps<TData> {
+export interface DsTableRowActionsCellProps<TData extends RowData> {
 	/**
 	 * The row whose actions are rendered
 	 */
-	row: Row<TData>;
+	row: DsRow<TData>;
 }

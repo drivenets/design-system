@@ -1,15 +1,10 @@
 import type React from 'react';
 import './ds-table-column.types';
-import type {
-	ColumnDef,
-	ColumnFiltersState,
-	SortingState,
-	Table,
-	VisibilityState,
-} from '@tanstack/react-table';
+import type { ColumnFiltersState, SortingState, ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
 import type { RowAction, SecondaryRowAction } from './components/ds-table-row-actions-cell';
 import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-body-virtualized';
+import type { DsColumnDef, DsTableInstance } from './ds-table-features';
 
 /**
  * Row size variants based on Figma design specifications
@@ -122,7 +117,7 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
  * const selected = tableRef.current?.getSelectedRows();
  * ```
  */
-export interface DsTableApi<TData> {
+export interface DsTableApi<TData extends RowData> {
 	/**
 	 * Selects a single row by its ID.
 	 *
@@ -270,7 +265,7 @@ export type { InfiniteScrollConfig };
 /**
  * Represents a bulk action that can be performed on multiple selected rows
  */
-export interface Action<TData> {
+export interface Action<TData extends RowData> {
 	/**
 	 * Icon to be displayed for the action
 	 */
@@ -287,7 +282,7 @@ export interface Action<TData> {
 	onClick: (rows: TData[]) => void;
 }
 
-export interface DsDataTableProps<TData, TValue> {
+export interface DsDataTableProps<TData extends RowData, TValue> {
 	/**
 	 * Ref to the table API
 	 */
@@ -296,7 +291,7 @@ export interface DsDataTableProps<TData, TValue> {
 	/**
 	 * Columns of the table
 	 */
-	columns: ColumnDef<TData, TValue>[];
+	columns: DsColumnDef<TData, TValue>[];
 
 	/**
 	 * Data of the table
@@ -456,7 +451,7 @@ export interface DsDataTableProps<TData, TValue> {
 	/**
 	 * Function to handle table creation
 	 */
-	onTableCreated?: (table: Table<TData>) => void;
+	onTableCreated?: (table: DsTableInstance<TData>) => void;
 
 	/**
 	 * Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.
@@ -608,7 +603,7 @@ export interface DsDataTableProps<TData, TValue> {
 	 * itself and still calls `onColumnVisibilityChange`.
 	 * @example
 	 * ```tsx
-	 * const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+	 * const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
 	 *   age: false, // hide age column
 	 *   status: true, // show status column
 	 * });
@@ -619,12 +614,12 @@ export interface DsDataTableProps<TData, TValue> {
 	 * />
 	 * ```
 	 */
-	columnVisibility?: VisibilityState;
+	columnVisibility?: ColumnVisibilityState;
 
 	/**
 	 * Callback when column visibility changes
 	 */
-	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
+	onColumnVisibilityChange?: (visibility: ColumnVisibilityState) => void;
 
 	/**
 	 * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
@@ -661,7 +656,7 @@ export interface DsDataTableProps<TData, TValue> {
 	/**
 	 * Called with the next sticky columns when a column is made sticky or not
 	 * from the `columnDisplay` popup or through the TanStack column API (e.g.
-	 * `column.pin('left')` in a header renderer). Contains consumer column ids
+	 * `column.pin('start')` in a header renderer). Contains consumer column ids
 	 * only, never utility column ids.
 	 */
 	onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) => void;

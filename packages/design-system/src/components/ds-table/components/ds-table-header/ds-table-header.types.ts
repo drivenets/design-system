@@ -1,11 +1,12 @@
-import type { Table } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
+import type { DsTableInstance } from '../../ds-table-features';
 
 /**
  * Props for the table header component
  */
-export interface DsTableHeaderProps<TData> {
+export interface DsTableHeaderProps<TData extends RowData> {
 	/**
 	 * The table instance from @tanstack/react-table
 	 */
-	table: Table<TData>;
+	table: DsTableInstance<TData>;
 }

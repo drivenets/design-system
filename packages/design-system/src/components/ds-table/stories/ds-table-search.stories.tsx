@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { useMemo, useState } from 'react';
-import type { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
+import type { ColumnFiltersState } from '@tanstack/react-table';
 import { DsIcon, type IconType } from '../../ds-icon';
 import { DsSmartTabs } from '../../ds-smart-tabs';
 import { DsStack } from '../../ds-stack';
@@ -10,6 +10,7 @@ import DsTable from '../ds-table';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { StatusItem } from './components';
+import { type DsColumnDef } from '../ds-table-features';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Search',
@@ -109,7 +110,7 @@ export const TabFilters: Story = {
 			}
 		};
 
-		const statusColumnDef: ColumnDef<Person> = {
+		const statusColumnDef: DsColumnDef<Person> = {
 			accessorKey: 'status',
 			header: 'Status',
 			cell: (info) => {

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
 import { DsIcon } from '../../ds-icon';
 import DsTable from '../ds-table';
+import { type DsColumnDef } from '../ds-table-features';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsModal } from '../../ds-modal';
 import { DsStack } from '../../ds-stack';
@@ -25,7 +25,7 @@ const sampleUsers = [
 	{ name: 'Neil Sims', colorIndex: 2 },
 ] as const;
 
-const columns: ColumnDef<Workflow>[] = [
+const columns: DsColumnDef<Workflow>[] = [
 	{
 		id: 'status',
 		accessorKey: 'status',

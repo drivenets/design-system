@@ -1,17 +1,13 @@
+/* eslint-disable react-hooks/preserve-manual-memoization -- `ds-table/` is excluded from the React Compiler build. */
 import * as React from 'react';
 import { useImperativeHandle, useMemo } from 'react';
 import {
 	type RowSelectionState,
 	type ColumnFiltersState,
 	type ColumnPinningState,
-	getCoreRowModel,
-	getExpandedRowModel,
-	getFilteredRowModel,
-	getSortedRowModel,
 	type SortingState,
-	type Table as TanstackTable,
-	useReactTable,
-	type VisibilityState,
+	useTable,
+	type ColumnVisibilityState,
 } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
@@ -21,6 +17,7 @@ import { DsTableResizeOverlay } from './components/ds-table-resize-overlay';
 import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize, DsTableStickyColumns } from './ds-table.types';
 import { applyDsTableDefaults } from './ds-table-defaults';
+import { dsTableFeatures, type DsColumnDef, type DsTableInstance } from './ds-table-features';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { useColumnResize } from './hooks/use-column-resize';
@@ -50,7 +47,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	const tableProps = applyDsTableDefaults(props);
 	const {
 		ref,
-		columns: columnsProp,
+		columns: rawColumns,
 		data: tableData,
 		controls,
 		virtualized,
@@ -89,10 +86,13 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		stickyColumns: externalStickyColumns,
 		onStickyColumnsChange,
 	} = tableProps;
+	// Column defs are invariant in `TValue`; widen like TanStack's `columnHelper.columns`.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const columnsProp: DsColumnDef<TData, any>[] = rawColumns;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
-	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({});
+	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<ColumnVisibilityState>({});
 	const [internalStickyColumns, setInternalStickyColumns] = React.useState<DsTableStickyColumns>({});
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
@@ -119,7 +119,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 
 	const baseColumnVisibility = externalColumnVisibility ?? internalColumnVisibility;
 	const handleColumnVisibilityChange = (
-		updaterOrValue: VisibilityState | ((old: VisibilityState) => VisibilityState),
+		updaterOrValue: ColumnVisibilityState | ((old: ColumnVisibilityState) => ColumnVisibilityState),
 	) => {
 		const newVisibility =
 			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
@@ -226,7 +226,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	);
 	const resolvedEmptyState = emptyState ?? inferredEmptyState;
 
-	const resize = useColumnResize({
+	const resize = useColumnResize<TData>({
 		enabled: resizableColumns,
 		columnSizing,
 		onColumnSizingChange,
@@ -235,19 +235,18 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		utilityColumnSizing,
 	});
 
-	const table = useReactTable({
+	const table = useTable({
+		features: dsTableFeatures,
 		data: loading ? skeletonData : reorderable ? data : tableData,
 		columns: loading ? skeletonColumns : columns,
-		getCoreRowModel: getCoreRowModel(),
 		onSortingChange: handleSortingChange,
-		getSortedRowModel: getSortedRowModel(),
 		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
-		getFilteredRowModel: getFilteredRowModel(),
 		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onColumnPinningChange: handleColumnPinningChange,
 		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
-		getExpandedRowModel: getExpandedRowModel(),
+		// TanStack resets expansion whenever `data` changes identity; keep it across re-renders.
+		autoResetExpanded: false,
 		getRowCanExpand: typeof expandable === 'function' ? (row) => expandable(row.original) : () => expandable,
 		...resize.tableOptions,
 		state: {
@@ -266,13 +265,14 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	useTableVisibleWidth(resizeContext.scrollContainerRef);
 	useStickyScrollState(resizeContext.scrollContainerRef);
 
-	useImperativeHandle(ref, () => createTableApi(table), [table]);
+	// `useTable` returns a new wrapper each render; the API only calls methods bound to the instance.
+	const [tableApi] = React.useState(() => createTableApi(table));
+	useImperativeHandle(ref, () => tableApi, [tableApi]);
 
 	const { rowsById } = table.getRowModel();
 
-	const selectedRows = Object.entries(rowSelection)
-		.filter(([, selected]) => selected)
-		.map(([key]) => rowsById[key]?.original)
+	const selectedRows = Object.keys(rowSelection)
+		.map((key) => rowsById[key]?.original)
 		.filter((v) => !!v);
 
 	const isBulkActionsVisible = selectable && actions.length > 0 && selectedRows.length > 0;
@@ -355,7 +355,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 };
 
 interface DsTableRowsBodyProps<TData extends { id: string }> {
-	table: TanstackTable<TData>;
+	table: DsTableInstance<TData>;
 	rowSelection: RowSelectionState;
 	emptyState?: React.ReactNode;
 	SortableWrapper: React.ComponentType<React.PropsWithChildren>;

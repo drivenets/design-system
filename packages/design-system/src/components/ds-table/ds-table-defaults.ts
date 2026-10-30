@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import type { DsDataTableProps } from './ds-table.types';
 
 type DefaultedDsTableProp =
@@ -16,14 +17,14 @@ type DefaultedDsTableProp =
 	| 'resizableColumns'
 	| 'columnDisplay';
 
-export type DsTablePropsWithDefaults<TData, TValue> = DsDataTableProps<TData, TValue> &
+export type DsTablePropsWithDefaults<TData extends RowData, TValue> = DsDataTableProps<TData, TValue> &
 	Required<Pick<DsDataTableProps<TData, TValue>, DefaultedDsTableProp>>;
 
 /**
  * Applies the documented `DsTable` prop defaults. Call once at the table
  * boundary so orchestration and context see the same resolved values.
  */
-export const applyDsTableDefaults = <TData, TValue>(
+export const applyDsTableDefaults = <TData extends RowData, TValue>(
 	props: DsDataTableProps<TData, TValue>,
 ): DsTablePropsWithDefaults<TData, TValue> => ({
 	...props,

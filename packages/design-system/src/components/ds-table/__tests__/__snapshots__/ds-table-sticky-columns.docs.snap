@@ -686,7 +686,7 @@ const ColumnDisplay = () => <DsTable
     }
   },
   render: function Render(args) {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
       lastName: false
     });
     const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
@@ -698,7 +698,7 @@ const ColumnDisplay = () => <DsTable
 
 ### MCP manifest
 const ColumnDisplayWithSavedState = () => {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({ lastName: false });
     const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
         left: ['firstName', 'lastName'],
     });
@@ -786,7 +786,7 @@ const ColumnDisplayWithSavedState = () => {
     }
   },
   render: function Render(args) {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
       visits: false
     });
     const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
@@ -798,7 +798,7 @@ const ColumnDisplayWithSavedState = () => {
 
 ### MCP manifest
 const ColumnDisplayWithColumnGroups = () => {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({ visits: false });
     const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });
 
     return (

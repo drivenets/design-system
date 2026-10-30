@@ -1,10 +1,11 @@
-import type { CellContext, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
 import { DsFormControl } from '../../../../ds-form-control';
 import styles from './cell-editors.module.scss';
+import type { DsCellContext } from '../../../ds-table-features';
 
 export interface TableEditFormControlProps<TData extends RowData> {
-	cellContext: CellContext<TData, unknown>;
+	cellContext: DsCellContext<TData>;
 	error: string | null;
 	children: ReactNode;
 }

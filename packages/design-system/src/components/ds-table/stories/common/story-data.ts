@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@tanstack/react-table';
+import { type DsColumnDef } from '../../ds-table-features';
 
 export type Status = 'relationship' | 'complicated' | 'single';
 
@@ -12,7 +12,7 @@ export type Person = {
 	progress: number;
 };
 
-export const columns: ColumnDef<Person>[] = [
+export const columns: DsColumnDef<Person>[] = [
 	{
 		accessorKey: 'firstName',
 		header: 'First Name',

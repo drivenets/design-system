@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsSkeleton } from '../../ds-skeleton';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { type DsColumnDef } from '../ds-table-features';
 
-const loadingColumns: ColumnDef<Person>[] = columns.map((column, index) =>
+const loadingColumns: DsColumnDef<Person>[] = columns.map((column, index) =>
 	index === 0 ? Object.assign({}, column, { loadingCell: () => <DsSkeleton.Circle size="sm" /> }) : column,
 );
 

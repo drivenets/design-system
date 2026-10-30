@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
-import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsTagFilter } from '../../ds-tag-filter';
 import { createCheckboxFilterAdapter, useTableFilters } from '../filters';
+import { type DsColumnDef } from '../ds-table-features';
 
 type DeviceRow = {
 	id: string;
@@ -34,7 +34,7 @@ const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
 	locale: { searchPlaceholder: 'Search role' },
 });
 
-const baseColumns: ColumnDef<DeviceRow>[] = [
+const baseColumns: DsColumnDef<DeviceRow>[] = [
 	{ id: 'name', accessorKey: 'name', header: 'Name', cell: (info) => info.getValue() },
 	{
 		id: 'type',

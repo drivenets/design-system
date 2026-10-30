@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import classnames from 'classnames';
 import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
@@ -9,7 +10,7 @@ import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.type
 import { DsTableCell } from '../ds-table-cell';
 import { EXPANDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
-export const DsTableRowVirtualized = <TData,>({
+export const DsTableRowVirtualized = <TData extends RowData>({
 	row,
 	isSelected,
 	rowsMapRef,

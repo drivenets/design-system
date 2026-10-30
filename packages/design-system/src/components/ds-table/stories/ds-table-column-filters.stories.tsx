@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import DsTable from '../ds-table';
+import { type DsColumnDef } from '../ds-table-features';
 import { DsStack } from '../../ds-stack';
 import { DsTagFilter } from '../../ds-tag-filter';
 import {
@@ -83,7 +83,7 @@ const vendorFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['vendor']>
 
 const adapters = [typeFilter, siteFilter, vendorFilter];
 
-const baseColumns: ColumnDef<DeviceRow>[] = [
+const baseColumns: DsColumnDef<DeviceRow>[] = [
 	{
 		id: 'name',
 		accessorKey: 'name',
@@ -119,10 +119,10 @@ const baseColumns: ColumnDef<DeviceRow>[] = [
 	},
 ];
 
-const uncontrolledSource = `import type { ColumnDef } from '@tanstack/react-table';
-import {
+const uncontrolledSource = `import {
 	DsTable,
 	DsTagFilter,
+	type DsColumnDef,
 	createCheckboxFilterAdapter,
 	useTableFilters,
 } from '@drivenets/design-system';
@@ -163,7 +163,7 @@ const siteFilter = createCheckboxFilterAdapter<DeviceRow>({
 	selectAll: true,
 });
 
-const columns: ColumnDef<DeviceRow>[] = [
+const columns: DsColumnDef<DeviceRow>[] = [
 	{ id: 'name', accessorKey: 'name', header: 'Name' },
 	{ id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
 	{ id: 'site', accessorKey: 'site', header: 'Site', meta: { filter: { adapterId: 'site' } } },
@@ -198,11 +198,11 @@ function DevicesTable({ rows }: { rows: DeviceRow[] }) {
 }`;
 
 const controlledSource = `import { useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
 import {
 	DsTable,
 	DsTagFilter,
 	type CheckboxFilterItem,
+	type DsColumnDef,
 	type FilterState,
 	createCheckboxFilterAdapter,
 	useTableFilters,
@@ -227,7 +227,7 @@ const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
 	selectAll: true,
 });
 
-const columns: ColumnDef<DeviceRow>[] = [
+const columns: DsColumnDef<DeviceRow>[] = [
 	{ id: 'name', accessorKey: 'name', header: 'Name' },
 	{ id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
 	{ id: 'site', accessorKey: 'site', header: 'Site' },
@@ -288,7 +288,7 @@ export const ColumnFilters: Story = {
 			description: {
 				story: `
 Per-column filter popover anchored to a header cell. Opt a column in by
-setting \`meta.filter\` on its \`ColumnDef\`, register the matching adapter
+setting \`meta.filter\` on its \`DsColumnDef\`, register the matching adapter
 with \`useTableFilters\`, and feed the hook's \`enhancedColumns\` +
 \`columnFilters\` back into \`DsTable\`.
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
-import type { VisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsCheckbox } from '../../ds-checkbox';
@@ -79,7 +79,7 @@ export const ColumnHiding: Story = {
 			{ id: 'status', label: 'Status' },
 			{ id: 'progress', label: 'Profile Progress' },
 		];
-		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+		const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
 			age: true,
 			visits: true,
 			status: true,
@@ -137,7 +137,10 @@ export const ColumnDisplayControlled: Story = {
 		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
-		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });
+		const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
+			age: false,
+			visits: false,
+		});
 
 		return (
 			<DsStack direction="column" gap={16}>

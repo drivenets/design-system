@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import type { CellContext, ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsTableEditCellText } from '../components/edit/cell-editors';
 import { columns, type Person } from '../stories/common/story-data';
 import { getColumnTrackWidth } from '../hooks/use-scrollbar-gutter';
 import { SCROLLBAR_GUTTER_WIDTH } from '../utils/constants';
+import { type DsColumnDef, type DsCellContext } from '../ds-table-features';
 
 type Row = {
 	id: string;
@@ -35,7 +35,7 @@ const generateRows = (count: number): Row[] =>
 		age: 20 + (i % 50),
 	}));
 
-const groupedColumns: ColumnDef<Row>[] = [
+const groupedColumns: DsColumnDef<Row>[] = [
 	{
 		id: 'identity',
 		header: 'Identity',
@@ -47,7 +47,7 @@ const groupedColumns: ColumnDef<Row>[] = [
 	},
 ];
 
-const wideColumns: ColumnDef<Row>[] = [
+const wideColumns: DsColumnDef<Row>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 500 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 500 },
 	{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 500 },
@@ -257,7 +257,7 @@ describe('DsTable vertical scrollbar', () => {
 	});
 
 	it('keeps the last resize handle on the last leaf, not in the gutter', async () => {
-		const fillColumns: ColumnDef<Row>[] = [
+		const fillColumns: DsColumnDef<Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -309,7 +309,7 @@ describe('DsTable vertical scrollbar', () => {
 
 	it('does not persist or overflow when a resizable table gains a vertical scrollbar after seed', async () => {
 		const onColumnSizingChange = vi.fn();
-		const fillColumns: ColumnDef<Row>[] = [
+		const fillColumns: DsColumnDef<Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -374,13 +374,13 @@ describe('DsTable vertical scrollbar', () => {
 	});
 
 	it('keeps an editable last-cell focus ring off the vertical scrollbar', async () => {
-		const editColumns: ColumnDef<Row>[] = [
+		const editColumns: DsColumnDef<Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{
 				accessorKey: 'lastName',
 				header: 'Last Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Row, string>) => <DsTableEditCellText cellContext={info} />,
+				editCell: (info: DsCellContext<Row, string>) => <DsTableEditCellText cellContext={info} />,
 			},
 		];
 

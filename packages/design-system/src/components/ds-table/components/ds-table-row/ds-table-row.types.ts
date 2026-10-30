@@ -1,10 +1,11 @@
 import type { Ref } from 'react';
-import type { Row } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
+import type { DsRow } from '../../ds-table-features';
 
 /**
  * Props for the table row component
  */
-export interface DsTableRowProps<TData> {
+export interface DsTableRowProps<TData extends RowData> {
 	/**
 	 * Ref for the table row
 	 */
@@ -12,7 +13,7 @@ export interface DsTableRowProps<TData> {
 	/**
 	 * The row data from the table
 	 */
-	row: Row<TData>;
+	row: DsRow<TData>;
 	/**
 	 * Indicates whether a row is currently selected.
 	 */

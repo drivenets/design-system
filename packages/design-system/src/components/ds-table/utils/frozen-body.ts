@@ -1,21 +1,22 @@
-import type { Table as TanstackTable } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
+import type { DsTableInstance } from '../ds-table-features';
 
 /**
  * `React.memo` comparator for the table body during a column-resize drag.
  *
  * While a column is being resized, sizing is applied through CSS variables on
  * the table element, so body rows do not need to re-render — freezing them keeps
- * dragging smooth. `table` is a stable mutable instance (ref-equal across
- * renders), so comparing it is meaningless and it is skipped; every other prop
- * must be referentially unchanged to freeze. That way parent-driven updates mid-
+ * dragging smooth. `table` is skipped: `useTable` returns a new wrapper around
+ * the same instance on every render, so it never compares equal; every other
+ * prop must be referentially unchanged to freeze. That way parent-driven updates mid-
  * drag (`rowSelection`, `emptyState`, `onScroll`, `infiniteScroll`, ...) are not
  * dropped.
  */
-export const areBodiesFrozen = <T>(
-	prev: { table: TanstackTable<T> },
-	next: { table: TanstackTable<T> },
+export const areBodiesFrozen = <T extends RowData>(
+	prev: { table: DsTableInstance<T> },
+	next: { table: DsTableInstance<T> },
 ): boolean => {
-	if (!next.table.getState().columnSizingInfo.isResizingColumn) {
+	if (!next.table.store.state.columnResizing.isResizingColumn) {
 		return false;
 	}
 

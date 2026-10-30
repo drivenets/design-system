@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode, type RefObject } from 'react';
-import type { VisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import type { DsDataTableProps, DsTableRowSize } from '../ds-table.types';
 import type { DsTablePropsWithDefaults } from '../ds-table-defaults';
 import type { DsTableResizeContextSlice } from '../hooks/use-column-resize';
@@ -8,7 +8,7 @@ import { useEditingState, type UseEditingStateResult } from '../hooks/use-editin
 /** Visual phase of the full-height column-resize divider. */
 export type DsTableResizePhase = 'hover' | 'dragging';
 
-export interface DsTableContextType<TData, TValue>
+export interface DsTableContextType<TData extends RowData, TValue>
 	extends Partial<DsDataTableProps<TData, TValue>>, UseEditingStateResult<TData, TValue> {
 	/**
 	 * Whether the table is virtualized
@@ -46,7 +46,7 @@ export interface DsTableContextType<TData, TValue>
 	onResizeHover?: (columnId: string | null, offset: number | null) => void;
 	/**
 	 * Captures the cell right-edge offset at pointer-down so the overlay can
-	 * follow `columnSizingInfo.deltaOffset` without extra context updates.
+	 * follow `columnResizing.deltaOffset` without extra context updates.
 	 */
 	onResizeDragStart?: (offset: number) => void;
 	/**
@@ -62,13 +62,13 @@ export interface DsTableContextType<TData, TValue>
 	 * Which columns the user chose to show. Collapsing a group hides columns
 	 * without changing this.
 	 */
-	columnVisibility: VisibilityState;
+	columnVisibility: ColumnVisibilityState;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const DsTableContext = createContext<DsTableContextType<any, any> | null>(null);
 
-export const useDsTableContext = <TData, TValue>(): DsTableContextType<TData, TValue> => {
+export const useDsTableContext = <TData extends RowData, TValue>(): DsTableContextType<TData, TValue> => {
 	const context = useContext(DsTableContext);
 	if (!context) {
 		throw new Error('useDsTableContext must be used within DsTable');
@@ -82,10 +82,10 @@ interface DsTableContextProviderDerived {
 		onToggleColumnGroup: (groupId: string) => void;
 	};
 	resize: DsTableResizeContextSlice;
-	columnVisibility: VisibilityState;
+	columnVisibility: ColumnVisibilityState;
 }
 
-export interface DsTableContextProviderProps<TData, TValue> {
+export interface DsTableContextProviderProps<TData extends RowData, TValue> {
 	tableProps: DsTablePropsWithDefaults<TData, TValue>;
 	derived: DsTableContextProviderDerived;
 	children: ReactNode;
@@ -96,7 +96,7 @@ export interface DsTableContextProviderProps<TData, TValue> {
  * and resize slices. Owns inline-edit state. Picks context fields from
  * `tableProps` and ignores the rest (`columns`, `data`, etc.).
  */
-export const DsTableContextProvider = <TData, TValue>({
+export const DsTableContextProvider = <TData extends RowData, TValue>({
 	tableProps,
 	derived,
 	children,

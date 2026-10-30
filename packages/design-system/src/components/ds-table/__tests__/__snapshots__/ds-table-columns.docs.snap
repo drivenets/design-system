@@ -236,7 +236,7 @@ const WithProgressInfographic = () => <DsTable
       id: 'progress',
       label: 'Profile Progress'
     }];
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
       age: true,
       visits: true,
       status: true,
@@ -266,7 +266,7 @@ const ColumnHiding = () => {
         { id: 'status', label: 'Status' },
         { id: 'progress', label: 'Profile Progress' },
     ];
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
         age: true,
         visits: true,
         status: true,
@@ -511,7 +511,7 @@ const ColumnDisplay = () => <DsTable
     }
   },
   render: function Render(args) {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
       age: false,
       visits: false
     });
@@ -529,7 +529,10 @@ const ColumnDisplay = () => <DsTable
 
 ### MCP manifest
 const ColumnDisplayControlled = () => {
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });
+    const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
+        age: false,
+        visits: false,
+    });
 
     return (
         <DsStack direction="column" gap={16}>

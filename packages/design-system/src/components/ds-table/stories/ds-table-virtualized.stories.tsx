@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { useMemo, useState } from 'react';
-import type { CellContext, ColumnDef, SortingState } from '@tanstack/react-table';
+import type { SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
 import {
@@ -18,6 +18,7 @@ import styles from './ds-table.stories.module.scss';
 import editableStyles from './ds-table-editable.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { type DsColumnDef, type DsCellContext } from '../ds-table-features';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Virtualized',
@@ -352,18 +353,19 @@ const updateRow = <K extends keyof Person>(
 ): Person[] => rows.map((row) => (row.id === rowId ? { ...row, [columnId]: value } : row));
 
 const hasAccessorKey = <K extends keyof Person>(
-	column: ColumnDef<Person>,
+	column: DsColumnDef<Person>,
 	key: K,
-): column is ColumnDef<Person> & { accessorKey: K } => 'accessorKey' in column && column.accessorKey === key;
+): column is DsColumnDef<Person> & { accessorKey: K } =>
+	'accessorKey' in column && column.accessorKey === key;
 
-const baseColumn = (accessorKey: keyof Person): ColumnDef<Person> =>
+const baseColumn = (accessorKey: keyof Person): DsColumnDef<Person> =>
 	columns.find((column) => hasAccessorKey(column, accessorKey)) ?? {
 		accessorKey,
 		header: accessorKey,
 		cell: (info) => info.getValue(),
 	};
 
-const editableColumns: ColumnDef<Person>[] = [
+const editableColumns: DsColumnDef<Person>[] = [
 	{
 		accessorKey: 'id',
 		header: 'ID',
@@ -372,39 +374,39 @@ const editableColumns: ColumnDef<Person>[] = [
 	},
 	{
 		...baseColumn('firstName'),
-		editCell: (info: CellContext<Person, string>) => (
+		editCell: (info: DsCellContext<Person, string>) => (
 			<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
 		),
 	},
 	{
 		...baseColumn('lastName'),
-		editCell: (info: CellContext<Person, string>) => (
+		editCell: (info: DsCellContext<Person, string>) => (
 			<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
 		),
 	},
 	{
 		...baseColumn('age'),
 		size: 100,
-		editCell: (info: CellContext<Person, number>) => (
+		editCell: (info: DsCellContext<Person, number>) => (
 			<DsTableEditCellNumber cellContext={info} min={0} max={120} />
 		),
 	},
 	{
 		...baseColumn('visits'),
 		size: 100,
-		editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+		editCell: (info: DsCellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
 	},
 	{
 		...baseColumn('status'),
 		size: 160,
 		cell: (info) => statusLabels[info.getValue() as Status],
-		editCell: (info: CellContext<Person, string>) => (
+		editCell: (info: DsCellContext<Person, string>) => (
 			<DsTableEditCellSelect cellContext={info} options={statusOptions} />
 		),
 	},
 	{
 		...baseColumn('progress'),
-		editCell: (info: CellContext<Person, number>) => (
+		editCell: (info: DsCellContext<Person, number>) => (
 			<DsTableEditCellNumber cellContext={info} min={0} max={100} />
 		),
 	},

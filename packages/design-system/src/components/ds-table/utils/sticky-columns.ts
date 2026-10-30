@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { Cell, Column, ColumnPinningState, Table } from '@tanstack/react-table';
+import type { ColumnPinningState, RowData } from '@tanstack/react-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import { getBodyCellSizeStyle, getColumnSizeCssVar, isExplicitColumnWidth } from './column-size';
 import {
@@ -10,6 +10,7 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from './constants';
+import type { DsCell, DsColumn, DsTableInstance } from '../ds-table-features';
 
 /** Visual order of the always-sticky left utility columns (matches `getAugmentedColumns`). */
 const LEFT_UTILITY_COLUMN_IDS = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID] as const;
@@ -21,7 +22,12 @@ export type DsTableStickySide = 'left' | 'right';
 
 const STICKY_OFFSET_CSS_VAR = '--ds-table-sticky-offset';
 
-type ColumnDefNode = { id?: string; accessorKey?: unknown; header?: unknown; columns?: ColumnDefNode[] };
+type ColumnDefNode = {
+	id?: string;
+	accessorKey?: unknown;
+	header?: unknown;
+	columns?: readonly ColumnDefNode[];
+};
 
 /** Same id TanStack derives for a column def: `id`, then `accessorKey` (dots → `_`), then a string header. */
 const getDefId = (def: ColumnDefNode): string | undefined => {
@@ -86,8 +92,8 @@ export const resolveColumnPinning = (
 	);
 
 	return {
-		left: [...LEFT_UTILITY_COLUMN_IDS, ...left],
-		right: [...right, ...RIGHT_UTILITY_COLUMN_IDS],
+		start: [...LEFT_UTILITY_COLUMN_IDS, ...left],
+		end: [...right, ...RIGHT_UTILITY_COLUMN_IDS],
 	};
 };
 
@@ -116,14 +122,17 @@ export const toStickyColumns = (
 	previous: DsTableStickyColumns,
 	columnDefs: readonly ColumnDefNode[],
 ): Required<DsTableStickyColumns> => ({
-	left: toStickySide(columnPinning.left ?? [], previous.left ?? [], columnDefs),
-	right: toStickySide(columnPinning.right ?? [], previous.right ?? [], columnDefs),
+	left: toStickySide(columnPinning.start, previous.left ?? [], columnDefs),
+	right: toStickySide(columnPinning.end, previous.right ?? [], columnDefs),
 });
 
 const toCssLength = (value: string | number): string =>
 	typeof value === 'number' ? `${String(value)}px` : value;
 
-const sizeExpression = <TData>(columns: Column<TData>[], resizeSizingReady: boolean): string | number => {
+const sizeExpression = <TData extends RowData>(
+	columns: DsColumn<TData>[],
+	resizeSizingReady: boolean,
+): string | number => {
 	if (columns.length === 0) {
 		return 0;
 	}
@@ -148,9 +157,9 @@ export interface StickyCellProps {
  * The edge cell (last left / first right) carries `data-sticky-edge` for the
  * divider.
  */
-const computeStickyCellProps = <TData>(
-	leftColumns: Column<TData>[],
-	rightColumns: Column<TData>[],
+const computeStickyCellProps = <TData extends RowData>(
+	leftColumns: DsColumn<TData>[],
+	rightColumns: DsColumn<TData>[],
 	leafIds: readonly string[],
 	resizeSizingReady: boolean,
 ): StickyCellProps => {
@@ -205,18 +214,19 @@ interface StickyPropsCache {
 }
 
 // Offsets are identical for every row, so they are computed once per column
-// layout instead of once per cell per render.
+// layout instead of once per cell per render. Keyed by `store`, which every
+// per-render `useTable` wrapper shares with the instance.
 const stickyPropsCaches = new WeakMap<object, StickyPropsCache>();
 
-export const getStickyCellProps = <TData>(
-	table: Table<TData>,
+export const getStickyCellProps = <TData extends RowData>(
+	table: DsTableInstance<TData>,
 	leafIds: readonly string[],
 	resizeSizingReady: boolean,
 ): StickyCellProps => {
-	const leftColumns = table.getLeftVisibleLeafColumns();
-	const rightColumns = table.getRightVisibleLeafColumns();
-	const columnSizing = table.getState().columnSizing;
-	let cache = stickyPropsCaches.get(table);
+	const leftColumns = table.getStartVisibleLeafColumns();
+	const rightColumns = table.getEndVisibleLeafColumns();
+	const columnSizing = table.store.state.columnSizing;
+	let cache = stickyPropsCaches.get(table.store);
 
 	if (
 		!cache ||
@@ -226,7 +236,7 @@ export const getStickyCellProps = <TData>(
 		cache.resizeSizingReady !== resizeSizingReady
 	) {
 		cache = { leftColumns, rightColumns, columnSizing, resizeSizingReady, byLeafIds: new Map() };
-		stickyPropsCaches.set(table, cache);
+		stickyPropsCaches.set(table.store, cache);
 	}
 
 	const key = leafIds.join('\0');
@@ -257,8 +267,8 @@ export interface BodyCellLayoutProps {
  * Size and sticky props for a body cell. Sticky fill columns take a fixed
  * width so the offsets of the sticky cells after them stay correct.
  */
-export const getBodyCellLayoutProps = <TData>(
-	cell: Cell<TData, unknown>,
+export const getBodyCellLayoutProps = <TData extends RowData>(
+	cell: DsCell<TData>,
 	resizeSizingReady: boolean,
 ): BodyCellLayoutProps => {
 	const table = cell.getContext().table;
@@ -267,7 +277,7 @@ export const getBodyCellLayoutProps = <TData>(
 		[cell.column.id],
 		resizeSizingReady,
 	);
-	const columnSizing = resizeSizingReady ? table.getState().columnSizing : {};
+	const columnSizing = resizeSizingReady ? table.store.state.columnSizing : {};
 	const isExplicit = isExplicitColumnWidth(cell.column, columnSizing) || isStickyCell(stickyAttributes);
 
 	return {

@@ -1,12 +1,13 @@
 import { type RefObject } from 'react';
-import { type Row } from '@tanstack/react-table';
+import { type RowData } from '@tanstack/react-table';
 import { type VirtualItem, type Virtualizer } from '@tanstack/react-virtual';
+import type { DsRow } from '../../ds-table-features';
 
-export interface DsTableRowVirtualizedProps<TData> {
+export interface DsTableRowVirtualizedProps<TData extends RowData> {
 	/**
 	 * TanStack Table row model for this visual row.
 	 */
-	row: Row<TData>;
+	row: DsRow<TData>;
 	/**
 	 * Whether this row is currently part of the selection.
 	 */

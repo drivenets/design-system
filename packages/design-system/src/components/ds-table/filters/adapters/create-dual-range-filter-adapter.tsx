@@ -1,8 +1,9 @@
-import type { Row } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { TagFilterItem } from '../../../ds-tag-filter';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 import { RangeFilter } from '../components/range-filter';
 import { createFilterAdapter } from './create-filter-adapter';
+import type { DsRow } from '../../ds-table-features';
 
 export interface RangeValue {
 	from?: number;
@@ -13,7 +14,7 @@ export interface DualRangeFilterValue {
 	[fieldName: string]: RangeValue;
 }
 
-export interface DualRangeFilterAdapterConfig<TData> {
+export interface DualRangeFilterAdapterConfig<TData extends RowData> {
 	/** Unique id, should match the column `accessorKey`. */
 	id: string;
 	label: string;
@@ -22,11 +23,11 @@ export interface DualRangeFilterAdapterConfig<TData> {
 	/** @default (num) => num.toLocaleString('en-US') */
 	formatNumber?: (num: number) => string;
 	/** @default (row) => row.getValue(id) */
-	getRowValue?: (row: Row<TData>) => Record<string, number>;
+	getRowValue?: (row: DsRow<TData>) => Record<string, number>;
 }
 
 /** Filter over multiple numeric ranges within one column (AND across fields). */
-export function createDualRangeFilterAdapter<TData>(
+export function createDualRangeFilterAdapter<TData extends RowData>(
 	config: DualRangeFilterAdapterConfig<TData>,
 ): FilterAdapter<TData, DualRangeFilterValue, Record<string, number>> {
 	const {

@@ -1,9 +1,12 @@
+import type { RowData } from '@tanstack/react-table';
 import type React from 'react';
 import { DsCheckbox } from '../../../ds-checkbox';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableRowSelectableCellProps } from './ds-table-row-selectable-cell.types';
 
-export const DsTableRowSelectableCell = <TData,>({ row }: DsTableRowSelectableCellProps<TData>) => {
+export const DsTableRowSelectableCell = <TData extends RowData>({
+	row,
+}: DsTableRowSelectableCellProps<TData>) => {
 	return (
 		<DsCheckbox
 			className={stylesShared.checkboxContainer}

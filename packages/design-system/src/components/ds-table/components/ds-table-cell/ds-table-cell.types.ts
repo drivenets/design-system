@@ -1,16 +1,17 @@
-import type { Cell, Row } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
+import type { DsCell, DsRow } from '../../ds-table-features';
 
 /**
  * Props for the table cell component
  */
-export interface DsTableCellProps<TData, TValue> {
+export interface DsTableCellProps<TData extends RowData, TValue> {
 	/**
 	 * The row data from the table
 	 */
-	row: Row<TData>;
+	row: DsRow<TData>;
 
 	/**
 	 * The cell data from the table
 	 */
-	cell: Cell<TData, TValue>;
+	cell: DsCell<TData, TValue>;
 }

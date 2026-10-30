@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
-import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import { useControlled } from '../../../../utils/use-controlled';
 import { getCollapsedColumnVisibility, getInitialCollapsedGroups } from '../utils/column-group';
+import type { DsColumnDef } from '../../ds-table-features';
 
-interface UseColumnGroupsParams<TData, TValue> {
+interface UseColumnGroupsParams<TData extends RowData, TValue> {
 	/**
 	 * Consumer-provided columns (before utility columns are injected). Group defs
 	 * nest child columns via `columns`.
 	 */
-	columns: ColumnDef<TData, TValue>[];
+	columns: DsColumnDef<TData, TValue>[];
 
 	/**
 	 * Controlled list of collapsed group ids. When provided, the table no longer
@@ -37,7 +38,7 @@ interface UseColumnGroupsResult {
 	 * Visibility overrides derived from the collapsed groups, to be layered on top
 	 * of the consumer's own column visibility.
 	 */
-	collapsedVisibility: VisibilityState;
+	collapsedVisibility: ColumnVisibilityState;
 }
 
 /**
@@ -45,7 +46,7 @@ interface UseColumnGroupsResult {
  * (`collapsedColumnGroups` + `onCollapsedColumnGroupsChange`) and uncontrolled
  * usage (seeded from `meta.group.defaultCollapsed`).
  */
-export const useColumnGroups = <TData, TValue>({
+export const useColumnGroups = <TData extends RowData, TValue>({
 	columns,
 	collapsedColumnGroups,
 	onCollapsedColumnGroupsChange,

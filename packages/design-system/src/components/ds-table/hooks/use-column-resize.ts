@@ -8,11 +8,11 @@ import {
 	type RefObject,
 } from 'react';
 import type {
-	ColumnSizingInfoState,
+	columnResizingState,
 	ColumnSizingState,
 	OnChangeFn,
-	Table,
-	VisibilityState,
+	ColumnVisibilityState,
+	RowData,
 } from '@tanstack/react-table';
 import {
 	clampColumnSizing,
@@ -30,10 +30,11 @@ import {
 import { BUILTIN_COLUMN_IDS, RESIZE_DIVIDER_WIDTH, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
 import type { DsTableResizePhase } from '../context/ds-table-context';
 import { getColumnTrackWidth, getReservedScrollbarWidth, useScrollbarGutter } from './use-scrollbar-gutter';
+import type { DsTableInstance } from '../ds-table-features';
 
 const TRACK_MATCH_PX = 3;
 
-const INITIAL_COLUMN_SIZING_INFO: ColumnSizingInfoState = {
+const INITIAL_COLUMN_RESIZING: columnResizingState = {
 	startOffset: null,
 	startSize: null,
 	deltaOffset: null,
@@ -63,7 +64,7 @@ export interface UseColumnResizeOptions {
 	 * `DsTable` layout effect). Read as a dependency only.
 	 */
 	columns: unknown;
-	columnVisibility: VisibilityState;
+	columnVisibility: ColumnVisibilityState;
 	/**
 	 * Authored widths for injected utility leaves. Overlaid last so they win
 	 * over persist seed and live internal state.
@@ -102,16 +103,16 @@ export interface UseColumnResizeTableOptions {
 	columnResizeMode: 'onChange';
 	defaultColumn?: { minSize: number };
 	onColumnSizingChange: OnChangeFn<ColumnSizingState>;
-	onColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState>;
+	onColumnResizingChange: OnChangeFn<columnResizingState>;
 }
 
-export interface UseColumnResizeResult {
+export interface UseColumnResizeResult<TData extends RowData> {
 	tableOptions: UseColumnResizeTableOptions;
 	state: {
 		columnSizing: ColumnSizingState;
-		columnSizingInfo: ColumnSizingInfoState;
+		columnResizing: columnResizingState;
 	};
-	bind: <TData>(table: Table<TData>) => UseColumnResizeBindResult;
+	bind: (table: DsTableInstance<TData>) => UseColumnResizeBindResult;
 }
 
 /**
@@ -119,28 +120,28 @@ export interface UseColumnResizeResult {
  * measurement, hover/drag overlay model, and the context slice consumed by
  * resize handles.
  *
- * Call before `useReactTable`, spread `tableOptions` / `state` into it, then
+ * Call before `useTable`, spread `tableOptions` / `state` into it, then
  * `bind(table)` during render for CSS vars, overlay, and context.
  */
-export const useColumnResize = ({
+export const useColumnResize = <TData extends RowData>({
 	enabled,
 	columnSizing: columnSizingProp,
 	onColumnSizingChange,
 	columns,
 	columnVisibility,
 	utilityColumnSizing,
-}: UseColumnResizeOptions): UseColumnResizeResult => {
+}: UseColumnResizeOptions): UseColumnResizeResult<TData> => {
 	const [columnResizeState, setColumnResizeState] = useState<{
 		columnSizing: ColumnSizingState;
-		columnSizingInfo: ColumnSizingInfoState;
+		columnResizing: columnResizingState;
 	}>({
 		columnSizing: {},
-		columnSizingInfo: INITIAL_COLUMN_SIZING_INFO,
+		columnResizing: INITIAL_COLUMN_RESIZING,
 	});
 	// One useState so TanStack's mousemove updaters (info then sizing) run in
 	// call order against the same queue. Split hooks apply sizing first, while
 	// the next-width map is still empty.
-	const { columnSizing: internalColumnSizing, columnSizingInfo } = columnResizeState;
+	const { columnSizing: internalColumnSizing, columnResizing } = columnResizeState;
 
 	// Persisted widths seed the effective map, but internal state wins so a live
 	// drag (or seed measurement) of a persisted column still takes effect. Passed
@@ -164,20 +165,19 @@ export const useColumnResize = ({
 	const utilityTrackWidthRef = useRef(utilityTrackWidth);
 	utilityTrackWidthRef.current = utilityTrackWidth;
 	const prevUtilityTrackWidthRef = useRef<number | null>(null);
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- bind is generic; the ref only calls sizing APIs
-	const tableRef = useRef<Table<any> | null>(null);
+	const tableRef = useRef<DsTableInstance<TData> | null>(null);
 
 	const columnSizingRef = useRef(columnSizing);
 	columnSizingRef.current = columnSizing;
-	const columnSizingInfoRef = useRef(columnSizingInfo);
-	columnSizingInfoRef.current = columnSizingInfo;
+	const columnResizingRef = useRef(columnResizing);
+	columnResizingRef.current = columnResizing;
 	const onColumnSizingChangeRef = useRef(onColumnSizingChange);
 	onColumnSizingChangeRef.current = onColumnSizingChange;
 	const leafSizeBoundsRef = useRef<ColumnSizeBoundsSource[]>([]);
 
 	const handleColumnSizingChange: OnChangeFn<ColumnSizingState> = useCallback((updaterOrValue) => {
 		// Resolve against the ref and write it synchronously (same pattern as
-		// columnSizingInfoRef), before queuing the React state update. TanStack's
+		// columnResizingRef), before queuing the React state update. TanStack's
 		// mouseup applies the final sizing and then fires the persist callback in
 		// the same tick, so the ref must already hold the final widths — the state
 		// updater runs later (at render), which would leave persist reading a stale
@@ -190,15 +190,15 @@ export const useColumnResize = ({
 		setColumnResizeState((prev) => ({ ...prev, columnSizing: clamped }));
 	}, []);
 
-	const handleColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState> = useCallback((updaterOrValue) => {
-		const prevInfo = columnSizingInfoRef.current;
+	const handleColumnResizingChange: OnChangeFn<columnResizingState> = useCallback((updaterOrValue) => {
+		const prevInfo = columnResizingRef.current;
 		const nextInfo = typeof updaterOrValue === 'function' ? updaterOrValue(prevInfo) : updaterOrValue;
 		const ended = Boolean(prevInfo.isResizingColumn) && nextInfo.isResizingColumn === false;
 
-		columnSizingInfoRef.current = nextInfo;
+		columnResizingRef.current = nextInfo;
 		setColumnResizeState((prev) => ({
 			...prev,
-			columnSizingInfo: nextInfo,
+			columnResizing: nextInfo,
 		}));
 
 		if (ended) {
@@ -446,12 +446,12 @@ export const useColumnResize = ({
 			// resize minimum and break existing layouts.
 			...(enabled ? { defaultColumn: { minSize: RESIZE_MIN_COLUMN_WIDTH } } : {}),
 			onColumnSizingChange: handleColumnSizingChange,
-			onColumnSizingInfoChange: handleColumnSizingInfoChange,
+			onColumnResizingChange: handleColumnResizingChange,
 		}),
-		[enabled, handleColumnSizingChange, handleColumnSizingInfoChange],
+		[enabled, handleColumnSizingChange, handleColumnResizingChange],
 	);
 
-	const bind = <TData>(table: Table<TData>): UseColumnResizeBindResult => {
+	const bind = (table: DsTableInstance<TData>): UseColumnResizeBindResult => {
 		tableRef.current = table;
 		leafSizeBoundsRef.current = table.getAllLeafColumns();
 
@@ -482,16 +482,16 @@ export const useColumnResize = ({
 			};
 		}
 
-		const isResizingColumn = columnSizingInfo.isResizingColumn;
+		const isResizingColumn = columnResizing.isResizingColumn;
 		const resizingHeader =
 			typeof isResizingColumn === 'string'
 				? table.getFlatHeaders().find((header) => header.column.id === isResizingColumn)
 				: undefined;
-		const startSize = columnSizingInfo.startSize;
+		const startSize = columnResizing.startSize;
 		const clampedResizeDelta =
 			resizingHeader && startSize !== null
 				? resizingHeader.getSize() - startSize
-				: (columnSizingInfo.deltaOffset ?? 0);
+				: (columnResizing.deltaOffset ?? 0);
 		const tableWidth = table.getTotalSize();
 		const activeResize: UseColumnResizeActiveResize | null =
 			isResizingColumn && dragStartOffsetRef.current !== null
@@ -522,7 +522,7 @@ export const useColumnResize = ({
 		tableOptions,
 		state: {
 			columnSizing,
-			columnSizingInfo,
+			columnResizing,
 		},
 		bind,
 	};

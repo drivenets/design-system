@@ -1,4 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import DsTable from '../ds-table';
@@ -7,8 +6,9 @@ import { DsButtonV3 } from '../../ds-button-v3';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import styles from './ds-table.stories.module.scss';
+import { type DsColumnDef } from '../ds-table-features';
 
-const horizontalScrollColumns: ColumnDef<Person>[] = [
+const horizontalScrollColumns: DsColumnDef<Person>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 250 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 250 },
 	{ accessorKey: 'age', header: 'Age (years)', cell: (info) => info.getValue(), size: 200 },

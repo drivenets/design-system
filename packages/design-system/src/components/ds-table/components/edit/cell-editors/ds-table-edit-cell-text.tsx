@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react';
-import type { CellContext, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import { DsFormControl } from '../../../../ds-form-control';
 import { DsIcon } from '../../../../ds-icon';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
 import styles from './cell-editors.module.scss';
 import { TableEditFormControl } from './table-edit-form-control';
+import type { DsCellContext } from '../../../ds-table-features';
 
 export interface DsTableEditCellTextProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<TData, string>;
+	cellContext: DsCellContext<TData, string>;
 	placeholder?: string;
 	maxLength?: number;
 }

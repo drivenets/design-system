@@ -1,7 +1,8 @@
+import type { RowData } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 
-export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> {
+export interface FilterAdapterConfig<TData extends RowData, TFilterValue, TCellValue = unknown> {
 	/** Unique id, should match the column `accessorKey`. */
 	id: string;
 	label: string;
@@ -21,7 +22,7 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
  * `createCheckboxFilterAdapter` / `createDualRangeFilterAdapter` don't fit
  * (custom UI, mixed sub-filters, bespoke chip logic).
  */
-export function createFilterAdapter<TData, TFilterValue, TCellValue = unknown>(
+export function createFilterAdapter<TData extends RowData, TFilterValue, TCellValue = unknown>(
 	config: FilterAdapterConfig<TData, TFilterValue, TCellValue>,
 ): FilterAdapter<TData, TFilterValue, TCellValue> {
 	return {

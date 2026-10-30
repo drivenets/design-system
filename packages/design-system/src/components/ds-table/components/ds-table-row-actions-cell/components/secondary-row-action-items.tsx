@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import type { MouseEvent } from 'react';
 import { DsDropdownMenu } from '../../../../ds-dropdown-menu';
 import { DsIcon } from '../../../../ds-icon';
@@ -11,12 +12,15 @@ const SUBMENU_PLACEMENT = 'right-start' as const;
 // The menu is portalled, but React still bubbles its clicks up to the row's `onRowClick`.
 const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
-interface SecondaryRowActionItemsProps<TData> {
+interface SecondaryRowActionItemsProps<TData extends RowData> {
 	actions: SecondaryRowAction<TData>[];
 	row: TData;
 }
 
-export const SecondaryRowActionItems = <TData,>({ actions, row }: SecondaryRowActionItemsProps<TData>) => (
+export const SecondaryRowActionItems = <TData extends RowData>({
+	actions,
+	row,
+}: SecondaryRowActionItemsProps<TData>) => (
 	<>
 		{actions.map((action, i) => {
 			const label = resolveLabel(action, row);
@@ -68,7 +72,7 @@ export const SecondaryRowActionItems = <TData,>({ actions, row }: SecondaryRowAc
 	</>
 );
 
-interface ActionContentProps<TData> {
+interface ActionContentProps<TData extends RowData> {
 	action: SecondaryRowAction<TData>;
 	label: string;
 	row: TData;
@@ -76,7 +80,7 @@ interface ActionContentProps<TData> {
 
 // Wrap the content, not the item: tooltip trigger props would override the menu item's
 // `id` and data attributes. Disabled items still receive hover, so the tooltip shows there too.
-const ActionContent = <TData,>({ action, label, row }: ActionContentProps<TData>) => (
+const ActionContent = <TData extends RowData>({ action, label, row }: ActionContentProps<TData>) => (
 	<DsTooltip
 		content={resolveTooltip(action, row)}
 		slotProps={{ content: { className: styles.secondaryActionTooltip } }}

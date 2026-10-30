@@ -1,4 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import { describe, expect, it, vi } from 'vitest';
 import { type Locator, page, userEvent } from 'vitest/browser';
 import type { RowAction, SecondaryRowAction } from '../components/ds-table-row-actions-cell';
@@ -6,6 +5,7 @@ import DsTable from '../ds-table';
 import type { Action } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { ROW_ACTIONS_COLUMN_ID } from '../utils/constants';
+import { type DsColumnDef } from '../ds-table-features';
 
 const narrowContainerWidth = 720;
 
@@ -18,12 +18,12 @@ const sizingSecondaryActions: SecondaryRowAction<Person>[] = [
 	{ icon: 'delete_outline', label: 'Delete', onClick: vi.fn() },
 ];
 
-const fillColumns: ColumnDef<Person>[] = [
+const fillColumns: DsColumnDef<Person>[] = [
 	...columns,
 	...columns.map((column, idx) => ({ ...column, id: `extra-${String(idx)}` })),
 ];
 
-const explicitColumns: ColumnDef<Person>[] = columns.map((column, idx) => ({
+const explicitColumns: DsColumnDef<Person>[] = columns.map((column, idx) => ({
 	...column,
 	size: idx === columns.length - 1 ? 60 : 150,
 }));
@@ -573,7 +573,7 @@ describe('DsTable - Row Actions', () => {
 		it.each([{ resizableColumns: false }, { resizableColumns: true }])(
 			'aligns the actions column with grouped headers (resizableColumns=$resizableColumns)',
 			async ({ resizableColumns }) => {
-				const groupedColumns: ColumnDef<Person>[] = [
+				const groupedColumns: DsColumnDef<Person>[] = [
 					{ accessorKey: 'firstName', header: 'First Name' },
 					{
 						id: 'stats',
@@ -793,7 +793,7 @@ describe('DsTable - Row Actions', () => {
 		);
 
 		it('keeps the content of a consumer column named like the actions column', async () => {
-			const consumerColumns: ColumnDef<Person>[] = [
+			const consumerColumns: DsColumnDef<Person>[] = [
 				...columns,
 				{ id: 'rowActions', header: 'Status', cell: () => 'consumer content' },
 			];

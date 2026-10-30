@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { z } from 'zod';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import type { CellContext, ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsFormControl } from '../../ds-form-control';
 import { DsTag } from '../../ds-tag';
@@ -15,6 +14,7 @@ import {
 import { fullHeightDecorator } from './common/story-decorators';
 import { defaultData, type Person, type Status } from './common/story-data';
 import editableStyles from './ds-table-editable.stories.module.scss';
+import { type DsColumnDef, type DsCellContext } from '../ds-table-features';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Editable',
@@ -55,7 +55,7 @@ export const Editable: Story = {
 
 		const progressPresets = [25, 50, 75, 100];
 
-		const ProgressEditor = ({ cellContext }: { cellContext: CellContext<Person, number> }) => {
+		const ProgressEditor = ({ cellContext }: { cellContext: DsCellContext<Person, number> }) => {
 			const { value, setValue, error } = useCellEditor<Person, number>({ cellContext });
 
 			return (
@@ -82,7 +82,7 @@ export const Editable: Story = {
 			);
 		};
 
-		const columns: ColumnDef<Person>[] = [
+		const columns: DsColumnDef<Person>[] = [
 			{
 				accessorKey: 'id',
 				header: 'ID',
@@ -93,7 +93,7 @@ export const Editable: Story = {
 				accessorKey: 'firstName',
 				header: 'First Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
 				),
 			},
@@ -101,7 +101,7 @@ export const Editable: Story = {
 				accessorKey: 'lastName',
 				header: 'Last Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
 				),
 			},
@@ -110,7 +110,7 @@ export const Editable: Story = {
 				header: 'Age',
 				size: 100,
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, number>) => (
+				editCell: (info: DsCellContext<Person, number>) => (
 					<DsTableEditCellNumber cellContext={info} min={0} max={120} />
 				),
 			},
@@ -119,8 +119,10 @@ export const Editable: Story = {
 				header: 'Visits',
 				size: 100,
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
-				editDisabled: (info: CellContext<Person, number>) => {
+				editCell: (info: DsCellContext<Person, number>) => (
+					<DsTableEditCellNumber cellContext={info} min={0} />
+				),
+				editDisabled: (info: DsCellContext<Person, number>) => {
 					if (info.row.original.status === 'complicated') {
 						return { reason: 'Visits are locked while the status is “Complicated”.' };
 					}
@@ -135,7 +137,7 @@ export const Editable: Story = {
 				header: 'Status',
 				size: 160,
 				cell: (info) => statusLabels[info.getValue() as Status],
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellSelect cellContext={info} options={statusOptions} />
 				),
 			},
@@ -143,7 +145,7 @@ export const Editable: Story = {
 				accessorKey: 'progress',
 				header: 'Profile Progress',
 				cell: (info) => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
-				editCell: (info: CellContext<Person, number>) => <ProgressEditor cellContext={info} />,
+				editCell: (info: DsCellContext<Person, number>) => <ProgressEditor cellContext={info} />,
 			},
 		];
 
@@ -194,7 +196,7 @@ export const LiveValidation: Story = {
 			return result.success ? null : (result.error.issues[0]?.message ?? null);
 		};
 
-		const columns: ColumnDef<Person>[] = [
+		const columns: DsColumnDef<Person>[] = [
 			{
 				accessorKey: 'id',
 				header: 'ID',
@@ -205,7 +207,7 @@ export const LiveValidation: Story = {
 				accessorKey: 'firstName',
 				header: 'First Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
 				),
 			},
@@ -213,7 +215,7 @@ export const LiveValidation: Story = {
 				accessorKey: 'lastName',
 				header: 'Last Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
 				),
 			},
@@ -269,7 +271,7 @@ export const ValidateOnAsyncSave: Story = {
 				});
 			});
 
-		const columns: ColumnDef<Person>[] = [
+		const columns: DsColumnDef<Person>[] = [
 			{
 				accessorKey: 'id',
 				header: 'ID',
@@ -280,7 +282,7 @@ export const ValidateOnAsyncSave: Story = {
 				accessorKey: 'firstName',
 				header: 'First Name',
 				cell: (info) => info.getValue(),
-				editCell: (info: CellContext<Person, string>) => (
+				editCell: (info: DsCellContext<Person, string>) => (
 					<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
 				),
 			},

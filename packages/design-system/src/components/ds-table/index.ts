@@ -1,7 +1,3 @@
-import './components/ds-table-column-display/column-display-meta.augmentation';
-import './grouping/types/column-group-meta.augmentation';
-import './utils/column-size-meta.augmentation';
-
 export type { SecondaryRowAction, RowAction } from './components/ds-table-row-actions-cell';
 export type { ScrollParams } from './components/ds-table-body-virtualized';
 
@@ -10,6 +6,22 @@ export type { DsColumnGroupMeta } from './grouping';
 export type { DsTableEditDisabledResult } from './ds-table-column.types';
 
 export { default as DsTable } from './ds-table';
+export { dsTableFeatures, createDsColumnHelper } from './ds-table-features';
+export type {
+	DsCell,
+	DsCellContext,
+	DsColumn,
+	DsColumnDef,
+	DsColumnHelper,
+	DsFilterFn,
+	DsHeader,
+	DsHeaderContext,
+	DsHeaderGroup,
+	DsRow,
+	DsSortFn,
+	DsTableInstance,
+	DsTableState,
+} from './ds-table-features';
 export * from './ds-table.types';
 
 export { createColumnHelper } from '@tanstack/react-table';

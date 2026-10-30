@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import type { ColumnDef } from '@tanstack/react-table';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './table-columns';
 import {
 	COLUMN_DISPLAY_COLUMN_ID,
@@ -13,10 +12,11 @@ import {
 	SELECT_COLUMN_WIDTH,
 	SKELETON_ROW_COUNT,
 } from './constants';
+import { type DsColumnDef } from '../ds-table-features';
 
 type Row = { id: string; name?: string };
 
-const nameColumn: ColumnDef<Row> = { id: 'name', accessorKey: 'name' };
+const nameColumn: DsColumnDef<Row> = { id: 'name', accessorKey: 'name' };
 
 const noFeatures = {
 	selectable: false,
@@ -26,7 +26,7 @@ const noFeatures = {
 	showSelectAllCheckbox: true,
 } as const;
 
-const columnIds = (columns: ColumnDef<Row>[]) => columns.map((column) => column.id);
+const columnIds = (columns: DsColumnDef<Row>[]) => columns.map((column) => column.id);
 
 describe('getAugmentedColumns', () => {
 	it('returns consumer columns unchanged when no features are on', () => {
@@ -251,7 +251,7 @@ describe('getAugmentedColumns', () => {
 	});
 
 	it('does not mutate the caller’s column defs', () => {
-		const leaf: ColumnDef<Row> = { id: 'name', accessorKey: 'name', size: 150 };
+		const leaf: DsColumnDef<Row> = { id: 'name', accessorKey: 'name', size: 150 };
 
 		getAugmentedColumns([leaf], noFeatures);
 
