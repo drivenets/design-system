@@ -8,9 +8,11 @@
 	height: var(--ds-table-header-height);
 	padding: 0;
 	border-bottom: vars.$border-width solid var(--color-dap-gray-400);
+	--ds-table-group-border-width: #{vars.$group-border-width};
 
 	&:not(:first-child) {
-		border-left: vars.$group-border-width solid var(--border);
+		--ds-table-group-start-border: #{vars.$group-border-width};
+		border-left: var(--ds-table-group-start-border) solid var(--border);
 	}
 }
 

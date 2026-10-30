@@ -1,4 +1,4 @@
-import { type MouseEvent, useId, useState } from 'react';
+import { type KeyboardEvent, type MouseEvent, type ReactNode, useMemo, useState } from 'react';
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import { DsButtonV3 } from '../../../ds-button-v3';
@@ -6,7 +6,7 @@ import { DsCheckbox } from '../../../ds-checkbox';
 import { DsDivider } from '../../../ds-divider';
 import { DsIcon } from '../../../ds-icon';
 import { DsPinToggle } from '../../../ds-pin-toggle';
-import { DsTextInput } from '../../../ds-text-input';
+import { createDsTreeCollection, DsTree, type DsTreeRootProps } from '../../../ds-tree';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { defaultDsTableLocale } from '../../ds-table.types';
 import styles from './ds-table-column-display.module.scss';
@@ -16,31 +16,74 @@ import type {
 	DsTableColumnDisplayProps,
 } from './ds-table-column-display.types';
 import {
-	filterColumnDisplayTree,
+	canDropColumnDisplayNode,
+	canReorderColumnDisplayNode,
 	getAllColumnsTarget,
-	getColumnDisplayTree,
+	getCheckedState,
+	getCheckedVisibilityUpdate,
+	getColumnDisplayCheckedValue,
+	getColumnDisplayNodes,
+	getColumnOrderFromNodes,
+	getGroupIds,
 	getToggleVisibilityUpdate,
 } from './ds-table-column-display.utils';
 
 const POPOVER_GUTTER_PX = 4;
 
+const NO_SELECTION: string[] = [];
+
 // React portals bubble events through the React tree, so clicks inside the
 // popover would otherwise reach the header cell's click handlers.
 const stopPropagation = (event: MouseEvent) => event.stopPropagation();
 
-const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
-	const { locale, columnVisibility } = useDsTableContext<TData, unknown>();
-	const { searchColumns, allColumns, stickyColumn } = { ...defaultDsTableLocale, ...locale };
-	const searchId = useId();
-	const [query, setQuery] = useState('');
+// The tree turns Enter and Space on a row into a row toggle, which would swallow the pin button's own activation.
+const stopKeyDownPropagation = (event: KeyboardEvent) => event.stopPropagation();
 
-	const tree = getColumnDisplayTree(table.getAllColumns(), columnVisibility);
-	const allColumnsTarget = getAllColumnsTarget(tree, columnVisibility);
-	const visibleTree = filterColumnDisplayTree(tree, query);
+type ColumnDisplayCollection = DsTreeRootProps<ColumnDisplayNode>['collection'];
+
+const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
+	const { locale, columnVisibility, columnOrder, reorderableColumns } = useDsTableContext<TData, unknown>();
+	const { allColumns, stickyColumn } = { ...defaultDsTableLocale, ...locale };
+
+	const allTableColumns = table.getAllColumns();
+	const stickyLeafIds = table.getState().columnPinning.left;
+	const nodes = useMemo(
+		() =>
+			getColumnDisplayNodes(allTableColumns, {
+				columnOrder,
+				stickyLeafIds: stickyLeafIds ?? [],
+				stickyFirst: Boolean(reorderableColumns),
+			}),
+		[allTableColumns, columnOrder, stickyLeafIds, reorderableColumns],
+	);
+	const collection = useMemo(() => createDsTreeCollection(nodes), [nodes]);
+	const groupIds = useMemo(() => getGroupIds(nodes), [nodes]);
+	const checkedValue = useMemo(
+		() => getColumnDisplayCheckedValue(nodes, columnVisibility),
+		[nodes, columnVisibility],
+	);
+	const allColumnsTarget = getAllColumnsTarget(nodes, columnVisibility);
 
 	const toggle = (target: ColumnDisplayToggleTarget) => {
 		const update = getToggleVisibilityUpdate(target);
 		table.setColumnVisibility((old) => ({ ...old, ...update }));
+	};
+
+	const toggleNode = (id: string) => {
+		const node = collection.findNode(id);
+
+		if (node && !node.locked) {
+			toggle({ ...node, checked: getCheckedState(node.leafIdsToToggle, columnVisibility) });
+		}
+	};
+
+	const handleCheckedChange = (nextCheckedValue: string[]) => {
+		const update = getCheckedVisibilityUpdate(nodes, checkedValue, nextCheckedValue);
+		table.setColumnVisibility((old) => ({ ...old, ...update }));
+	};
+
+	const handleCollectionChange = (next: ColumnDisplayCollection) => {
+		table.setColumnOrder(getColumnOrderFromNodes(next.rootNode.children ?? []));
 	};
 
 	// Only top-level rows get the toggle: making any leaf sticky makes its whole
@@ -55,59 +98,100 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 		return (
 			<DsPinToggle
 				className={styles.stickyToggle}
-				itemLabel={node.label}
+				itemLabel={node.name}
 				locale={{ pin: stickyColumn }}
 				pinned={column.getIsPinned() !== false}
+				onClick={stopPropagation}
+				onKeyDown={stopKeyDownPropagation}
 				onPinnedChange={(sticky) => column.pin(sticky ? 'left' : false)}
 			/>
 		);
 	};
 
-	const renderNode = (node: ColumnDisplayNode, isTopLevel: boolean) => {
-		const stickyToggle = isTopLevel ? renderStickyToggle(node) : null;
-		const lock = node.locked ? <DsIcon icon="lock" size="tiny" color="secondary" aria-hidden /> : null;
+	const renderRowContent = (
+		node: ColumnDisplayNode,
+		isTopLevel: boolean,
+		canReorder: boolean,
+		text: ReactNode,
+	) => (
+		<>
+			<DsTree.DragHandle disabled={!canReorder} />
+			<DsTree.NodeCheckbox
+				className={styles.checkbox}
+				{...(node.locked && { checked: getCheckedState(node.leafIds, columnVisibility), disabled: true })}
+			/>
+			{text}
+			{isTopLevel && renderStickyToggle(node)}
+			{node.locked && <DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
+		</>
+	);
+
+	const renderNode = (
+		node: ColumnDisplayNode,
+		indexPath: number[],
+		siblings: ColumnDisplayNode[],
+		parent: ColumnDisplayNode | null,
+	): ReactNode => {
+		const isTopLevel = indexPath.length === 1;
+		const canReorder = canReorderColumnDisplayNode(node, siblings, parent);
 
 		return (
-			<li key={node.id} className={styles.item}>
-				<DsCheckbox
-					size="large"
-					className={styles.row}
-					label={node.label}
-					checked={node.checked}
-					disabled={node.locked}
-					actions={
-						stickyToggle || lock ? (
-							<>
-								{stickyToggle}
-								{lock}
-							</>
-						) : undefined
-					}
-					onCheckedChange={() => toggle(node)}
-				/>
-				{node.children.length > 0 && (
-					<ul className={styles.children}>{node.children.map((child) => renderNode(child, false))}</ul>
+			<DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>
+				{node.children ? (
+					<DsTree.Branch>
+						<DsTree.BranchControl className={styles.row}>
+							{renderRowContent(
+								node,
+								isTopLevel,
+								canReorder,
+								<DsTree.BranchText className={styles.label}>{node.name}</DsTree.BranchText>,
+							)}
+						</DsTree.BranchControl>
+						<DsTree.BranchContent>
+							{node.children.map((child, index, children) =>
+								renderNode(child, [...indexPath, index], children, node),
+							)}
+						</DsTree.BranchContent>
+					</DsTree.Branch>
+				) : (
+					<DsTree.Item className={styles.row}>
+						{renderRowContent(
+							node,
+							isTopLevel,
+							canReorder,
+							<DsTree.ItemText className={styles.label}>{node.name}</DsTree.ItemText>,
+						)}
+					</DsTree.Item>
 				)}
-			</li>
+			</DsTree.NodeProvider>
 		);
 	};
 
+	const tree = (
+		<DsTree.Tree>{nodes.map((node, index) => renderNode(node, [index], nodes, null))}</DsTree.Tree>
+	);
+
 	return (
 		<>
-			<div className={styles.header}>
-				<label htmlFor={searchId} className={styles.visuallyHidden}>
-					{searchColumns}
-				</label>
-				<DsTextInput
-					id={searchId}
-					placeholder={searchColumns}
-					value={query}
-					onValueChange={setQuery}
-					slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-				/>
-			</div>
-			{visibleTree.length > 0 && (
-				<ul className={styles.list}>{visibleTree.map((node) => renderNode(node, true))}</ul>
+			{nodes.length > 0 && (
+				<DsTree.Root
+					className={styles.list}
+					collection={collection}
+					expandedValue={groupIds}
+					expandOnClick={false}
+					selectedValue={NO_SELECTION}
+					checkedValue={checkedValue}
+					onCheckedChange={(details) => handleCheckedChange(details.checkedValue)}
+					onSelectionChange={({ selectedValue }) => selectedValue.forEach(toggleNode)}
+				>
+					{reorderableColumns ? (
+						<DsTree.Sortable canDrop={canDropColumnDisplayNode} onCollectionChange={handleCollectionChange}>
+							{tree}
+						</DsTree.Sortable>
+					) : (
+						tree
+					)}
+				</DsTree.Root>
 			)}
 			<DsDivider className={styles.divider} />
 			<DsCheckbox
@@ -124,8 +208,9 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 
 /**
  * Column display control: a tertiary icon-only button whose popup lists every
- * column with a checkbox and a sticky toggle per top-level row, plus a search
- * field and an "All columns" toggle.
+ * column in a tree with a checkbox, a sticky toggle per top-level row and,
+ * with `reorderableColumns`, a drag handle per row, plus an "All columns"
+ * toggle.
  */
 export const DsTableColumnDisplay = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
 	const { locale } = useDsTableContext<TData, unknown>();

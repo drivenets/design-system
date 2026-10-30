@@ -604,6 +604,13 @@ export interface DsDataTableProps<TData, TValue> {
 	columnDisplay?: boolean;
 
 	/**
+	 * Lets users drag columns within their group in the `columnDisplay` popup. Pinning
+	 * moves a column to the end of the left-sticky block, unpinning to the start of the rest.
+	 * @default false
+	 */
+	reorderableColumns?: boolean;
+
+	/**
 	 * External column visibility state. When omitted, the table tracks visibility
 	 * itself and still calls `onColumnVisibilityChange`.
 	 * @example
@@ -625,6 +632,29 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback when column visibility changes
 	 */
 	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
+
+	/**
+	 * Leaf column ids in display order; pass with `onColumnOrderChange` to control it.
+	 *
+	 * - Groups stay whole; unlisted columns go after the listed ones among their siblings.
+	 * - Utility columns keep their positions.
+	 *
+	 * @example
+	 * ```tsx
+	 * const [columnOrder, setColumnOrder] = useState(['lastName', 'firstName']);
+	 *
+	 * <DsTable
+	 *   columnDisplay
+	 *   reorderableColumns
+	 *   columnOrder={columnOrder}
+	 *   onColumnOrderChange={setColumnOrder}
+	 * />
+	 * ```
+	 */
+	columnOrder?: string[];
+
+	/** Called with the new leaf column order after a drop, or a pin that moves a column. */
+	onColumnOrderChange?: (columnOrder: string[]) => void;
 
 	/**
 	 * Columns kept in view during horizontal scroll. Omit for uncontrolled state;

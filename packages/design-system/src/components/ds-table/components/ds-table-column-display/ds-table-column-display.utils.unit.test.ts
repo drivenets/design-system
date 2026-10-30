@@ -1,11 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { type ColumnDef, createTable, getCoreRowModel } from '@tanstack/react-table';
 import { SELECT_COLUMN_ID } from '../../utils/constants';
+import type { DsTreeMoveDetails } from '../../../ds-tree';
+import type { ColumnDisplayNode } from './ds-table-column-display.types';
 import {
-	filterColumnDisplayTree,
+	canDropColumnDisplayNode,
 	getAllColumnsTarget,
 	getCheckedState,
-	getColumnDisplayTree,
+	getCheckedVisibilityUpdate,
+	getColumnDisplayCheckedValue,
+	getColumnDisplayNodes,
+	getColumnOrderFromNodes,
+	getGroupIds,
 	getToggleVisibilityUpdate,
 } from './ds-table-column-display.utils';
 
@@ -33,44 +39,128 @@ const columns: ColumnDef<Row>[] = [
 		],
 	},
 	{ id: 'visits', header: () => 'Visits' },
+	{ id: 'status', header: 'Status' },
 ];
+
+const defaultOrder = ['firstName', 'lastName', 'age', 'visits', 'status'];
+
+const getNodes = (
+	columnOrder = defaultOrder,
+	{ stickyFirst = false, stickyLeafIds = [] }: { stickyFirst?: boolean; stickyLeafIds?: string[] } = {},
+) => getColumnDisplayNodes(getAllColumns(columns), { columnOrder, stickyLeafIds, stickyFirst });
 
 const ids = (nodes: { id: string }[]) => nodes.map((node) => node.id);
 
-describe('getColumnDisplayTree', () => {
-	it('builds group and leaf rows and skips utility columns', () => {
-		const tree = getColumnDisplayTree(getAllColumns(columns), {});
+const flatten = (nodes: ColumnDisplayNode[]): ColumnDisplayNode[] =>
+	nodes.flatMap((node) => [node, ...flatten(node.children ?? [])]);
 
-		expect(ids(tree)).toEqual(['identity', 'visits']);
-		expect(ids(tree[0]?.children ?? [])).toEqual(['firstName', 'lastName', 'age']);
-		expect(tree[0]?.label).toBe('Identity');
-		expect(tree[1]?.label).toBe('visits');
+const findNode = (nodes: ColumnDisplayNode[], id: string): ColumnDisplayNode => {
+	const node = flatten(nodes).find((candidate) => candidate.id === id);
+
+	if (!node) {
+		throw new Error(`No node "${id}"`);
+	}
+
+	return node;
+};
+
+describe('getColumnDisplayNodes', () => {
+	it('builds group and leaf rows and skips utility columns', () => {
+		const nodes = getNodes();
+
+		expect(ids(nodes)).toEqual(['identity', 'visits', 'status']);
+		expect(ids(nodes[0]?.children ?? [])).toEqual(['firstName', 'lastName', 'age']);
+		expect(nodes[0]?.name).toBe('Identity');
+		expect(nodes[1]?.name).toBe('visits');
+		expect(nodes[1]?.children).toBeUndefined();
 	});
 
 	it('prefers meta.columnDisplayLabel over the header', () => {
-		const [status] = getColumnDisplayTree(
+		const [status] = getColumnDisplayNodes(
 			getAllColumns([{ id: 'status', header: () => 'Status', meta: { columnDisplayLabel: 'Status' } }]),
-			{},
+			{ columnOrder: [], stickyLeafIds: [], stickyFirst: false },
 		);
 
-		expect(status?.label).toBe('Status');
+		expect(status?.name).toBe('Status');
 	});
 
 	it('locks columns that cannot be hidden and leaves them out of the group toggle', () => {
-		const [identity] = getColumnDisplayTree(getAllColumns(columns), {});
-		const firstName = identity?.children[0];
+		const nodes = getNodes();
 
-		expect(firstName).toMatchObject({ locked: true, checked: true, leafIdsToToggle: [] });
-		expect(identity).toMatchObject({ locked: false, leafIdsToToggle: ['lastName', 'age'] });
+		expect(findNode(nodes, 'firstName')).toMatchObject({ locked: true, leafIdsToToggle: [] });
+		expect(findNode(nodes, 'identity')).toMatchObject({
+			locked: false,
+			leafIds: ['firstName', 'lastName', 'age'],
+			leafIdsToToggle: ['lastName', 'age'],
+		});
 	});
 
-	it('derives the group state from the columns it can hide', () => {
-		const groupState = (visibility: Record<string, boolean>) =>
-			getColumnDisplayTree(getAllColumns(columns), visibility)[0]?.checked;
+	it('orders rows at every depth by the column order', () => {
+		const nodes = getNodes(['status', 'age', 'firstName', 'lastName', 'visits']);
 
-		expect(groupState({})).toBe(true);
-		expect(groupState({ age: false })).toBe('indeterminate');
-		expect(groupState({ lastName: false, age: false })).toBe(false);
+		expect(ids(nodes)).toEqual(['status', 'identity', 'visits']);
+		expect(ids(nodes[1]?.children ?? [])).toEqual(['age', 'firstName', 'lastName']);
+	});
+
+	it('lists sticky rows first, in column order, when asked to', () => {
+		const stickyLeafIds = ['status', 'lastName'];
+
+		expect(ids(getNodes(defaultOrder, { stickyFirst: true, stickyLeafIds }))).toEqual([
+			'identity',
+			'status',
+			'visits',
+		]);
+		expect(ids(getNodes(defaultOrder, { stickyLeafIds }))).toEqual(['identity', 'visits', 'status']);
+		expect(getNodes(defaultOrder, { stickyLeafIds }).map((node) => node.sticky)).toEqual([true, false, true]);
+	});
+});
+
+describe('getGroupIds', () => {
+	it('lists every group id, nested ones included', () => {
+		const nodes = getColumnDisplayNodes(
+			getAllColumns([
+				{ id: 'outer', columns: [{ id: 'inner', columns: [{ id: 'leaf' }] }, { id: 'other' }] },
+				{ id: 'standalone' },
+			]),
+			{ columnOrder: [], stickyLeafIds: [], stickyFirst: false },
+		);
+
+		expect(getGroupIds(nodes)).toEqual(['outer', 'inner']);
+	});
+});
+
+describe('getColumnDisplayCheckedValue', () => {
+	it('checks every shown leaf, locked ones included', () => {
+		expect(getColumnDisplayCheckedValue(getNodes(), { age: false, status: false })).toEqual([
+			'firstName',
+			'lastName',
+			'visits',
+		]);
+	});
+
+	it('keeps a shown locked leaf checked once every leaf its group can hide is hidden', () => {
+		expect(getColumnDisplayCheckedValue(getNodes(), { lastName: false, age: false })).toEqual([
+			'firstName',
+			'visits',
+			'status',
+		]);
+	});
+});
+
+describe('getCheckedVisibilityUpdate', () => {
+	const nodes = getNodes();
+
+	it('patches only the leaves whose checked state changed', () => {
+		expect(
+			getCheckedVisibilityUpdate(nodes, ['firstName', 'lastName', 'age'], ['firstName', 'age', 'visits']),
+		).toEqual({ lastName: false, visits: true });
+	});
+
+	it('never hides a locked leaf', () => {
+		expect(getCheckedVisibilityUpdate(nodes, ['firstName', 'lastName', 'age'], [])).toEqual({
+			lastName: false,
+			age: false,
+		});
 	});
 });
 
@@ -88,44 +178,21 @@ describe('getCheckedState', () => {
 
 describe('getAllColumnsTarget', () => {
 	it('covers every column in the tree that can be hidden', () => {
-		const tree = getColumnDisplayTree(getAllColumns(columns), { visits: false });
-
-		expect(getAllColumnsTarget(tree, { visits: false })).toEqual({
-			leafIdsToToggle: ['lastName', 'age', 'visits'],
+		expect(getAllColumnsTarget(getNodes(), { visits: false })).toEqual({
+			leafIdsToToggle: ['lastName', 'age', 'visits', 'status'],
 			checked: 'indeterminate',
 			locked: false,
 		});
 	});
 
 	it('is locked when no column can be hidden', () => {
-		const tree = getColumnDisplayTree(getAllColumns([{ id: 'name', enableHiding: false }]), {});
+		const nodes = getColumnDisplayNodes(getAllColumns([{ id: 'name', enableHiding: false }]), {
+			columnOrder: [],
+			stickyLeafIds: [],
+			stickyFirst: false,
+		});
 
-		expect(getAllColumnsTarget(tree, {})).toEqual({ leafIdsToToggle: [], checked: true, locked: true });
-	});
-});
-
-describe('filterColumnDisplayTree', () => {
-	const tree = getColumnDisplayTree(getAllColumns(columns), {});
-
-	it('returns the full tree for a blank query', () => {
-		expect(filterColumnDisplayTree(tree, '  ')).toBe(tree);
-	});
-
-	it('keeps a group with only its matching children', () => {
-		const result = filterColumnDisplayTree(tree, 'ag');
-
-		expect(ids(result)).toEqual(['identity']);
-		expect(ids(result[0]?.children ?? [])).toEqual(['age']);
-	});
-
-	it('keeps every child of a matching group, ignoring case', () => {
-		const result = filterColumnDisplayTree(tree, 'IDENT');
-
-		expect(ids(result[0]?.children ?? [])).toEqual(['firstName', 'lastName', 'age']);
-	});
-
-	it('returns nothing when no label matches', () => {
-		expect(filterColumnDisplayTree(tree, 'zzz')).toEqual([]);
+		expect(getAllColumnsTarget(nodes, {})).toEqual({ leafIdsToToggle: [], checked: true, locked: true });
 	});
 });
 
@@ -148,5 +215,50 @@ describe('getToggleVisibilityUpdate', () => {
 			lastName: true,
 			age: true,
 		});
+	});
+});
+
+describe('canDropColumnDisplayNode', () => {
+	const nodes = getNodes(defaultOrder, { stickyFirst: true, stickyLeafIds: ['visits'] });
+	const identity = findNode(nodes, 'identity');
+
+	const move = (
+		node: string,
+		target: string,
+		fromParent: ColumnDisplayNode | null,
+		toParent: ColumnDisplayNode | null,
+	): DsTreeMoveDetails<ColumnDisplayNode> => ({
+		node: findNode(nodes, node),
+		target: findNode(nodes, target),
+		position: 'before',
+		fromParent,
+		toParent,
+	});
+
+	it('allows a reorder within the same group', () => {
+		expect(canDropColumnDisplayNode(move('age', 'firstName', identity, identity))).toBe(true);
+	});
+
+	it('rejects moving a column out of or into a group', () => {
+		expect(canDropColumnDisplayNode(move('age', 'status', identity, null))).toBe(false);
+		expect(canDropColumnDisplayNode(move('status', 'age', null, identity))).toBe(false);
+	});
+
+	it('keeps top-level rows on their side of the sticky boundary', () => {
+		expect(canDropColumnDisplayNode(move('status', 'identity', null, null))).toBe(true);
+		expect(canDropColumnDisplayNode(move('status', 'visits', null, null))).toBe(false);
+		expect(canDropColumnDisplayNode(move('visits', 'identity', null, null))).toBe(false);
+	});
+});
+
+describe('getColumnOrderFromNodes', () => {
+	it('lists the leaves depth-first', () => {
+		expect(getColumnOrderFromNodes(getNodes(['status', 'age', 'firstName', 'lastName', 'visits']))).toEqual([
+			'status',
+			'age',
+			'firstName',
+			'lastName',
+			'visits',
+		]);
 	});
 });
