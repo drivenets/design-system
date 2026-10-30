@@ -1,4 +1,4 @@
-import { flexRender, type RowData } from '@tanstack/react-table';
+import { FlexRender, type RowData } from '@tanstack/react-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { ROW_ACTIONS_COLUMN_ID } from '../../utils/constants';
 import { DsTableRowActionsCell } from '../ds-table-row-actions-cell';
@@ -44,7 +44,7 @@ const CellContent = <TData extends RowData, TValue>({
 		return (
 			<DsTableEditableCell cell={cell}>
 				<div className={styles.tableCellEllipsis}>
-					{flexRender(cell.column.columnDef.cell, cell.getContext())}
+					<FlexRender cell={cell} />
 				</div>
 			</DsTableEditableCell>
 		);
@@ -52,7 +52,7 @@ const CellContent = <TData extends RowData, TValue>({
 
 	return (
 		<div className={styles.tableCellEllipsis}>
-			{flexRender(cell.column.columnDef.cell, cell.getContext())}
+			<FlexRender cell={cell} />
 		</div>
 	);
 };
