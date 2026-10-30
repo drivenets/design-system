@@ -1,7 +1,6 @@
 ---
 name: storybook
 description: Write and update Storybook stories for design-system components. Use when editing `*.stories.tsx`, adding story variants, decorators, or removing Storybook play functions.
-user-invocable: false
 ---
 
 # Storybook Skill

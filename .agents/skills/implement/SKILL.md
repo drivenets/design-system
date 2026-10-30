@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Drive a markdown ticket file to a tested, checker-clean implementation. Orchestrates plan, build, test, and verify using existing skills and subagents. Assumes the ticket is already grilled/clear. Use when the user points to a .md ticket, spec, or issue file and says implement, build, or ship it.
+description: Implement a ticket file (`tasks/*.md` or another markdown spec) end to end — plan, build, test and verify with the repo skills and subagents. Assumes the ticket is already grilled and clear. Use when the user points to a markdown ticket or spec and asks to implement or build it.
 ---
 
 # Implement (ticket → tested code)

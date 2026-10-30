@@ -24,6 +24,7 @@ Which skill to reach for, and how they chain: run **`/ask-matt`** (source: [ask-
 
 - Hand-kept skill catalogs — descriptions in `SKILL.md` are the list
 - Putting checker commands in rules — use `AGENTS.md` only
+- Linking side-effect skills (merge, publish, post) from `AGENTS.md` or other skills — see [write-a-skill](../../.agents/skills/write-a-skill/SKILL.md#skills-with-side-effects)
 
 ## Subagents
 

@@ -92,18 +92,7 @@ After migrating all play functions:
 
 ### Step 4: Verify
 
-```bash
-# Run the new browser tests
-pnpm --filter @drivenets/design-system test packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
-
-# Lint the changed files
-pnpm eslint packages/design-system/src/components/ds-{name}/
-
-# Typecheck
-pnpm --filter @drivenets/design-system typecheck
-```
-
-All three must pass before the migration is complete.
+Run `pnpm agent:check`. It runs the component's browser tests, lint and typecheck; all must pass before the migration is complete. The story edits add a docs-tests HINT: run the command it prints.
 
 ### Step 5: Report
 

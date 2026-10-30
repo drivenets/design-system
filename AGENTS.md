@@ -1,43 +1,38 @@
 # Code Quality Checkers
 
-Run checkers **only on changed files/directories** to keep feedback fast. Run from **workspace root**.
-
-## Linting (eslint)
+Run from the workspace root before you report work as done:
 
 ```bash
-pnpm eslint packages/design-system/src/components/ds-button/ds-button.tsx
-pnpm eslint packages/eslint-plugin/src/
+pnpm agent:check
+```
+
+It checks what the branch changed (commits plus uncommitted and untracked files) against the [diff base](#git--prs), and runs:
+
+- eslint on changed JS/TS files
+- typecheck for each changed package, and root `tsc` when root scripts changed
+- tests: the changed component folders in design-system (all of its tests when shared code like hooks, utils or styles changed), `vitest --changed` in other packages
+- `figma:lint` when a `*.figma.ts` changed
+- changeset check: fails when a published package's `src/` (not stories, tests, Code Connect or docs) or `package.json` changed and no `.changeset/*.md` names that package. Fix with `pnpm changelog`, or pass `--no-changeset` when the change isn't user-facing (refactor, internal tooling); the PR then needs the `skip changelog` label.
+
+It runs a package's full lint, typecheck and tests when shared config changed (root `package.json`, lockfile, `pnpm-workspace.yaml`, `tsconfig.base.json`, `eslint.config.base.ts`, `turbo.json`), when the package's own `package.json`, eslint, tsconfig or vitest config changed, or when it depends on a changed workspace package.
+
+It prints one PASS / FAIL / SKIP / HINT line per step, shows a step's output only when it fails, and exits non-zero on any failure. A HINT is a slower check that applies to this diff; the line gives the command. `pnpm agent:check --full` runs them too:
+
+- docs snippet tests when stories changed (see [`docs-tests`](.agents/skills/docs-tests/SKILL.md))
+- visual tests when design-system source changed. They need the Playwright server running (see [Visual tests](#visual-tests-screenshots)).
+
+While iterating, run a single check directly:
+
+```bash
 pnpm eslint --fix packages/design-system/src/components/ds-button/
-```
-
-## Type Checking (tsc)
-
-```bash
-pnpm --filter @drivenets/design-system typecheck
-pnpm --filter @drivenets/eslint-plugin-design-system typecheck
-pnpm --filter @drivenets/vite-plugin-design-system typecheck
-```
-
-## Tests (vitest)
-
-Test paths are **package-relative** — `--filter` runs vitest with the package as its cwd, not the workspace root.
-
-```bash
 pnpm --filter @drivenets/design-system test src/components/ds-button/ --run
-pnpm --filter @drivenets/design-system test tests/exports.unit.test.ts --run
-pnpm --filter @drivenets/eslint-plugin-design-system test src/__tests__/ --run
-pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
 ```
+
+Test paths are **package-relative**: `--filter` runs vitest with the package as its cwd.
 
 ## Figma Code Connect (parse)
 
-Validate that Code Connect `*.figma.ts` files parse when any of them change:
-
-```bash
-pnpm --filter @drivenets/design-system figma:lint
-```
-
-Runs `figma connect parse --exit-on-unreadable-files` (no Figma token required). Enforced in CI by the `figma-code-connect-lint` job.
+`pnpm --filter @drivenets/design-system figma:lint` runs `figma connect parse --exit-on-unreadable-files` (no Figma token required). `agent:check` runs it when a `*.figma.ts` changed; CI enforces it in the `figma-code-connect-lint` job.
 
 ## Visual tests (screenshots)
 
@@ -50,26 +45,6 @@ pnpm --filter @drivenets/design-system test:visual src/components/ds-table/ --ru
 ```
 
 Use `-u` only for intended visual changes, and review every changed PNG. Enforced in CI by the `visual-tests` job; on failure it uploads `visual-test-report.html` (baseline / actual / diff per story) as a run artifact. See [`storybook`](.agents/skills/storybook/SKILL.md#visual-tests).
-
-## When to Run What
-
-| Changed                                              | Run                                                                                                                                     |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `*.test.ts` file                                     | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
-| Docs snippet coverage                                | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
-| Source file with tests                               | Lint the file + run related tests                                                                                                       |
-| Source file, no tests                                | Lint the file + typecheck the package                                                                                                   |
-| SCSS file in design-system                           | Lint the file                                                                                                                           |
-| `*.figma.ts` (Code Connect)                          | `pnpm --filter @drivenets/design-system figma:lint`                                                                                     |
-| Component with `visual` stories (TSX, SCSS, stories) | `pnpm --filter @drivenets/design-system test:visual <component dir> --run` (server running)                                             |
-
-## Notes
-
-- `--run` flag prevents vitest watch mode
-- design-system typecheck auto-generates SCSS type defs
-- Prefer file-level lint, package-level typecheck, file-level test
-- Visual tests use the `storybook-visual` vitest project (excluded from default `pnpm test`; needs Docker)
-- Docs snippet tests use the `storybook-docs` vitest project (excluded from default `pnpm test`, like `requires-build`); one global runner covers all opted-in components — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) for workflow.
 
 ---
 
@@ -109,6 +84,8 @@ ds-{name}/
 **Primitives:** Ark UI first → TanStack for data-heavy → custom last. Radix: existing only.
 
 ## Other packages
+
+The commands below are for iterating on one package; `pnpm agent:check` is the check before you report done.
 
 ### `@drivenets/eslint-plugin-design-system`
 
@@ -170,7 +147,7 @@ Applies to every package. Comments drift from the code and every future reader p
 - **Branch:** include the Jira key and 2–4 lowercase kebab-case words, e.g. `fix/AR-1234-tooltip-overflow`. Cloud sessions and Routines keep their `claude/` prefix: `claude/AR-1234-tooltip-overflow`. A personal prefix such as `drivenets/<your-name>/` is fine.
 - **Commits:** `type(scope): description [AR-XXXX]` — Conventional Commits with the Jira key, enforced by [commitlint](commitlint.config.ts). Use `!` only for breaking changes.
 - **Forks:** push to your fork; open PRs against `drivenets/design-system` `main` (hotfix PRs: `release/**`). Start cloud sessions on your fork. Never push to a `dependabot/*` branch — take it over in your own branch and close the original.
-- **Diff base:** your fork's `main` is usually stale, so diff against the merge base with upstream:
+- **Diff base:** your fork's `main` is usually stale, so diff against the merge base with upstream (`pnpm agent:check` finds it for you):
 
   ```bash
   upstream=$(git remote -v | awk '/[:\/]drivenets\/design-system(\.git)? \(fetch\)/ {print $1; exit}')
