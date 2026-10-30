@@ -618,7 +618,6 @@ describe('DsAutocomplete', () => {
 				<TagsHarness initialValue={['production', 'staging', 'security']} onValueChange={onValueChange} />,
 			);
 
-			await tag('Staging').hover();
 			await removeButton('Staging').click();
 			expect(onValueChange).toHaveBeenLastCalledWith(['production', 'security']);
 			await expect.element(page.getByRole('listbox')).not.toBeInTheDocument();
@@ -637,7 +636,6 @@ describe('DsAutocomplete', () => {
 			await page.getByRole('combobox').click();
 			await expect.element(page.getByRole('listbox')).toBeVisible();
 
-			await tag('Staging').hover();
 			await removeButton('Staging').click();
 
 			expect(onValueChange).toHaveBeenLastCalledWith(['production']);
