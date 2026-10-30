@@ -49,11 +49,12 @@ const SHARED_CONFIG_FILES = new Set([
 ]);
 
 const PACKAGE_CONFIG_FILE =
-	/^packages\/[^/]+\/(package\.json|eslint\.config\.[cm]?[jt]s|stylelint\.config\.[cm]?js|tsconfig[^/]*\.json|vitest\.config\.[cm]?[jt]s)$/;
+	/^packages\/[^/]+\/(package\.json|eslint\.config\.[cm]?[jt]s|tsconfig[^/]*\.json|vitest\.config\.[cm]?[jt]s)$/;
 const DOCS_TESTS_INPUT =
 	/^packages\/design-system\/(.*\.stories\.tsx?|.*\/stories\/.*|.*\.docs\.(test\.ts|snap)|tests\/storybook\/.*)$/;
 const SCRIPT_FILE = /\.[cm]?[jt]sx?$/;
 const STYLE_FILE = /\.scss$/;
+const STYLELINT_CONFIG_FILE = /^packages\/[^/]+\/stylelint\.config\.[cm]?js$/;
 const CODE_FILE = /\.([cm]?[jt]sx?|scss)$/;
 const TEST_FILE = /\.test\.tsx?$/;
 const FIGMA_FILE = /\.figma(\.batch)?\.tsx?$/;
@@ -260,7 +261,11 @@ function runStylelint(): StepResult[] {
 	const steps = packages
 		.filter((pkg) => pkg.scripts['lint:styles'])
 		.flatMap((pkg) => {
-			if (fullCheckPackages.includes(pkg)) {
+			const configChanged = changedFiles.some(
+				(file) => isInPackage(pkg, file) && STYLELINT_CONFIG_FILE.test(file),
+			);
+
+			if (fullCheckPackages.includes(pkg) || configChanged) {
 				return [runPackageScript(`stylelint ${pkg.name}`, pkg, 'lint:styles')];
 			}
 

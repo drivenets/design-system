@@ -203,8 +203,7 @@ $disabled-opacity: 0.5;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
-	// stylelint-disable-next-line declaration-no-important -- stays neutral inside a selected tab
-	color: var(--font-main) !important;
+	color: var(--font-main);
 	cursor: pointer;
 	border-radius: var(--3xs);
 	transition:
@@ -226,8 +225,6 @@ $disabled-opacity: 0.5;
 	}
 
 	[aria-selected='true'] & {
-		color: var(--background-primary);
-
 		&:hover {
 			background: var(--background);
 		}

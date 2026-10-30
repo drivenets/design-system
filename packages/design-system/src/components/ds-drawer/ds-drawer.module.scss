@@ -72,7 +72,7 @@
 	// a third-party inline style is the canonical use of `!important`, and a closed
 	// drawer must never be a pointer target.
 	&[data-state='closed'] {
-		// stylelint-disable-next-line declaration-no-important -- beats Ark's inline pointer-events
+		// stylelint-disable-next-line declaration-no-important -- see above
 		pointer-events: none !important;
 	}
 

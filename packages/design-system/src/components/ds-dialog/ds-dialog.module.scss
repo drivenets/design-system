@@ -44,7 +44,7 @@
 }
 
 .customPlacement {
-	// stylelint-disable-next-line declaration-no-important -- a custom position drops the centering transform
+	// stylelint-disable-next-line declaration-no-important -- a custom position never keeps a transform, whatever the class order
 	transform: none !important;
 	max-width: none;
 	max-height: none;

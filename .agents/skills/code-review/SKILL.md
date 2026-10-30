@@ -30,7 +30,7 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 | `*.stories.tsx`                  | [storybook](../storybook/SKILL.md), [react-patterns](../react-patterns/SKILL.md)     |
 | `*.browser.test.tsx`             | [browser-tests](../browser-tests/SKILL.md)                                           |
 | `*.docs.test.ts` / `*.docs.snap` | [docs-tests](../docs-tests/SKILL.md)                                                 |
-| `*.module.scss`                  | [scss](../scss/SKILL.md)                                                             |
+| `*.scss`                         | [scss](../scss/SKILL.md)                                                             |
 | `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md)                                 |
 
 3. Check the diff against the [checklist](#checklist).
@@ -59,11 +59,10 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 
 ## Checklist
 
-Checks no tool or linked skill covers:
+Cross-cutting checks that no tool covers:
 
 - [ ] Matches the Figma design
 - [ ] New or changed interactions have behavioral coverage in `*.browser.test.tsx` ([browser-tests](../browser-tests/SKILL.md))
-- [ ] Sibling `*.figma.ts` mapping (`getEnum(...)`, `example` JSX) still matches the component API when props, variants or defaults changed; `agent:check` only checks that it parses
 - [ ] No cross-component internal imports: import another component's main export, not its utilities or subcomponents
 - [ ] Ark UI checked for an existing primitive before a custom implementation
 - [ ] No `overflow: hidden` as a band-aid for a layout bug
