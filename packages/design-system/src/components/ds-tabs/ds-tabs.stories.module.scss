@@ -34,7 +34,7 @@
 .customBadge {
 	padding: 2px 6px;
 	border-radius: 4px;
-	background: var(--background-primary, #004cff);
+	background: var(--background-primary);
 	color: white;
 	font-size: 10px;
 	font-weight: var(--font-weight-medium, 500);
@@ -44,8 +44,8 @@
 .customCount {
 	padding: 0 6px;
 	border-radius: 12px;
-	background: var(--background-tertiary, #e5e8ed);
-	color: var(--font-main, #26303b);
+	background: var(--background-tertiary);
+	color: var(--font-main);
 	font-size: 12px;
 	line-height: 20px;
 	height: 20px;

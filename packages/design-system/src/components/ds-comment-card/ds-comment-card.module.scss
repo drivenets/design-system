@@ -110,6 +110,7 @@ $transition-duration: 0.2s;
 		opacity $transition-duration ease,
 		visibility $transition-duration ease;
 
+	// stylelint-disable declaration-no-important -- overrides DsButton backgrounds
 	button {
 		background: transparent !important;
 
@@ -127,6 +128,7 @@ $transition-duration: 0.2s;
 			}
 		}
 	}
+	// stylelint-enable declaration-no-important
 }
 
 .body {
@@ -158,5 +160,6 @@ $transition-duration: 0.2s;
 }
 
 .dropdownContent {
+	// stylelint-disable-next-line declaration-no-important -- overrides DsDropdownMenu z-index
 	z-index: 1300 !important;
 }

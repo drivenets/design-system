@@ -28,14 +28,6 @@
 	flex: 1;
 }
 
-@mixin list-item-process {
-	width: 12px;
-	height: 12px;
-	border: 1px solid #fff;
-	border-radius: 50%;
-	margin: 7px;
-}
-
 @mixin list-item-selected {
 	color: var(--color-dap-blue-600);
 	background: var(--color-dap-purple-200);

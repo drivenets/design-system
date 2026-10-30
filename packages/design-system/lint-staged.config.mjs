@@ -1,3 +1,9 @@
 import baseConfig from '../../lint-staged.config.mjs';
 
-export default baseConfig;
+/**
+ * @type {import('lint-staged').Configuration}
+ */
+export default {
+	...baseConfig,
+	'*.scss': 'stylelint',
+};

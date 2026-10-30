@@ -19,6 +19,7 @@
 }
 
 .pulsingIcon {
+	// stylelint-disable-next-line color-no-hex -- loader color from Figma, no token
 	--loader-pulsing-color: #5452f6;
 
 	color: var(--loader-pulsing-color);
@@ -49,6 +50,7 @@
 }
 
 .spinnerGradient {
+	// stylelint-disable-next-line color-no-hex -- loader color from Figma, no token
 	--loader-spinner-color: #4192f6;
 
 	background: conic-gradient(from 90deg, var(--loader-spinner-color) 0deg, transparent 360deg);

@@ -45,6 +45,7 @@ $autocomplete-opacity-visible: 1;
 	}
 
 	&[data-focus] {
+		// stylelint-disable-next-line declaration-no-important -- beats input-container-states hover border
 		border-color: var(--form-control-border-color, var(--border-action-primary)) !important;
 	}
 
@@ -238,6 +239,7 @@ $autocomplete-opacity-visible: 1;
 
 		&:hover,
 		&[data-focus] {
+			// stylelint-disable-next-line declaration-no-important -- beats input-container-states hover border
 			border-color: var(--background-error) !important;
 		}
 	}

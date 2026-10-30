@@ -148,6 +148,7 @@
 	// land on a real interactive surface. Ark applies `visuallyHiddenStyle` inline
 	// (1x1, clipped, off-screen) which Playwright refuses to click; `!important`
 	// is required to beat inline-style specificity.
+	// stylelint-disable declaration-no-important -- see above
 	.hiddenInput {
 		position: absolute !important;
 		inset-block-start: 0 !important;
@@ -161,6 +162,7 @@
 		opacity: 0 !important;
 		cursor: pointer !important;
 	}
+	// stylelint-enable declaration-no-important
 
 	.iconCheck {
 		left: var(--icon-spacing);

@@ -14,7 +14,7 @@
 	--_shadow-size: 18px;
 	--_shadow-y-offset: 6px;
 
-	background: var(--color-dap-gray-050, #fff);
+	background: var(--color-dap-gray-050);
 	border-radius: 8px;
 	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(4, 69, 204, 0.3);
 	padding: 12px;
@@ -44,6 +44,7 @@
 }
 
 .customPlacement {
+	// stylelint-disable-next-line declaration-no-important -- a custom position never keeps a transform, whatever the class order
 	transform: none !important;
 	max-width: none;
 	max-height: none;

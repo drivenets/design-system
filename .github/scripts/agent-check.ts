@@ -53,6 +53,8 @@ const PACKAGE_CONFIG_FILE =
 const DOCS_TESTS_INPUT =
 	/^packages\/design-system\/(.*\.stories\.tsx?|.*\/stories\/.*|.*\.docs\.(test\.ts|snap)|tests\/storybook\/.*)$/;
 const SCRIPT_FILE = /\.[cm]?[jt]sx?$/;
+const STYLE_FILE = /\.scss$/;
+const STYLELINT_CONFIG_FILE = /^packages\/[^/]+\/stylelint\.config\.[cm]?js$/;
 const CODE_FILE = /\.([cm]?[jt]sx?|scss)$/;
 const TEST_FILE = /\.test\.tsx?$/;
 const FIGMA_FILE = /\.figma(\.batch)?\.tsx?$/;
@@ -112,6 +114,7 @@ if (fullCheckPackages.length > 0) {
 
 const results: StepResult[] = [
 	...runLint(),
+	...runStylelint(),
 	...runTypecheck(),
 	...runTests(),
 	runFigmaLint(),
@@ -252,6 +255,34 @@ function runEslint(files: string[]) {
 			fs.rmSync(scssTypesDir, { recursive: true, force: true });
 		}
 	}
+}
+
+function runStylelint(): StepResult[] {
+	const steps = packages
+		.filter((pkg) => pkg.scripts['lint:styles'])
+		.flatMap((pkg) => {
+			const configChanged = changedFiles.some(
+				(file) => isInPackage(pkg, file) && STYLELINT_CONFIG_FILE.test(file),
+			);
+
+			if (fullCheckPackages.includes(pkg) || configChanged) {
+				return [runPackageScript(`stylelint ${pkg.name}`, pkg, 'lint:styles')];
+			}
+
+			const files = existingFiles.filter((file) => isInPackage(pkg, file) && STYLE_FILE.test(file));
+
+			return files.length > 0
+				? [
+						run(
+							`stylelint (${files.length.toString()} file(s))`,
+							path.join(pkg.dir, 'node_modules/.bin/stylelint'),
+							files,
+						),
+					]
+				: [];
+		});
+
+	return steps.length > 0 ? steps : [skip('stylelint', 'no SCSS files changed')];
 }
 
 function runTypecheck(): StepResult[] {

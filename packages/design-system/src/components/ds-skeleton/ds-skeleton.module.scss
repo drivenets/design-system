@@ -3,7 +3,8 @@
 }
 
 .gray {
-	--skeleton-gray-base: #f3f5fa;
+	--skeleton-gray-base: var(--color-dap-gray-100);
+	// stylelint-disable-next-line color-no-hex -- shimmer color from Figma, no token
 	--skeleton-gray-accent: #e3e3e3;
 
 	background: linear-gradient(
@@ -18,8 +19,10 @@
 }
 
 .blue {
+	// stylelint-disable color-no-hex -- shimmer colors from Figma, no tokens
 	--skeleton-blue-accent: #759cec;
 	--skeleton-blue-base: #dfe9ff;
+	// stylelint-enable color-no-hex
 
 	background: linear-gradient(
 		90deg,

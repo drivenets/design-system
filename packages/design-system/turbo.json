@@ -22,6 +22,10 @@
 		"test:storybook-docs": {
 			"dependsOn": ["build:storybook", "install:playwright"]
 		},
+		"lint:styles": {
+			"dependsOn": [],
+			"inputs": ["src/**/*.scss", "stylelint.config.mjs"]
+		},
 		"figma:lint": {
 			"dependsOn": [],
 			"inputs": ["**/*.figma.ts", "figma.config.json"]
