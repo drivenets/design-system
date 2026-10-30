@@ -5,7 +5,6 @@ import {
 	type RowSelectionState,
 	type ColumnFiltersState,
 	type ColumnPinningState,
-	type SortingState,
 	useTable,
 	type ColumnVisibilityState,
 } from '@tanstack/react-table';
@@ -90,7 +89,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const columnsProp: DsColumnDef<TData, any>[] = rawColumns;
 	const [data, setData] = React.useState(tableData);
-	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<ColumnVisibilityState>({});
 	const [internalStickyColumns, setInternalStickyColumns] = React.useState<DsTableStickyColumns>({});
@@ -141,12 +139,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		() => ({ ...baseColumnVisibility, ...collapsedVisibility }),
 		[baseColumnVisibility, collapsedVisibility],
 	);
-
-	const handleSortingChange = (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
-		const newSorting = typeof updaterOrValue === 'function' ? updaterOrValue(sorting) : updaterOrValue;
-		setSorting(newSorting);
-		onSortingChange?.(newSorting);
-	};
 
 	const handleRowSelectionChange = (
 		updaterOrValue: RowSelectionState | ((old: RowSelectionState) => RowSelectionState),
@@ -239,7 +231,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		features: dsTableFeatures,
 		data: loading ? skeletonData : reorderable ? data : tableData,
 		columns: loading ? skeletonColumns : columns,
-		onSortingChange: handleSortingChange,
 		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
 		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onColumnPinningChange: handleColumnPinningChange,
@@ -250,7 +241,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		getRowCanExpand: typeof expandable === 'function' ? (row) => expandable(row.original) : () => expandable,
 		...resize.tableOptions,
 		state: {
-			sorting,
 			columnFilters,
 			columnVisibility,
 			columnPinning,
@@ -259,6 +249,16 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		},
 		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
+
+	const onSortingChangeRef = React.useRef(onSortingChange);
+	onSortingChangeRef.current = onSortingChange;
+
+	React.useEffect(() => {
+		const { unsubscribe } = table.atoms.sorting.subscribe((nextSorting) =>
+			onSortingChangeRef.current?.(nextSorting),
+		);
+		return unsubscribe;
+	}, [table.atoms.sorting]);
 
 	const { columnSizeVars, activeResize, context: resizeContext } = resize.bind(table);
 

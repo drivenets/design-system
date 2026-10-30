@@ -110,6 +110,21 @@ describe('DsTable', () => {
 		expect(onSortingChange).toHaveBeenCalledTimes(2);
 	});
 
+	it('should call the latest onSortingChange after it changes between renders', async () => {
+		const initialOnSortingChange = vi.fn();
+		const nextOnSortingChange = vi.fn();
+
+		const { rerender } = await page.render(
+			<DsTable columns={columns} data={defaultData} onSortingChange={initialOnSortingChange} />,
+		);
+		await rerender(<DsTable columns={columns} data={defaultData} onSortingChange={nextOnSortingChange} />);
+
+		await page.getByText('First Name').click();
+
+		expect(nextOnSortingChange).toHaveBeenCalledExactlyOnceWith([{ id: 'firstName', desc: false }]);
+		expect(initialOnSortingChange).not.toHaveBeenCalled();
+	});
+
 	it('should show empty state when no data is provided', async () => {
 		await page.render(
 			<DsTable columns={columns} data={[]} emptyState={<div>No matching records found</div>} />,
