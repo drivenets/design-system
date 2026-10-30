@@ -89,15 +89,12 @@ $warning-dot-size: 8px;
 	}
 
 	.deleteButton {
-		opacity: 0;
-		visibility: hidden;
-		max-width: 0;
+		flex-shrink: 0;
 		display: flex;
+		margin-left: var(--3xs);
 		outline-color: var(--border-action-secondary);
 		user-select: none;
-		transition-property:
-			background, border-color, width, max-width, color, fill, stroke, opacity, transform, outline-color,
-			visibility, margin-left;
+		transition-property: background, color, outline-color;
 		transition-timing-function: ease-out;
 		transition-duration: var(--transition-duration);
 		color: var(--icon-action-secondary);
@@ -121,15 +118,6 @@ $warning-dot-size: 8px;
 		&:hover {
 			background: var(--background-action-secondary-hover);
 		}
-	}
-
-	&:hover:not(.disabled) .deleteButton,
-	&:focus-within:not(.disabled) .deleteButton,
-	&.selected:not(.disabled) .deleteButton {
-		opacity: 1;
-		visibility: visible;
-		max-width: 50px;
-		margin-left: var(--3xs);
 	}
 }
 
