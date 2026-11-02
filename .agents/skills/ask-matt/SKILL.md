@@ -10,12 +10,12 @@ You don't remember every skill, so ask. This is the **flow** view — how the sk
 
 ## Main flow: idea → ship
 
-The route most component work travels. With a ticket file, **`/implement`** runs steps 2–4 for you.
+The route most component work travels. With a ticket file, **`/implement`** runs steps 2–4 for you and stops before `/create-pr`. A Jira ticket that is already clear skips step 1: paste it into `tasks/AR-XXXX-….md` and run `/implement` on it.
 
 1. **Sharpen** — **`/grill-me`** interviews you relentlessly, one question at a time, until every branch of the decision tree is resolved. Switch to **`/grill-with-docs`** when the work touches domain language or irreversible architecture: it challenges against `CONTEXT.md` + ADRs and updates them inline.
 2. **Plan** — **`/to-plan`** packages the locked decisions into a short execution plan for the build session. No re-interview, no scope invention — only what was decided.
 3. **Build** — take before screenshots first ([create-pr](../create-pr/SCREENSHOTS.md)), then scaffold with **`/component-scaffold`** (or **`/figma-to-component`** from a Figma URL), then build test-first with **`/tdd`**, stories with **`/storybook`**, behavior with **`/browser-tests`**, docs coverage with **`/docs-tests`**. Editing a specific file pulls its reference: `/component-api`, `/react-patterns`, `/ark-ui`, `/scss`, `/ts-standards`.
-4. **Ship** — **`/pr-prep`** runs the checks + changeset; **`/code-review`** does the two-axis (Standards + Spec) review of the diff; **`/create-pr`** opens the PR with before/after screenshots.
+4. **Ship** — **`/pr-prep`** runs `pnpm agent:check`, applies **`/code-review`** to the diff and checks the changeset wording; **`/create-pr`** opens the PR with before/after screenshots. Run `/code-review` alone only to review a diff without preparing a PR.
 
 ## On-ramps
 
