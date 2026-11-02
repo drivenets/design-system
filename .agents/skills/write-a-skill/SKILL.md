@@ -88,6 +88,13 @@ Helps with documents.
 
 The bad example gives your agent no way to distinguish this from other document skills.
 
+## Skills with side effects
+
+A skill that merges, publishes or posts outside the session must run only when a person asks for it by name:
+
+- Set `disable-model-invocation: true` and leave trigger words out of the description.
+- Link it only from Routine docs, never from `AGENTS.md` or another skill. The flag blocks the Skill tool, but the agent can still Read a linked `SKILL.md` and follow it.
+
 ## When to Add Scripts
 
 Add utility scripts when:
@@ -111,6 +118,7 @@ Split into separate files when:
 After drafting, verify:
 
 - [ ] Description includes triggers ("Use when...")
+- [ ] Side-effect skills: hidden from the model, no triggers, linked only from Routines
 - [ ] SKILL.md under 100 lines
 - [ ] No time-sensitive info
 - [ ] Consistent terminology

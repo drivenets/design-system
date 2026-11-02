@@ -11,7 +11,7 @@ import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { isEditingCell } from '../../utils/editing';
 import { getBodyCellLayoutProps, type BodyCellLayoutProps } from '../../utils/sticky-columns';
-import { isFirstLeafColumnOfGroup } from '../../grouping';
+import { getGroupBoundaryColumnIds } from '../../grouping';
 import {
 	EXPANDER_COLUMN_ID,
 	REORDER_COLUMN_ID,
@@ -69,6 +69,8 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
+	const visibleCells = row.getVisibleCells();
+	const groupBoundaryIds = getGroupBoundaryColumnIds(visibleCells.map((cell) => cell.column));
 
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: row.id,
@@ -111,7 +113,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{row.getVisibleCells().map((cell) => {
+				{visibleCells.map((cell) => {
 					const { style: cellStyle, stickyAttributes } = getBodyCellLayoutProps(cell, !!resizeSizingReady);
 
 					if (cell.column.id === REORDER_COLUMN_ID) {
@@ -135,7 +137,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 								cell.column.id === ROW_ACTIONS_COLUMN_ID && styles.rowActionsCell,
-								isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
+								groupBoundaryIds.has(cell.column.id) && styles.groupStart,
 								typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 							)}
 							style={cellStyle}
@@ -150,7 +152,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 
 			{isExpanded && renderExpandedRow && (
 				<TableRow className={styles.expandedRow}>
-					<TableCell colSpan={row.getVisibleCells().length} className={styles.tableCell}>
+					<TableCell colSpan={visibleCells.length} className={styles.tableCell}>
 						<div data-expanded-content>{renderExpandedRow(row.original)}</div>
 					</TableCell>
 				</TableRow>

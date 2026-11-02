@@ -1,8 +1,6 @@
 ---
 name: component-scaffold
 description: Scaffold a new ds-* component (files, barrel export, validation). Use when the user asks to create, scaffold, or add a new component.
-user-invocable: false
-disable-model-invocation: true
 ---
 
 # Component Scaffold Skill

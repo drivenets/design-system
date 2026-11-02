@@ -1,8 +1,17 @@
-import { TreeView } from '@ark-ui/react/tree-view';
+import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from 'react';
+import { TreeView, useTreeViewContext, useTreeViewNodeContext } from '@ark-ui/react/tree-view';
 import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
 import styles from './ds-tree.module.scss';
+import {
+	DsTreeDragHandle,
+	DsTreeSortable,
+	DsTreeSortableBranchControl,
+	DsTreeSortableItem,
+	useDsTreeSortableBranchAttributes,
+	useDsTreeSortableContext,
+} from './ds-tree-sortable';
 import type {
 	DsTreeBranchContentProps,
 	DsTreeBranchControlProps,
@@ -10,6 +19,7 @@ import type {
 	DsTreeBranchIndicatorProps,
 	DsTreeBranchProps,
 	DsTreeBranchTextProps,
+	DsTreeCheckedState,
 	DsTreeItemActionProps,
 	DsTreeItemIndicatorProps,
 	DsTreeItemProps,
@@ -79,17 +89,60 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (
 	</TreeView.Tree>
 );
 
-const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (
-	<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>
-		{children}
-	</TreeView.Branch>
-);
+interface DsTreeRowCheckbox {
+	checked: DsTreeCheckedState | undefined;
+}
 
-const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (
-	<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>
-		{children}
-	</TreeView.BranchControl>
-);
+type RegisterRowCheckbox = (checkbox: DsTreeRowCheckbox | null) => void;
+
+const DsTreeRowCheckboxContext = createContext<RegisterRowCheckbox | null>(null);
+
+const toAriaChecked = (checked: DsTreeCheckedState): AriaAttributes['aria-checked'] =>
+	checked === 'indeterminate' ? 'mixed' : checked;
+
+// Screen readers announce the treeitem, not its inner checkbox: a leaf's focused row, or a group's
+// Branch around its focused BranchControl (a `button`, which can't be checked), where Ark puts `aria-expanded`
+const useRowCheckbox = () => {
+	const { checked } = useTreeViewNodeContext();
+	const [checkbox, setCheckbox] = useState<DsTreeRowCheckbox | null>(null);
+
+	return {
+		register: setCheckbox,
+		ariaChecked: checkbox ? toAriaChecked(checkbox.checked ?? checked) : undefined,
+	};
+};
+
+const toDataState = (checked: DsTreeCheckedState): 'checked' | 'unchecked' | 'indeterminate' =>
+	checked === 'indeterminate' ? 'indeterminate' : checked ? 'checked' : 'unchecked';
+
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => {
+	const sortableAttributes = useDsTreeSortableBranchAttributes();
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		<DsTreeRowCheckboxContext value={rowCheckbox.register}>
+			<TreeView.Branch
+				{...rest}
+				{...sortableAttributes}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.branch, className)}
+				style={style}
+			>
+				{children}
+			</TreeView.Branch>
+		</DsTreeRowCheckboxContext>
+	);
+};
+
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => {
+	const Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;
+
+	return (
+		<Control {...rest} className={classNames(styles.branchControl, className)} style={style}>
+			{children}
+		</Control>
+	);
+};
 
 const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) => (
 	<TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}>
@@ -113,11 +166,24 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />
 );
 
-const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (
-	<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
-		{children}
-	</TreeView.Item>
-);
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => {
+	const Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;
+	const rowCheckbox = useRowCheckbox();
+
+	return (
+		<DsTreeRowCheckboxContext value={rowCheckbox.register}>
+			<Item
+				{...rest}
+				aria-checked={rowCheckbox.ariaChecked}
+				className={classNames(styles.item, className)}
+				style={style}
+				onClick={onClick}
+			>
+				{children}
+			</Item>
+		</DsTreeRowCheckboxContext>
+	);
+};
 
 const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (
 	<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>
@@ -131,18 +197,64 @@ const DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) => 
 	</span>
 );
 
-const DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) => (
-	<TreeView.NodeCheckbox className={classNames(styles.nodeCheckbox, className)} style={style}>
-		<div className={styles.nodeCheckboxBox}>
-			<TreeView.NodeCheckboxIndicator
-				className={styles.nodeCheckboxIndicator}
-				indeterminate={<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" />}
-			>
-				<DsIcon icon="check_small" size="tiny" variant="outlined" />
-			</TreeView.NodeCheckboxIndicator>
-		</div>
-	</TreeView.NodeCheckbox>
+const checkIcon = <DsIcon icon="check_small" size="tiny" variant="outlined" aria-hidden />;
+const indeterminateIcon = (
+	<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" aria-hidden />
 );
+
+const DsTreeNodeCheckbox = ({ className, style, checked, disabled = false }: DsTreeNodeCheckboxProps) => {
+	const { collection } = useTreeViewContext();
+	const nodeState = useTreeViewNodeContext();
+	const registerRowCheckbox = use(DsTreeRowCheckboxContext);
+	const name = (collection.at(nodeState.indexPath) as DsTreeNode | undefined)?.name;
+
+	useEffect(() => {
+		registerRowCheckbox?.({ checked });
+
+		return () => registerRowCheckbox?.(null);
+	}, [registerRowCheckbox, checked]);
+
+	const overrides = {
+		...(checked !== undefined && {
+			'data-state': toDataState(checked),
+			'aria-checked': toAriaChecked(checked),
+		}),
+		...(disabled && {
+			'data-disabled': '',
+			'aria-disabled': true,
+			// Ark can only disable a whole node, so the click is stopped before its handler, which skips prevented clicks
+			onClickCapture: (event: MouseEvent<HTMLSpanElement>) => {
+				event.preventDefault();
+				event.stopPropagation();
+			},
+		}),
+	};
+
+	return (
+		// Ark names the checkbox from nothing, and the icons' ligature text would otherwise be read
+		<TreeView.NodeCheckbox
+			className={classNames(styles.nodeCheckbox, className)}
+			style={style}
+			aria-label={name}
+			{...overrides}
+		>
+			<div className={styles.nodeCheckboxBox}>
+				{checked === undefined ? (
+					<TreeView.NodeCheckboxIndicator
+						className={styles.nodeCheckboxIndicator}
+						indeterminate={indeterminateIcon}
+					>
+						{checkIcon}
+					</TreeView.NodeCheckboxIndicator>
+				) : (
+					<span className={styles.nodeCheckboxIndicator}>
+						{checked === 'indeterminate' ? indeterminateIcon : checked && checkIcon}
+					</span>
+				)}
+			</div>
+		</TreeView.NodeCheckbox>
+	);
+};
 
 const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) => (
 	<button
@@ -191,4 +303,6 @@ export const DsTree = {
 	ItemIndicator: DsTreeItemIndicator,
 	ItemAction: DsTreeItemAction,
 	NodeCheckbox: DsTreeNodeCheckbox,
+	Sortable: DsTreeSortable,
+	DragHandle: DsTreeDragHandle,
 };
