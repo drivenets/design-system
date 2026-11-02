@@ -6,8 +6,8 @@ interface DeviceRows {
 	right: number;
 }
 
-export const MAX_DRAWN_DEVICES = 15;
-export const DRAWN_DEVICES_WITH_MORE = 13;
+const MAX_DRAWN_DEVICES = 15;
+const DRAWN_DEVICES_WITH_MORE = 13;
 
 const rowsByCount: readonly DeviceRows[] = Object.freeze([
 	{ top: 0, left: 0, right: 0 },
