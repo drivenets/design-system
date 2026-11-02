@@ -15,7 +15,7 @@
 .schemaContainer {
 	display: flex;
 	gap: 20px;
-	border-bottom: 1px solid #eaeaea;
+	border-bottom: 1px solid var(--border);
 }
 
 .iconButton-small {
@@ -53,7 +53,7 @@
 	font-size: 16px;
 	font-weight: 500;
 	margin: 0;
-	color: #666;
+	color: var(--font-secondary);
 	text-transform: capitalize;
 }
 

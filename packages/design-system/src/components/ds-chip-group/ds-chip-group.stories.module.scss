@@ -12,13 +12,13 @@
 .addButton {
 	padding: 8px 16px;
 	border-radius: 4px;
-	border: 1px solid #ccc;
+	border: 1px solid var(--border);
 	background: white;
 	cursor: pointer;
 }
 
 .infoText {
 	font-size: 12px;
-	color: #666;
+	color: var(--font-secondary);
 	align-self: center;
 }

@@ -83,4 +83,3 @@ Once every component is in the allowlist, delete `COMPONENTS` and iterate `Objec
 
 - Story authoring: [storybook](../storybook/SKILL.md)
 - Behavioral tests: [browser-tests](../browser-tests/SKILL.md)
-- PR snippet check: [pr-prep](../pr-prep/SKILL.md)
