@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { mapPinCategories, mapPinPlanningStatuses, mapPinSizes } from './ds-map-pin.types';
+import { mapPinColors, mapPinRings, mapPinSizes } from './ds-map-pin.types';
 import { DsMapPin } from './index';
 import { DsStack } from '../ds-stack';
 
@@ -9,8 +9,8 @@ const meta: Meta<typeof DsMapPin> = {
 	parameters: { layout: 'centered' },
 	argTypes: {
 		size: { control: 'select', options: mapPinSizes },
-		category: { control: 'select', options: mapPinCategories },
-		planning: { control: 'select', options: mapPinPlanningStatuses },
+		color: { control: 'select', options: mapPinColors },
+		ring: { control: 'select', options: mapPinRings },
 		label: { control: 'text' },
 		count: { control: 'number' },
 		selected: { control: 'boolean' },
@@ -26,31 +26,31 @@ const meta: Meta<typeof DsMapPin> = {
 export default meta;
 type Story = StoryObj<typeof DsMapPin>;
 
-/** A deployed central office. Hover the pin to see it grow from its tip. */
+/** A pin with a short code. Hover it to see it lift from its tip. */
 export const Default: Story = {
 	args: {
 		size: 'large',
-		category: 'central-office',
+		color: 'blue',
 		label: 'T1',
 		'aria-label': 'Central office T1, Haifa North',
 	},
 };
 
-/** Medium is for central offices T3 and below and for access sites. */
-export const AccessSite: Story = {
+/** Use a different color for each kind of location, e.g. orange for access sites in Network View. */
+export const Color: Story = {
 	args: {
 		size: 'medium',
-		category: 'access-site',
+		color: 'orange',
 		label: 'FST',
 		'aria-label': 'Access site FST, Haifa North',
 	},
 };
 
-/** Small is for customer sites; show a count when several share one location. */
-export const CustomerSiteCount: Story = {
+/** Show a count when several items share one location. */
+export const Count: Story = {
 	args: {
 		size: 'small',
-		category: 'fiber-broadband',
+		color: 'teal',
 		count: 8,
 		'aria-label': '8 fiber broadband customer sites',
 	},
@@ -60,29 +60,29 @@ export const CustomerSiteCount: Story = {
 export const CappedCount: Story = {
 	args: {
 		size: 'small',
-		category: 'carrier-ethernet',
+		color: 'pink',
 		count: 240,
 		'aria-label': '240 carrier ethernet customer sites',
 	},
 };
 
-/** A dotted ring marks a site that is approved but not deployed yet. */
-export const Planned: Story = {
+/** A dotted ring marks a secondary status, e.g. a planned site in Network View. */
+export const DottedRing: Story = {
 	args: {
 		size: 'large',
-		category: 'central-office',
-		planning: 'planned',
+		color: 'blue',
+		ring: 'dotted',
 		label: 'T2',
 		'aria-label': 'Central office T2, Haifa North, planned',
 	},
 };
 
-/** A dashed ring marks a site that is still being designed. */
-export const Designed: Story = {
+/** A dashed ring marks another status, e.g. a site still being designed in Network View. */
+export const DashedRing: Story = {
 	args: {
 		size: 'medium',
-		category: 'access-site',
-		planning: 'designed',
+		color: 'orange',
+		ring: 'dashed',
 		label: 'PFP',
 		'aria-label': 'Access site PFP, Haifa North, designed',
 	},
@@ -92,7 +92,7 @@ export const Designed: Story = {
 export const Selected: Story = {
 	args: {
 		size: 'large',
-		category: 'central-office',
+		color: 'blue',
 		label: 'T1',
 		selected: true,
 		'aria-label': 'Central office T1, Haifa North',
@@ -103,7 +103,7 @@ export const Selected: Story = {
 export const Dragging: Story = {
 	args: {
 		size: 'medium',
-		category: 'central-office',
+		color: 'blue',
 		label: 'T3',
 		dragging: true,
 		'aria-label': 'Central office T3, Haifa North',
@@ -115,37 +115,31 @@ export const AllVariants: Story = {
 	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="column" gap="var(--standard)">
-			{mapPinCategories.map((category) => (
-				<DsStack key={category} direction="row" gap="var(--standard)" alignItems="flex-end">
-					{mapPinPlanningStatuses.map((planning) => (
-						<DsStack key={planning} direction="row" gap="var(--sm)" alignItems="flex-end">
-							<DsMapPin
-								size={category === 'central-office' ? 'large' : 'medium'}
-								category={category}
-								planning={planning}
-								label={category === 'central-office' ? 'T1' : 'CE'}
-								aria-label={`${category} ${planning}`}
-							/>
+			{mapPinColors.map((color) => (
+				<DsStack key={color} direction="row" gap="var(--standard)" alignItems="flex-end">
+					{mapPinRings.map((ring) => (
+						<DsStack key={ring} direction="row" gap="var(--sm)" alignItems="flex-end">
+							<DsMapPin size="large" color={color} ring={ring} label="T1" aria-label={`${color} ${ring}`} />
 							<DsMapPin
 								size="small"
-								category={category}
-								planning={planning}
+								color={color}
+								ring={ring}
 								count={8}
-								aria-label={`${category} ${planning} count`}
+								aria-label={`${color} ${ring} count`}
 							/>
 							<DsMapPin
-								category={category}
-								planning={planning}
+								color={color}
+								ring={ring}
 								label="T4+"
 								selected
-								aria-label={`${category} ${planning} selected`}
+								aria-label={`${color} ${ring} selected`}
 							/>
 							<DsMapPin
-								category={category}
-								planning={planning}
+								color={color}
+								ring={ring}
 								label="T4+"
 								dragging
-								aria-label={`${category} ${planning} dragging`}
+								aria-label={`${color} ${ring} dragging`}
 							/>
 						</DsStack>
 					))}

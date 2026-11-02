@@ -3,41 +3,36 @@ import type { CSSProperties, MouseEvent, Ref } from 'react';
 export const mapPinSizes = ['large', 'medium', 'small'] as const;
 export type MapPinSize = (typeof mapPinSizes)[number];
 
-export const mapPinCategories = [
-	'central-office',
-	'access-site',
-	'fiber-broadband',
-	'carrier-ethernet',
-] as const;
-export type MapPinCategory = (typeof mapPinCategories)[number];
+export const mapPinColors = ['blue', 'orange', 'teal', 'pink'] as const;
+export type MapPinColor = (typeof mapPinColors)[number];
 
-export const mapPinPlanningStatuses = ['deployed', 'planned', 'designed'] as const;
-export type MapPinPlanning = (typeof mapPinPlanningStatuses)[number];
+export const mapPinRings = ['none', 'dotted', 'dashed'] as const;
+export type MapPinRing = (typeof mapPinRings)[number];
 
 export interface DsMapPinProps {
 	ref?: Ref<HTMLButtonElement>;
 	/**
-	 * `large` for central offices T1/T2, `medium` for other central offices and access sites,
-	 * `small` for customer sites.
+	 * Use one size per kind of location so pins stay comparable on the map.
 	 * @default 'medium'
 	 */
 	size?: MapPinSize;
 	/**
-	 * Sets the core color.
-	 * @default 'central-office'
+	 * Core color. Map each kind of location to one color and keep it consistent across the map.
+	 * @default 'blue'
 	 */
-	category?: MapPinCategory;
+	color?: MapPinColor;
 	/**
-	 * `planned` adds a dotted ring around the core, `designed` a dashed ring.
-	 * @default 'deployed'
+	 * Ring around the core, in the core color, for a secondary status such as planned (`dotted`)
+	 * or in design (`dashed`).
+	 * @default 'none'
 	 */
-	planning?: MapPinPlanning;
+	ring?: MapPinRing;
 	/**
-	 * Short site code shown in the core, e.g. `"T1"`. Ignored when `count` is set.
+	 * Short code shown in the core, e.g. `"T1"`. Ignored when `count` is set.
 	 */
 	label?: string;
 	/**
-	 * Number shown in the core instead of `label`, e.g. customer sites at one location.
+	 * Number shown in the core instead of `label`, e.g. how many items share one location.
 	 * Values above 99 show as `99+`.
 	 */
 	count?: number;
@@ -52,8 +47,8 @@ export interface DsMapPinProps {
 	 */
 	dragging?: boolean;
 	/**
-	 * Accessible name of the site, e.g. `"Central office T1, Haifa North, planned"`.
-	 * Required because the code in the core does not identify the site on its own.
+	 * Accessible name of the location, e.g. `"Central office T1, Haifa North, planned"`.
+	 * Required because the code in the core does not identify the location on its own.
 	 */
 	'aria-label': string;
 	className?: string;

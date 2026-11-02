@@ -1,9 +1,12 @@
 @use '../../styles/typography';
 
 $hover-scale: 1.1;
+$hover-easing: cubic-bezier(0.2, 0, 0, 1);
 $state-outline-width: 2px;
 $ring-width: 2px;
 $small-content-font-size: 10px;
+$elevation-rest: drop-shadow(0 1px 3px rgb(0 0 0 / 30%));
+$elevation-hover: drop-shadow(0 3px 6px rgb(0 0 0 / 30%));
 $z-index-selected: 1;
 $z-index-hover: 2;
 $z-index-dragging: 3;
@@ -19,27 +22,27 @@ $z-index-dragging: 3;
 	line-height: 0;
 	cursor: pointer;
 	transform-origin: 50% 100%;
-	transition: transform 0.2s;
+	transition: transform 0.2s $hover-easing;
 	appearance: none;
 
-	&[data-category='access-site'] {
+	&[data-color='orange'] {
 		--map-pin-color: var(--schema-orange);
 	}
 
-	&[data-category='fiber-broadband'] {
+	&[data-color='teal'] {
 		--map-pin-color: var(--schema-teal);
 	}
 
-	&[data-category='carrier-ethernet'] {
+	&[data-color='pink'] {
 		--map-pin-color: var(--schema-pink);
 	}
 
-	&[data-planning='planned'] .ring {
+	&[data-ring='dotted'] .ring {
 		stroke-dasharray: 0 4;
 		stroke-linecap: round;
 	}
 
-	&[data-planning='designed'] .ring {
+	&[data-ring='dashed'] .ring {
 		stroke-dasharray: 9 5;
 	}
 
@@ -59,6 +62,10 @@ $z-index-dragging: 3;
 	&:hover {
 		z-index: $z-index-hover;
 		transform: scale($hover-scale);
+
+		.graphic {
+			filter: $elevation-hover;
+		}
 	}
 
 	&[data-dragging] {
@@ -77,13 +84,18 @@ $z-index-dragging: 3;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		transition: none;
+		&,
+		.graphic {
+			transition: none;
+		}
 	}
 }
 
 .graphic {
 	display: block;
 	overflow: visible;
+	filter: $elevation-rest;
+	transition: filter 0.2s $hover-easing;
 }
 
 .outline {

@@ -37,22 +37,20 @@ describe('DsMapPin', () => {
 
 	it('shows the count instead of the label and caps it at 99+', async () => {
 		const { rerender } = await page.render(
-			<DsMapPin size="small" category="fiber-broadband" label="FB" count={8} aria-label="8 customer sites" />,
+			<DsMapPin size="small" color="teal" label="FB" count={8} aria-label="8 customer sites" />,
 		);
 
 		await expect.element(page.getByText('8', { exact: true })).toBeInTheDocument();
 		await expect.element(page.getByText('FB')).not.toBeInTheDocument();
 
-		await rerender(
-			<DsMapPin size="small" category="fiber-broadband" count={240} aria-label="240 customer sites" />,
-		);
+		await rerender(<DsMapPin size="small" color="teal" count={240} aria-label="240 customer sites" />);
 
 		await expect.element(page.getByText('99+')).toBeInTheDocument();
 	});
 
 	it('keeps the visible code out of the accessible name', async () => {
 		await page.render(
-			<DsMapPin label="T1" aria-label="Central office T1, Haifa North, planned" planning="planned" />,
+			<DsMapPin label="T1" aria-label="Central office T1, Haifa North, planned" ring="dotted" />,
 		);
 
 		await expect

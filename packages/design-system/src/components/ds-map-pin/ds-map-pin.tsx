@@ -7,16 +7,16 @@ const formatCount = (count: number) =>
 	count > MAX_VISIBLE_COUNT ? `${String(MAX_VISIBLE_COUNT)}+` : String(count);
 
 /**
- * @summary Marker for one site on a map: category color, planning ring and a short code or count.
+ * @summary Marker for one location on a map: a colored core, an optional status ring and a short code or count.
  *
  * The pin's tip is the bottom-center of the element; position the element so that point sits on the
- * site's coordinates. Hover scales the pin from its tip, so the anchor never moves.
+ * location's coordinates. Hover lifts the pin from its tip, so the anchor never moves.
  */
 const DsMapPin = ({
 	ref,
 	size = 'medium',
-	category = 'central-office',
-	planning = 'deployed',
+	color = 'blue',
+	ring = 'none',
 	label,
 	count,
 	selected = false,
@@ -36,8 +36,8 @@ const DsMapPin = ({
 			className={classNames(styles.pin, className)}
 			style={style}
 			data-size={size}
-			data-category={category}
-			data-planning={planning}
+			data-color={color}
+			data-ring={ring}
 			data-dragging={dragging || undefined}
 			aria-label={ariaLabel}
 			aria-current={selected ? true : undefined}
@@ -52,9 +52,7 @@ const DsMapPin = ({
 				focusable="false"
 			>
 				<path className={styles.outline} d={outlinePath} />
-				{planning !== 'deployed' && (
-					<circle className={styles.ring} cx={center.x} cy={center.y} r={ringRadius} />
-				)}
+				{ring !== 'none' && <circle className={styles.ring} cx={center.x} cy={center.y} r={ringRadius} />}
 				<circle className={styles.core} cx={center.x} cy={center.y} r={coreRadius} />
 				{content && (
 					<text className={styles.content} x={center.x} y={center.y}>
