@@ -10142,6 +10142,238 @@
       ],
       "import": "import {\n  DsAvatar,\n  DsButton,\n  DsButtonV3,\n  DsIcon,\n  DsMainMenu,\n  DsTypography,\n  DsWorkspaceLayout,\n} from '@drivenets/design-system';\nimport { DsButton } from '../ds-button';\nimport { DsIcon } from '../ds-icon';\nimport {\n  MyDashboardIcon,\n  NetworkViewIcon,\n  InventoryIcon,\n  NetworkPlanningIcon,\n  ConfigurationsIcon,\n  WorkflowAutomationIcon,\n  SoftwareImagesIcon,\n  TasksIcon,\n  BackupFilesIcon,\n  AiOpsIcon,\n  BreakGlassIcon,\n  AdministrationIcon,\n  ObservabilityIcon,\n  TechnicianIcon,\n} from '../../stories/sample-menu-icons';"
     },
+    "components-mappin": {
+      "id": "components-mappin",
+      "name": "DsMapPin",
+      "path": "./src/components/ds-map-pin/ds-map-pin.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "Marker for one location on a map: a colored core, an optional status ring and a short code or count. The pin's tip is the bottom-center of the element; position the element so that point sits on the location's coordinates. Hover lifts the pin from its tip, so the anchor never moves."
+        ]
+      },
+      "description": "",
+      "summary": "Marker for one location on a map: a colored core, an optional status ring and a short code or count. The pin's tip is the bottom-center of the element; position the element so that point sits on the location's coordinates. Hover lifts the pin from its tip, so the anchor never moves.",
+      "reactDocgen": {
+        "description": "@summary Marker for one location on a map: a colored core, an optional status ring and a short code or count.\n\nThe pin's tip is the bottom-center of the element; position the element so that point sits on the\nlocation's coordinates. Hover lifts the pin from its tip, so the anchor never moves.",
+        "methods": [],
+        "displayName": "DsMapPin",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-map-pin/ds-map-pin.tsx",
+        "actualName": "DsMapPin",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "HTMLButtonElement"
+                }
+              ],
+              "raw": "Ref<HTMLButtonElement>"
+            },
+            "description": ""
+          },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinSizes)[number]"
+            },
+            "description": "Use one size per kind of location so pins stay comparable on the map.\n@default 'medium'",
+            "defaultValue": {
+              "value": "'medium'",
+              "computed": false
+            }
+          },
+          "color": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinColors)[number]"
+            },
+            "description": "Core color. Map each kind of location to one color and keep it consistent across the map.\n@default 'blue'",
+            "defaultValue": {
+              "value": "'blue'",
+              "computed": false
+            }
+          },
+          "ring": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinRings)[number]"
+            },
+            "description": "Ring around the core, in the core color, for a secondary status such as planned (`dotted`)\nor in design (`dashed`).\n@default 'none'",
+            "defaultValue": {
+              "value": "'none'",
+              "computed": false
+            }
+          },
+          "label": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Short code shown in the core, e.g. `\"T1\"`. Ignored when `count` is set."
+          },
+          "count": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Number shown in the core instead of `label`, e.g. how many items share one location.\nValues above 99 show as `99+`."
+          },
+          "badge": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Short code shown in a tag on the top-right corner, e.g. `\"oR\"` for equipment at the location."
+          },
+          "badgeBorder": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinBadgeBorders)[number]"
+            },
+            "description": "Border of the badge, for the status of what it marks, e.g. planned (`dotted`) or in design (`dashed`).\nSet it independently of `ring`.\n@default 'solid'",
+            "defaultValue": {
+              "value": "'solid'",
+              "computed": false
+            }
+          },
+          "selected": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the selected outline and marks the pin with `aria-current`.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "dragging": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the dragged style and raises the pin above all others while the consumer moves it.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "aria-label": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Accessible name of the location, e.g. `\"Central office T1, Haifa North, planned\"`.\nRequired because the code in the core does not identify the location on its own."
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: MouseEvent<HTMLButtonElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "MouseEvent",
+                      "elements": [
+                        {
+                          "name": "HTMLButtonElement"
+                        }
+                      ],
+                      "raw": "MouseEvent<HTMLButtonElement>"
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-mappin--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsMapPin\n    size=\"large\"\n    color=\"blue\"\n    label=\"T1\"\n    aria-label=\"Central office T1, Haifa North\" />;",
+          "description": "A pin with a short code. Hover it to see it lift from its tip."
+        },
+        {
+          "id": "components-mappin--color",
+          "name": "Color",
+          "snippet": "const Color = () => <DsMapPin\n    size=\"medium\"\n    color=\"orange\"\n    label=\"FST\"\n    aria-label=\"Access site FST, Haifa North\" />;",
+          "description": "Use a different color for each kind of location, e.g. orange for access sites in Network View."
+        },
+        {
+          "id": "components-mappin--count",
+          "name": "Count",
+          "snippet": "const Count = () => <DsMapPin\n    size=\"small\"\n    color=\"teal\"\n    count={8}\n    aria-label=\"8 fiber broadband customer sites\" />;",
+          "description": "Show a count when several items share one location."
+        },
+        {
+          "id": "components-mappin--capped-count",
+          "name": "Capped Count",
+          "snippet": "const CappedCount = () => <DsMapPin\n    size=\"small\"\n    color=\"pink\"\n    count={240}\n    aria-label=\"240 carrier ethernet customer sites\" />;",
+          "description": "Counts above 99 are capped so the text fits the core."
+        },
+        {
+          "id": "components-mappin--dotted-ring",
+          "name": "Dotted Ring",
+          "snippet": "const DottedRing = () => <DsMapPin\n    size=\"large\"\n    color=\"blue\"\n    ring=\"dotted\"\n    label=\"T2\"\n    aria-label=\"Central office T2, Haifa North, planned\" />;",
+          "description": "A dotted ring marks a secondary status, e.g. a planned site in Network View."
+        },
+        {
+          "id": "components-mappin--dashed-ring",
+          "name": "Dashed Ring",
+          "snippet": "const DashedRing = () => <DsMapPin\n    size=\"medium\"\n    color=\"orange\"\n    ring=\"dashed\"\n    label=\"PFP\"\n    aria-label=\"Access site PFP, Haifa North, designed\" />;",
+          "description": "A dashed ring marks another status, e.g. a site still being designed in Network View."
+        },
+        {
+          "id": "components-mappin--badge",
+          "name": "Badge",
+          "snippet": "const Badge = () => <DsMapPin\n    size=\"large\"\n    color=\"blue\"\n    label=\"T1\"\n    badge=\"oR\"\n    aria-label=\"Central office T1, Haifa North, with optical router\" />;",
+          "description": "A badge marks equipment at the location, e.g. an optical router in Network View."
+        },
+        {
+          "id": "components-mappin--selected",
+          "name": "Selected",
+          "snippet": "const Selected = () => <DsMapPin\n    size=\"large\"\n    color=\"blue\"\n    label=\"T1\"\n    selected\n    aria-label=\"Central office T1, Haifa North\" />;",
+          "description": "The selected pin gets an outline in its own color and stays above unselected pins."
+        },
+        {
+          "id": "components-mappin--dragging",
+          "name": "Dragging",
+          "snippet": "const Dragging = () => <DsMapPin\n    size=\"medium\"\n    color=\"blue\"\n    label=\"T3\"\n    dragging\n    aria-label=\"Central office T3, Haifa North\" />;",
+          "description": "Set `dragging` while the user moves the pin; it renders above every other pin."
+        }
+      ],
+      "import": "import { DsMapPin, DsStack } from '@drivenets/design-system';"
+    },
     "components-modal": {
       "id": "components-modal",
       "name": "DsModal",
@@ -35356,6 +35588,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6161
+    "durationMs": 6594
   }
 }
