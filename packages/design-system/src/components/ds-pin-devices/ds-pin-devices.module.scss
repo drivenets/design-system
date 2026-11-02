@@ -1,0 +1,288 @@
+@use 'sass:map';
+@use '../../styles/typography';
+
+$hover-scale: 1.1;
+$hover-easing: cubic-bezier(0.2, 0, 0, 1);
+$hover-grow: 2px;
+$card-height: 64px;
+$pin-slot-size: 44px;
+$pin-core-y: 58px;
+$pin-geometry: (
+	large: (
+		core-y: 23px,
+		height: 54px,
+	),
+	medium: (
+		core-y: 16.59px,
+		height: 40.21px,
+	),
+	small: (
+		core-y: 12px,
+		height: 28px,
+	),
+);
+$state-border-width: 2px;
+$device-border-width: 2px;
+$device-label-font-size: 10px;
+$elevation-rest: 0 1px 3px rgb(0 0 0 / 30%);
+$elevation-hover: 0 3px 6px rgb(0 0 0 / 30%);
+$elevation-device-selected: 0 6px 13px rgb(4 69 204 / 20%);
+$z-index-selected: 1;
+$z-index-hover: 2;
+$z-index-dragging: 3;
+
+.root {
+	--pin-devices-selected-color: var(--border-action-primary);
+	--pin-devices-device-gray: var(--color-dap-gray-400);
+	--pin-devices-device-gray-20: color-mix(in srgb, var(--color-dap-gray-500) 20%, transparent);
+	--pin-devices-device-dark-pink: rgb(239 30 106);
+	--pin-devices-device-dark-pink-20: rgb(239 30 106 / 20%);
+	--pin-devices-device-pink: rgb(255 0 183);
+	--pin-devices-device-pink-20: rgb(255 0 183 / 20%);
+	--pin-devices-device-teal: var(--schema-teal);
+	--pin-devices-device-teal-20: color-mix(in srgb, var(--schema-teal) 20%, transparent);
+
+	display: inline-block;
+	position: relative;
+
+	@each $size, $geometry in $pin-geometry {
+		&[data-size='#{$size}'] {
+			padding-bottom: $pin-core-y - map.get($geometry, core-y) + map.get($geometry, height) - $card-height;
+
+			.pinSlot {
+				top: $pin-core-y - map.get($geometry, core-y);
+			}
+		}
+	}
+
+	&[data-color='orange'] {
+		--pin-devices-selected-color: var(--schema-orange);
+	}
+
+	&[data-color='teal'] {
+		--pin-devices-selected-color: var(--schema-teal);
+	}
+
+	&[data-color='pink'] {
+		--pin-devices-selected-color: var(--schema-pink);
+	}
+
+	&[data-selected] {
+		z-index: $z-index-selected;
+
+		.card::before {
+			border-color: var(--pin-devices-selected-color);
+		}
+	}
+
+	&:hover {
+		z-index: $z-index-hover;
+
+		.card::before {
+			inset: -$hover-grow;
+			box-shadow: $elevation-hover;
+		}
+
+		.pin {
+			transform: scale($hover-scale);
+		}
+	}
+
+	&[data-dragging] {
+		z-index: $z-index-dragging;
+
+		.card::before {
+			border-color: var(--border-contrast);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.card::before,
+		.device,
+		.more {
+			transition: none;
+		}
+	}
+}
+
+.card {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	gap: var(--xs);
+	min-width: $pin-slot-size;
+	height: $card-height;
+	padding: var(--sm);
+	isolation: isolate;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border: $state-border-width solid transparent;
+		border-radius: var(--xs);
+		background: var(--background);
+		box-shadow: $elevation-rest;
+		transition:
+			inset 0.2s $hover-easing,
+			box-shadow 0.2s $hover-easing,
+			border-color 0.2s;
+	}
+}
+
+.row {
+	display: flex;
+	gap: var(--xs);
+	justify-content: center;
+	height: var(--standard);
+}
+
+.bottomRow {
+	display: grid;
+	grid-template-columns: 1fr $pin-slot-size 1fr;
+	height: var(--standard);
+}
+
+.side {
+	display: flex;
+	grid-row: 1;
+	grid-column: 1;
+	gap: var(--xs);
+	align-items: center;
+}
+
+.sideEnd {
+	grid-column: 3;
+	justify-content: flex-end;
+}
+
+.pinSlot {
+	position: absolute;
+	left: 50%;
+	line-height: 0;
+	transform: translateX(-50%);
+}
+
+.device {
+	--pin-devices-device-color: var(--border);
+	--pin-devices-device-fill: var(--background);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: var(--standard);
+	height: var(--standard);
+	padding: 0;
+	border: $device-border-width solid var(--pin-devices-device-color);
+	border-radius: var(--4xs);
+	background: var(--pin-devices-device-fill);
+	cursor: pointer;
+	transition:
+		border-color 0.2s,
+		box-shadow 0.2s;
+	appearance: none;
+
+	&[data-type='aggregation'] {
+		--pin-devices-device-color: var(--pin-devices-device-gray);
+		--pin-devices-device-fill: var(--pin-devices-device-gray-20);
+	}
+
+	&[data-type='edge'] {
+		--pin-devices-device-color: var(--device-light-blue);
+		--pin-devices-device-fill: var(--device-light-blue-20);
+	}
+
+	&[data-type='network-management'] {
+		--pin-devices-device-color: var(--pin-devices-device-dark-pink);
+		--pin-devices-device-fill: var(--pin-devices-device-dark-pink-20);
+	}
+
+	&[data-type='access'] {
+		--pin-devices-device-color: var(--device-orange);
+		--pin-devices-device-fill: var(--device-orange-20);
+	}
+
+	&[data-type='virtual'] {
+		--pin-devices-device-color: var(--device-purple);
+		--pin-devices-device-fill: var(--device-purple-20);
+	}
+
+	&[data-type='passive'] {
+		--pin-devices-device-color: var(--pin-devices-device-pink);
+		--pin-devices-device-fill: var(--pin-devices-device-pink-20);
+	}
+
+	&[data-type='virtual-nested'] {
+		--pin-devices-device-color: var(--device-purple);
+		--pin-devices-device-fill: var(--background-secondary);
+	}
+
+	&[data-type='customer-premises'] {
+		--pin-devices-device-color: var(--pin-devices-device-teal);
+		--pin-devices-device-fill: var(--pin-devices-device-teal-20);
+	}
+
+	&[data-stage='planned'] {
+		border-style: dotted;
+	}
+
+	&[data-stage='designed'] {
+		border-style: dashed;
+	}
+
+	&:hover {
+		border-color: var(--border-action-secondary-hover);
+	}
+
+	&[aria-current='true'] {
+		border-color: var(--border-action-primary);
+		box-shadow: $elevation-device-selected;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--outline-moderate);
+		outline-offset: 1px;
+	}
+}
+
+.deviceLabel {
+	@include typography.body-xs-reg;
+	font-size: $device-label-font-size;
+	line-height: 1;
+	color: var(--font-main);
+}
+
+.more {
+	@include typography.body-xs-reg;
+	display: flex;
+	align-items: center;
+	height: var(--standard);
+	padding: 0 var(--3xs);
+	border: 0;
+	border-radius: 9999px;
+	background: var(--background);
+	color: var(--font-main);
+	white-space: nowrap;
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+	appearance: none;
+
+	&:hover {
+		background: var(--background-action-tertiary-hover);
+		color: var(--font-action);
+	}
+
+	&:active {
+		background: var(--background-action-secondary-hover);
+		color: var(--font-action);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--outline-moderate);
+		outline-offset: 1px;
+	}
+}
