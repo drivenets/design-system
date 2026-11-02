@@ -10,6 +10,7 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from './constants';
+import { type ColumnDefNode, getColumnDefId, getColumnDefLeafIds, sortByColumnOrder } from './column-order';
 
 /** Visual order of the always-sticky left utility columns (matches `getAugmentedColumns`). */
 const LEFT_UTILITY_COLUMN_IDS = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID] as const;
@@ -20,30 +21,6 @@ const RIGHT_UTILITY_COLUMN_IDS = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_I
 export type DsTableStickySide = 'left' | 'right';
 
 const STICKY_OFFSET_CSS_VAR = '--ds-table-sticky-offset';
-
-type ColumnDefNode = { id?: string; accessorKey?: unknown; header?: unknown; columns?: ColumnDefNode[] };
-
-/** Same id TanStack derives for a column def: `id`, then `accessorKey` (dots → `_`), then a string header. */
-const getDefId = (def: ColumnDefNode): string | undefined => {
-	if (def.id !== undefined) {
-		return def.id;
-	}
-
-	if (typeof def.accessorKey === 'string') {
-		return def.accessorKey.replaceAll('.', '_');
-	}
-
-	return typeof def.header === 'string' ? def.header : undefined;
-};
-
-const getDefLeafIds = (def: ColumnDefNode): string[] => {
-	if (!def.columns?.length) {
-		const id = getDefId(def);
-		return id === undefined ? [] : [id];
-	}
-
-	return def.columns.flatMap(getDefLeafIds);
-};
 
 /**
  * Expands group ids (and leaves that belong to a group) to every leaf of that
@@ -58,8 +35,10 @@ const expandToGroupLeaves = (ids: readonly string[], columnDefs: readonly Column
 			continue;
 		}
 
-		const topLevel = columnDefs.find((def) => getDefId(def) === id || getDefLeafIds(def).includes(id));
-		const leafIds = topLevel ? getDefLeafIds(topLevel) : [id];
+		const topLevel = columnDefs.find(
+			(def) => getColumnDefId(def) === id || getColumnDefLeafIds([def]).includes(id),
+		);
+		const leafIds = topLevel ? getColumnDefLeafIds([topLevel]) : [id];
 
 		for (const leafId of leafIds) {
 			if (!result.includes(leafId)) {
@@ -71,18 +50,24 @@ const expandToGroupLeaves = (ids: readonly string[], columnDefs: readonly Column
 	return result;
 };
 
+const sortIdsByColumnOrder = (ids: string[], columnOrder: readonly string[] | undefined): string[] =>
+	columnOrder ? sortByColumnOrder(ids, columnOrder, (id) => [id]) : ids;
+
 /**
  * Public `stickyColumns` → TanStack `columnPinning`, with utility columns always
  * pinned (left: reorder / expander / select, right: row actions or column
- * display). A column listed on both sides stays on the left.
+ * display). A column listed on both sides stays on the left. Consumer columns
+ * keep `stickyColumns` order, or follow `columnOrder` when it is given.
  */
 export const resolveColumnPinning = (
 	stickyColumns: DsTableStickyColumns | undefined,
 	columnDefs: readonly ColumnDefNode[],
+	columnOrder?: readonly string[],
 ): ColumnPinningState => {
-	const left = expandToGroupLeaves(stickyColumns?.left ?? [], columnDefs);
-	const right = expandToGroupLeaves(stickyColumns?.right ?? [], columnDefs).filter(
-		(id) => !left.includes(id),
+	const left = sortIdsByColumnOrder(expandToGroupLeaves(stickyColumns?.left ?? [], columnDefs), columnOrder);
+	const right = sortIdsByColumnOrder(
+		expandToGroupLeaves(stickyColumns?.right ?? [], columnDefs).filter((id) => !left.includes(id)),
+		columnOrder,
 	);
 
 	return {
@@ -248,6 +233,68 @@ export const getStickyCellProps = <TData>(
  */
 export const isStickyCell = (props: StickyCellProps): boolean => props['data-sticky'] !== undefined;
 
+interface StickyFillCache {
+	leftColumns: readonly unknown[];
+	centerColumns: readonly unknown[];
+	columnSizing: unknown;
+	resizeSizingReady: boolean;
+	columnId: string | undefined;
+}
+
+const stickyFillCaches = new WeakMap<object, StickyFillCache>();
+
+/**
+ * The last left sticky column, when no scrolling column can take the spare width.
+ * No sticky offset depends on its width, so it fills the row instead of leaving a gap.
+ */
+export const getStickyFillColumnId = <TData>(
+	table: Table<TData>,
+	resizeSizingReady: boolean,
+): string | undefined => {
+	const leftColumns = table.getLeftVisibleLeafColumns();
+	const centerColumns = table.getCenterVisibleLeafColumns();
+	const columnSizing = table.getState().columnSizing;
+	const cached = stickyFillCaches.get(table);
+
+	if (
+		cached?.leftColumns === leftColumns &&
+		cached.centerColumns === centerColumns &&
+		cached.columnSizing === columnSizing &&
+		cached.resizeSizingReady === resizeSizingReady
+	) {
+		return cached.columnId;
+	}
+
+	const sizing = resizeSizingReady ? columnSizing : {};
+	const isFill = (column: Column<TData>) =>
+		!BUILTIN_COLUMN_IDS.has(column.id) && !isExplicitColumnWidth(column, sizing);
+	const lastLeft = leftColumns.at(-1);
+	const columnId = lastLeft && isFill(lastLeft) && !centerColumns.some(isFill) ? lastLeft.id : undefined;
+
+	stickyFillCaches.set(table, { leftColumns, centerColumns, columnSizing, resizeSizingReady, columnId });
+
+	return columnId;
+};
+
+/**
+ * Whether a sticky cell spanning `leafIds` takes a fixed width, which every sticky
+ * cell does except the one holding the {@link getStickyFillColumnId} column.
+ */
+export const hasFixedStickyWidth = <TData>(
+	table: Table<TData>,
+	props: StickyCellProps,
+	leafIds: readonly string[],
+	resizeSizingReady: boolean,
+): boolean => {
+	if (!isStickyCell(props)) {
+		return false;
+	}
+
+	const fillColumnId = getStickyFillColumnId(table, resizeSizingReady);
+
+	return fillColumnId === undefined || !leafIds.includes(fillColumnId);
+};
+
 export interface BodyCellLayoutProps {
 	style: CSSProperties;
 	stickyAttributes: Omit<StickyCellProps, 'style'>;
@@ -268,7 +315,9 @@ export const getBodyCellLayoutProps = <TData>(
 		resizeSizingReady,
 	);
 	const columnSizing = resizeSizingReady ? table.getState().columnSizing : {};
-	const isExplicit = isExplicitColumnWidth(cell.column, columnSizing) || isStickyCell(stickyAttributes);
+	const isExplicit =
+		isExplicitColumnWidth(cell.column, columnSizing) ||
+		hasFixedStickyWidth(table, stickyAttributes, [cell.column.id], resizeSizingReady);
 
 	return {
 		style: {

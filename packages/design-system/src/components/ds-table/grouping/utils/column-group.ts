@@ -6,28 +6,45 @@ import {
 	type VisibilityState,
 } from '@tanstack/react-table';
 import { isExplicitColumnWidth } from '../../utils/column-size';
+import { BUILTIN_COLUMN_IDS } from '../../utils/constants';
+
+// A fill leaf header grows from its inline padding (`.headerCell`), which the group cell, having none, must add back
+const FILL_LEAF_INLINE_PADDING = 'var(--ds-table-header-cell-padding-inline) * 2';
+// Set by `.groupHeaderCell` when it draws a start border, which its first leaf header draws too
+const GROUP_START_BORDER = 'var(--ds-table-group-start-border, 0px)';
+// Set by `.groupHeaderCell`; a fill leaf's border, like its padding, sits outside its flex basis
+const GROUP_BORDER = 'var(--ds-table-group-border-width)';
 
 /**
  * Builds the flex style for a group header cell so it lines up with the combined
  * width of its visible leaf columns.
  *
- * Fixed-width leaves contribute to `flexBasis`; fill leaves each add one unit of
- * `flexGrow`, mirroring how {@link getColumnSizeStyle} sizes leaf cells so both
- * header rows distribute free space identically.
+ * Fixed-width leaves, the padding and group borders of fill leaves contribute to
+ * `flexBasis`; fill leaves each add one unit of `flexGrow`, mirroring how
+ * {@link getColumnSizeStyle} sizes leaf cells so both header rows distribute free
+ * space identically.
  */
 export const getGroupColumnSizeStyle = <TData, TValue>(
 	leafColumns: Column<TData, TValue>[],
 	columnSizing: ColumnSizingState,
+	groupBoundaryIds: ReadonlySet<string>,
 ): CSSProperties => {
 	let fixedWidth = 0;
 	let flexCount = 0;
+	let innerBorderCount = 0;
+	let isFirstLeafFill = false;
 
-	for (const leaf of leafColumns) {
-		const size = leaf.getSize();
+	for (const [index, leaf] of leafColumns.entries()) {
 		if (isExplicitColumnWidth(leaf, columnSizing)) {
-			fixedWidth += size;
-		} else {
-			flexCount += 1;
+			fixedWidth += leaf.getSize();
+			continue;
+		}
+
+		flexCount += 1;
+		if (index === 0) {
+			isFirstLeafFill = true;
+		} else if (groupBoundaryIds.has(leaf.id)) {
+			innerBorderCount += 1;
 		}
 	}
 
@@ -35,22 +52,50 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
 		return { width: fixedWidth, minWidth: fixedWidth, flexShrink: 0 };
 	}
 
-	return { flexGrow: flexCount, flexShrink: 0, flexBasis: fixedWidth, minWidth: fixedWidth };
+	const basis = [
+		`${String(fixedWidth)}px`,
+		`${String(flexCount)} * ${FILL_LEAF_INLINE_PADDING}`,
+		`${String(innerBorderCount)} * ${GROUP_BORDER}`,
+		isFirstLeafFill ? GROUP_START_BORDER : '0px',
+	].join(' + ');
+
+	return { flexGrow: flexCount, flexShrink: 0, flexBasis: `calc(${basis})`, minWidth: `calc(${basis})` };
 };
 
 /**
- * Whether a column is the first visible leaf of its parent group. Used to draw a
- * single side border at the start of each group in both the header and body.
+ * Ids of the visible data columns that start a new group, or follow one that just
+ * ended, so a divider marks every place the column nesting changes.
  */
-export const isFirstLeafColumnOfGroup = <TData, TValue>(column: Column<TData, TValue>): boolean => {
-	const parent = column.parent;
-	if (!parent) {
-		return false;
-	}
+export const getGroupBoundaryColumnIds = <TData, TValue>(
+	visibleLeafColumns: Column<TData, TValue>[],
+): Set<string> => {
+	const ids = new Set<string>();
 
-	const visibleLeaves = parent.getLeafColumns().filter((leaf) => leaf.getIsVisible());
+	visibleLeafColumns.forEach((column, index) => {
+		if (BUILTIN_COLUMN_IDS.has(column.id)) {
+			return;
+		}
 
-	return visibleLeaves[0]?.id === column.id;
+		const previous = visibleLeafColumns[index - 1];
+		if (previous && previous.parent?.id !== column.parent?.id) {
+			ids.add(column.id);
+		}
+	});
+
+	return ids;
+};
+
+/**
+ * Whether a header or body cell starts at a group boundary, judged by its first
+ * visible leaf column.
+ */
+export const startsAtGroupBoundary = <TData, TValue>(
+	column: Column<TData, TValue>,
+	groupBoundaryIds: ReadonlySet<string>,
+): boolean => {
+	const firstLeaf = column.getLeafColumns().find((leaf) => leaf.getIsVisible());
+
+	return !!firstLeaf && groupBoundaryIds.has(firstLeaf.id);
 };
 
 type GroupColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {

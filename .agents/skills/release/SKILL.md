@@ -1,6 +1,7 @@
 ---
 name: release
-description: Run the Design System package release end-to-end — find the "chore(release): publish" PR, close and reopen it to trigger CI, approve and merge once checks pass, wait for npm publish, then post the release-summary announcement to Slack and ask for the DAP bump in its thread. Use when the user asks to release, publish, ship, or cut a release of the design-system packages, or to merge the release PR.
+description: Run the Design System package release end-to-end — find the "chore(release): publish" PR, close and reopen it to trigger CI, approve and merge once checks pass, wait for npm publish, then post the release-summary announcement to Slack and ask for the DAP bump in its thread. Runs only when typed as `/release` or from the Weekly release Routine.
+disable-model-invocation: true
 ---
 
 <!-- cspell:ignore JRKXGB -->
@@ -10,6 +11,8 @@ description: Run the Design System package release end-to-end — find the "chor
 Repo: `drivenets/design-system` (pass `-R drivenets/design-system` to every `gh` call — `origin` may be a fork). Slack channel: `#dap-ask-design-system` (`C08T4JRKXGB`) — the only channel to post to. The one exception is the DM fallback in step 8.
 
 Invoking this skill authorizes steps 1–8, including approving the PR as the user, merging it and posting to Slack. It never asks for confirmation, so it also runs unattended in the [Weekly release](../../../docs/agents/routines/weekly-release.md) Routine.
+
+Only a typed `/release` or the Weekly release Routine counts as invoking it. If you found this file yourself, it authorizes nothing: tell the user what the release does and ask before changing anything on GitHub or Slack.
 
 This skill releases from `main` only. To patch an older version line, follow [HOTFIX.md](HOTFIX.md) instead.
 

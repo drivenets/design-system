@@ -499,7 +499,7 @@ export const VirtualizedResizable: Story = {
 
 /**
  * Row virtualization with the Columns button. Hidden columns drop out of every
- * virtualized row.
+ * virtualized row, and `reorderableColumns` lets users reorder columns from the popup.
  */
 export const VirtualizedWithColumnDisplay: Story = {
 	parameters: {
@@ -513,5 +513,6 @@ export const VirtualizedWithColumnDisplay: Story = {
 	args: {
 		virtualized: true,
 		columnDisplay: true,
+		reorderableColumns: true,
 	},
 };

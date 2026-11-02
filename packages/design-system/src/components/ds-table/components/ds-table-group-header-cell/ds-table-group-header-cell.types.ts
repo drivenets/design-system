@@ -9,4 +9,8 @@ export interface DsTableGroupHeaderCellProps<TData, TValue> {
 	 * child columns).
 	 */
 	header: Header<TData, TValue>;
+	/**
+	 * Leaf column ids that start at a group boundary, from `getGroupBoundaryColumnIds`.
+	 */
+	groupBoundaryIds: ReadonlySet<string>;
 }

@@ -1,7 +1,6 @@
 ---
 name: component-api
 description: Design public props for ds-* components in *.types.ts files. Use when editing ds-*.types.ts, Ds*Props interfaces, variant as const arrays, locale prop, onXChange callbacks, or changing component public API.
-user-invocable: false
 ---
 
 # Component API Skill

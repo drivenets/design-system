@@ -353,8 +353,10 @@ $icon-size: 42px;
 // Reset the DsPopover.Panel container so the nav's own visual styles (bg, shadow, radius) render,
 // and size it to the menu content instead of DsPopover's fixed default width.
 .panel {
+	// stylelint-disable declaration-no-important -- overrides DsPopover.Panel styles
 	background: transparent !important;
 	box-shadow: none !important;
 	width: max-content !important;
 	min-width: max-content !important;
+	// stylelint-enable declaration-no-important
 }

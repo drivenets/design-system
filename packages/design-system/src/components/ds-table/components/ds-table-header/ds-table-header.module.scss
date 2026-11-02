@@ -2,6 +2,9 @@
 @use '../../styles/variables' as vars;
 
 .header {
+	// Read by the group header width calculation too, so both use the same leaf padding
+	--ds-table-header-cell-padding-inline: var(--standard);
+
 	// Clip the last resize handle's overhang without making the header a scroll
 	// container, which would break its sticky cells.
 	overflow-x: clip;
@@ -39,7 +42,7 @@
 	position: relative;
 	color: var(--font-main);
 	text-align: left;
-	padding: 0 var(--standard);
+	padding: 0 var(--ds-table-header-cell-padding-inline);
 	height: var(--ds-table-header-height);
 
 	&.sortableHeader {
@@ -87,6 +90,12 @@
 	flex-shrink: 0;
 	justify-content: center;
 	width: 36px;
+}
+
+// Reads as the top of the leaf header below it rather than as an empty group
+.headerRow .placeholderCell {
+	border-bottom-color: transparent;
+	background-color: var(--background-secondary);
 }
 
 .groupStart:not(:first-child) {
