@@ -1,6 +1,6 @@
 ---
 name: fix
-description: Fast path for a small bug or adjustment in the design system — regression test, minimal fix, verify. Lightweight sibling to implement (no ticket, no plan gate). Use when the user reports a bug, says something is off/broken, or asks for a small tweak to an existing component.
+description: Fast path for a small bug or adjustment in the design system — regression test, minimal fix, verify. Lightweight sibling to implement, with no ticket file. Use when the user reports a bug, says something is off/broken, or asks for a small tweak to an existing component. Load it before reading the code, in plan mode too.
 ---
 
 # Fix (small bug / adjustment)
