@@ -63,6 +63,11 @@ export interface DsTableContextType<TData, TValue>
 	 * without changing this.
 	 */
 	columnVisibility: VisibilityState;
+	/**
+	 * Every consumer leaf column id: `columnOrder` (controlled or tracked) completed with the
+	 * unlisted leaves. Sticky columns render first, in this order only with `reorderableColumns`.
+	 */
+	columnOrder: string[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,6 +88,7 @@ interface DsTableContextProviderDerived {
 	};
 	resize: DsTableResizeContextSlice;
 	columnVisibility: VisibilityState;
+	columnOrder: string[];
 }
 
 export interface DsTableContextProviderProps<TData, TValue> {
@@ -122,10 +128,11 @@ export const DsTableContextProvider = <TData, TValue>({
 		onCellEdit,
 		onCellValidate,
 		columnDisplay,
+		reorderableColumns,
 	} = tableProps;
 
 	const { collapsedColumnGroups, onToggleColumnGroup } = derived.grouping;
-	const { columnVisibility } = derived;
+	const { columnVisibility, columnOrder } = derived;
 	const {
 		resizableColumns,
 		resizeSizingReady,
@@ -162,7 +169,9 @@ export const DsTableContextProvider = <TData, TValue>({
 			collapsedColumnGroups,
 			onToggleColumnGroup,
 			columnVisibility,
+			columnOrder,
 			columnDisplay,
+			reorderableColumns,
 			locale,
 			onCellEdit,
 			resizableColumns,
@@ -198,7 +207,9 @@ export const DsTableContextProvider = <TData, TValue>({
 			collapsedColumnGroups,
 			onToggleColumnGroup,
 			columnVisibility,
+			columnOrder,
 			columnDisplay,
+			reorderableColumns,
 			locale,
 			onCellEdit,
 			resizableColumns,

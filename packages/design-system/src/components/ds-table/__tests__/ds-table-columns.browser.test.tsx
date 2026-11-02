@@ -149,10 +149,7 @@ describe('DsTable - Columns', () => {
 		const columnCheckbox = (name: string) => page.getByRole('checkbox', { name, exact: true });
 
 		const getCheckboxState = (name: string) =>
-			columnCheckbox(name)
-				.element()
-				.closest('[data-scope="checkbox"][data-part="root"]')
-				?.getAttribute('data-state');
+			columnCheckbox(name).element().closest('[data-state]')?.getAttribute('data-state');
 
 		const getCenterX = (element: Element) => {
 			const { x, width } = element.getBoundingClientRect();
@@ -243,28 +240,14 @@ describe('DsTable - Columns', () => {
 			expect(onColumnVisibilityChange).toHaveBeenLastCalledWith({ age: false });
 		});
 
-		it('filters the list from the search field and clears it on close', async () => {
+		it('lists every column in a tree without a search field', async () => {
 			await renderTable({ columns: groupedColumns });
 			await openColumnDisplay();
 
-			const search = page.getByPlaceholder('Search');
-			await search.fill('pro');
-
-			await expect.element(columnCheckbox('Activity')).toBeVisible();
+			await expect.element(page.getByRole('tree')).toBeVisible();
+			await expect.element(page.getByRole('dialog').getByRole('textbox')).not.toBeInTheDocument();
 			await expect.element(columnCheckbox('Profile Progress')).toBeVisible();
-			await expect.element(columnCheckbox('Visits')).not.toBeInTheDocument();
-			await expect.element(columnCheckbox('Identity')).not.toBeInTheDocument();
-
-			await search.fill('IDENT');
-
-			await expect.element(columnCheckbox('Age')).toBeVisible();
-			await expect.element(columnCheckbox('Activity')).not.toBeInTheDocument();
-
-			await userEvent.keyboard('{Escape}');
-			await openColumnDisplay();
-
-			await expect.element(page.getByPlaceholder('Search')).toHaveValue('');
-			await expect.element(columnCheckbox('Visits')).toBeVisible();
+			await expect.element(columnCheckbox('Identity')).toBeVisible();
 		});
 
 		it('toggles every column from All columns', async () => {
@@ -454,7 +437,7 @@ describe('DsTable - Columns', () => {
 			);
 			await openColumnDisplay();
 
-			expect(isTopmostAtCenter(columnCheckbox('Age').element().closest('label'))).toBe(true);
+			expect(isTopmostAtCenter(columnCheckbox('Age').element())).toBe(true);
 
 			await columnCheckbox('Age').click();
 
@@ -482,12 +465,11 @@ describe('DsTable - Columns', () => {
 
 		it('uses the locale strings', async () => {
 			await renderTable({
-				locale: { columns: 'Choose columns', searchColumns: 'Find a column', allColumns: 'Every column' },
+				locale: { columns: 'Choose columns', allColumns: 'Every column' },
 			});
 			await openColumnDisplay('Choose columns');
 
-			await expect.element(page.getByPlaceholder('Find a column')).toBeVisible();
-			await expect.element(columnCheckbox('Every column')).toBeChecked();
+			await expect.element(page.getByRole('checkbox', { name: 'Every column', exact: true })).toBeChecked();
 		});
 	});
 });

@@ -114,6 +114,20 @@ describe('resolveColumnPinning', () => {
 		]);
 	});
 
+	it('orders sticky columns by the column order when one is given', () => {
+		expect(
+			resolveColumnPinning({ left: ['firstName', 'identity'], right: ['age', 'status'] }, groupedColumns, [
+				'status',
+				'lastName',
+				'firstName',
+				'age',
+			]),
+		).toEqual({
+			left: [...LEFT_UTILITIES, 'lastName', 'firstName'],
+			right: ['status', 'age', ...RIGHT_UTILITIES],
+		});
+	});
+
 	it('keeps a column on the left when it is listed on both sides', () => {
 		expect(resolveColumnPinning({ left: ['age'], right: ['age', 'status'] }, flatColumns)).toEqual({
 			left: [...LEFT_UTILITIES, 'age'],
