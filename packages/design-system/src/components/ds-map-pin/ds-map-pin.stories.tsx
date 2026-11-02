@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { mapPinColors, mapPinRings, mapPinSizes } from './ds-map-pin.types';
+import { mapPinBadgeBorders, mapPinColors, mapPinRings, mapPinSizes } from './ds-map-pin.types';
 import { DsMapPin } from './index';
 import { DsStack } from '../ds-stack';
 
@@ -13,6 +13,8 @@ const meta: Meta<typeof DsMapPin> = {
 		ring: { control: 'select', options: mapPinRings },
 		label: { control: 'text' },
 		count: { control: 'number' },
+		badge: { control: 'text' },
+		badgeBorder: { control: 'select', options: mapPinBadgeBorders },
 		selected: { control: 'boolean' },
 		dragging: { control: 'boolean' },
 		'aria-label': { control: 'text' },
@@ -88,7 +90,37 @@ export const DashedRing: Story = {
 	},
 };
 
-/** The selected pin gets an outline and stays above unselected pins. */
+/** A badge marks equipment at the location, e.g. an optical router in Network View. */
+export const Badge: Story = {
+	args: {
+		size: 'large',
+		color: 'blue',
+		label: 'T1',
+		badge: 'oR',
+		'aria-label': 'Central office T1, Haifa North, with optical router',
+	},
+};
+
+/** The badge border shows the status of what it marks, independently of the pin's ring. */
+export const BadgeBorder: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: () => (
+		<DsStack direction="row" gap="var(--standard)" alignItems="flex-end">
+			{mapPinBadgeBorders.map((badgeBorder) => (
+				<DsMapPin
+					key={badgeBorder}
+					label="T3"
+					badge="oR"
+					badgeBorder={badgeBorder}
+					aria-label={`Central office T3, optical router ${badgeBorder}`}
+				/>
+			))}
+		</DsStack>
+	),
+};
+
+/** The selected pin gets an outline in its own color and stays above unselected pins. */
 export const Selected: Story = {
 	args: {
 		size: 'large',
@@ -119,7 +151,14 @@ export const AllVariants: Story = {
 				<DsStack key={color} direction="row" gap="var(--standard)" alignItems="flex-end">
 					{mapPinRings.map((ring) => (
 						<DsStack key={ring} direction="row" gap="var(--sm)" alignItems="flex-end">
-							<DsMapPin size="large" color={color} ring={ring} label="T1" aria-label={`${color} ${ring}`} />
+							<DsMapPin
+								size="large"
+								color={color}
+								ring={ring}
+								label="T1"
+								badge="oR"
+								aria-label={`${color} ${ring}`}
+							/>
 							<DsMapPin
 								size="small"
 								color={color}

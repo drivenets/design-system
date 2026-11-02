@@ -48,6 +48,13 @@ describe('DsMapPin', () => {
 		await expect.element(page.getByText('99+')).toBeInTheDocument();
 	});
 
+	it('shows the badge next to the label', async () => {
+		await page.render(<DsMapPin label="T1" badge="oR" aria-label="Central office T1, with optical router" />);
+
+		await expect.element(page.getByText('T1')).toBeInTheDocument();
+		await expect.element(page.getByText('oR')).toBeInTheDocument();
+	});
+
 	it('keeps the visible code out of the accessible name', async () => {
 		await page.render(
 			<DsMapPin label="T1" aria-label="Central office T1, Haifa North, planned" ring="dotted" />,

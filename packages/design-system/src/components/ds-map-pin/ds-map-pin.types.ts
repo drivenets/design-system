@@ -9,6 +9,9 @@ export type MapPinColor = (typeof mapPinColors)[number];
 export const mapPinRings = ['none', 'dotted', 'dashed'] as const;
 export type MapPinRing = (typeof mapPinRings)[number];
 
+export const mapPinBadgeBorders = ['solid', 'dotted', 'dashed'] as const;
+export type MapPinBadgeBorder = (typeof mapPinBadgeBorders)[number];
+
 export interface DsMapPinProps {
 	ref?: Ref<HTMLButtonElement>;
 	/**
@@ -36,6 +39,16 @@ export interface DsMapPinProps {
 	 * Values above 99 show as `99+`.
 	 */
 	count?: number;
+	/**
+	 * Short code shown in a tag on the top-right corner, e.g. `"oR"` for equipment at the location.
+	 */
+	badge?: string;
+	/**
+	 * Border of the badge, for the status of what it marks, e.g. planned (`dotted`) or in design (`dashed`).
+	 * Set it independently of `ring`.
+	 * @default 'solid'
+	 */
+	badgeBorder?: MapPinBadgeBorder;
 	/**
 	 * Shows the selected outline and marks the pin with `aria-current`.
 	 * @default false

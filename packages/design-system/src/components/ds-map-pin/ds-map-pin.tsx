@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { MAX_VISIBLE_COUNT, mapPinGeometry } from './ds-map-pin.config';
+import { BADGE_RADIUS, BADGE_SIZE, MAX_VISIBLE_COUNT, mapPinGeometry } from './ds-map-pin.config';
 import type { DsMapPinProps } from './ds-map-pin.types';
 import styles from './ds-map-pin.module.scss';
 
@@ -19,6 +19,8 @@ const DsMapPin = ({
 	ring = 'none',
 	label,
 	count,
+	badge,
+	badgeBorder = 'solid',
 	selected = false,
 	dragging = false,
 	'aria-label': ariaLabel,
@@ -26,7 +28,7 @@ const DsMapPin = ({
 	style,
 	onClick,
 }: DsMapPinProps) => {
-	const { width, height, outlinePath, center, coreRadius, ringRadius } = mapPinGeometry[size];
+	const { width, height, outlinePath, center, coreRadius, ringRadius, badgeOrigin } = mapPinGeometry[size];
 	const content = count === undefined ? label : formatCount(count);
 
 	return (
@@ -38,6 +40,7 @@ const DsMapPin = ({
 			data-size={size}
 			data-color={color}
 			data-ring={ring}
+			data-badge-border={badge ? badgeBorder : undefined}
 			data-dragging={dragging || undefined}
 			aria-label={ariaLabel}
 			aria-current={selected ? true : undefined}
@@ -58,6 +61,22 @@ const DsMapPin = ({
 					<text className={styles.content} x={center.x} y={center.y}>
 						{content}
 					</text>
+				)}
+				{badge && (
+					<g transform={`translate(${String(badgeOrigin.x)} ${String(badgeOrigin.y)})`}>
+						{/* Inset by half the stroke so the border sits inside the badge, as in the design. */}
+						<rect
+							className={styles.badge}
+							x={0.5}
+							y={0.5}
+							width={BADGE_SIZE - 1}
+							height={BADGE_SIZE - 1}
+							rx={BADGE_RADIUS - 0.5}
+						/>
+						<text className={styles.badgeContent} x={BADGE_SIZE / 2} y={BADGE_SIZE / 2}>
+							{badge}
+						</text>
+					</g>
 				)}
 			</svg>
 		</button>

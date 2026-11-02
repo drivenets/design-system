@@ -5,6 +5,8 @@ $hover-easing: cubic-bezier(0.2, 0, 0, 1);
 $state-outline-width: 2px;
 $ring-width: 2px;
 $small-content-font-size: 10px;
+$badge-font-size: 10px;
+$badge-border-width: 1px;
 $elevation-rest: drop-shadow(0 1px 3px rgb(0 0 0 / 30%));
 $elevation-hover: drop-shadow(0 3px 6px rgb(0 0 0 / 30%));
 $z-index-selected: 1;
@@ -13,6 +15,7 @@ $z-index-dragging: 3;
 
 .pin {
 	--map-pin-color: var(--background-primary);
+	--map-pin-selected-color: var(--border-action-primary);
 
 	display: block;
 	position: relative;
@@ -27,14 +30,17 @@ $z-index-dragging: 3;
 
 	&[data-color='orange'] {
 		--map-pin-color: var(--schema-orange);
+		--map-pin-selected-color: var(--schema-orange);
 	}
 
 	&[data-color='teal'] {
 		--map-pin-color: var(--schema-teal);
+		--map-pin-selected-color: var(--schema-teal);
 	}
 
 	&[data-color='pink'] {
 		--map-pin-color: var(--schema-pink);
+		--map-pin-selected-color: var(--schema-pink);
 	}
 
 	&[data-ring='dotted'] .ring {
@@ -46,6 +52,14 @@ $z-index-dragging: 3;
 		stroke-dasharray: 9 5;
 	}
 
+	&[data-badge-border='dotted'] .badge {
+		stroke-dasharray: 1 1;
+	}
+
+	&[data-badge-border='dashed'] .badge {
+		stroke-dasharray: 7 4;
+	}
+
 	&[data-size='small'] .content {
 		font-size: $small-content-font-size;
 	}
@@ -54,7 +68,7 @@ $z-index-dragging: 3;
 		z-index: $z-index-selected;
 
 		.outline {
-			stroke: var(--border-action-primary);
+			stroke: var(--map-pin-selected-color);
 			stroke-width: $state-outline-width * 2;
 		}
 	}
@@ -117,6 +131,20 @@ $z-index-dragging: 3;
 .content {
 	@include typography.body-xs-md;
 	fill: var(--font-on-action);
+	text-anchor: middle;
+	dominant-baseline: central;
+}
+
+.badge {
+	fill: var(--background);
+	stroke: var(--outline-strong);
+	stroke-width: $badge-border-width;
+}
+
+.badgeContent {
+	@include typography.body-xs-reg;
+	font-size: $badge-font-size;
+	fill: var(--font-main);
 	text-anchor: middle;
 	dominant-baseline: central;
 }

@@ -9,7 +9,11 @@ interface MapPinGeometry {
 	center: { x: number; y: number };
 	coreRadius: number;
 	ringRadius: number;
+	badgeOrigin: { x: number; y: number };
 }
+
+export const BADGE_SIZE = 16;
+export const BADGE_RADIUS = 4;
 
 export const mapPinGeometry: Record<MapPinSize, MapPinGeometry> = Object.freeze({
 	large: {
@@ -20,6 +24,7 @@ export const mapPinGeometry: Record<MapPinSize, MapPinGeometry> = Object.freeze(
 		center: { x: 23, y: 23 },
 		coreRadius: 17,
 		ringRadius: 20,
+		badgeOrigin: { x: 31, y: 2 },
 	},
 	medium: {
 		width: 34,
@@ -29,6 +34,7 @@ export const mapPinGeometry: Record<MapPinSize, MapPinGeometry> = Object.freeze(
 		center: { x: 17, y: 16.59 },
 		coreRadius: 12.5,
 		ringRadius: 14.5,
+		badgeOrigin: { x: 24, y: 1 },
 	},
 	small: {
 		width: 24,
@@ -38,5 +44,6 @@ export const mapPinGeometry: Record<MapPinSize, MapPinGeometry> = Object.freeze(
 		center: { x: 12, y: 12 },
 		coreRadius: 8,
 		ringRadius: 10,
+		badgeOrigin: { x: 14, y: -4 },
 	},
 });
