@@ -14,7 +14,6 @@ export const noUselessTsxExtension = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		const filename = context.filename;
 

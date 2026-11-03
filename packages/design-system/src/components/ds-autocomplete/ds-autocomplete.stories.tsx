@@ -33,6 +33,8 @@ const meta: Meta<typeof DsAutocomplete> = {
 		invalid: { control: 'boolean' },
 		locale: { control: 'object' },
 		startAdornment: { control: false },
+		multiple: { control: false },
+		value: { control: false },
 		onValueChange: { action: 'valueChange' },
 		onInputValueChange: { action: 'inputValueChange' },
 		onOpenChange: { action: 'openChange' },
@@ -260,6 +262,60 @@ export const AsyncOptions: Story = {
 };
 
 /**
+ * Tags mode (`multiple`) collects several values as removable tags inside the field. Picking
+ * an option toggles it and keeps the list open. Pass `onCreate` to let users add tags that are
+ * not in the list yet: type a name and press Enter or a comma, pick the "Create new tag" row, or
+ * paste a comma-separated list. Append created names to `options` so they stay selectable.
+ */
+export const Tags: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => {
+		const [options, setOptions] = useState<DsAutocompleteOption[]>([
+			{ value: 'production', label: 'Production' },
+			{ value: 'staging', label: 'Staging' },
+			{ value: 'security', label: 'Security' },
+			{ value: 'compliance', label: 'Compliance' },
+			{ value: 'nightly', label: 'Nightly' },
+		]);
+		const [value, setValue] = useState<string[]>(['production', 'security']);
+
+		return (
+			<DsAutocomplete
+				multiple
+				options={options}
+				value={value}
+				onValueChange={setValue}
+				onCreate={(name) => setOptions((current) => [...current, { value: name, label: name }])}
+			/>
+		);
+	},
+};
+
+/**
+ * Without `onCreate`, tags mode only allows picking existing options. Use it where a value must
+ * already exist elsewhere, such as filtering by tags that are defined on other records.
+ */
+export const TagsSelectOnly: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => {
+		const [value, setValue] = useState<string[]>([]);
+
+		return (
+			<DsAutocomplete
+				multiple
+				options={[
+					{ value: 'production', label: 'Production' },
+					{ value: 'staging', label: 'Staging' },
+					{ value: 'security', label: 'Security' },
+				]}
+				value={value}
+				onValueChange={setValue}
+			/>
+		);
+	},
+};
+
+/**
  * DsAutocomplete can be placed inside a DsModal (or DsDialog). The dropdown opens over the
  * modal content, and its options stay exposed to assistive technology as a `listbox` of
  * `option`s, so screen reader users can pick a value without any extra wiring.
@@ -324,13 +380,21 @@ export const Sizes: Story = {
 					</DsTypography>
 					<DsAutocomplete options={options} size="small" placeholder="Small autocomplete" />
 				</DsStack>
+				{autocompleteSizes.map((size) => (
+					<DsStack key={size} direction="column" gap="var(--2xs)">
+						<DsTypography variant="body-xs-reg" color="secondary">
+							Tags, {size}
+						</DsTypography>
+						<DsAutocomplete multiple size={size} options={options} value={['apple', 'banana']} />
+					</DsStack>
+				))}
 			</DsStack>
 		);
 	},
 };
 
 /**
- * Visual comparison of the disabled and invalid states side by side. Reference only —
+ * Visual comparison of the disabled, invalid and tags states side by side. Reference only —
  * behavior for each state is covered by the individual stories and browser tests.
  */
 export const States: Story = {
@@ -356,6 +420,24 @@ export const States: Story = {
 						Invalid
 					</DsTypography>
 					<DsAutocomplete options={options} invalid placeholder="Invalid autocomplete" />
+				</DsStack>
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Tags
+					</DsTypography>
+					<DsAutocomplete multiple options={options} value={['apple', 'banana', 'cherry']} />
+				</DsStack>
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Tags, disabled
+					</DsTypography>
+					<DsAutocomplete multiple options={options} value={['apple', 'banana']} disabled />
+				</DsStack>
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Tags, invalid
+					</DsTypography>
+					<DsAutocomplete multiple options={options} value={['apple']} invalid />
 				</DsStack>
 			</DsStack>
 		);
