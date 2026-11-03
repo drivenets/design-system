@@ -184,51 +184,50 @@ $z-index-dragging: 3;
 		box-shadow 0.2s;
 	appearance: none;
 
-	&[data-type='aggregation'] {
+	&[data-color='gray'] {
 		--pin-devices-device-color: var(--pin-devices-device-gray);
 		--pin-devices-device-fill: var(--pin-devices-device-gray-20);
 	}
 
-	&[data-type='edge'] {
+	&[data-color='light-blue'] {
 		--pin-devices-device-color: var(--device-light-blue);
 		--pin-devices-device-fill: var(--device-light-blue-20);
 	}
 
-	&[data-type='network-management'] {
+	&[data-color='dark-pink'] {
 		--pin-devices-device-color: var(--pin-devices-device-dark-pink);
 		--pin-devices-device-fill: var(--pin-devices-device-dark-pink-20);
 	}
 
-	&[data-type='access'] {
+	&[data-color='orange'] {
 		--pin-devices-device-color: var(--device-orange);
 		--pin-devices-device-fill: var(--device-orange-20);
 	}
 
-	&[data-type='virtual'] {
+	&[data-color='purple'] {
 		--pin-devices-device-color: var(--device-purple);
 		--pin-devices-device-fill: var(--device-purple-20);
 	}
 
-	&[data-type='passive'] {
+	&[data-color='pink'] {
 		--pin-devices-device-color: var(--pin-devices-device-pink);
 		--pin-devices-device-fill: var(--pin-devices-device-pink-20);
 	}
 
-	&[data-type='virtual-nested'] {
-		--pin-devices-device-color: var(--device-purple);
-		--pin-devices-device-fill: var(--background-secondary);
-	}
-
-	&[data-type='customer-premises'] {
+	&[data-color='teal'] {
 		--pin-devices-device-color: var(--pin-devices-device-teal);
 		--pin-devices-device-fill: var(--pin-devices-device-teal-20);
 	}
 
-	&[data-stage='planned'] {
+	&[data-color][data-variant='outlined'] {
+		--pin-devices-device-fill: var(--background-secondary);
+	}
+
+	&[data-border='dotted'] {
 		border-style: dotted;
 	}
 
-	&[data-stage='designed'] {
+	&[data-border='dashed'] {
 		border-style: dashed;
 	}
 

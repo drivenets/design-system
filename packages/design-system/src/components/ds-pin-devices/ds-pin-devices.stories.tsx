@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { mapPinColors, mapPinSizes } from '../ds-map-pin';
 import { DsStack } from '../ds-stack';
-import { pinDeviceStages, pinDeviceTypes } from './ds-pin-devices.types';
+import { pinDeviceBorders, pinDeviceColors } from './ds-pin-devices.types';
 import { DsPinDevices } from './index';
 
 const meta: Meta<typeof DsPinDevices> = {
@@ -39,49 +39,66 @@ export const Default: Story = {
 		label: 'T1',
 		'aria-label': 'Central office T1, Haifa North',
 		devices: [
-			{ id: 'agg-1', type: 'aggregation', 'aria-label': 'Aggregation router AG-1' },
-			{ id: 'agg-2', type: 'aggregation', 'aria-label': 'Aggregation router AG-2' },
-			{ id: 'edge-1', type: 'edge', 'aria-label': 'Edge router ER-1' },
-			{ id: 'edge-2', type: 'edge', 'aria-label': 'Edge router ER-2' },
-			{ id: 'nms-1', type: 'network-management', 'aria-label': 'Network management NM-1' },
-			{ id: 'acc-1', type: 'access', 'aria-label': 'Access switch AS-1' },
-			{ id: 'acc-2', type: 'access', 'aria-label': 'Access switch AS-2' },
+			{ id: 'agg-1', color: 'gray', 'aria-label': 'Aggregation router AG-1' },
+			{ id: 'agg-2', color: 'gray', 'aria-label': 'Aggregation router AG-2' },
+			{ id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },
+			{ id: 'edge-2', color: 'light-blue', 'aria-label': 'Edge router ER-2' },
+			{ id: 'nms-1', color: 'dark-pink', 'aria-label': 'Network management NM-1' },
+			{ id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },
+			{ id: 'acc-2', color: 'orange', 'aria-label': 'Access switch AS-2' },
 		],
 	},
 };
 
-/** Each device type has its own color, so the mix of devices at a location reads at a glance. */
-export const DeviceTypes: Story = {
+/**
+ * Map each kind of device to one color so the mix of devices at a location reads at a glance.
+ * In Network View: aggregation gray, edge light blue, network management dark pink, access orange,
+ * virtual purple, passive pink, customer premises teal. A device without a color is neutral.
+ */
+export const DeviceColors: Story = {
 	args: {
 		size: 'large',
 		color: 'blue',
 		label: 'T2',
 		'aria-label': 'Central office T2, Haifa South',
 		devices: [
-			{ id: 'aggregation', type: 'aggregation', 'aria-label': 'Aggregation' },
-			{ id: 'edge', type: 'edge', 'aria-label': 'Edge' },
-			{ id: 'network-management', type: 'network-management', 'aria-label': 'Network management' },
-			{ id: 'access', type: 'access', 'aria-label': 'Access' },
-			{ id: 'virtual', type: 'virtual', 'aria-label': 'Virtual' },
-			{ id: 'passive', type: 'passive', 'aria-label': 'Passive' },
-			{ id: 'virtual-nested', type: 'virtual-nested', 'aria-label': 'Virtual nested' },
-			{ id: 'customer-premises', type: 'customer-premises', 'aria-label': 'Customer premises' },
-			{ id: 'untyped', 'aria-label': 'Unclassified device' },
+			{ id: 'gray', color: 'gray', 'aria-label': 'Aggregation' },
+			{ id: 'light-blue', color: 'light-blue', 'aria-label': 'Edge' },
+			{ id: 'dark-pink', color: 'dark-pink', 'aria-label': 'Network management' },
+			{ id: 'orange', color: 'orange', 'aria-label': 'Access' },
+			{ id: 'purple', color: 'purple', 'aria-label': 'Virtual' },
+			{ id: 'pink', color: 'pink', 'aria-label': 'Passive' },
+			{ id: 'teal', color: 'teal', 'aria-label': 'Customer premises' },
+			{ id: 'neutral', 'aria-label': 'Unclassified device' },
 		],
 	},
 };
 
-/** The border shows each device's stage: solid when deployed, dotted when planned, dashed when designed. */
-export const DeviceStages: Story = {
+/** `outlined` keeps a neutral fill, to tell apart two kinds of device that share a color, e.g. virtual and nested virtual. */
+export const DeviceVariant: Story = {
+	args: {
+		size: 'large',
+		color: 'blue',
+		label: 'T2',
+		'aria-label': 'Central office T2, Haifa South',
+		devices: [
+			{ id: 'vm-1', color: 'purple', 'aria-label': 'Virtual VM-1' },
+			{ id: 'vm-2', color: 'purple', variant: 'outlined', 'aria-label': 'Nested virtual VM-2' },
+		],
+	},
+};
+
+/** The border shows a device's status, e.g. planned (`dotted`) or in design (`dashed`). */
+export const DeviceBorders: Story = {
 	args: {
 		size: 'medium',
 		color: 'orange',
 		label: 'PEP',
 		'aria-label': 'Access site PEP, Haifa North',
 		devices: [
-			{ id: 'deployed', type: 'access', stage: 'deployed', 'aria-label': 'Access switch, deployed' },
-			{ id: 'planned', type: 'access', stage: 'planned', 'aria-label': 'Access switch, planned' },
-			{ id: 'designed', type: 'access', stage: 'designed', 'aria-label': 'Access switch, designed' },
+			{ id: 'solid', color: 'orange', border: 'solid', 'aria-label': 'Access switch, deployed' },
+			{ id: 'dotted', color: 'orange', border: 'dotted', 'aria-label': 'Access switch, planned' },
+			{ id: 'dashed', color: 'orange', border: 'dashed', 'aria-label': 'Access switch, designed' },
 		],
 	},
 };
@@ -95,7 +112,7 @@ export const DeviceLabels: Story = {
 		devices: [
 			{ id: 'or', label: 'oR', 'aria-label': 'Optical router' },
 			{ id: 'pl', label: 'PL', 'aria-label': 'Patch panel' },
-			{ id: 'cpe', type: 'customer-premises', 'aria-label': 'Customer premises equipment' },
+			{ id: 'cpe', color: 'teal', 'aria-label': 'Customer premises equipment' },
 		],
 	},
 };
@@ -112,7 +129,7 @@ export const MoreDevices: Story = {
 		'aria-label': 'Central office T1, Tel Aviv',
 		devices: Array.from({ length: 40 }, (_, index) => ({
 			id: `device-${String(index + 1)}`,
-			type: 'aggregation' as const,
+			color: 'gray' as const,
 			'aria-label': `Aggregation router AG-${String(index + 1)}`,
 		})),
 	},
@@ -127,9 +144,9 @@ export const Selected: Story = {
 		selected: true,
 		'aria-label': 'Access site PEP, Haifa North',
 		devices: [
-			{ id: 'acc-1', type: 'access', 'aria-label': 'Access switch AS-1' },
-			{ id: 'acc-2', type: 'access', 'aria-label': 'Access switch AS-2' },
-			{ id: 'edge-1', type: 'edge', 'aria-label': 'Edge router ER-1' },
+			{ id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },
+			{ id: 'acc-2', color: 'orange', 'aria-label': 'Access switch AS-2' },
+			{ id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },
 		],
 	},
 };
@@ -142,8 +159,8 @@ export const Dragging: Story = {
 		dragging: true,
 		'aria-label': 'Fiber broadband site, Haifa North',
 		devices: [
-			{ id: 'cpe-1', type: 'customer-premises', 'aria-label': 'Customer premises CP-1' },
-			{ id: 'cpe-2', type: 'customer-premises', 'aria-label': 'Customer premises CP-2' },
+			{ id: 'cpe-1', color: 'teal', 'aria-label': 'Customer premises CP-1' },
+			{ id: 'cpe-2', color: 'teal', 'aria-label': 'Customer premises CP-2' },
 		],
 	},
 };
@@ -161,10 +178,10 @@ export const SelectedDevice: Story = {
 				selectedDeviceId={selectedDeviceId}
 				onDeviceClick={(device) => setSelectedDeviceId(device.id)}
 				devices={[
-					{ id: 'agg-1', type: 'aggregation', 'aria-label': 'Aggregation router AG-1' },
-					{ id: 'edge-1', type: 'edge', 'aria-label': 'Edge router ER-1' },
-					{ id: 'edge-2', type: 'edge', 'aria-label': 'Edge router ER-2' },
-					{ id: 'acc-1', type: 'access', 'aria-label': 'Access switch AS-1' },
+					{ id: 'agg-1', color: 'gray', 'aria-label': 'Aggregation router AG-1' },
+					{ id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },
+					{ id: 'edge-2', color: 'light-blue', 'aria-label': 'Edge router ER-2' },
+					{ id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },
 				]}
 			/>
 		);
@@ -179,7 +196,7 @@ export const Localized: Story = {
 		locale: { moreDevices: (count) => `Show ${String(count)} hidden devices` },
 		devices: Array.from({ length: 20 }, (_, index) => ({
 			id: `device-${String(index + 1)}`,
-			type: 'edge' as const,
+			color: 'light-blue' as const,
 			'aria-label': `Edge router ER-${String(index + 1)}`,
 		})),
 	},
@@ -197,8 +214,8 @@ export const DeviceCounts: Story = {
 					aria-label={`${String(count)} devices`}
 					devices={Array.from({ length: count === 16 ? 112 : count }, (__, deviceIndex) => ({
 						id: String(deviceIndex),
-						type: pinDeviceTypes[deviceIndex % pinDeviceTypes.length],
-						stage: pinDeviceStages[deviceIndex % pinDeviceStages.length],
+						color: pinDeviceColors[deviceIndex % pinDeviceColors.length],
+						border: pinDeviceBorders[deviceIndex % pinDeviceBorders.length],
 						'aria-label': `Device ${String(deviceIndex + 1)}`,
 					}))}
 				/>
@@ -230,7 +247,7 @@ export const AllVariants: Story = {
 							{...state}
 							devices={Array.from({ length: 8 }, (__, deviceIndex) => ({
 								id: String(deviceIndex),
-								type: 'aggregation' as const,
+								color: 'gray' as const,
 								'aria-label': `Device ${String(deviceIndex + 1)}`,
 							}))}
 						/>

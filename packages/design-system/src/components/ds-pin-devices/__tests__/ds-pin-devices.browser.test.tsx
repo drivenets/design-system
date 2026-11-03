@@ -6,7 +6,7 @@ import type { PinDevice } from '../ds-pin-devices.types';
 const createDevices = (count: number): PinDevice[] =>
 	Array.from({ length: count }, (_, index) => ({
 		id: `device-${String(index + 1)}`,
-		type: 'edge',
+		color: 'light-blue',
 		'aria-label': `Edge router ${String(index + 1)}`,
 	}));
 

@@ -41,8 +41,9 @@ const DsPinDevices = ({
 			key={device.id}
 			type="button"
 			className={styles.device}
-			data-type={device.type}
-			data-stage={device.stage ?? 'deployed'}
+			data-color={device.color}
+			data-variant={device.variant ?? 'tinted'}
+			data-border={device.border ?? 'solid'}
 			aria-label={device['aria-label']}
 			aria-current={device.id === selectedDeviceId ? true : undefined}
 			onClick={(event) => onDeviceClick?.(device, event)}

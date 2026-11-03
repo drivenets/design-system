@@ -1,32 +1,40 @@
 import type { CSSProperties, MouseEvent, Ref } from 'react';
 import type { MapPinBadgeBorder, MapPinColor, MapPinRing, MapPinSize } from '../ds-map-pin';
 
-export const pinDeviceTypes = [
-	'aggregation',
-	'edge',
-	'network-management',
-	'access',
-	'virtual',
-	'passive',
-	'virtual-nested',
-	'customer-premises',
+export const pinDeviceColors = [
+	'gray',
+	'light-blue',
+	'dark-pink',
+	'orange',
+	'purple',
+	'pink',
+	'teal',
 ] as const;
-export type PinDeviceType = (typeof pinDeviceTypes)[number];
+export type PinDeviceColor = (typeof pinDeviceColors)[number];
 
-export const pinDeviceStages = ['deployed', 'planned', 'designed'] as const;
-export type PinDeviceStage = (typeof pinDeviceStages)[number];
+export const pinDeviceVariants = ['tinted', 'outlined'] as const;
+export type PinDeviceVariant = (typeof pinDeviceVariants)[number];
+
+export const pinDeviceBorders = ['solid', 'dotted', 'dashed'] as const;
+export type PinDeviceBorder = (typeof pinDeviceBorders)[number];
 
 export interface PinDevice {
 	id: string;
 	/**
-	 * Sets the square's color. Without it the square is neutral.
+	 * Map each kind of device to one color and keep it consistent across the map. Without it the square is neutral.
 	 */
-	type?: PinDeviceType;
+	color?: PinDeviceColor;
 	/**
-	 * Sets the square's border: solid when deployed, dotted when planned, dashed when designed.
-	 * @default 'deployed'
+	 * `tinted` fills the square with a light shade of `color`; `outlined` keeps a neutral fill, to tell apart
+	 * two kinds of device that share a color.
+	 * @default 'tinted'
 	 */
-	stage?: PinDeviceStage;
+	variant?: PinDeviceVariant;
+	/**
+	 * Border style, for the status of the device, e.g. planned (`dotted`) or in design (`dashed`).
+	 * @default 'solid'
+	 */
+	border?: PinDeviceBorder;
 	/**
 	 * Short code shown in the square, e.g. `"oR"` or `"PL"`.
 	 */
