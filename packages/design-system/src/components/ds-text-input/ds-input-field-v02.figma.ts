@@ -51,6 +51,13 @@ const registry: Record<string, FieldInfo> = {
 		invalid: true,
 		data: 'options={[]}',
 	},
+	autocompleteTags: {
+		component: 'DsAutocomplete',
+		size: true,
+		large: true,
+		invalid: true,
+		data: 'multiple options={[]} value={[]}',
+	},
 };
 
 const instance = figma.selectedInstance;
@@ -70,7 +77,7 @@ const state = instance.getEnum('state', {
 	error: 'error',
 });
 
-const part = instance.findInstance('DAP-part_InputType_v01', { traverseInstances: true });
+const part = instance.findInstance('Part_InputType_v01', { traverseInstances: true });
 const inputType =
 	(part.type === 'INSTANCE'
 		? part.getEnum('inputType', {
@@ -84,6 +91,7 @@ const inputType =
 				time: 'time',
 				'autocomplete-search': 'autocompleteSearch',
 				'autocomplete-combobox': 'autocompleteCombobox',
+				'autocomplete-tags': 'autocompleteTags',
 			})
 		: 'text') ?? 'text';
 
