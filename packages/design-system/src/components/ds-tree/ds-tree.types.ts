@@ -60,6 +60,8 @@ export interface DsTreeRootProps<T extends DsTreeNode = DsTreeNode> extends DsTr
 	 * Ref forwarded to the tree root element
 	 */
 	ref?: Ref<HTMLDivElement>;
+	/** Set `--ds-tree-row-start` and `--ds-tree-indent-per-level` here to change the row indent. */
+	style?: CSSProperties;
 
 	/**
 	 * Ids of currently selected nodes (controlled). Use with `onSelectionChange`.
@@ -180,11 +182,56 @@ export type DsTreeItemTextProps = DsTreeBasePropsWithChildren & DsTreeRowTrigger
 
 export type DsTreeItemIndicatorProps = DsTreeBaseProps;
 
-export type DsTreeNodeCheckboxProps = DsTreeBaseProps;
+export type DsTreeCheckedState = boolean | 'indeterminate';
+
+export interface DsTreeNodeCheckboxProps extends DsTreeBaseProps {
+	/** Overrides the state derived from `checkedValue`, on screen and for assistive tech. */
+	checked?: DsTreeCheckedState;
+	/**
+	 * Disables only the checkbox; the row stays selectable, expandable and draggable.
+	 * @default false
+	 */
+	disabled?: boolean;
+}
 
 export interface DsTreeItemActionProps extends DsTreeBasePropsWithChildren {
 	/**
 	 * Called when the row action button is clicked. Receives the native mouse event.
 	 */
 	onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+}
+
+/** Where a dropped node lands: before or after `target`, or inside it as its first child. */
+export type DsTreeDropPosition = 'before' | 'after' | 'inside';
+
+/** A drag-and-drop move, with nodes taken from the collection the tree renders. */
+export interface DsTreeMoveDetails<T extends DsTreeNode = DsTreeNode> {
+	node: T;
+	/** Node the drop is relative to; the whole group for a group fallback drop (see `canDrop`). */
+	target: T;
+	position: DsTreeDropPosition;
+	/** Group the node leaves, or `null` for the root level. */
+	fromParent: T | null;
+	/** Group the node joins, or `null` for the root level. */
+	toParent: T | null;
+}
+
+export interface DsTreeSortableProps<T extends DsTreeNode = DsTreeNode> {
+	children?: ReactNode;
+	/**
+	 * Return `false` to reject a slot; a rejected slot falls back to before or after its whole group.
+	 * Drops into the node itself, its descendants or a disabled group are always rejected.
+	 */
+	canDrop?: (details: DsTreeMoveDetails<T>) => boolean;
+	/** Called per drop with the moved collection; pass it back to `DsTree.Root` to apply the move. */
+	onCollectionChange: (collection: DsTreeRootProps<T>['collection'], details: DsTreeMoveDetails<T>) => void;
+}
+
+export interface DsTreeDragHandleProps extends DsTreeBaseProps {
+	ref?: Ref<HTMLButtonElement>;
+	/**
+	 * Disables dragging the row, e.g. when `canDrop` leaves it nowhere to go. Selecting and checking stay enabled.
+	 * @default false
+	 */
+	disabled?: boolean;
 }

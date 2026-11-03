@@ -8,7 +8,7 @@ import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getHeaderCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
 import { COLUMN_DISPLAY_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
-import { getStickyCellProps, isStickyCell } from '../../utils/sticky-columns';
+import { getStickyCellProps, hasFixedStickyWidth } from '../../utils/sticky-columns';
 import { DsStack } from '../../../ds-stack';
 import { DsTableColumnFilterPopover } from '../../filters/components/column-filter-popover';
 import type { ResolvedColumnFilter } from '../../filters/types/filter-adapter.types';
@@ -16,13 +16,19 @@ import { DsTableColumnDisplay } from '../ds-table-column-display';
 import { DsTableGroupHeaderCell } from '../ds-table-group-header-cell';
 import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
-import { isFirstLeafColumnOfGroup } from '../../grouping';
+import { getGroupBoundaryColumnIds, startsAtGroupBoundary } from '../../grouping';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 	const { bordered, virtualized, resizableColumns, resizeSizingReady, columnDisplay } = useDsTableContext<
 		TData,
 		unknown
 	>();
+	const groupBoundaryIds = getGroupBoundaryColumnIds(
+		table
+			.getHeaderGroups()
+			.at(-1)
+			?.headers.map((header) => header.column) ?? [],
+	);
 
 	return (
 		<TableHeader className={classnames(styles.header, virtualized && styles.virtualizedHeader)}>
@@ -37,16 +43,22 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 				>
 					{headerGroup.headers.map((header) => {
 						const columnSizing = table.getState().columnSizing;
+						const visibleLeafIds = header.column
+							.getLeafColumns()
+							.filter((leaf) => leaf.getIsVisible())
+							.map((leaf) => leaf.id);
 						const { style: stickyStyle, ...stickyAttributes } = getStickyCellProps(
 							table,
-							header.column
-								.getLeafColumns()
-								.filter((leaf) => leaf.getIsVisible())
-								.map((leaf) => leaf.id),
+							visibleLeafIds,
 							!!resizeSizingReady,
 						);
 						// Sticky offsets need real widths, so sticky fill columns take their size.
-						const isSticky = isStickyCell(stickyAttributes);
+						const isSticky = hasFixedStickyWidth(
+							table,
+							stickyAttributes,
+							visibleLeafIds,
+							!!resizeSizingReady,
+						);
 
 						const isRowActionsColumn = header.column.id === ROW_ACTIONS_COLUMN_ID;
 						const hostsColumnDisplay =
@@ -62,6 +74,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 									data-column-id={header.isPlaceholder ? undefined : header.column.id}
 									className={classnames(
 										styles.headerCell,
+										header.isPlaceholder && styles.placeholderCell,
 										isRowActionsColumn ? styles.rowActionsHeaderCell : styles.columnDisplayHeaderCell,
 									)}
 									style={{
@@ -89,7 +102,11 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							return (
 								<TableHead
 									key={header.id}
-									className={styles.headerCell}
+									className={classnames(
+										styles.headerCell,
+										styles.placeholderCell,
+										startsAtGroupBoundary(header.column, groupBoundaryIds) && styles.groupStart,
+									)}
 									style={{
 										...getHeaderCellSizeStyle(
 											header.id,
@@ -105,7 +122,9 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 						}
 
 						if (header.subHeaders.length > 0) {
-							return <DsTableGroupHeaderCell key={header.id} header={header} />;
+							return (
+								<DsTableGroupHeaderCell key={header.id} header={header} groupBoundaryIds={groupBoundaryIds} />
+							);
 						}
 
 						const headerStyle = {
@@ -121,7 +140,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 						const sortDirection = header.column.getIsSorted();
 						const canResize = resizableColumns && header.column.getCanResize();
 						const isSelectColumn = header.column.id === SELECT_COLUMN_ID;
-						const isGroupStart = isFirstLeafColumnOfGroup(header.column);
+						const isGroupStart = groupBoundaryIds.has(header.column.id);
 
 						const metaFilter = header.column.columnDef.meta?.filter;
 						const resolvedFilter: ResolvedColumnFilter | undefined =

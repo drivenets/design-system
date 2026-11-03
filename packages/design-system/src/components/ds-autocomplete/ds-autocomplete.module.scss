@@ -48,6 +48,7 @@ $autocomplete-tags-dropdown-max-height: 240px;
 	}
 
 	&[data-focus] {
+		// stylelint-disable-next-line declaration-no-important -- beats input-container-states hover border
 		border-color: var(--form-control-border-color, var(--border-action-primary)) !important;
 	}
 
@@ -307,6 +308,7 @@ $autocomplete-tags-dropdown-max-height: 240px;
 
 		&:hover,
 		&[data-focus] {
+			// stylelint-disable-next-line declaration-no-important -- beats input-container-states hover border
 			border-color: var(--background-error) !important;
 		}
 	}

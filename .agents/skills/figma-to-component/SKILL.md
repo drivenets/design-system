@@ -137,7 +137,7 @@ A component's `*.figma.ts` file maps the Figma component to its React API for Co
 pnpm --filter @drivenets/design-system figma:lint
 ```
 
-See [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse). This parse is enforced in CI (`figma-code-connect-lint`) and checked on review — see [code-review](../code-review/SKILL.md).
+See [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse). This parse is enforced in CI (`figma-code-connect-lint`) and by `pnpm agent:check`.
 
 ## Skill chain (summary)
 

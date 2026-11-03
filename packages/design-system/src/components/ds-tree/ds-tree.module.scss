@@ -1,8 +1,17 @@
 @use '../../styles/typography';
+@use '../../styles/shared/dropdown';
 
 $indent-per-level: 12px;
 $half-icon: calc(var(--icon-width-tiny) * 0.5);
 $transition-duration: 0.2s;
+$drag-handle-size: 24px;
+$source-opacity: 0.3;
+$drag-preview-opacity: 0.85;
+$drag-preview-shadow: 0 2px 6px 0 var(--shadow-moderate);
+$drop-line-width: 1px;
+// Public, so a consumer that indents rows differently keeps drop lines and guides aligned with them
+$row-start: var(--ds-tree-row-start, var(--3xs));
+$level-indent: var(--ds-tree-indent-per-level, calc(#{$indent-per-level} + #{$half-icon}));
 
 @mixin node-row {
 	display: flex;
@@ -16,9 +25,7 @@ $transition-duration: 0.2s;
 	color: var(--font-secondary);
 
 	--ds-tree-depth: calc(var(--depth) - 1);
-	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
-	--ds-tree-icon-offset: calc(#{$half-icon} * var(--ds-tree-depth));
-	--ds-tree-offset: calc(var(--3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset));
+	--ds-tree-offset: calc(#{$row-start} + #{$level-indent} * var(--ds-tree-depth));
 
 	padding-inline-start: var(--ds-tree-offset);
 	padding-inline-end: var(--3xs);
@@ -61,6 +68,40 @@ $transition-duration: 0.2s;
 	}
 }
 
+@mixin drop-line {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: 3;
+		inset-inline: var(--ds-tree-offset, #{$row-start}) var(--3xs);
+		border-top: $drop-line-width dashed var(--border);
+		pointer-events: none;
+	}
+}
+
+@mixin drop-line-edges {
+	&[data-drop] {
+		@include drop-line;
+	}
+
+	&[data-drop='before']::before {
+		top: 0;
+	}
+
+	// Drawn on the next row's first pixel, where `before` on that row draws, so a gap never shifts by a pixel
+	&[data-drop='after']::before,
+	&[data-drop='inside']::before {
+		bottom: -$drop-line-width;
+	}
+
+	// Inside lands as the first child, so the line is indented one level deeper
+	&[data-drop='inside']::before {
+		inset-inline-start: calc(var(--ds-tree-offset) + #{$level-indent});
+	}
+}
+
 @mixin node-text {
 	flex: 1;
 	display: inline-flex;
@@ -75,7 +116,11 @@ $transition-duration: 0.2s;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+}
 
+// The drag preview is portaled out of the root, so it carries the tree size itself
+.root,
+.dragPreview {
 	&[data-size='medium'] {
 		.branchControl,
 		.item {
@@ -107,11 +152,23 @@ $transition-duration: 0.2s;
 }
 
 .branch {
+	@include drop-line-edges;
 	position: relative;
+
+	// A whole-block drop draws on the branch, so its line spans the group at its header's indent
+	&[data-drop] {
+		--ds-tree-depth: calc(var(--depth) - 1);
+		--ds-tree-offset: calc(#{$row-start} + #{$level-indent} * var(--ds-tree-depth));
+	}
+
+	&[data-source] {
+		opacity: $source-opacity;
+	}
 }
 
 .branchControl {
 	@include node-row;
+	@include drop-line-edges;
 }
 
 .branchIndicator {
@@ -137,7 +194,6 @@ $transition-duration: 0.2s;
 
 .branchContent {
 	position: relative;
-	overflow: hidden;
 
 	&[data-state='open'] {
 		animation: ds-tree-expand $transition-duration ease-out;
@@ -156,15 +212,17 @@ $transition-duration: 0.2s;
 	background: var(--border-secondary);
 
 	--ds-tree-depth: calc(var(--depth) - 1);
-	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
-	--ds-tree-guide-offset: calc(var(--3xs) + var(--ds-tree-indent-offset));
-	--ds-tree-icon-offset: calc(#{$half-icon} * var(--depth));
 
-	inset-inline-start: calc(var(--ds-tree-guide-offset) + var(--ds-tree-icon-offset));
+	inset-inline-start: calc(#{$row-start} + #{$level-indent} * var(--ds-tree-depth) + #{$half-icon});
 }
 
 .item {
 	@include node-row;
+	@include drop-line-edges;
+
+	&[data-source] {
+		opacity: $source-opacity;
+	}
 }
 
 .itemText {
@@ -258,13 +316,106 @@ $transition-duration: 0.2s;
 	justify-content: center;
 }
 
+.dragHandle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: $drag-handle-size;
+	height: $drag-handle-size;
+	margin-block: calc((var(--icon-width-tiny) - #{$drag-handle-size}) / 2);
+	border: none;
+	border-radius: 4px;
+	padding: 0;
+	background: transparent;
+	color: var(--icon-secondary);
+	cursor: grab;
+	touch-action: none;
+
+	&:active {
+		cursor: grabbing;
+	}
+
+	&:disabled {
+		color: var(--icon-disabled);
+		cursor: not-allowed;
+	}
+}
+
+.rootDropZone {
+	flex: 1 0 auto;
+
+	&[data-reserve-space] {
+		min-height: var(--xl);
+	}
+
+	&[data-drop] {
+		@include drop-line;
+
+		&::before {
+			top: 0;
+		}
+	}
+}
+
+// Above dropdown surfaces (e.g. a column chooser), so a tree inside one still shows its drag preview
+.dragLayer {
+	position: fixed;
+	inset: 0 auto auto 0;
+	z-index: dropdown.$dropdown-z-index + 1;
+}
+
+.dragPreview {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	min-height: 100%;
+	border: 1px solid var(--border-action-primary);
+	border-radius: 4px;
+	background: var(--background);
+	box-shadow: $drag-preview-shadow;
+	opacity: $drag-preview-opacity;
+	color: var(--font-secondary);
+	cursor: grabbing;
+
+	.dragHandle {
+		cursor: inherit;
+	}
+
+	&[data-rejected] {
+		cursor: not-allowed;
+	}
+}
+
+.dragPreview > .dragPreviewRoot {
+	height: auto;
+	min-height: 0;
+	max-height: none;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	overflow: visible;
+
+	// The copy shows the rows at rest, so an open group must not replay its expand animation
+	.branchContent {
+		animation: none;
+	}
+}
+
+.dragPreviewHandle {
+	background: var(--background-tertiary-selected-weak);
+}
+
+// Clips only while the height animates, so a drop line just below the last child stays visible
 @keyframes ds-tree-expand {
 	from {
+		overflow: hidden;
 		height: 0;
 		opacity: 0;
 	}
 
 	to {
+		overflow: hidden;
 		height: var(--height);
 		opacity: 1;
 	}
@@ -272,11 +423,13 @@ $transition-duration: 0.2s;
 
 @keyframes ds-tree-collapse {
 	from {
+		overflow: hidden;
 		height: var(--height);
 		opacity: 1;
 	}
 
 	to {
+		overflow: hidden;
 		height: 0;
 		opacity: 0;
 	}

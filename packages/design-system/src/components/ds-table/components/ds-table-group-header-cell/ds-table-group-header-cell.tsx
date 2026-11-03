@@ -4,7 +4,7 @@ import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getGroupColumnSizeStyle } from '../../grouping';
 import { getColumnSizeStyle, getResizableHeaderStyle } from '../../utils/column-size';
-import { getStickyCellProps, isStickyCell } from '../../utils/sticky-columns';
+import { getStickyCellProps, getStickyFillColumnId, isStickyCell } from '../../utils/sticky-columns';
 import { defaultDsTableLocale } from '../../ds-table.types';
 import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
@@ -13,14 +13,16 @@ import styles from './ds-table-group-header-cell.module.scss';
 
 export const DsTableGroupHeaderCell = <TData, TValue>({
 	header,
+	groupBoundaryIds,
 }: DsTableGroupHeaderCellProps<TData, TValue>) => {
 	const { collapsedColumnGroups, onToggleColumnGroup, locale, resizableColumns, resizeSizingReady } =
 		useDsTableContext<TData, TValue>();
 
 	const groupId = header.column.id;
 	const visibleLeafColumns = header.column.getLeafColumns().filter((leaf) => leaf.getIsVisible());
+	const table = header.getContext().table;
 	const { style: stickyStyle, ...stickyAttributes } = getStickyCellProps(
-		header.getContext().table,
+		table,
 		visibleLeafColumns.map((leaf) => leaf.id),
 		!!resizeSizingReady,
 	);
@@ -29,15 +31,25 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 			return getResizableHeaderStyle(header.id);
 		}
 
-		// Sticky leaves render at a fixed width, so the group does too.
-		if (isStickyCell(stickyAttributes)) {
+		if (!isStickyCell(stickyAttributes)) {
+			return getGroupColumnSizeStyle(visibleLeafColumns, {}, groupBoundaryIds);
+		}
+
+		const fillColumnId = getStickyFillColumnId(table, false);
+
+		// Sticky leaves render at a fixed width, so the group does too, unless it holds the sticky fill column.
+		if (!visibleLeafColumns.some((leaf) => leaf.id === fillColumnId)) {
 			return getColumnSizeStyle(
 				visibleLeafColumns.reduce((sum, leaf) => sum + leaf.getSize(), 0),
 				true,
 			);
 		}
 
-		return getGroupColumnSizeStyle(visibleLeafColumns, {});
+		const fixedLeafSizing = Object.fromEntries(
+			visibleLeafColumns.filter((leaf) => leaf.id !== fillColumnId).map((leaf) => [leaf.id, leaf.getSize()]),
+		);
+
+		return getGroupColumnSizeStyle(visibleLeafColumns, fixedLeafSizing, groupBoundaryIds);
 	};
 	const groupStyle = { ...getSizeStyle(), ...stickyStyle };
 
