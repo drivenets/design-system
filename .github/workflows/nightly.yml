@@ -24,7 +24,7 @@ jobs:
       security-events: write
       packages: read
 
-    uses: ./.github/workflows/security.yml
+    uses: $/.github/workflows/security.yml
 
   audit:
     name: Dependencies Audit
@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
 
       - name: Install Dependencies
-        uses: ./.github/actions/install
+        uses: $/.github/actions/install
 
       - name: Run Audit
         run: pnpm audit --prod --audit-level=high
@@ -150,7 +150,7 @@ jobs:
           persist-credentials: false
 
       - name: Install Dependencies
-        uses: ./.github/actions/install
+        uses: $/.github/actions/install
 
       - name: Run ${{ matrix.label }}
         run: ${{ matrix.run }}
