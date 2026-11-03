@@ -76,6 +76,16 @@ export interface DsTableLocale {
 	searchColumns: string;
 
 	/**
+	 * Accessible name for the button that clears the column display search.
+	 */
+	clearSearch: string;
+
+	/**
+	 * Shown in the column display popup when no column matches the search.
+	 */
+	noMatchingColumns: string;
+
+	/**
 	 * Label for the column display checkbox that shows or hides every column.
 	 */
 	allColumns: string;
@@ -98,6 +108,8 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	moreRowActions: 'More actions',
 	columns: 'Columns',
 	searchColumns: 'Search',
+	clearSearch: 'Clear search',
+	noMatchingColumns: 'No matches',
 	allColumns: 'All columns',
 	stickyColumn: 'Sticky',
 });

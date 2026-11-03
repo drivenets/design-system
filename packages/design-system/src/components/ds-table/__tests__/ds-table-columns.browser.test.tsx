@@ -170,6 +170,28 @@ describe('DsTable - Columns', () => {
 			return topElement !== null && element.contains(topElement);
 		};
 
+		const columnsDialog = () => page.getByRole('dialog', { name: 'Columns' });
+		const searchField = () => columnsDialog().getByRole('textbox', { name: 'Search' });
+		const clearButton = () => columnsDialog().getByRole('button', { name: 'Clear search' });
+
+		const treeRows = () =>
+			Array.from(
+				document.querySelectorAll<HTMLElement>(
+					'[role="dialog"] :is([data-part="item"], [data-part="branch-control"])',
+				),
+			);
+		const shownRows = () => treeRows().map((row) => row.dataset.value);
+
+		const rowOf = (id: string) => {
+			const row = treeRows().find((element) => element.dataset.value === id);
+
+			if (!row) {
+				throw new Error(`Expected a column display row "${id}"`);
+			}
+
+			return row;
+		};
+
 		const openColumnDisplay = async (name = 'Columns') => {
 			await page.getByRole('button', { name }).click();
 			await expect.element(page.getByRole('dialog', { name })).toBeVisible();
@@ -240,14 +262,27 @@ describe('DsTable - Columns', () => {
 			expect(onColumnVisibilityChange).toHaveBeenLastCalledWith({ age: false });
 		});
 
-		it('lists every column in a tree without a search field', async () => {
+		it('lists every column with a search field and no search applied', async () => {
 			await renderTable({ columns: groupedColumns });
 			await openColumnDisplay();
 
-			await expect.element(page.getByRole('tree')).toBeVisible();
-			await expect.element(page.getByRole('dialog').getByRole('textbox')).not.toBeInTheDocument();
-			await expect.element(columnCheckbox('Profile Progress')).toBeVisible();
-			await expect.element(columnCheckbox('Identity')).toBeVisible();
+			await expect.element(searchField()).toHaveValue('');
+			expect(shownRows()).toEqual([
+				'identity',
+				'firstName',
+				'lastName',
+				'age',
+				'activity',
+				'visits',
+				'status',
+				'progress',
+			]);
+			expect(document.querySelectorAll('[role="dialog"] [role="tree"] [aria-disabled="true"]')).toHaveLength(
+				0,
+			);
+			expect(document.querySelectorAll('[role="dialog"] mark')).toHaveLength(0);
+			await expect.element(clearButton()).not.toBeInTheDocument();
+			await expect.element(columnCheckbox('Identity')).toBeEnabled();
 		});
 
 		it('toggles every column from All columns', async () => {
@@ -470,6 +505,306 @@ describe('DsTable - Columns', () => {
 			await openColumnDisplay('Choose columns');
 
 			await expect.element(page.getByRole('checkbox', { name: 'Every column', exact: true })).toBeChecked();
+		});
+
+		describe('search', () => {
+			const nestedColumns: ColumnDef<Person>[] = [
+				{
+					id: 'identity',
+					header: 'Identity',
+					columns: [
+						{ accessorKey: 'firstName', header: 'First Name' },
+						{ accessorKey: 'lastName', header: 'Last Name' },
+					],
+				},
+				{
+					id: 'activity',
+					header: 'Activity',
+					columns: [
+						{
+							id: 'engagement',
+							header: 'Engagement',
+							columns: [
+								{ accessorKey: 'visits', header: 'Visits' },
+								{ accessorKey: 'progress', header: 'Profile Progress' },
+							],
+						},
+						{ accessorKey: 'status', header: 'Status' },
+					],
+				},
+				{ accessorKey: 'age', header: 'Age' },
+			];
+
+			const search = (text: string) => searchField().fill(text);
+
+			const marksIn = (id: string) =>
+				Array.from(rowOf(id).querySelectorAll('mark')).map((mark) => mark.textContent);
+
+			const labelOf = (id: string) =>
+				rowOf(id).querySelector(':is([data-part="branch-text"], [data-part="item-text"])');
+
+			const labelColor = (id: string) => {
+				const label = labelOf(id);
+
+				return label ? getComputedStyle(label).color : null;
+			};
+
+			const isDisabledRow = (id: string) =>
+				rowOf(id).closest('[role="treeitem"]')?.getAttribute('aria-disabled') === 'true';
+
+			const pressOnClearButton = async (key: string) => {
+				(clearButton().element() as HTMLElement).focus();
+				await userEvent.keyboard(key);
+			};
+
+			it('shows a search field with a search icon above the column tree', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+
+				const input = searchField().element();
+				const icon = input.parentElement?.firstElementChild;
+
+				await expect.element(searchField()).toHaveAttribute('placeholder', 'Search');
+				expect(icon?.textContent).toBe('search');
+				expect(icon?.compareDocumentPosition(input)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+				expect(input.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+					columnsDialog().getByRole('tree').element().getBoundingClientRect().top,
+				);
+			});
+
+			it('narrows the tree to labels containing the text, ignoring case and surrounding whitespace', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await search('  NAME ');
+
+				await expect.poll(shownRows).toEqual(['identity', 'firstName', 'lastName']);
+			});
+
+			it('shows only the matching columns of a matching group, and none when no column matches', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await search('i');
+
+				await expect.poll(shownRows).toEqual(['identity', 'firstName', 'activity', 'visits', 'progress']);
+
+				await search('activity');
+
+				await expect.poll(shownRows).toEqual(['activity']);
+			});
+
+			it('keeps matching rows interactive', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await search('i');
+
+				await expect.element(columnCheckbox('Identity')).toBeEnabled();
+				await expect.element(columnCheckbox('Visits')).toBeEnabled();
+				expect(isDisabledRow('identity')).toBe(false);
+				expect(isDisabledRow('visits')).toBe(false);
+				await expect.element(page.getByRole('button', { name: 'Sticky Identity' })).toBeInTheDocument();
+
+				await columnCheckbox('Visits').click();
+
+				await expect.element(columnHeader('Visits')).not.toBeInTheDocument();
+				await expect.element(columnCheckbox('Visits')).not.toBeChecked();
+
+				rowOf('visits').focus();
+				await userEvent.keyboard(' ');
+
+				await expect.element(columnHeader('Visits')).toBeVisible();
+			});
+
+			it('shows a reference row at every level above a match', async () => {
+				await renderTable({ columns: nestedColumns });
+				await openColumnDisplay();
+				await search('progress');
+
+				await expect.poll(shownRows).toEqual(['activity', 'engagement', 'progress']);
+				expect(['activity', 'engagement', 'progress'].map(isDisabledRow)).toEqual([true, true, false]);
+			});
+
+			it('shows a reference row greyed and read-only, with its true state and no sticky toggle', async () => {
+				await renderTable({ columns: nestedColumns });
+				await openColumnDisplay();
+				await columnCheckbox('Status').click();
+				await search('progress');
+
+				const activity = columnCheckbox('Activity');
+				await expect.element(activity).toBeDisabled();
+				await expect.poll(() => getCheckboxState('Activity')).toBe('indeterminate');
+				await expect.poll(() => getCheckboxState('Engagement')).toBe('checked');
+				await expect.element(page.getByRole('button', { name: 'Sticky Activity' })).not.toBeInTheDocument();
+				expect(labelColor('activity')).not.toBe(labelColor('progress'));
+
+				await activity.click({ force: true });
+				await columnsDialog().getByText('Activity', { exact: true }).click({ force: true });
+
+				await expect.element(columnHeader('Visits')).toBeVisible();
+				await expect.element(columnHeader('Status')).not.toBeInTheDocument();
+				await expect.poll(() => getCheckboxState('Activity')).toBe('indeterminate');
+			});
+
+			it('keeps reference rows out of keyboard focus', async () => {
+				await renderTable({ columns: nestedColumns });
+				await openColumnDisplay();
+				await search('progress');
+
+				const progress = rowOf('progress');
+				await expect.poll(() => progress.tabIndex).toBe(0);
+				expect(rowOf('activity').tabIndex).toBe(-1);
+				expect(rowOf('engagement').tabIndex).toBe(-1);
+
+				progress.focus();
+				await userEvent.keyboard('{ArrowUp}');
+				await userEvent.keyboard('{ArrowLeft}');
+				await userEvent.keyboard('e');
+
+				expect(document.activeElement).toBe(progress);
+			});
+
+			it.each([
+				{ focused: 'activity', becomes: 'a reference row' },
+				{ focused: 'age', becomes: 'hidden' },
+			])(
+				'moves the tab stop to the first match when the focused row becomes $becomes',
+				async ({ focused }) => {
+					await renderTable({ columns: nestedColumns });
+					await openColumnDisplay();
+
+					rowOf(focused).focus();
+					await expect.poll(() => rowOf(focused).tabIndex).toBe(0);
+
+					await search('progress');
+
+					await expect.poll(() => rowOf('progress').tabIndex).toBe(0);
+					expect(treeRows().filter((row) => row.tabIndex === 0)).toEqual([rowOf('progress')]);
+				},
+			);
+
+			it('highlights every occurrence of the text in matching rows only', async () => {
+				await renderTable({ columns: nestedColumns });
+				await openColumnDisplay();
+				await search(' pro ');
+
+				await expect.poll(() => marksIn('progress')).toEqual(['Pro', 'Pro']);
+				expect(labelOf('progress')?.textContent).toBe('Profile Progress');
+				expect(marksIn('activity')).toEqual([]);
+				expect(marksIn('engagement')).toEqual([]);
+			});
+
+			it('keeps a matching group partial and toggles all of its columns', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await columnCheckbox('Age').click();
+				await search('identity');
+
+				await expect.poll(shownRows).toEqual(['identity']);
+				await expect.poll(() => getCheckboxState('Identity')).toBe('indeterminate');
+
+				await columnCheckbox('Identity').click();
+
+				await expect.element(columnHeader('Age')).toBeVisible();
+				await expect.poll(() => getCheckboxState('Identity')).toBe('checked');
+
+				await columnCheckbox('Identity').click();
+
+				await expect.element(columnHeader('First Name')).not.toBeInTheDocument();
+				await expect.element(columnHeader('Last Name')).not.toBeInTheDocument();
+				await expect.element(columnHeader('Age')).not.toBeInTheDocument();
+				await expect.element(columnHeader('Visits')).toBeVisible();
+			});
+
+			it('keeps All columns reflecting and toggling every column', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await columnCheckbox('Visits').click();
+				await search('name');
+
+				await expect.poll(() => getCheckboxState('All columns')).toBe('indeterminate');
+
+				await columnCheckbox('All columns').click();
+
+				await expect.element(columnHeader('Visits')).toBeVisible();
+				await expect.poll(() => getCheckboxState('All columns')).toBe('checked');
+
+				await columnCheckbox('All columns').click();
+
+				await expect.element(columnHeader('First Name')).not.toBeInTheDocument();
+				await expect.element(columnHeader('Status')).not.toBeInTheDocument();
+				await expect.element(columnHeader('Profile Progress')).not.toBeInTheDocument();
+			});
+
+			it.each([
+				{ method: 'a click', press: () => clearButton().click() },
+				{ method: 'Enter', press: () => pressOnClearButton('{Enter}') },
+				{ method: 'Space', press: () => pressOnClearButton(' ') },
+			])('clears the search with $method and keeps focus in the field', async ({ press }) => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+
+				await expect.element(clearButton()).not.toBeInTheDocument();
+
+				await search('name');
+
+				await expect.element(clearButton()).toBeVisible();
+
+				await press();
+
+				await expect.element(searchField()).toHaveValue('');
+				await expect.element(searchField()).toHaveFocus();
+				await expect.element(clearButton()).not.toBeInTheDocument();
+				expect(shownRows()).toHaveLength(8);
+			});
+
+			it('replaces the tree with a polite message when nothing matches', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+
+				const message = columnsDialog().getByRole('status');
+				await expect.element(message).toBeEmptyDOMElement();
+
+				await search('zzz');
+
+				await expect.element(message).toHaveTextContent('No matches');
+				await expect.element(columnsDialog().getByRole('tree')).not.toBeInTheDocument();
+				await expect.element(searchField()).toBeVisible();
+				await expect.element(columnCheckbox('All columns')).toBeVisible();
+
+				await search('age');
+
+				await expect.element(message).toBeEmptyDOMElement();
+				await expect.poll(shownRows).toEqual(['identity', 'age']);
+			});
+
+			it('closes the popup on Escape and starts the next open with an empty search', async () => {
+				await renderTable({ columns: groupedColumns });
+				await openColumnDisplay();
+				await search('name');
+
+				await expect.element(searchField()).toHaveFocus();
+				await userEvent.keyboard('{Escape}');
+
+				await expect.element(columnsDialog()).not.toBeInTheDocument();
+
+				await openColumnDisplay();
+
+				await expect.element(searchField()).toHaveValue('');
+				expect(shownRows()).toHaveLength(8);
+			});
+
+			it('uses the locale strings', async () => {
+				await renderTable({
+					locale: { searchColumns: 'Find', clearSearch: 'Reset find', noMatchingColumns: 'Nothing found' },
+				});
+				await openColumnDisplay();
+
+				const field = columnsDialog().getByRole('textbox', { name: 'Find' });
+				await expect.element(field).toHaveAttribute('placeholder', 'Find');
+				await field.fill('zzz');
+
+				await expect.element(columnsDialog().getByRole('button', { name: 'Reset find' })).toBeVisible();
+				await expect.element(columnsDialog().getByRole('status')).toHaveTextContent('Nothing found');
+			});
 		});
 	});
 });

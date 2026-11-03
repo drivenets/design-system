@@ -13,6 +13,7 @@ import {
 	getColumnOrderFromNodes,
 	getGroupIds,
 	getToggleVisibilityUpdate,
+	searchColumnDisplayNodes,
 } from './ds-table-column-display.utils';
 
 type Row = { id: string };
@@ -248,6 +249,78 @@ describe('canDropColumnDisplayNode', () => {
 		expect(canDropColumnDisplayNode(move('status', 'identity', null, null))).toBe(true);
 		expect(canDropColumnDisplayNode(move('status', 'visits', null, null))).toBe(false);
 		expect(canDropColumnDisplayNode(move('visits', 'identity', null, null))).toBe(false);
+	});
+});
+
+describe('searchColumnDisplayNodes', () => {
+	const results = (nodes: ColumnDisplayNode[]) =>
+		Object.fromEntries(flatten(nodes).map((node) => [node.id, node.searchResult]));
+
+	it('leaves the tree as it is without search text', () => {
+		const nodes = getNodes();
+
+		expect(searchColumnDisplayNodes(nodes, '')).toBe(nodes);
+		expect(searchColumnDisplayNodes(nodes, '   ')).toBe(nodes);
+	});
+
+	it('matches labels case-insensitively, ignoring surrounding whitespace', () => {
+		expect(results(searchColumnDisplayNodes(getNodes(), '  NAME '))).toEqual({
+			identity: 'reference',
+			firstName: 'match',
+			lastName: 'match',
+			age: 'hidden',
+			visits: 'hidden',
+			status: 'hidden',
+		});
+	});
+
+	it('keeps only the matching descendants of a matching column group', () => {
+		expect(results(searchColumnDisplayNodes(getNodes(), 'i'))).toEqual({
+			identity: 'match',
+			firstName: 'match',
+			lastName: 'hidden',
+			age: 'hidden',
+			visits: 'match',
+			status: 'hidden',
+		});
+	});
+
+	it('shows a reference row at every level above a match, and no children under a matching group without matches', () => {
+		const nodes = getColumnDisplayNodes(
+			getAllColumns([
+				{
+					id: 'outer',
+					header: 'Outer',
+					columns: [{ id: 'inner', header: 'Inner', columns: [{ id: 'leaf' }] }],
+				},
+			]),
+			{ columnOrder: [], stickyLeafIds: [], stickyFirst: false },
+		);
+
+		expect(results(searchColumnDisplayNodes(nodes, 'leaf'))).toEqual({
+			outer: 'reference',
+			inner: 'reference',
+			leaf: 'match',
+		});
+		expect(results(searchColumnDisplayNodes(nodes, 'outer'))).toEqual({
+			outer: 'match',
+			inner: 'hidden',
+			leaf: 'hidden',
+		});
+	});
+
+	it('disables every row but the matches, so only matches can be focused, toggled or dragged', () => {
+		const disabled = flatten(searchColumnDisplayNodes(getNodes(), 'name')).filter((node) => node.disabled);
+
+		expect(ids(disabled)).toEqual(['identity', 'age', 'visits', 'status']);
+	});
+
+	it('keeps every column in the tree, so a reorder while searching keeps the hidden ones in place', () => {
+		const nodes = getNodes(['status', 'age', 'firstName', 'lastName', 'visits']);
+
+		expect(getColumnOrderFromNodes(searchColumnDisplayNodes(nodes, 'name'))).toEqual(
+			getColumnOrderFromNodes(nodes),
+		);
 	});
 });
 
