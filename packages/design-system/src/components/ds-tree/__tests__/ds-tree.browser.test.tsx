@@ -356,6 +356,63 @@ describe('DsTree', () => {
 		await expect.element(secondary).toHaveAttribute('data-focus');
 		expect(onFocusChange).toHaveBeenCalledWith('firewall-2');
 	});
+
+	const renderTypeaheadTree = (typeahead?: boolean) => {
+		const collection = createDsTreeCollection(nodes);
+
+		return page.render(
+			<DsTree.Root collection={collection} defaultExpandedValue={['network']} typeahead={typeahead}>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => (
+						<TreeNode key={node.id} node={node} indexPath={[index]} />
+					))}
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+	};
+
+	it('focuses the next row whose name starts with a typed letter', async () => {
+		await renderTypeaheadTree();
+		await getTreeItem('firewall-1').click();
+
+		await userEvent.keyboard('f');
+
+		await expect.element(getTreeItem('firewall-2')).toHaveFocus();
+	});
+
+	it('keeps focus in place on a typed letter when typeahead is off', async () => {
+		await renderTypeaheadTree(false);
+		await getTreeItem('firewall-1').click();
+		await expect.element(getTreeItem('firewall-1')).toHaveFocus();
+
+		await userEvent.keyboard('f');
+		await nextFrame();
+
+		await expect.element(getTreeItem('firewall-1')).toHaveFocus();
+	});
+
+	it('keeps typing into an input inside a row when typeahead is off', async () => {
+		const filterNode: DsTreeNode = { id: 'filter', name: 'Filter' };
+		const collection = createDsTreeCollection([filterNode]);
+
+		await page.render(
+			<DsTree.Root collection={collection} typeahead={false}>
+				<DsTree.Tree>
+					<DsTree.NodeProvider node={filterNode} indexPath={[0]}>
+						<DsTree.Item>
+							<input aria-label="Filter value" />
+						</DsTree.Item>
+					</DsTree.NodeProvider>
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		const input = page.getByRole('textbox', { name: 'Filter value' });
+		await input.click();
+		await userEvent.keyboard('fw');
+
+		await expect.element(input).toHaveValue('fw');
+	});
 });
 
 describe('DsTree row parts forward injected props', () => {
@@ -469,12 +526,18 @@ const SortableTreeNode = ({
 	indexPath,
 	withoutHandle,
 	disabledHandles,
+	unrendered,
 }: {
 	node: DsTreeNode;
 	indexPath: number[];
 	withoutHandle?: string[];
 	disabledHandles?: string[];
+	unrendered?: string[];
 }) => {
+	if (unrendered?.includes(node.id)) {
+		return null;
+	}
+
 	const handle = withoutHandle?.includes(node.id) ? null : (
 		<DsTree.DragHandle disabled={disabledHandles?.includes(node.id)} />
 	);
@@ -497,6 +560,7 @@ const SortableTreeNode = ({
 								indexPath={[...indexPath, index]}
 								withoutHandle={withoutHandle}
 								disabledHandles={disabledHandles}
+								unrendered={unrendered}
 							/>
 						))}
 					</DsTree.BranchContent>
@@ -529,6 +593,8 @@ type SortableTreeProps = Partial<Pick<DsTreeSortableProps, 'canDrop' | 'onCollec
 		ignoreMoves?: boolean;
 		withoutHandle?: string[];
 		disabledHandles?: string[];
+		/** Nodes kept in the collection that render `null`, as a filtered list does */
+		unrendered?: string[];
 	};
 
 const SortableTree = ({
@@ -538,6 +604,7 @@ const SortableTree = ({
 	ignoreMoves = false,
 	withoutHandle,
 	disabledHandles,
+	unrendered,
 	defaultExpandedValue = ['network'],
 	...rootProps
 }: SortableTreeProps) => {
@@ -563,6 +630,7 @@ const SortableTree = ({
 							indexPath={[index]}
 							withoutHandle={withoutHandle}
 							disabledHandles={disabledHandles}
+							unrendered={unrendered}
 						/>
 					))}
 				</DsTree.Tree>
@@ -1158,6 +1226,64 @@ describe('DsTree.Sortable', () => {
 				}),
 			);
 			expect(childOrder()).toEqual([...ROOT_ORDER, 'router-1']);
+		});
+
+		it('appends after unrendered roots from the space below a last shown root that is an expanded group', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(
+				<SortableTree
+					unrendered={['logs']}
+					defaultExpandedValue={['network', 'monitoring']}
+					onCollectionChange={onCollectionChange}
+				/>,
+			);
+
+			expect(rootDropZone().getBoundingClientRect().height).toBeGreaterThan(0);
+
+			await startDrag('router-1');
+			await moveOver(rootDropZone(), 0.5);
+			await expect.poll(dropIndicators).toEqual(['root-end:after']);
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'logs',
+					position: 'after',
+					fromParent: 'network',
+					toParent: null,
+				}),
+			);
+		});
+
+		it('reserves no space below a last shown root leaf when an unrendered last root is an expanded group', async () => {
+			const isMonitoring = (node: DsTreeNode) => node.id === 'monitoring';
+			const monitoringLast = sortableNodes.toSorted(
+				(a, b) => Number(isMonitoring(a)) - Number(isMonitoring(b)),
+			);
+			await page.render(
+				<SortableTree
+					nodes={monitoringLast}
+					unrendered={['monitoring']}
+					defaultExpandedValue={['network', 'monitoring']}
+				/>,
+			);
+
+			await expect.element(getTreeItem('logs')).toBeVisible();
+			expect(rootDropZone().getBoundingClientRect().height).toBeCloseTo(0, 0);
+		});
+
+		it('reserves space below an expanded group once the consumer stops rendering the root after it', async () => {
+			const { rerender } = await page.render(
+				<SortableTree defaultExpandedValue={['network', 'monitoring']} />,
+			);
+
+			expect(rootDropZone().getBoundingClientRect().height).toBeCloseTo(0, 0);
+
+			await rerender(<SortableTree unrendered={['logs']} defaultExpandedValue={['network', 'monitoring']} />);
+
+			await expect.poll(() => rootDropZone().getBoundingClientRect().height).toBeGreaterThan(0);
 		});
 
 		it('ignores rows that stay mounted inside a collapsed group', async () => {
