@@ -180,8 +180,8 @@ catalogs:
       specifier: ^0.3.25
       version: 0.3.25
     tsdown:
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^0.23.4
+      version: 0.23.4
     vitest:
       specifier: ^5.0.3
       version: 5.0.3
@@ -443,7 +443,7 @@ importers:
         version: 1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@tsdown/css':
         specifier: ^0.23.4
-        version: 0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.1)(yaml@2.9.0)
+        version: 0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.4)(yaml@2.9.0)
       '@types/eslint-plugin-jsx-a11y':
         specifier: ^6.10.1
         version: 6.10.1(jiti@2.7.0)(supports-color@8.1.1)
@@ -530,7 +530,7 @@ importers:
         version: 17.16.0(@typescript/typescript6@6.0.2)(supports-color@8.1.1)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
+        version: 0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
       typed-scss-modules:
         specifier: ^8.1.1
         version: 8.1.1(sass@1.104.0)
@@ -585,7 +585,7 @@ importers:
         version: 0.3.25
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
+        version: 0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@26.6.6)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.0)(jsdom@24.1.3(supports-color@8.1.1))(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(less@4.6.4)(sass-embedded@1.107.1)(sass@1.104.0)(stylus@0.62.0(supports-color@8.1.1))(yaml@2.9.0))
@@ -662,7 +662,7 @@ importers:
         version: 0.3.25
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
+        version: 0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
       typescript:
         specifier: npm:@typescript/typescript6
         version: '@typescript/typescript6@6.0.2'
@@ -693,7 +693,7 @@ importers:
         version: 0.3.25
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
+        version: 0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
       typescript:
         specifier: npm:@typescript/typescript6
         version: '@typescript/typescript6@6.0.2'
@@ -6817,6 +6817,9 @@ packages:
     resolution: {integrity: sha512-jBrmx4lYmaC9k/mgPbylxs7kBUxHtD8256up+HjLaDFfXScKJQyil+SWXSvhAtT7XHo+yTVlpB81PGmHP8oLSQ==}
     engines: {node: ^20.0.0 || >=22.0.0}
 
+  tinyps@0.5.1:
+    resolution: {integrity: sha512-B6Ykif5HflC3AdDkS4Zst/2muYVfeXoVMy+KorqH80s/1x4vunIORpNySH681X7fjj+dFM9MDKD6/Hsccjb87Q==}
+
   tinyrainbow@2.0.0:
     resolution: {integrity: sha512-op4nsTR47R6p0vMUUoYl/a+ljLFVtlfaXkLQmqfLR1qHma1h/ysYk4hEXZ880bf2CYgTskvTa/e196Vd5dDQXw==}
     engines: {node: '>=14.0.0'}
@@ -6848,10 +6851,6 @@ packages:
     resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
-  tree-kill@1.2.2:
-    resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
-    hasBin: true
-
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
 
@@ -6872,14 +6871,14 @@ packages:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
 
-  tsdown@0.23.1:
-    resolution: {integrity: sha512-MSC2WSOts3in95J334/VIS7KPfor3eCSvndJ6KdoVj9Aak9Kh1aNfz9ws5owhdukuTNSXRdfkPEzA/ihpDD6SA==}
+  tsdown@0.23.4:
+    resolution: {integrity: sha512-AQQ/2Y7KBnf15GL4Ynjdltc94PkbKRI+arStyrp7inSQkRmTWNiXgfv50ESsjhBEsoVtiSloCAO2VyrqojWIOQ==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@arethetypeswrong/core': ^0.18.1
-      '@tsdown/css': 0.23.1
-      '@tsdown/exe': 0.23.1
+      '@tsdown/css': 0.23.4
+      '@tsdown/exe': 0.23.4
       '@vitejs/devtools': '*'
       publint: ^0.3.8
       tsx: '*'
@@ -9718,12 +9717,12 @@ snapshots:
       path-browserify: 1.0.1
       tinyglobby: 0.2.17
 
-  '@tsdown/css@0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.1)(yaml@2.9.0)':
+  '@tsdown/css@0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.4)(yaml@2.9.0)':
     dependencies:
       lightningcss: 1.33.0
       postcss-load-config: 6.0.1(jiti@2.7.0)(postcss@8.5.31)(yaml@2.9.0)
       rolldown: 1.2.15
-      tsdown: 0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
+      tsdown: 0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25)
     optionalDependencies:
       postcss: 8.5.31
       postcss-modules: 6.0.1(postcss@8.5.31)
@@ -13836,6 +13835,8 @@ snapshots:
 
   tinypool@2.2.0: {}
 
+  tinyps@0.5.1: {}
+
   tinyrainbow@2.0.0: {}
 
   tinyrainbow@3.1.1: {}
@@ -13869,8 +13870,6 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  tree-kill@1.2.2: {}
-
   trough@2.2.0: {}
 
   ts-api-utils@2.5.0(@typescript/typescript6@6.0.2):
@@ -13890,7 +13889,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.23.1(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25):
+  tsdown@0.23.4(@arethetypeswrong/core@0.18.5)(@tsdown/css@0.23.4)(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(publint@0.3.25):
     dependencies:
       cac: 7.1.0
       defu: 6.1.7
@@ -13903,12 +13902,12 @@ snapshots:
       rolldown-plugin-dts: 0.28.8(@typescript/typescript6@6.0.2)(oxc-resolver@11.24.2)(rolldown@1.2.15)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tree-kill: 1.2.2
+      tinyps: 0.5.1
       unconfig-core: 7.5.0
       verkit: 0.5.0
     optionalDependencies:
       '@arethetypeswrong/core': 0.18.5
-      '@tsdown/css': 0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.1)(yaml@2.9.0)
+      '@tsdown/css': 0.23.4(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.31))(postcss@8.5.31)(sass-embedded@1.107.1)(sass@1.104.0)(tsdown@0.23.4)(yaml@2.9.0)
       publint: 0.3.25
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
