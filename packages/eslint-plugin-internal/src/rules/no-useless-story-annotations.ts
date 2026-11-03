@@ -35,7 +35,6 @@ export const noUselessStoryAnnotations = createRule<[], MessageId>({
 		fixable: 'code',
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		function checkSharedAnnotations(obj: TSESTree.ObjectExpression) {
 			checkEmptyObjectProp(obj, 'args', 'emptyArgs');
