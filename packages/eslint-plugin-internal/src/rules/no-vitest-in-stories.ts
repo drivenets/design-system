@@ -17,7 +17,6 @@ export const noVitestInStories = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ImportDeclaration(node) {

@@ -19,7 +19,6 @@ export const noCrossComponentInternalImport = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		function check(
 			node: TSESTree.ImportDeclaration | TSESTree.ExportNamedDeclaration | TSESTree.ExportAllDeclaration,

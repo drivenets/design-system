@@ -19,7 +19,6 @@ export const noVitestBrowserReact = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ImportDeclaration(node) {
