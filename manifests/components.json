@@ -242,22 +242,14 @@
               ],
               "raw": "DsAutocompleteOption[]"
             },
-            "description": "Options to display in the dropdown.\nFor async/server-driven search, update this prop with fetched results.",
-            "defaultValue": {
-              "value": "[]",
-              "computed": false
-            }
+            "description": "Options to display in the dropdown.\nFor async/server-driven search, update this prop with fetched results."
           },
           "loading": {
             "required": false,
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the autocomplete is in a loading state.\nWhen true, a loading message is shown in the dropdown.",
-            "defaultValue": {
-              "value": "false",
-              "computed": false
-            }
+            "description": "Whether the autocomplete is in a loading state.\nWhen true, a loading message is shown in the dropdown."
           },
           "size": {
             "required": false,
@@ -265,11 +257,7 @@
               "name": "unknown[number]",
               "raw": "(typeof autocompleteSizes)[number]"
             },
-            "description": "The size of the autocomplete control\n@default 'default'",
-            "defaultValue": {
-              "value": "'default'",
-              "computed": false
-            }
+            "description": "The size of the autocomplete control\n@default 'default'"
           },
           "style": {
             "required": false,
@@ -291,40 +279,28 @@
             "tsType": {
               "name": "string"
             },
-            "description": "Placeholder text to display when input is empty",
-            "defaultValue": {
-              "value": "'Start typing to search...'",
-              "computed": false
-            }
+            "description": "Placeholder text to display when input is empty.\nIn `multiple` mode it shows only while no tags are selected."
           },
           "disabled": {
             "required": false,
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the autocomplete is disabled",
-            "defaultValue": {
-              "value": "false",
-              "computed": false
-            }
+            "description": "Whether the autocomplete is disabled"
           },
           "invalid": {
             "required": false,
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the autocomplete is in an invalid state",
-            "defaultValue": {
-              "value": "false",
-              "computed": false
-            }
+            "description": "Whether the autocomplete is in an invalid state"
           },
           "locale": {
             "required": false,
             "tsType": {
               "name": "signature",
               "type": "object",
-              "raw": "{\n\t/**\n\t * Message to display while results are loading\n\t * @default 'Loading...'\n\t */\n\tloading?: string;\n\t/**\n\t * Message to display when no options match the input\n\t * @default 'No matches found'\n\t */\n\tnoMatches?: string;\n}",
+              "raw": "{\n\t/**\n\t * Message to display while results are loading\n\t * @default 'Loading...'\n\t */\n\tloading?: string;\n\t/**\n\t * Message to display when no options match the input\n\t * @default 'No matches found', or 'No matching tags' in `multiple` mode\n\t */\n\tnoMatches?: string;\n\t/**\n\t * Input placeholder in `multiple` mode once at least one tag is selected\n\t * @default 'Add tag...'\n\t */\n\taddTag?: string;\n\t/**\n\t * Label of the row that creates a new tag from the typed text (`multiple` mode with `onCreate`)\n\t * @default (inputValue) => `Create new tag '${inputValue}'`\n\t */\n\tcreateTag?: (inputValue: string) => string;\n\t/**\n\t * Accessible name of a tag's remove button in `multiple` mode\n\t * @default (label) => `Remove ${label}`\n\t */\n\tremoveTag?: (label: string) => string;\n}",
               "signature": {
                 "properties": [
                   {
@@ -341,38 +317,80 @@
                       "name": "string",
                       "required": false
                     },
-                    "description": "Message to display when no options match the input\n@default 'No matches found'"
+                    "description": "Message to display when no options match the input\n@default 'No matches found', or 'No matching tags' in `multiple` mode"
+                  },
+                  {
+                    "key": "addTag",
+                    "value": {
+                      "name": "string",
+                      "required": false
+                    },
+                    "description": "Input placeholder in `multiple` mode once at least one tag is selected\n@default 'Add tag...'"
+                  },
+                  {
+                    "key": "createTag",
+                    "value": {
+                      "name": "signature",
+                      "type": "function",
+                      "raw": "(inputValue: string) => string",
+                      "signature": {
+                        "arguments": [
+                          {
+                            "type": {
+                              "name": "string"
+                            },
+                            "name": "inputValue"
+                          }
+                        ],
+                        "return": {
+                          "name": "string"
+                        }
+                      },
+                      "required": false
+                    },
+                    "description": "Label of the row that creates a new tag from the typed text (`multiple` mode with `onCreate`)\n@default (inputValue) => `Create new tag '${inputValue}'`"
+                  },
+                  {
+                    "key": "removeTag",
+                    "value": {
+                      "name": "signature",
+                      "type": "function",
+                      "raw": "(label: string) => string",
+                      "signature": {
+                        "arguments": [
+                          {
+                            "type": {
+                              "name": "string"
+                            },
+                            "name": "label"
+                          }
+                        ],
+                        "return": {
+                          "name": "string"
+                        }
+                      },
+                      "required": false
+                    },
+                    "description": "Accessible name of a tag's remove button in `multiple` mode\n@default (label) => `Remove ${label}`"
                   }
                 ]
               }
             },
-            "description": "Locale strings for the autocomplete component",
-            "defaultValue": {
-              "value": "{}",
-              "computed": false
-            }
+            "description": "Locale strings for the autocomplete component"
           },
           "highlightMatch": {
             "required": false,
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether to highlight the matching text in the dropdown options\n@default true",
-            "defaultValue": {
-              "value": "true",
-              "computed": false
-            }
+            "description": "Whether to highlight the matching text in the dropdown options\n@default true"
           },
           "showTrigger": {
             "required": false,
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether to show the dropdown trigger (arrow) button.\nIf false, the dropdown will only open on typing.\n@default true",
-            "defaultValue": {
-              "value": "true",
-              "computed": false
-            }
+            "description": "Whether to show the dropdown trigger (arrow) button.\nIf false, the dropdown will only open on typing.\n@default true"
           },
           "startAdornment": {
             "required": false,
@@ -381,28 +399,6 @@
               "raw": "React.ReactNode"
             },
             "description": "Content to display at the start of the input (e.g., a search icon)."
-          },
-          "onValueChange": {
-            "required": false,
-            "tsType": {
-              "name": "signature",
-              "type": "function",
-              "raw": "(value: string) => void",
-              "signature": {
-                "arguments": [
-                  {
-                    "type": {
-                      "name": "string"
-                    },
-                    "name": "value"
-                  }
-                ],
-                "return": {
-                  "name": "void"
-                }
-              }
-            },
-            "description": "Event handler called when the value changes.\nFires with the selected option's value, or an empty string when cleared."
           },
           "onInputValueChange": {
             "required": false,
@@ -516,6 +512,18 @@
           "name": "Async Options",
           "snippet": "const AsyncOptions = () => {\n    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);\n    const [loading, setLoading] = useState(true);\n\n    useEffect(() => {\n        const load = async () => {\n            await new Promise((resolve) => setTimeout(resolve, 150));\n            setOptions([\n                { value: 'us', label: 'United States' },\n                { value: 'uk', label: 'United Kingdom' },\n                { value: 'ca', label: 'Canada' },\n            ]);\n            setLoading(false);\n        };\n\n        void load();\n    }, []);\n\n    return <DsAutocomplete options={options} loading={loading} placeholder=\"Select a country...\" />;\n};",
           "description": "When the full option set is fetched once on mount, start in a `loading` state and swap in\nthe results when the request resolves. After that the component filters locally."
+        },
+        {
+          "id": "components-autocomplete--tags",
+          "name": "Tags",
+          "snippet": "const Tags = () => {\n    const [options, setOptions] = useState<DsAutocompleteOption[]>([\n        { value: 'production', label: 'Production' },\n        { value: 'staging', label: 'Staging' },\n        { value: 'security', label: 'Security' },\n        { value: 'compliance', label: 'Compliance' },\n        { value: 'nightly', label: 'Nightly' },\n    ]);\n    const [value, setValue] = useState<string[]>(['production', 'security']);\n\n    return (\n        <DsAutocomplete\n            multiple\n            options={options}\n            value={value}\n            onValueChange={setValue}\n            onCreate={(name) => setOptions((current) => [...current, { value: name, label: name }])}\n        />\n    );\n};",
+          "description": "Tags mode (`multiple`) collects several values as removable tags inside the field. Picking\nan option toggles it and keeps the list open. Pass `onCreate` to let users add tags that are\nnot in the list yet: type a name and press Enter or a comma, pick the \"Create new tag\" row, or\npaste a comma-separated list. Append created names to `options` so they stay selectable."
+        },
+        {
+          "id": "components-autocomplete--tags-select-only",
+          "name": "Tags Select Only",
+          "snippet": "const TagsSelectOnly = () => {\n    const [value, setValue] = useState<string[]>([]);\n\n    return (\n        <DsAutocomplete\n            multiple\n            options={[\n                { value: 'production', label: 'Production' },\n                { value: 'staging', label: 'Staging' },\n                { value: 'security', label: 'Security' },\n            ]}\n            value={value}\n            onValueChange={setValue}\n        />\n    );\n};",
+          "description": "Without `onCreate`, tags mode only allows picking existing options. Use it where a value must\nalready exist elsewhere, such as filtering by tags that are defined on other records."
         },
         {
           "id": "components-autocomplete--inside-modal",
@@ -35588,6 +35596,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 3685
+    "durationMs": 4138
   }
 }

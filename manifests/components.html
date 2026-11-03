@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/105 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/105 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/105 without API description</a><span class="filter-pill ok" aria-disabled="true">651 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/651 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/105 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/105 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/105 without API description</a><span class="filter-pill ok" aria-disabled="true">653 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/653 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -948,9 +948,9 @@ close button hides the banner and a trigger can bring it back.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsAutocomplete</h2>
       <div class="badges">
-        <label for="c-1-components-autocomplete-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-1-components-autocomplete-props" class="badge ok as-toggle">15 prop types</label>
         <label for="c-1-components-autocomplete-info" class="badge info as-toggle">1 info</label>
-        <label for="c-1-components-autocomplete-stories" class="badge ok as-toggle">12 stories</label>
+        <label for="c-1-components-autocomplete-stories" class="badge ok as-toggle">14 stories</label>
         
         
       </div>
@@ -984,7 +984,7 @@ close button hides the banner and a trigger can bring it back.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">16 prop types</span>
+              <span class="badge ok">15 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-autocomplete/ds-autocomplete.tsx::DsAutocomplete</code></pre>
             <pre><code>Props:</code></pre>
@@ -996,13 +996,13 @@ className?: string
 /**
  * Whether the autocomplete is disabled
  */
-disabled?: boolean = false
+disabled?: boolean
 
 /**
  * Whether to highlight the matching text in the dropdown options
  * @default true
  */
-highlightMatch?: boolean = true
+highlightMatch?: boolean
 
 /**
  * Unique identifier for the autocomplete component
@@ -1012,13 +1012,13 @@ id?: string
 /**
  * Whether the autocomplete is in an invalid state
  */
-invalid?: boolean = false
+invalid?: boolean
 
 /**
  * Whether the autocomplete is in a loading state.
  * When true, a loading message is shown in the dropdown.
  */
-loading?: boolean = false
+loading?: boolean
 
 /**
  * Locale strings for the autocomplete component
@@ -1031,10 +1031,25 @@ locale?: {
 	loading?: string;
 	/**
 	 * Message to display when no options match the input
-	 * @default &#39;No matches found&#39;
+	 * @default &#39;No matches found&#39;, or &#39;No matching tags&#39; in `multiple` mode
 	 */
 	noMatches?: string;
-} = {}
+	/**
+	 * Input placeholder in `multiple` mode once at least one tag is selected
+	 * @default &#39;Add tag...&#39;
+	 */
+	addTag?: string;
+	/**
+	 * Label of the row that creates a new tag from the typed text (`multiple` mode with `onCreate`)
+	 * @default (inputValue) =&gt; `Create new tag &#39;${inputValue}&#39;`
+	 */
+	createTag?: (inputValue: string) =&gt; string;
+	/**
+	 * Accessible name of a tag&#39;s remove button in `multiple` mode
+	 * @default (label) =&gt; `Remove ${label}`
+	 */
+	removeTag?: (label: string) =&gt; string;
+}
 
 /**
  * Event handler called when the input value changes (on every keystroke)
@@ -1047,34 +1062,29 @@ onInputValueChange?: (value: string) =&gt; void
 onOpenChange?: (open: boolean) =&gt; void
 
 /**
- * Event handler called when the value changes.
- * Fires with the selected option&#39;s value, or an empty string when cleared.
- */
-onValueChange?: (value: string) =&gt; void
-
-/**
  * Options to display in the dropdown.
  * For async/server-driven search, update this prop with fetched results.
  */
-options?: DsAutocompleteOption[] = []
+options?: DsAutocompleteOption[]
 
 /**
- * Placeholder text to display when input is empty
+ * Placeholder text to display when input is empty.
+ * In `multiple` mode it shows only while no tags are selected.
  */
-placeholder?: string = &#39;Start typing to search...&#39;
+placeholder?: string
 
 /**
  * Whether to show the dropdown trigger (arrow) button.
  * If false, the dropdown will only open on typing.
  * @default true
  */
-showTrigger?: boolean = true
+showTrigger?: boolean
 
 /**
  * The size of the autocomplete control
  * @default &#39;default&#39;
  */
-size?: (typeof autocompleteSizes)[number] = &#39;default&#39;
+size?: (typeof autocompleteSizes)[number]
 
 /**
  * Content to display at the start of the input (e.g., a search icon).
@@ -1332,6 +1342,64 @@ the results when the request resolves. After that the component filters locally.
     }, []);
 
     return &lt;DsAutocomplete options={options} loading={loading} placeholder=&quot;Select a country...&quot; /&gt;;
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Tags</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Tags mode (`multiple`) collects several values as removable tags inside the field. Picking
+an option toggles it and keeps the list open. Pass `onCreate` to let users add tags that are
+not in the list yet: type a name and press Enter or a comma, pick the &quot;Create new tag&quot; row, or
+paste a comma-separated list. Append created names to `options` so they stay selectable.</div>
+              <pre><code>const Tags = () =&gt; {
+    const [options, setOptions] = useState&lt;DsAutocompleteOption[]&gt;([
+        { value: &#39;production&#39;, label: &#39;Production&#39; },
+        { value: &#39;staging&#39;, label: &#39;Staging&#39; },
+        { value: &#39;security&#39;, label: &#39;Security&#39; },
+        { value: &#39;compliance&#39;, label: &#39;Compliance&#39; },
+        { value: &#39;nightly&#39;, label: &#39;Nightly&#39; },
+    ]);
+    const [value, setValue] = useState&lt;string[]&gt;([&#39;production&#39;, &#39;security&#39;]);
+
+    return (
+        &lt;DsAutocomplete
+            multiple
+            options={options}
+            value={value}
+            onValueChange={setValue}
+            onCreate={(name) =&gt; setOptions((current) =&gt; [...current, { value: name, label: name }])}
+        /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Tags Select Only</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Without `onCreate`, tags mode only allows picking existing options. Use it where a value must
+already exist elsewhere, such as filtering by tags that are defined on other records.</div>
+              <pre><code>const TagsSelectOnly = () =&gt; {
+    const [value, setValue] = useState&lt;string[]&gt;([]);
+
+    return (
+        &lt;DsAutocomplete
+            multiple
+            options={[
+                { value: &#39;production&#39;, label: &#39;Production&#39; },
+                { value: &#39;staging&#39;, label: &#39;Staging&#39; },
+                { value: &#39;security&#39;, label: &#39;Security&#39; },
+            ]}
+            value={value}
+            onValueChange={setValue}
+        /&gt;
+    );
 };</code></pre>
               
             </div>
