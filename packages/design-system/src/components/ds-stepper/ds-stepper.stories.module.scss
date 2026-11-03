@@ -6,6 +6,7 @@
 	width: 350px;
 }
 
+// stylelint-disable declaration-no-important -- demo overrides DsStepper styles
 .approveStep {
 	background: var(--background-success) !important;
 }

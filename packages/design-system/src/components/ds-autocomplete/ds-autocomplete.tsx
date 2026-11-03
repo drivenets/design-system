@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { Combobox, createListCollection } from '@ark-ui/react/combobox';
 import { useFilter } from '@ark-ui/react/locale';
-import { Highlight } from '@ark-ui/react/highlight';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-autocomplete.module.scss';
 import type { DsAutocompleteOption, DsAutocompleteProps } from './ds-autocomplete.types';
 import { DsIcon } from '../ds-icon';
+import { AutocompleteItemContent } from './autocomplete-item-content';
+import { AutocompleteTags } from './autocomplete-tags';
 
-export const DsAutocomplete = ({
+type AutocompleteSingleProps = Extract<DsAutocompleteProps, { multiple?: false }>;
+
+const AutocompleteSingle = ({
 	id,
 	options = [],
 	loading = false,
@@ -25,7 +28,7 @@ export const DsAutocomplete = ({
 	highlightMatch = true,
 	showTrigger = true,
 	startAdornment,
-}: DsAutocompleteProps) => {
+}: AutocompleteSingleProps) => {
 	const [filterText, setFilterText] = useState('');
 	const filterUtils = useFilter({ sensitivity: 'base' });
 
@@ -132,17 +135,11 @@ export const DsAutocomplete = ({
 							<Combobox.ItemGroup className={styles.itemGroup}>
 								{collection.items.map((option) => (
 									<Combobox.Item key={option.value} item={option} className={styles.item}>
-										{option.icon && (
-											<DsIcon className={styles.itemIcon} icon={option.icon} aria-hidden="true" />
-										)}
-
-										<Combobox.ItemText className={styles.itemText}>
-											{highlightMatch ? (
-												<Highlight query={filterText} text={option.label} ignoreCase />
-											) : (
-												option.label
-											)}
-										</Combobox.ItemText>
+										<AutocompleteItemContent
+											option={option}
+											query={filterText}
+											highlightMatch={highlightMatch}
+										/>
 									</Combobox.Item>
 								))}
 							</Combobox.ItemGroup>
@@ -153,5 +150,8 @@ export const DsAutocomplete = ({
 		</Combobox.Root>
 	);
 };
+
+export const DsAutocomplete = (props: DsAutocompleteProps) =>
+	props.multiple ? <AutocompleteTags {...props} /> : <AutocompleteSingle {...props} />;
 
 DsAutocomplete.displayName = 'DsAutocomplete';

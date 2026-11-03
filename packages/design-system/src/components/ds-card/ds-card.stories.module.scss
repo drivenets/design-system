@@ -50,6 +50,7 @@
 
 	&[data-collapsed='true'] {
 		grid-template-rows: 0fr;
+		// stylelint-disable-next-line declaration-no-important -- collapses the padding set by DsCard
 		padding: 0 !important;
 	}
 }

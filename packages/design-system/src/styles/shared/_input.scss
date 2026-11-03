@@ -149,11 +149,11 @@ $textarea-height-default: 120px;
 }
 
 @mixin number-input-styles {
-	-moz-appearance: textfield;
+	appearance: textfield;
 
 	&::-webkit-outer-spin-button,
 	&::-webkit-inner-spin-button {
-		-webkit-appearance: none;
+		appearance: none;
 		margin: 0;
 	}
 }

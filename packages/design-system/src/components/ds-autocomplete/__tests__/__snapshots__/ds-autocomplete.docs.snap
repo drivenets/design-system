@@ -418,6 +418,108 @@ const AsyncOptions = () => {
     return <DsAutocomplete options={options} loading={loading} placeholder="Select a country..." />;
 };
 
+## Tags
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([{
+      value: 'production',
+      label: 'Production'
+    }, {
+      value: 'staging',
+      label: 'Staging'
+    }, {
+      value: 'security',
+      label: 'Security'
+    }, {
+      value: 'compliance',
+      label: 'Compliance'
+    }, {
+      value: 'nightly',
+      label: 'Nightly'
+    }]);
+    const [value, setValue] = useState<string[]>(['production', 'security']);
+    return <DsAutocomplete multiple options={options} value={value} onValueChange={setValue} onCreate={name => setOptions(current => [...current, {
+      value: name,
+      label: name
+    }])} />;
+  }
+}
+
+### MCP manifest
+const Tags = () => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([
+        { value: 'production', label: 'Production' },
+        { value: 'staging', label: 'Staging' },
+        { value: 'security', label: 'Security' },
+        { value: 'compliance', label: 'Compliance' },
+        { value: 'nightly', label: 'Nightly' },
+    ]);
+    const [value, setValue] = useState<string[]>(['production', 'security']);
+
+    return (
+        <DsAutocomplete
+            multiple
+            options={options}
+            value={value}
+            onValueChange={setValue}
+            onCreate={(name) => setOptions((current) => [...current, { value: name, label: name }])}
+        />
+    );
+};
+
+## Tags Select Only
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const [value, setValue] = useState<string[]>([]);
+    return <DsAutocomplete multiple options={[{
+      value: 'production',
+      label: 'Production'
+    }, {
+      value: 'staging',
+      label: 'Staging'
+    }, {
+      value: 'security',
+      label: 'Security'
+    }]} value={value} onValueChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const TagsSelectOnly = () => {
+    const [value, setValue] = useState<string[]>([]);
+
+    return (
+        <DsAutocomplete
+            multiple
+            options={[
+                { value: 'production', label: 'Production' },
+                { value: 'staging', label: 'Staging' },
+                { value: 'security', label: 'Security' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+        />
+    );
+};
+
 ## Inside Modal
 
 ### Show code

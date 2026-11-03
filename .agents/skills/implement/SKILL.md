@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implement a ticket file (`tasks/*.md` or another markdown spec) end to end — plan, build, test and verify with the repo skills and subagents. Assumes the ticket is already grilled and clear. Use when the user points to a markdown ticket or spec and asks to implement or build it.
+description: Implement a ticket file (`tasks/*.md` or another markdown spec) end to end — plan, build, test and verify with the repo skills and subagents. Assumes the ticket is already grilled and clear. Use when the user points to a markdown ticket or spec and asks to implement, build or plan it. Load it before reading the code, in plan mode too.
 ---
 
 # Implement (ticket → tested code)
@@ -56,7 +56,7 @@ Behavioral coverage lives in `*.browser.test.tsx`. Delegate to the `ds-browser-t
 ## Step 4 — Verify (do not skip)
 
 1. `ds-verifier` subagent (readonly) — lint, typecheck, tests on **changed paths only** per [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers). Never mark done while red.
-2. `ds-review` subagent (readonly) — reviews the branch diff for rule violations the checkers can't catch (forwardRef, cross-component imports, hardcoded colors, AI test slop, stale Code Connect). Returns ≤10 findings.
+2. `ds-review` subagent (readonly) — reviews the branch diff per [code-review](../code-review/SKILL.md). Returns ≤10 findings.
 
 Fix findings from both, then re-run. Do not proceed while either is red.
 

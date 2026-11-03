@@ -39,8 +39,10 @@ $warning-dot-size: 8px;
 	}
 
 	&.selected {
+		// stylelint-disable declaration-no-important -- keeps selected colors over .clickable:hover
 		background: var(--background-secondary-hover) !important;
 		border-color: var(--border-action-primary) !important;
+		// stylelint-enable declaration-no-important
 
 		&:focus-visible {
 			outline-color: var(--border-action-primary);
