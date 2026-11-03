@@ -38,6 +38,7 @@ export const requireStoryMetaAnnotations = createRule<[], MessageId>({
 						context.report({
 							node: metaNode,
 							messageId: 'missing',
+							data: { property },
 						});
 					}
 				});
