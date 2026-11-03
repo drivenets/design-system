@@ -18,7 +18,6 @@ export const noTestId = createRule<[], MessageId>({
 				"Don't use `data-testid`. Query by role, label, or text so tests reflect how users find elements.",
 		},
 		schema: [],
-		defaultOptions: [],
 	},
 	create(context) {
 		const report = (node: TSESTree.Node) => {

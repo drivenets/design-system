@@ -17,7 +17,6 @@ export const requireStoryMetaAnnotations = createRule<[], MessageId>({
 			missing: 'Story meta is missing a `{{ property }}` property.',
 		},
 		schema: [],
-		defaultOptions: [],
 	},
 	create(context) {
 		return {

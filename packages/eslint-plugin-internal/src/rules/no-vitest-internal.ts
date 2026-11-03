@@ -14,7 +14,6 @@ export const noVitestInternal = createRule<[], MessageId>({
 				"Don't import from `vitest/internal/*`. These are private APIs and may break without notice.",
 		},
 		schema: [],
-		defaultOptions: [],
 	},
 	create(context) {
 		return {

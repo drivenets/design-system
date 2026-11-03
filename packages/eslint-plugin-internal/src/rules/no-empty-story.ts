@@ -18,7 +18,6 @@ export const noEmptyStory = createRule<[], MessageId>({
 				'Empty stories are not allowed. Add non-empty `args` object, `render` function or `play` function.',
 		},
 		schema: [],
-		defaultOptions: [],
 	},
 	create(context) {
 		const reported = new Set<TSESTree.Node>();
