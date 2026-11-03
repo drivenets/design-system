@@ -18,8 +18,8 @@ export const noVitestBrowserReact = createRule<[], MessageId>({
 				"Don't use namespace import from `vitest-browser-react`. Import specific named exports (e.g., `renderHook`) instead.",
 		},
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ImportDeclaration(node) {

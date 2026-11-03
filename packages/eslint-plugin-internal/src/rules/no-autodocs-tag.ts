@@ -19,8 +19,8 @@ export const noAutodocsTag = createRule<[], MessageId>({
 		},
 		fixable: 'code',
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ExportDefaultDeclaration(node) {

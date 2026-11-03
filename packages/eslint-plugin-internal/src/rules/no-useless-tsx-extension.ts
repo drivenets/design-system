@@ -13,8 +13,8 @@ export const noUselessTsxExtension = createRule<[], MessageId>({
 			noUselessTsxExtension: 'File has a `.tsx` extension but contains no JSX. Rename it to `.ts`.',
 		},
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		const filename = context.filename;
 

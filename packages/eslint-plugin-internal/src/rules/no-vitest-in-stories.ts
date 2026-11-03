@@ -16,8 +16,8 @@ export const noVitestInStories = createRule<[], MessageId>({
 				"Don't import from vitest in stories. Use @storybook/test instead (e.g. fn, expect, userEvent).",
 		},
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ImportDeclaration(node) {

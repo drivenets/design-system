@@ -17,8 +17,8 @@ export const requireStoryMetaAnnotations = createRule<[], MessageId>({
 			missing: 'Story meta is missing a `{{ property }}` property.',
 		},
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ExportDefaultDeclaration(node) {
@@ -38,7 +38,6 @@ export const requireStoryMetaAnnotations = createRule<[], MessageId>({
 						context.report({
 							node: metaNode,
 							messageId: 'missing',
-							data: { property },
 						});
 					}
 				});

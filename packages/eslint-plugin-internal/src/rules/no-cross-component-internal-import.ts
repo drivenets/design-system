@@ -18,8 +18,8 @@ export const noCrossComponentInternalImport = createRule<[], MessageId>({
 				"Don't import from another component's internals ({{ importPath }}). Use the barrel export or extract shared code to a shared util.",
 		},
 		schema: [],
+		defaultOptions: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		function check(
 			node: TSESTree.ImportDeclaration | TSESTree.ExportNamedDeclaration | TSESTree.ExportAllDeclaration,
