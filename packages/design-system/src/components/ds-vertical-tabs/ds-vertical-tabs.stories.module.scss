@@ -4,19 +4,19 @@
 .storyContainer {
 	width: 364px;
 	height: 400px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--border);
 }
 
 .storyContainerShort {
 	width: 364px;
 	height: 200px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--border);
 }
 
 .storyContainerMedium {
 	width: 364px;
 	height: 300px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--border);
 }
 
 // Tab content pattern styles
@@ -48,12 +48,12 @@
 // Interactive story footer
 .interactiveFooter {
 	padding: 16px;
-	border-top: 1px solid #e0e0e0;
-	background: #f5f5f5;
+	border-top: 1px solid var(--border);
+	background: var(--background-secondary);
 }
 
 .interactiveText {
 	margin: 0;
 	font-size: 14px;
-	color: #666;
+	color: var(--font-secondary);
 }
