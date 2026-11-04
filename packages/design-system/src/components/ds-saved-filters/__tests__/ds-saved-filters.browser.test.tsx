@@ -110,7 +110,7 @@ describe('DsSavedFilters picker', () => {
 		await openPicker();
 
 		await page.getByRole('button', { name: 'Close' }).click();
-		await expect.element(page.getByText('MyFilter_1')).not.toBeVisible();
+		await expect.element(page.getByText('MyFilter_1')).not.toBeInTheDocument();
 	});
 
 	it('closes the picker on Escape', async () => {
@@ -118,7 +118,7 @@ describe('DsSavedFilters picker', () => {
 
 		await openPicker();
 		await userEvent.keyboard('{Escape}');
-		await expect.element(page.getByText('MyFilter_1')).not.toBeVisible();
+		await expect.element(page.getByText('MyFilter_1')).not.toBeInTheDocument();
 	});
 
 	it('shows the empty state copy when there are no items', async () => {

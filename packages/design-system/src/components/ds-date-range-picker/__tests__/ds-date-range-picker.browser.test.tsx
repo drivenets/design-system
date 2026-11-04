@@ -1,6 +1,15 @@
+import { type ReactNode, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDateRangePicker from '../ds-date-range-picker';
+import { DsDialog } from '../../ds-dialog';
+import { DsModal } from '../../ds-modal';
+
+interface ModalContainerProps {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	children: ReactNode;
+}
 
 describe('DsDateRangePicker', () => {
 	beforeEach(() => {
@@ -115,5 +124,75 @@ describe('DsDateRangePicker', () => {
 		await page.render(<Wrapper />);
 
 		expect(page.getByRole('button', { name: /clear all/i }).query()).toBeNull();
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+// Real timers: the modal's exit animation must finish before it can reopen.
+describe.each([
+	{
+		container: 'DsModal',
+		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
+			<DsModal open={open} onOpenChange={onOpenChange}>
+				<DsModal.Body>{children}</DsModal.Body>
+			</DsModal>
+		),
+	},
+	{
+		container: 'DsDialog',
+		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
+			<DsDialog open={open} onOpenChange={onOpenChange} title="Report period">
+				{children}
+			</DsDialog>
+		),
+	},
+])('DsDateRangePicker inside $container', ({ Container }) => {
+	const ModalHarness = () => {
+		const [open, setOpen] = useState(true);
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<DsDateRangePicker
+						defaultValue={[new Date('2026-01-10T12:00:00'), new Date('2026-01-20T12:00:00')]}
+					/>
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	const getCalendarTriggers = () => page.getByRole('button', { name: /open calendar/i });
+
+	it('should expose the calendar by role and select a start date', async () => {
+		await page.render(<ModalHarness />);
+
+		await getCalendarTriggers().first().click();
+
+		await expect.element(page.getByRole('grid')).toBeVisible();
+		await page.getByRole('button', { name: /Choose.*January 12, 2026/i }).click();
+
+		await expect.element(page.getByLabelText('Start date')).toHaveValue('01/12/2026');
+	});
+
+	it('should expose the calendar by role after the modal is closed and reopened', async () => {
+		await page.render(<ModalHarness />);
+
+		await getCalendarTriggers().first().click();
+		await page.getByRole('button', { name: /Choose.*January 12, 2026/i }).click();
+		await expect.element(page.getByRole('grid')).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await getCalendarTriggers().first().click();
+
+		await expect.element(page.getByRole('grid')).toBeVisible();
+		await expect.element(page.getByRole('button', { name: /Choose.*January 5, 2026/i })).toBeVisible();
 	});
 });

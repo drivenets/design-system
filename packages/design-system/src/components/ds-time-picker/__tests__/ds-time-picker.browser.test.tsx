@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsTimePicker from '../ds-time-picker';
+import { DsDialog } from '../../ds-dialog';
+import { DsModal } from '../../ds-modal';
+
+interface ModalContainerProps {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	children: ReactNode;
+}
 
 const createTime = (hours: number, minutes: number) => {
 	const date = new Date();
@@ -243,5 +251,73 @@ describe('DsTimePicker', () => {
 		input.element().blur();
 
 		await expect.element(input).toHaveValue('02:30 PM');
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+describe.each([
+	{
+		container: 'DsModal',
+		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
+			<DsModal open={open} onOpenChange={onOpenChange}>
+				<DsModal.Body>{children}</DsModal.Body>
+			</DsModal>
+		),
+	},
+	{
+		container: 'DsDialog',
+		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
+			<DsDialog open={open} onOpenChange={onOpenChange} title="Schedule">
+				{children}
+			</DsDialog>
+		),
+	},
+])('DsTimePicker inside $container', ({ Container }) => {
+	const ModalHarness = () => {
+		const [open, setOpen] = useState(true);
+		const [value, setValue] = useState<Date | null>(createTime(9, 0));
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<DsTimePicker value={value} onChange={setValue} />
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	const getHourListbox = () => page.getByRole('listbox', { name: 'Hour' });
+	const getTrigger = () => page.getByRole('button', { name: /open time picker/i });
+
+	it('should expose the time lists by role and select an hour', async () => {
+		await page.render(<ModalHarness />);
+
+		await getTrigger().click();
+		await getHourListbox().getByRole('option', { name: '03' }).click();
+
+		await expect.element(page.getByRole('textbox')).toHaveValue('03:00 AM');
+	});
+
+	it('should expose the time lists by role after the modal is closed and reopened', async () => {
+		await page.render(<ModalHarness />);
+
+		await getTrigger().click();
+		await expect.element(getHourListbox()).toBeVisible();
+		await getTrigger().click();
+		await expect.element(getHourListbox()).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await getTrigger().click();
+		await getHourListbox().getByRole('option', { name: '04' }).click();
+
+		await expect.element(page.getByRole('textbox')).toHaveValue('04:00 AM');
 	});
 });

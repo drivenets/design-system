@@ -389,7 +389,7 @@ describe('DsTree row parts forward injected props', () => {
 			</DsTree.Root>,
 		);
 
-		await expect.element(page.getByText(/routers and firewalls/i)).not.toBeVisible();
+		await expect.element(page.getByText(/routers and firewalls/i)).not.toBeInTheDocument();
 
 		await page.getByText('Network').click();
 
@@ -422,7 +422,7 @@ describe('DsTree row parts forward injected props', () => {
 			</DsTree.Root>,
 		);
 
-		await expect.element(page.getByText(/restart or drain/i)).not.toBeVisible();
+		await expect.element(page.getByText(/restart or drain/i)).not.toBeInTheDocument();
 
 		// `onClick` was always forwarded explicitly; the ARIA wiring the trigger
 		// injects is what used to be dropped, leaving the row mute to screen readers.

@@ -4,7 +4,7 @@ import { applyTextSelection, type TextSelection } from './ds-code-input.utils';
 interface UseEditorHostOptions {
 	isExpanded: boolean;
 	collapsedSlotRef: RefObject<HTMLDivElement | null>;
-	overlaySlotRef: RefObject<HTMLDivElement | null>;
+	overlaySlot: HTMLDivElement | null;
 	hostClassName?: string;
 	textareaRef: RefObject<HTMLTextAreaElement | null>;
 	pendingSelectionRef: RefObject<TextSelection | null>;
@@ -18,7 +18,7 @@ interface UseEditorHostOptions {
 export const useEditorHost = ({
 	isExpanded,
 	collapsedSlotRef,
-	overlaySlotRef,
+	overlaySlot,
 	hostClassName,
 	textareaRef,
 	pendingSelectionRef,
@@ -36,7 +36,7 @@ export const useEditorHost = ({
 		}
 
 		const host = hostRef.current;
-		const dest = isExpanded ? overlaySlotRef.current : collapsedSlotRef.current;
+		const dest = isExpanded ? overlaySlot : collapsedSlotRef.current;
 
 		if (!dest) {
 			return;
@@ -74,7 +74,7 @@ export const useEditorHost = ({
 		shouldFocus,
 		hostClassName,
 		collapsedSlotRef,
-		overlaySlotRef,
+		overlaySlot,
 		textareaRef,
 		pendingSelectionRef,
 	]);
