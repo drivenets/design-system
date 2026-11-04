@@ -1,20 +1,13 @@
 import { createRef, useRef, useState, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
-import { DsDialog } from '../../ds-dialog';
-import { DsModal } from '../../ds-modal';
 import { DsTooltip } from '../../ds-tooltip';
 import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
 import styles from '../ds-popover.stories.module.scss';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 const PLACEHOLDER_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-
-interface ModalContainerProps {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-	children: ReactNode;
-}
 
 type ExampleProps = Pick<
 	DsPopoverRootProps,
@@ -1093,24 +1086,7 @@ describe('DsPopover.CloseTrigger', () => {
 });
 
 // A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
-describe.each([
-	{
-		container: 'DsModal',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsModal open={open} onOpenChange={onOpenChange}>
-				<DsModal.Body>{children}</DsModal.Body>
-			</DsModal>
-		),
-	},
-	{
-		container: 'DsDialog',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsDialog open={open} onOpenChange={onOpenChange} title="Edit device">
-				{children}
-			</DsDialog>
-		),
-	},
-])('DsPopover inside $container', ({ Container }) => {
+describe.each(modalContainers)('DsPopover inside $container', ({ Container }) => {
 	const ModalHarness = () => {
 		const [open, setOpen] = useState(true);
 

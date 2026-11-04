@@ -1,16 +1,9 @@
-import { type ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
-import { DsDialog } from '../../ds-dialog';
 import { DsFormControl } from '../../ds-form-control';
-import { DsModal } from '../../ds-modal';
 import { DsCodeInput } from '../index';
-
-interface ModalContainerProps {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-	children: ReactNode;
-}
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 const query = 'Status = Active AND status = Scheduled';
 const multiline = 'SELECT *\nFROM devices';
@@ -607,24 +600,7 @@ describe('DsCodeInput', () => {
 });
 
 // A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
-describe.each([
-	{
-		container: 'DsModal',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsModal open={open} onOpenChange={onOpenChange}>
-				<DsModal.Body>{children}</DsModal.Body>
-			</DsModal>
-		),
-	},
-	{
-		container: 'DsDialog',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsDialog open={open} onOpenChange={onOpenChange} title="Edit query">
-				{children}
-			</DsDialog>
-		),
-	},
-])('DsCodeInput inside $container', ({ Container }) => {
+describe.each(modalContainers)('DsCodeInput inside $container', ({ Container }) => {
 	const ModalHarness = () => {
 		const [open, setOpen] = useState(true);
 

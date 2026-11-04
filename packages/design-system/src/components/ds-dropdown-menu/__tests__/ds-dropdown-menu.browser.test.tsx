@@ -1,13 +1,12 @@
-import { type ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsDropdownMenu, DsDropdownMenuLegacy } from '../ds-dropdown-menu';
 import { DsIcon } from '../../ds-icon';
 import { DsCheckbox } from '../../ds-checkbox';
-import { DsDialog } from '../../ds-dialog';
-import { DsModal } from '../../ds-modal';
 import { DsTypography } from '../../ds-typography';
 import { DsTooltip } from '../../ds-tooltip';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 describe('DsDropdownMenu', () => {
 	it('should open menu when trigger is clicked', async () => {
@@ -287,31 +286,8 @@ describe('DsDropdownMenu', () => {
 	});
 });
 
-interface ModalContainerProps {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-	children: ReactNode;
-}
-
 // A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
-describe.each([
-	{
-		container: 'DsModal',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsModal open={open} onOpenChange={onOpenChange}>
-				<DsModal.Body>{children}</DsModal.Body>
-			</DsModal>
-		),
-	},
-	{
-		container: 'DsDialog',
-		Container: ({ open, onOpenChange, children }: ModalContainerProps) => (
-			<DsDialog open={open} onOpenChange={onOpenChange} title="Edit device">
-				{children}
-			</DsDialog>
-		),
-	},
-])('DsDropdownMenu inside $container', ({ Container }) => {
+describe.each(modalContainers)('DsDropdownMenu inside $container', ({ Container }) => {
 	const ModalHarness = ({ onSelect }: { onSelect: (value: string) => void }) => {
 		const [open, setOpen] = useState(true);
 
