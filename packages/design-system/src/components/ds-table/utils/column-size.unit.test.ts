@@ -17,6 +17,7 @@ import {
 	getUtilityColumnSizing,
 	growFillLeavesToContainer,
 	isExplicitColumnWidth,
+	isSameColumnSizing,
 	omitBuiltinColumnSizing,
 	resolveUtilityColumnWidth,
 	shiftColumnTrack,
@@ -384,5 +385,22 @@ describe('getRowActionsColumnWidth', () => {
 	it('adds a trigger slot when secondary actions exist', () => {
 		expect(getRowActionsColumnWidth(2, true)).toBe(3 * 36 + 2 * 8 + 2 * 8);
 		expect(getRowActionsColumnWidth(0, true)).toBe(36 + 2 * 8);
+	});
+});
+
+describe('isSameColumnSizing', () => {
+	it('returns true for maps with the same widths', () => {
+		expect(isSameColumnSizing({ firstName: 200, lastName: 180 }, { lastName: 180, firstName: 200 })).toBe(
+			true,
+		);
+	});
+
+	it('returns false when a width differs', () => {
+		expect(isSameColumnSizing({ firstName: 200 }, { firstName: 240 })).toBe(false);
+	});
+
+	it('returns false when a column is added or removed', () => {
+		expect(isSameColumnSizing({ firstName: 200 }, { firstName: 200, lastName: 180 })).toBe(false);
+		expect(isSameColumnSizing({ firstName: 200, lastName: 180 }, { firstName: 200 })).toBe(false);
 	});
 });

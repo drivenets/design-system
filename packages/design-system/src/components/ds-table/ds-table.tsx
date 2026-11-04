@@ -245,7 +245,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 			columnVisibility,
 			columnPinning,
 			rowSelection,
-			...resize.state,
 		},
 		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
