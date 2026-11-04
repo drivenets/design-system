@@ -84,6 +84,89 @@ describe('DsTable Selection', () => {
 		await expect.element(headerRoot).toHaveAttribute('data-state', 'unchecked');
 	});
 
+	it('should call onSelectionChange once per change with the full selection', async () => {
+		const onSelectionChange = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 3)}
+				selectable
+				onSelectionChange={onSelectionChange}
+			/>,
+		);
+
+		const headerRoot = page.elementLocator(
+			document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLElement,
+		);
+		const firstRowRoot = page.elementLocator(
+			document.querySelector(`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`) as HTMLElement,
+		);
+
+		expect(onSelectionChange).not.toHaveBeenCalled();
+
+		await firstRowRoot.click();
+		expect(onSelectionChange).toHaveBeenCalledExactlyOnceWith({ '1': true });
+
+		await headerRoot.click();
+		expect(onSelectionChange).toHaveBeenCalledTimes(2);
+		expect(onSelectionChange).toHaveBeenLastCalledWith({ '1': true, '2': true, '3': true });
+
+		await headerRoot.click();
+		expect(onSelectionChange).toHaveBeenCalledTimes(3);
+		expect(onSelectionChange).toHaveBeenLastCalledWith({});
+	});
+
+	it('should call the latest onSelectionChange after it changes between renders', async () => {
+		const initialOnSelectionChange = vi.fn();
+		const nextOnSelectionChange = vi.fn();
+
+		const { rerender } = await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				selectable
+				onSelectionChange={initialOnSelectionChange}
+			/>,
+		);
+		await rerender(
+			<DsTable columns={columns} data={defaultData} selectable onSelectionChange={nextOnSelectionChange} />,
+		);
+
+		await page
+			.elementLocator(document.querySelector(`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`) as HTMLElement)
+			.click();
+
+		expect(nextOnSelectionChange).toHaveBeenCalledExactlyOnceWith({ '1': true });
+		expect(initialOnSelectionChange).not.toHaveBeenCalled();
+	});
+
+	it('should not select a range on Shift-click', async () => {
+		const onSelectionChange = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 4)}
+				selectable
+				onSelectionChange={onSelectionChange}
+			/>,
+		);
+
+		const rowRoot = (rowNumber: number) =>
+			page.elementLocator(
+				document.querySelector(
+					`tbody tr:nth-child(${String(rowNumber)}) ${CHECKBOX_ROOT_LABEL}`,
+				) as HTMLElement,
+			);
+
+		await rowRoot(1).click();
+		await rowRoot(4).click({ modifiers: ['Shift'] });
+
+		expect(onSelectionChange).toHaveBeenLastCalledWith({ '1': true, '4': true });
+		await expect.element(page.getByRole('checkbox', { checked: true })).toHaveLength(2);
+	});
+
 	it('should not propagate checkbox click or double click to the row', async () => {
 		const onRowClick = vi.fn();
 		const onRowDoubleClick = vi.fn();
@@ -122,6 +205,7 @@ describe('DsTable Selection', () => {
 		function ProgrammaticSelectionWrapper() {
 			const tableRef = useRef<DsTableApi<Person>>(null);
 			const [selectedRows, setSelectedRows] = useState<string[]>([]);
+			const [apiSelection, setApiSelection] = useState('');
 
 			const handleSelectionChange = (selection: Record<string, boolean>) => {
 				setSelectedRows(Object.keys(selection));
@@ -142,6 +226,23 @@ describe('DsTable Selection', () => {
 					<button type="button" onClick={() => tableRef.current?.selectRows(['1', '2', '3'])}>
 						Select First 3 Rows
 					</button>
+					<button type="button" onClick={() => tableRef.current?.deselectRow('2')}>
+						Deselect Row 2
+					</button>
+					<button
+						type="button"
+						onClick={() =>
+							setApiSelection(
+								tableRef.current
+									?.getSelectedRows()
+									.map((row) => row.id)
+									.join(', ') ?? '',
+							)
+						}
+					>
+						Read Selection
+					</button>
+					<p>API selection: {apiSelection || 'None'}</p>
 					<DsTable
 						columns={columns}
 						data={defaultData}
@@ -177,6 +278,13 @@ describe('DsTable Selection', () => {
 		const checkedCheckboxes = page.getByRole('checkbox', { checked: true }).all();
 
 		expect(checkedCheckboxes).toHaveLength(3);
+		await expect.element(page.getByText(/Selected rows: 1, 2, 3$/)).toBeVisible();
+
+		await page.getByRole('button', { name: /deselect row 2/i }).click();
+		await expect.element(page.getByText(/Selected rows: 1, 3$/)).toBeVisible();
+
+		await page.getByRole('button', { name: /read selection/i }).click();
+		await expect.element(page.getByText(/API selection: 1, 3$/)).toBeVisible();
 	});
 
 	it('should enforce max selection limit', async () => {
