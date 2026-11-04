@@ -118,6 +118,18 @@ describe('DsCheckbox', () => {
 		await expect.element(checkboxRoot()).toHaveAttribute('data-state', 'indeterminate');
 	});
 
+	it.each([
+		{ name: 'checked', props: { checked: 'indeterminate' } },
+		{ name: 'defaultChecked', props: { defaultChecked: 'indeterminate' } },
+	] as const)(
+		'should expose the mixed state to AT when mounted with $name="indeterminate"',
+		async ({ props }) => {
+			await page.render(<DsCheckbox label="label" {...props} />);
+
+			await expect.element(page.getByRole('checkbox')).toBePartiallyChecked();
+		},
+	);
+
 	it('should support disabled state', async () => {
 		await page.render(<DsCheckbox label="label" labelInfo="labelInfo" disabled />);
 

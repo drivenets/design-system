@@ -19,7 +19,6 @@ export const noTestId = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		const report = (node: TSESTree.Node) => {
 			context.report({

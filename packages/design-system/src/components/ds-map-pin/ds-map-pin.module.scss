@@ -1,0 +1,150 @@
+@use '../../styles/typography';
+
+$hover-scale: 1.1;
+$hover-easing: cubic-bezier(0.2, 0, 0, 1);
+$state-outline-width: 2px;
+$ring-width: 2px;
+$small-content-font-size: 10px;
+$badge-font-size: 10px;
+$badge-border-width: 1px;
+$elevation-rest: drop-shadow(0 1px 3px rgb(0 0 0 / 30%));
+$elevation-hover: drop-shadow(0 3px 6px rgb(0 0 0 / 30%));
+$z-index-selected: 1;
+$z-index-hover: 2;
+$z-index-dragging: 3;
+
+.pin {
+	--map-pin-color: var(--background-primary);
+	--map-pin-selected-color: var(--border-action-primary);
+
+	display: block;
+	position: relative;
+	padding: 0;
+	border: 0;
+	background: none;
+	line-height: 0;
+	cursor: pointer;
+	transform-origin: 50% 100%;
+	transition: transform 0.2s $hover-easing;
+	appearance: none;
+
+	&[data-color='orange'] {
+		--map-pin-color: var(--schema-orange);
+		--map-pin-selected-color: var(--schema-orange);
+	}
+
+	&[data-color='teal'] {
+		--map-pin-color: var(--schema-teal);
+		--map-pin-selected-color: var(--schema-teal);
+	}
+
+	&[data-color='pink'] {
+		--map-pin-color: var(--schema-pink);
+		--map-pin-selected-color: var(--schema-pink);
+	}
+
+	&[data-ring='dotted'] .ring {
+		stroke-dasharray: 0 4;
+		stroke-linecap: round;
+	}
+
+	&[data-ring='dashed'] .ring {
+		stroke-dasharray: 9 5;
+	}
+
+	&[data-badge-border='dotted'] .badge {
+		stroke-dasharray: 1 1;
+	}
+
+	&[data-badge-border='dashed'] .badge {
+		stroke-dasharray: 7 4;
+	}
+
+	&[data-size='small'] .content {
+		font-size: $small-content-font-size;
+	}
+
+	&[aria-current='true'] {
+		z-index: $z-index-selected;
+
+		.outline {
+			stroke: var(--map-pin-selected-color);
+			stroke-width: $state-outline-width * 2;
+		}
+	}
+
+	&:hover {
+		z-index: $z-index-hover;
+		transform: scale($hover-scale);
+
+		.graphic {
+			filter: $elevation-hover;
+		}
+	}
+
+	&[data-dragging] {
+		z-index: $z-index-dragging;
+
+		.outline {
+			fill: var(--background-secondary);
+			stroke: var(--border-contrast);
+			stroke-width: $state-outline-width * 2;
+		}
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--outline-moderate);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		&,
+		.graphic {
+			transition: none;
+		}
+	}
+}
+
+.graphic {
+	display: block;
+	overflow: visible;
+	filter: $elevation-rest;
+	transition: filter 0.2s $hover-easing;
+}
+
+.outline {
+	fill: var(--background);
+	stroke: none;
+	paint-order: stroke;
+}
+
+.core {
+	fill: var(--map-pin-color);
+}
+
+.ring {
+	fill: none;
+	stroke: var(--map-pin-color);
+	stroke-width: $ring-width;
+}
+
+.content {
+	@include typography.body-xs-md;
+	fill: var(--font-on-action);
+	text-anchor: middle;
+	dominant-baseline: central;
+}
+
+.badge {
+	fill: var(--background);
+	stroke: var(--outline-strong);
+	stroke-width: $badge-border-width;
+}
+
+.badgeContent {
+	@include typography.body-xs-reg;
+	font-size: $badge-font-size;
+	fill: var(--font-main);
+	text-anchor: middle;
+	dominant-baseline: central;
+}
