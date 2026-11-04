@@ -1,7 +1,12 @@
 import type { CSSProperties } from 'react';
-import { type ColumnSizingState, type ColumnVisibilityState, type RowData } from '@tanstack/react-table';
+import type {
+	ColumnDefResolved,
+	ColumnSizingState,
+	ColumnVisibilityState,
+	RowData,
+} from '@tanstack/react-table';
 import { isExplicitColumnWidth } from '../../utils/column-size';
-import type { DsColumn, DsColumnDef } from '../../ds-table-features';
+import type { DsColumn, DsColumnDef, DsTableFeatures } from '../../ds-table-features';
 
 /**
  * Builds the flex style for a group header cell so it lines up with the combined
@@ -51,15 +56,15 @@ export const isFirstLeafColumnOfGroup = <TData extends RowData, TValue>(
 	return visibleLeaves[0]?.id === column.id;
 };
 
-type GroupColumnDef<TData extends RowData, TValue> = DsColumnDef<TData, TValue> & {
-	id?: string;
-	accessorKey?: string;
-	columns?: DsColumnDef<TData, TValue>[];
-};
+type ResolvedColumnDef<TData extends RowData> = ColumnDefResolved<DsTableFeatures, TData>;
 
-const getLeafColumnId = <TData extends RowData, TValue>(
-	def: GroupColumnDef<TData, TValue>,
-): string | undefined => def.id ?? def.accessorKey;
+// Group defs type their children as `ColumnDef<..., unknown>`, so walk every level as resolved defs.
+const resolveColumnDefs = <TData extends RowData, TValue>(
+	defs: ReadonlyArray<DsColumnDef<TData, TValue>> | undefined,
+): ReadonlyArray<ResolvedColumnDef<TData>> => (defs ?? []) as ReadonlyArray<ResolvedColumnDef<TData>>;
+
+const getLeafColumnId = <TData extends RowData>(def: ResolvedColumnDef<TData>): string | undefined =>
+	def.id ?? (def.accessorKey === undefined ? undefined : String(def.accessorKey));
 
 /**
  * Collects the ids of groups declared with `meta.group.defaultCollapsed`, used to
@@ -70,18 +75,18 @@ export const getInitialCollapsedGroups = <TData extends RowData, TValue>(
 ): string[] => {
 	const collapsed: string[] = [];
 
-	const visit = (defs: DsColumnDef<TData, TValue>[]) => {
-		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
+	const visit = (defs: ReadonlyArray<ResolvedColumnDef<TData>>) => {
+		for (const def of defs) {
 			if (def.columns) {
 				if (def.id && def.meta?.group?.defaultCollapsed) {
 					collapsed.push(def.id);
 				}
-				visit(def.columns);
+				visit(resolveColumnDefs(def.columns));
 			}
 		}
 	};
 
-	visit(columns);
+	visit(resolveColumnDefs(columns));
 
 	return collapsed;
 };
@@ -97,11 +102,11 @@ export const getCollapsedColumnVisibility = <TData extends RowData, TValue>(
 ): ColumnVisibilityState => {
 	const visibility: ColumnVisibilityState = {};
 
-	const visit = (defs: DsColumnDef<TData, TValue>[], isInsideCollapsedGroup: boolean) => {
-		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
+	const visit = (defs: ReadonlyArray<ResolvedColumnDef<TData>>, isInsideCollapsedGroup: boolean) => {
+		for (const def of defs) {
 			if (def.columns) {
 				const isGroupCollapsed = isInsideCollapsedGroup || (!!def.id && collapsedGroupIds.includes(def.id));
-				visit(def.columns, isGroupCollapsed);
+				visit(resolveColumnDefs(def.columns), isGroupCollapsed);
 				continue;
 			}
 
@@ -116,7 +121,7 @@ export const getCollapsedColumnVisibility = <TData extends RowData, TValue>(
 		}
 	};
 
-	visit(columns, false);
+	visit(resolveColumnDefs(columns), false);
 
 	return visibility;
 };

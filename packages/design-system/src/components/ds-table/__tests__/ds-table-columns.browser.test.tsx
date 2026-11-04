@@ -399,6 +399,32 @@ describe('DsTable - Columns', () => {
 			await expect.element(columnHeader('Last Name')).not.toBeInTheDocument();
 		});
 
+		it('leaves columns hidden by a collapsed group out of onColumnVisibilityChange', async () => {
+			const onColumnVisibilityChange = vi.fn();
+
+			await renderTable({
+				onColumnVisibilityChange,
+				columns: [
+					{
+						id: 'identity',
+						header: 'Identity',
+						meta: { group: { collapsible: true, defaultCollapsed: true } },
+						columns: [
+							{ accessorKey: 'firstName', header: 'First Name', meta: { keepVisibleWhenCollapsed: true } },
+							{ accessorKey: 'lastName', header: 'Last Name' },
+						],
+					},
+					{ accessorKey: 'visits', header: 'Visits' },
+				],
+			});
+
+			await openColumnDisplay();
+			await columnCheckbox('Visits').click();
+
+			await expect.element(columnHeader('Visits')).not.toBeInTheDocument();
+			expect(onColumnVisibilityChange).toHaveBeenLastCalledWith({ visits: false });
+		});
+
 		describe.each([
 			{ resizableColumns: false, virtualized: false },
 			{ resizableColumns: false, virtualized: true },
