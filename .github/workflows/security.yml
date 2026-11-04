@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: ['main', 'next']
 
-  schedule:
-    - cron: '0 0 * * 6'
+  # Scheduled runs happen in `nightly.yml`.
+  workflow_call:
 
 permissions: {}
 

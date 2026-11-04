@@ -1,0 +1,156 @@
+name: Nightly
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 01:00 Israel Time (UTC+3, IDT), after the `next` branch sync.
+    - cron: '0 22 * * *'
+
+permissions: {}
+
+concurrency:
+  # Must differ from `security.yml`'s group, which resolves to the caller's workflow name.
+  group: '${{ github.workflow }}'
+  cancel-in-progress: true
+
+jobs:
+  security:
+    name: Security
+    if: github.repository_owner == 'drivenets'
+
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+      packages: read
+
+    uses: ./.github/workflows/security.yml # zizmor: ignore[self-repository]
+
+  audit:
+    name: Dependencies Audit
+    runs-on: ubuntu-latest
+
+    if: github.repository_owner == 'drivenets'
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install # zizmor: ignore[self-repository]
+
+      - name: Run Audit
+        run: pnpm audit --prod --audit-level=high
+
+  # Reports to the Security tab without failing, since it can't filter by severity and includes dev dependencies.
+  # The `audit` job is the failing gate.
+  osv-scanner:
+    name: OSV Scanner
+    if: github.repository_owner == 'drivenets'
+
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
+    with:
+      fail-on-vuln: false
+
+  secrets:
+    name: Secrets Scan
+    runs-on: ubuntu-latest
+
+    if: github.repository_owner == 'drivenets'
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Scans the whole git history on scheduled and manual runs.
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@ea68ca03c865c5f324e86e849ced20ed3cf9dbbb # v3.99.8
+        with:
+          version: 3.99.8
+          extra_args: --results=verified,unknown
+
+  # Same checks as `pr.yml`, but on the whole repo (no `--affected`, no turbo cache).
+  full-suite:
+    name: ${{ matrix.label }}
+    runs-on: ubuntu-latest
+
+    if: github.repository_owner == 'drivenets'
+
+    # Visual tests are still in their burn-in period in `pr.yml`.
+    continue-on-error: ${{ matrix.allow-failure == true }}
+
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Lint
+            run: pnpm lint
+
+          - label: Type Check
+            run: pnpm typecheck
+
+          - label: Check Format
+            run: pnpm format:check
+
+          - label: Test
+            run: pnpm test:coverage
+
+          - label: Storybook Docs Tests
+            run: pnpm test:storybook-docs
+
+          - label: Visual Tests
+            allow-failure: true
+            run: |
+              pnpm --filter @drivenets/design-system test:visual:server --detach
+              pnpm test:visual
+
+          - label: Build
+            run: |
+              pnpm build
+              pnpm lint:build
+              pnpm test:requires-build
+
+          - label: Check Packages Versions
+            run: pnpm lint:versions
+
+          - label: Spell Check
+            run: pnpm lint:spell
+
+          - label: Check Unused Code and Dependencies
+            run: |
+              pnpm lint:unused
+              pnpm lint:dedupe
+
+          - label: Figma Code Connect Lint
+            run: pnpm figma:lint
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install # zizmor: ignore[self-repository]
+
+      - name: Run ${{ matrix.label }}
+        run: ${{ matrix.run }}

@@ -1,5 +1,17 @@
 # @drivenets/design-system
 
+## 0.26.0
+
+### Minor Changes
+
+- 2115db7: Add a tags mode to `DsAutocomplete` (`multiple`) for picking existing options or creating new ones as removable tags.
+- 102842d: Add drag-and-drop sorting to `DsTree` with `DsTree.Sortable`, and to the `DsTable` Columns popup with `reorderableColumns`.
+- 1ed0d8e: Add `DsMapPin` component
+
+### Patch Changes
+
+- fe93a92: Fix the `DsTag` delete button being hidden until the tag is hovered or focused.
+
 ## 0.25.0
 
 ### Minor Changes

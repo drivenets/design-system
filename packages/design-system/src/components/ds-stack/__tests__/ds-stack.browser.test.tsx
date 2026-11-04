@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, onTestFinished } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { DsStack } from '../ds-stack';
+import { BREAKPOINT_LG } from '../../../utils/responsive';
+import { DsStack } from '..';
 
 describe('DsStack', () => {
 	it('renders children in a flex column by default', async () => {
@@ -129,5 +130,31 @@ describe('DsStack', () => {
 		const container = page.getByRole('button', { name: 'X' }).element().parentElement as HTMLElement;
 		expect(container).toBeTruthy();
 		expect(container.style.gap).toBe('30px');
+	});
+
+	it('switches a responsive direction at the lg breakpoint', async () => {
+		const { innerWidth, innerHeight } = window;
+		onTestFinished(() => page.viewport(innerWidth, innerHeight));
+
+		await page.viewport(BREAKPOINT_LG - 1, innerHeight);
+		await page.render(
+			<DsStack direction={{ md: 'column', lg: 'row' }}>
+				<button type="button">First</button>
+				<button type="button">Second</button>
+			</DsStack>,
+		);
+
+		const first = page.getByRole('button', { name: 'First' }).element();
+		const second = page.getByRole('button', { name: 'Second' }).element();
+		const isStacked = () => second.getBoundingClientRect().top >= first.getBoundingClientRect().bottom;
+		const isInRow = () => second.getBoundingClientRect().left >= first.getBoundingClientRect().right;
+
+		await expect.poll(isStacked).toBe(true);
+
+		await page.viewport(BREAKPOINT_LG, innerHeight);
+		await expect.poll(isInRow).toBe(true);
+
+		await page.viewport(BREAKPOINT_LG - 1, innerHeight);
+		await expect.poll(isStacked).toBe(true);
 	});
 });

@@ -1,10 +1,17 @@
+import path from 'node:path';
+import { compileString } from 'sass-embedded';
 import { describe, expect, it } from 'vitest';
 
 import { BREAKPOINT_LG, isResponsiveValue, resolveResponsiveValue } from './responsive';
 
 describe('BREAKPOINT_LG', () => {
-	it('should be sourced from the SCSS variable and equal 1440', () => {
-		expect(BREAKPOINT_LG).toBe(1440);
+	it('should match the $breakpoint-lg SCSS variable', () => {
+		const { css } = compileString('@use "variables" as var; a { width: var.$breakpoint-lg; }', {
+			loadPaths: [path.resolve(__dirname, '../styles')],
+			style: 'compressed',
+		});
+
+		expect(css).toBe(`a{width:${String(BREAKPOINT_LG)}px}`);
 	});
 });
 

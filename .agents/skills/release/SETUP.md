@@ -20,6 +20,8 @@ gh api repos/drivenets/design-system --jq .permissions.push
 
 The user must sign in themselves — never ask for or handle a token.
 
+In a Claude Code cloud session, skip this check: `gh auth status` always fails there and `gh pr` commands are blocked. Use the GitHub MCP tools from [GitHub tools](../../../docs/agents/routines/weekly-release.md#github-tools) instead.
+
 ## Slack
 
 Look for a Slack MCP tool that sends messages (name ends in `slack_send_message`; the prefix differs per install). Confirm access with the matching channel search tool for `dap-ask-design-system` — it should return `C08T4JRKXGB`.
