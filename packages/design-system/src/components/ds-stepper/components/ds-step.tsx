@@ -97,6 +97,7 @@ export function DsStep({
 	return (
 		<Wrapper
 			{...context.stepsApi.getItemProps({ index })}
+			aria-current={current ? 'step' : undefined}
 			data-current={current ? '' : undefined}
 			data-complete={completed ? '' : undefined}
 			data-disabled={disabled ? '' : undefined}
