@@ -4,7 +4,7 @@ import DsDateRangePicker from '../ds-date-range-picker';
 
 describe('DsDateRangePicker', () => {
 	beforeEach(() => {
-		vi.useFakeTimers();
+		vi.useFakeTimers({ toFake: ['Date'] });
 		vi.setSystemTime(new Date('2026-01-15T12:00:00'));
 	});
 
@@ -35,7 +35,7 @@ describe('DsDateRangePicker', () => {
 
 		await userEvent.click(endCalendarButton);
 
-		const jan20Button = page.getByRole('button', { name: /Choose.*January 20, 2026/i }).nth(1);
+		const jan20Button = page.getByRole('button', { name: /Choose.*January 20, 2026/i }).last();
 		await jan20Button.click();
 		await userEvent.keyboard('{Escape}');
 
