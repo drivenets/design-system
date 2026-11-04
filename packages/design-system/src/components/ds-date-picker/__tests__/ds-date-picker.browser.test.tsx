@@ -6,7 +6,7 @@ import { modalContainers } from '../../../../vitest/modal-containers';
 
 describe('DsDatePicker', () => {
 	beforeEach(() => {
-		vi.useFakeTimers();
+		vi.useFakeTimers({ toFake: ['Date'] });
 		vi.setSystemTime(new Date('2026-01-15T12:00:00'));
 	});
 
