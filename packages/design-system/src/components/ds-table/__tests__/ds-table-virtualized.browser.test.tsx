@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
 import { columns, type Person } from '../stories/common/story-data';
@@ -69,6 +69,33 @@ describe('DsTable Virtualized', () => {
 				return (second?.getBoundingClientRect().top ?? 0) - (first?.getBoundingClientRect().top ?? 0);
 			})
 			.toBeGreaterThan(0);
+	});
+
+	it('should sort rows, show the sort indicator, and call onSortingChange on header click', async () => {
+		const onSortingChange = vi.fn();
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable columns={columns} data={largeData} virtualized onSortingChange={onSortingChange} />
+			</div>,
+		);
+
+		const visitsHeader = page.getByText('Visits');
+		const firstBodyRow = page.getByRole('row').nth(1);
+
+		await visitsHeader.click();
+
+		await expect.element(firstBodyRow.getByText('First200', { exact: true })).toBeInTheDocument();
+		await expect.element(page.getByText('arrow_drop_down')).toBeVisible();
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'visits', desc: true }]);
+
+		await visitsHeader.click();
+
+		await expect.element(firstBodyRow.getByText('First1', { exact: true })).toBeInTheDocument();
+		await expect.element(page.getByText('arrow_drop_up')).toBeVisible();
+		await expect.element(page.getByText('arrow_drop_down')).not.toBeInTheDocument();
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'visits', desc: false }]);
+		expect(onSortingChange).toHaveBeenCalledTimes(2);
 	});
 
 	it('should persist selection through scroll', async () => {

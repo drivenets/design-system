@@ -1,4 +1,4 @@
-import { flexRender, type RowData } from '@tanstack/react-table';
+import { FlexRender, type RowData } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../../ds-button-v3';
 import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
@@ -62,7 +62,7 @@ export const DsTableGroupHeaderCell = <TData extends RowData, TValue>({
 		>
 			<div className={styles.groupHeaderContent}>
 				<DsTableHeaderLabel tooltipText={tooltipText}>
-					{flexRender(headerDef, header.getContext())}
+					<FlexRender header={header} />
 				</DsTableHeaderLabel>
 				{isCollapsible && (
 					<DsButtonV3
