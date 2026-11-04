@@ -18,7 +18,6 @@ export const requireStoryMetaAnnotations = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		return {
 			ExportDefaultDeclaration(node) {

@@ -37,7 +37,6 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 		fixable: 'code',
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		const services = ESLintUtils.getParserServices(context);
 

@@ -20,7 +20,6 @@ export const requireFigmaTemplate = createRule<[], MessageId>({
 		fixable: 'code',
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		let hasDefaultExport = false;
 

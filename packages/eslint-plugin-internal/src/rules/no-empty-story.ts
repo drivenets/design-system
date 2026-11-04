@@ -19,7 +19,6 @@ export const noEmptyStory = createRule<[], MessageId>({
 		},
 		schema: [],
 	},
-	defaultOptions: [],
 	create(context) {
 		const reported = new Set<TSESTree.Node>();
 
