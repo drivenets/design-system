@@ -626,7 +626,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -35383,7 +35383,15 @@ Error:
 No suitable component definition found.
 You can debug your component file in this playground: https://react-docgen.dev/playground
 Code:
-import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from &#39;react&#39;;
+import {
+	createContext,
+	use,
+	useEffect,
+	useState,
+	type AriaAttributes,
+	type KeyboardEvent,
+	type MouseEvent,
+} from &#39;react&#39;;
 import { TreeView, useTreeViewContext, useTreeViewNodeContext } from &#39;@ark-ui/react/tree-view&#39;;
 import classNames from &#39;classnames&#39;;
 
@@ -35414,6 +35422,23 @@ import type {
 	DsTreeRootProps,
 	DsTreeTreeProps,
 } from &#39;./ds-tree.types&#39;;
+
+const ROW_SELECTOR = &#39;[data-part=&quot;item&quot;], [data-part=&quot;branch-control&quot;]&#39;;
+
+// zag-js declares `typeahead` but never reads it, and its tree keydown handler skips prevented events
+const preventTypeahead = (event: KeyboardEvent&lt;HTMLDivElement&gt;) =&gt; {
+	const target = event.target as HTMLElement;
+	const isTypeaheadKey =
+		event.key.length === 1 &amp;&amp; event.key !== &#39; &#39; &amp;&amp; event.key !== &#39;*&#39; &amp;&amp; !event.ctrlKey &amp;&amp; !event.metaKey;
+
+	if (!isTypeaheadKey || target.isContentEditable || target.matches(&#39;input, textarea, select&#39;)) {
+		return;
+	}
+
+	if (target.closest(ROW_SELECTOR)) {
+		event.preventDefault();
+	}
+};
 
 const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 	collection,
@@ -35463,6 +35488,7 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 		className={classNames(styles.root, className)}
 		style={style}
 		data-size={size}
+		onKeyDownCapture={typeahead ? undefined : preventTypeahead}
 	&gt;
 		{children}
 	&lt;/TreeView.Root&gt;
@@ -40189,7 +40215,15 @@ Error:
 No suitable component definition found.
 You can debug your component file in this playground: https://react-docgen.dev/playground
 Code:
-import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from &#39;react&#39;;
+import {
+	createContext,
+	use,
+	useEffect,
+	useState,
+	type AriaAttributes,
+	type KeyboardEvent,
+	type MouseEvent,
+} from &#39;react&#39;;
 import { TreeView, useTreeViewContext, useTreeViewNodeContext } from &#39;@ark-ui/react/tree-view&#39;;
 import classNames from &#39;classnames&#39;;
 
@@ -40220,6 +40254,23 @@ import type {
 	DsTreeRootProps,
 	DsTreeTreeProps,
 } from &#39;./ds-tree.types&#39;;
+
+const ROW_SELECTOR = &#39;[data-part=&quot;item&quot;], [data-part=&quot;branch-control&quot;]&#39;;
+
+// zag-js declares `typeahead` but never reads it, and its tree keydown handler skips prevented events
+const preventTypeahead = (event: KeyboardEvent&lt;HTMLDivElement&gt;) =&gt; {
+	const target = event.target as HTMLElement;
+	const isTypeaheadKey =
+		event.key.length === 1 &amp;&amp; event.key !== &#39; &#39; &amp;&amp; event.key !== &#39;*&#39; &amp;&amp; !event.ctrlKey &amp;&amp; !event.metaKey;
+
+	if (!isTypeaheadKey || target.isContentEditable || target.matches(&#39;input, textarea, select&#39;)) {
+		return;
+	}
+
+	if (target.closest(ROW_SELECTOR)) {
+		event.preventDefault();
+	}
+};
 
 const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 	collection,
@@ -40269,6 +40320,7 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 		className={classNames(styles.root, className)}
 		style={style}
 		data-size={size}
+		onKeyDownCapture={typeahead ? undefined : preventTypeahead}
 	&gt;
 		{children}
 	&lt;/TreeView.Root&gt;
