@@ -10,7 +10,11 @@ import DsTable from '../ds-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
-import { fullHeightDecorator, openColumnDisplayDecorator } from './common/story-decorators';
+import {
+	fullHeightDecorator,
+	openColumnDisplayDecorator,
+	searchColumnDisplayDecorator,
+} from './common/story-decorators';
 import { ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -248,6 +252,20 @@ export const ColumnReorderPopoverOpen: Story = {
 	name: 'Column reorder, popover open',
 	tags: ['!manifest', '!autodocs'],
 	decorators: [openColumnDisplayDecorator],
+	parameters: {
+		chromatic: { delay: 500 },
+	},
+	render: ColumnReorder.render,
+};
+
+/**
+ * The Columns popover of the reorder story, searched for "pro", for its visual test: the matching
+ * column is highlighted, and the groups above it show greyed out as read-only context.
+ */
+export const ColumnDisplaySearch: Story = {
+	name: 'Column display, search applied',
+	tags: ['!manifest', '!autodocs'],
+	decorators: [searchColumnDisplayDecorator('pro')],
 	parameters: {
 		chromatic: { delay: 500 },
 	},

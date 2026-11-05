@@ -1,5 +1,6 @@
 @use '../../../../styles/scrollbars' as scrollbars;
 @use '../../../../styles/shared/dropdown';
+@use '../../../../styles/typography';
 
 $indent-per-level: calc(var(--lg) + var(--sm));
 // Figma's `Part_DisplayItem` row, taller than DsTree's medium density
@@ -35,6 +36,10 @@ $row-height: 38px;
 	color: var(--icon-main);
 }
 
+.search {
+	padding: var(--xs);
+}
+
 .list {
 	@include scrollbars.scrollbar-on-hover;
 
@@ -68,6 +73,36 @@ $row-height: 38px;
 
 .label {
 	color: var(--font-main);
+}
+
+.row[data-disabled] .label {
+	color: var(--font-disabled);
+}
+
+.highlightedLabel {
+	@include typography.ellipsis;
+
+	min-width: 0;
+}
+
+.match {
+	color: inherit;
+	background: var(--background-warning);
+	border-radius: 2px;
+}
+
+.noMatches {
+	@include typography.body-sm-reg;
+
+	margin: 0;
+	padding: var(--xs) var(--sm);
+	color: var(--font-secondary);
+
+	// The live region stays mounted so its text is announced; empty, it must not add a flex gap
+	&:empty {
+		position: absolute;
+		padding: 0;
+	}
 }
 
 // Lines up with the list rows, which sit inside the list's inset.
