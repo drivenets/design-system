@@ -1,4 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { useState } from 'react';
+import type { ColumnFiltersState } from '@tanstack/react-table';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
 import { DsTagFilter } from '../../ds-tag-filter';
@@ -173,5 +175,85 @@ describe('DsTable - column filters', () => {
 
 		await expect.element(ascending).not.toBeInTheDocument();
 		await expect.element(descending).not.toBeInTheDocument();
+	});
+});
+
+describe('DsTable - column filter state', () => {
+	const columns: DsColumnDef<DeviceRow>[] = [
+		{ accessorKey: 'name', header: 'Name' },
+		{
+			accessorKey: 'type',
+			enableSorting: false,
+			filterFn: 'equals',
+			header: ({ column }) => (
+				<button type="button" onClick={() => column.setFilterValue('ME10')}>
+					Show ME10
+				</button>
+			),
+		},
+	];
+
+	const me10Filter: ColumnFiltersState = [{ id: 'type', value: 'ME10' }];
+
+	const showMe10 = () => page.getByRole('button', { name: 'Show ME10' }).click();
+
+	it('filters rows without filter props', async () => {
+		await page.render(<DsTable columns={columns} data={rows} />);
+
+		await showMe10();
+
+		await expect.poll(() => getDataRows()).toHaveLength(2);
+	});
+
+	it('filters rows and reports the change when only onColumnFiltersChange is passed', async () => {
+		const onColumnFiltersChange = vi.fn();
+
+		await page.render(
+			<DsTable columns={columns} data={rows} onColumnFiltersChange={onColumnFiltersChange} />,
+		);
+
+		await showMe10();
+
+		await expect.poll(() => getDataRows()).toHaveLength(2);
+		expect(onColumnFiltersChange).toHaveBeenLastCalledWith(me10Filter);
+	});
+
+	it('keeps the rows on the columnFilters prop until the parent updates it', async () => {
+		const onColumnFiltersChange = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={rows}
+				columnFilters={[]}
+				onColumnFiltersChange={onColumnFiltersChange}
+			/>,
+		);
+
+		await showMe10();
+
+		expect(onColumnFiltersChange).toHaveBeenLastCalledWith(me10Filter);
+		expect(getDataRows()).toHaveLength(6);
+	});
+
+	it('filters rows through controlled columnFilters', async () => {
+		function ControlledTable() {
+			const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+			return (
+				<DsTable
+					columns={columns}
+					data={rows}
+					columnFilters={columnFilters}
+					onColumnFiltersChange={setColumnFilters}
+				/>
+			);
+		}
+
+		await page.render(<ControlledTable />);
+
+		await showMe10();
+
+		await expect.poll(() => getDataRows()).toHaveLength(2);
 	});
 });

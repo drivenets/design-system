@@ -7,6 +7,8 @@ import {
 	type ColumnPinningState,
 	useTable,
 	type ColumnVisibilityState,
+	functionalUpdate,
+	type Updater,
 } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
@@ -104,23 +106,20 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	});
 
 	const columnFilters = externalColumnFilters ?? internalColumnFilters;
-	const handleColumnFiltersChange = (
-		updaterOrValue: ColumnFiltersState | ((old: ColumnFiltersState) => ColumnFiltersState),
-	) => {
-		const newFilters = typeof updaterOrValue === 'function' ? updaterOrValue(columnFilters) : updaterOrValue;
-		if (onColumnFiltersChange) {
-			onColumnFiltersChange(newFilters);
-		} else {
+	const handleColumnFiltersChange = (updater: Updater<ColumnFiltersState>) => {
+		const newFilters = functionalUpdate(updater, columnFilters);
+
+		if (externalColumnFilters === undefined) {
 			setInternalColumnFilters(newFilters);
 		}
+
+		onColumnFiltersChange?.(newFilters);
 	};
 
 	const baseColumnVisibility = externalColumnVisibility ?? internalColumnVisibility;
-	const handleColumnVisibilityChange = (
-		updaterOrValue: ColumnVisibilityState | ((old: ColumnVisibilityState) => ColumnVisibilityState),
-	) => {
-		const newVisibility =
-			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
+	// Applied to the consumer's visibility only, so collapsed groups never leak into it.
+	const handleColumnVisibilityChange = (updater: Updater<ColumnVisibilityState>) => {
+		const newVisibility = functionalUpdate(updater, baseColumnVisibility);
 
 		if (externalColumnVisibility === undefined) {
 			setInternalColumnVisibility(newVisibility);
@@ -231,7 +230,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		features: dsTableFeatures,
 		data: loading ? skeletonData : reorderable ? data : tableData,
 		columns: loading ? skeletonColumns : columns,
-		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
+		onColumnFiltersChange: handleColumnFiltersChange,
 		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onColumnPinningChange: handleColumnPinningChange,
 		onRowSelectionChange: handleRowSelectionChange,
