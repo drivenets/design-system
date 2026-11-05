@@ -3,6 +3,7 @@ import {
 	use,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useRef,
 	useState,
 	useSyncExternalStore,
@@ -461,11 +462,24 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	useEffect(() => () => stopTrackingRef.current?.(), []);
 
 	const contextValue: DsTreeSortableContextValue = store;
-	const lastRoot = collection.getNodeChildren(collection.rootNode).at(-1);
 	// An expanded group has no "after" zone, so only then is extra space needed to drop after the last row
-	const isLastRootExpandedGroup = Boolean(
-		lastRoot && isDsTreeGroup(lastRoot) && treeView.expandedValue.includes(collection.getNodeValue(lastRoot)),
-	);
+	const [isLastRootExpandedGroup, setIsLastRootExpandedGroup] = useState(false);
+
+	useLayoutEffect(() => {
+		// A filtered list keeps hidden nodes in the collection and renders them as `null`, so only mounted rows count
+		const lastRoot = collection
+			.getNodeChildren(collection.rootNode)
+			.findLast((node) => store.rows.has(collection.getNodeValue(node)));
+
+		setIsLastRootExpandedGroup(
+			Boolean(
+				lastRoot &&
+				isDsTreeGroup(lastRoot) &&
+				treeView.expandedValue.includes(collection.getNodeValue(lastRoot)),
+			),
+		);
+		// `children` stands for a consumer render, which can mount or unmount root rows without a new collection
+	}, [collection, treeView.expandedValue, store.rows, children]);
 
 	return (
 		<DsTreeSortableContext value={contextValue}>

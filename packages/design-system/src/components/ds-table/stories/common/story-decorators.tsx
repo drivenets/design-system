@@ -13,28 +13,33 @@ export const fullHeightDecorator = (Story: () => ReactNode) => (
 	</div>
 );
 
-const OpenColumnDisplay = ({ children }: { children: ReactNode }) => {
-	useEffect(() => {
-		// Opening focuses the first row, which a script-driven open draws with a keyboard focus ring,
-		// so rows give focus back until the first real key or pointer press
-		const blurRow = ({ target }: FocusEvent) => {
-			if (target instanceof HTMLElement && target.closest('[role="tree"]')) {
-				target.blur();
-			}
-		};
-		const stop = () => {
-			document.removeEventListener('focusin', blurRow, true);
-			document.removeEventListener('keydown', stop, true);
-			document.removeEventListener('pointerdown', stop, true);
-		};
+// React tracks an input's value through its own setter, so the native one makes the `input` event count
+const typeInto = (input: HTMLInputElement, value: string) => {
+	Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set?.call(input, value);
+	input.dispatchEvent(new Event('input', { bubbles: true }));
+};
 
-		document.addEventListener('focusin', blurRow, true);
-		document.addEventListener('keydown', stop, true);
-		document.addEventListener('pointerdown', stop, true);
+const OpenColumnDisplay = ({ children, search }: { children: ReactNode; search?: string }) => {
+	useEffect(() => {
 		document.querySelector<HTMLButtonElement>('button[aria-label="Columns"]')?.click();
 
-		return stop;
-	}, []);
+		let frame = 0;
+		const typeSearch = () => {
+			const input = document.querySelector<HTMLInputElement>('[role="dialog"] input');
+
+			if (input) {
+				typeInto(input, search ?? '');
+			} else {
+				frame = requestAnimationFrame(typeSearch);
+			}
+		};
+
+		if (search) {
+			typeSearch();
+		}
+
+		return () => cancelAnimationFrame(frame);
+	}, [search]);
 
 	return children;
 };
@@ -45,6 +50,15 @@ export const openColumnDisplayDecorator = (Story: () => ReactNode) => (
 		<Story />
 	</OpenColumnDisplay>
 );
+
+export const searchColumnDisplayDecorator = (search: string) =>
+	function SearchColumnDisplay(Story: () => ReactNode) {
+		return (
+			<OpenColumnDisplay search={search}>
+				<Story />
+			</OpenColumnDisplay>
+		);
+	};
 
 export const narrowContainerDecorator = (Story: () => ReactNode) => (
 	<div className={styles.narrowContainer}>
