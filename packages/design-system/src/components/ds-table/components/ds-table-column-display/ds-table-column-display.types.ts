@@ -19,8 +19,12 @@ export interface ColumnDisplayNode extends DsTreeNode {
 	locked: boolean;
 	// A group is sticky when any one of its leaves is
 	sticky: boolean;
+	/** How the row shows during a search; unset without one. */
+	searchResult?: ColumnDisplaySearchResult;
 	children?: ColumnDisplayNode[];
 }
+
+export type ColumnDisplaySearchResult = 'match' | 'reference' | 'hidden';
 
 export type ColumnDisplayToggleTarget = Pick<ColumnDisplayNode, 'leafIdsToToggle' | 'locked'> & {
 	checked: ColumnDisplayCheckedState;

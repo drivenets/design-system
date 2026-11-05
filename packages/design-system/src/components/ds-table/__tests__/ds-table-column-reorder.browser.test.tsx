@@ -1361,4 +1361,84 @@ describe('DsTable - column reorder', () => {
 			);
 		});
 	});
+
+	describe('while searching', () => {
+		const search = (text: string) => columnsDialog().getByRole('textbox', { name: 'Search' }).fill(text);
+
+		it('drops a match right before or after a shown row, keeping columns hidden by the search in place', async () => {
+			const onColumnOrderChange = vi.fn();
+			await renderTable({ columns: flatColumns, onColumnOrderChange });
+			await openColumnDisplay();
+			await search('t');
+
+			await expect.poll(() => popoverOrder()).toEqual(['firstName', 'lastName', 'visits', 'status']);
+
+			await drag('status', 'lastName', 0.2, slotShown);
+
+			const statusMovedOrder = ['firstName', 'status', 'lastName', 'age', 'visits', 'progress'];
+			expect(onColumnOrderChange).toHaveBeenLastCalledWith(statusMovedOrder);
+			await expect.poll(tableOrder).toEqual(statusMovedOrder);
+
+			await drag('firstName', 'visits', 0.8, slotShown);
+
+			const firstNameMovedOrder = ['status', 'lastName', 'age', 'visits', 'firstName', 'progress'];
+			expect(onColumnOrderChange).toHaveBeenLastCalledWith(firstNameMovedOrder);
+			await expect.poll(tableOrder).toEqual(firstNameMovedOrder);
+			expect(popoverOrder()).toEqual(['status', 'lastName', 'visits', 'firstName']);
+		});
+
+		it('reorders the matches under a reference row, whose own handle is disabled', async () => {
+			const onColumnOrderChange = vi.fn();
+			await renderTable({ onColumnOrderChange });
+			await openColumnDisplay();
+			await search('s');
+
+			await expect.poll(() => popoverOrder('engagement')).toEqual(['visits', 'progress']);
+			expect(['identity', 'activity', 'engagement'].map((id) => handleOf(id)?.disabled)).toEqual([
+				true,
+				true,
+				true,
+			]);
+			expect(handleOf('progress')?.disabled).toBe(false);
+
+			await drag('progress', 'visits', 0.2, slotShown);
+
+			const nextOrder = ['firstName', 'lastName', 'progress', 'visits', 'status', 'age'];
+			expect(onColumnOrderChange).toHaveBeenCalledExactlyOnceWith(nextOrder);
+			await expect.poll(tableOrder).toEqual(nextOrder);
+			expect(popoverOrder('engagement')).toEqual(['progress', 'visits']);
+
+			await dropOnRejected(
+				'visits',
+				['progress', 0.2],
+				[
+					['status', 0.8],
+					['firstName', 0.2],
+				],
+			);
+
+			expect(onColumnOrderChange).toHaveBeenCalledOnce();
+			expect(tableOrder()).toEqual(nextOrder);
+		});
+
+		it('keeps sticky rows apart from the others', async () => {
+			const onColumnOrderChange = vi.fn();
+			await page.render(
+				<ControlledTable
+					columns={flatColumns}
+					initialStickyColumns={{ left: ['firstName'] }}
+					onColumnOrderChange={onColumnOrderChange}
+				/>,
+			);
+			await openColumnDisplay();
+			await search('t');
+
+			await expect.poll(() => popoverOrder()).toEqual(['firstName', 'lastName', 'visits', 'status']);
+
+			await dropOnRejected('status', ['lastName', 0.2], [['firstName', 0.2]]);
+
+			expect(onColumnOrderChange).not.toHaveBeenCalled();
+			expect(tableOrder()).toEqual(FLAT_ORDER);
+		});
+	});
 });

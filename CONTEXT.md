@@ -160,6 +160,14 @@ _Avoid_: pinned column (TanStack's term), frozen column, fixed column
 The border and shadow on the last left **Sticky column** or the first right one, shown only while scrolled content sits under it.
 _Avoid_: sticky shadow, separator
 
+**Column display**:
+The table popup, opened from the trailing column display **Utility column**, that lists every **Column group** and **Leaf column** for the user to show, hide, make sticky, or search.
+_Avoid_: column manager, column picker, column chooser
+
+**Reference row**:
+A read-only **Column display** row shown during a search for a **Column group** that does not match but has a descendant that does.
+_Avoid_: parent row, disabled row, context row
+
 **Code input**:
 A **Component** (`DsCodeInput`) whose value is one multiline code or query string, presented through a **Collapsed field** and an **Expanded overlay**.
 _Avoid_: query editor (as the Component name), JQL editor, two-surface code field
@@ -270,8 +278,10 @@ _Avoid_: maintenance branch, hotfix branch
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 - A table has one scroll container for both axes; the header and every **Sticky column** stick inside it, and its vertical scrollbar sits at the visible right edge
-- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the column display column on the right) and are always sticky
+- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the **Column display** column on the right) and are always sticky
 - Making one **Leaf column** of a **Column group** sticky makes the whole top-level group sticky
+- A **Column display** search shows the rows that match plus a **Reference row** for each non-matching ancestor; a matching **Column group** shows only its matching descendants
+- A **Reference row** is context, not a control: it shows its group's true state but cannot be toggled or made sticky
 - A **Code input** has one editor document and two presentations: **Collapsed field** and **Expanded overlay**
 - A **Hidden-line indicator** belongs to the **Collapsed field**; an ellipsis on that field means horizontal clip only
 - An **Internal component** is not a public **Component**; consumers reach it only through the **Component** it belongs to
@@ -318,6 +328,9 @@ _Avoid_: maintenance branch, hotfix branch
 > **Dev:** "Should a long column title wrap onto two lines in the header?"
 > **Domain expert:** "No — that's a **Header label**. It stays one line with an ellipsis; don't call it a column title."
 
+> **Dev:** "The user searched 'Ca' and _Equipment_ shows up greyed — can they click it to hide the whole group?"
+> **Domain expert:** "No — that's a **Reference row**. It's there so _Cabinet Type_ has its context; its other columns are filtered out, so toggling it would change columns the user can't see."
+
 > **Dev:** "Is the compact query box a different editor from the overlay?"
 > **Domain expert:** "No — that's one **Code input**. The **Collapsed field** and **Expanded overlay** are two presentations of the same document, not two fields."
 
@@ -339,6 +352,7 @@ _Avoid_: maintenance branch, hotfix branch
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
 - "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.
+- "Column manager" (AR-100688, Figma) and `columnDisplay` (code) name the same popup — resolved: say **Column display**.
 - The filters-bar design says the query builder locks the other views like the **Advanced query** does, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
 - "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an **Advanced query**; a **Compatible query** is converted into conditions rather than kept as text.
 - "Valid query" was used both for syntax-correct text and for text the other views can show — resolved: validity is grammar plus **Field schema**; whether the other views can show it is **Compatible query**.

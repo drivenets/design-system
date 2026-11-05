@@ -5,6 +5,7 @@ import { sortByColumnOrder } from '../../utils/column-order';
 import type {
 	ColumnDisplayCheckedState,
 	ColumnDisplayNode,
+	ColumnDisplaySearchResult,
 	ColumnDisplayToggleTarget,
 } from './ds-table-column-display.types';
 
@@ -88,6 +89,25 @@ export const getColumnDisplayNodes = <TData>(
 		options.columnOrder,
 		options.stickyFirst,
 	);
+
+const searchNode = (node: ColumnDisplayNode, text: string): ColumnDisplayNode => {
+	const children = node.children?.map((child) => searchNode(child, text));
+	const hasMatch = children?.some((child) => child.searchResult !== 'hidden') ?? false;
+	const searchResult: ColumnDisplaySearchResult = node.name.toLowerCase().includes(text)
+		? 'match'
+		: hasMatch
+			? 'reference'
+			: 'hidden';
+
+	return { ...node, searchResult, disabled: searchResult !== 'match', ...(children && { children }) };
+};
+
+/** Every column stays in the tree, disabled unless it matches, so group state, toggles and reorders still cover them all. */
+export const searchColumnDisplayNodes = (nodes: ColumnDisplayNode[], query: string): ColumnDisplayNode[] => {
+	const text = query.trim().toLowerCase();
+
+	return text ? nodes.map((node) => searchNode(node, text)) : nodes;
+};
 
 export const getGroupIds = (nodes: ColumnDisplayNode[]): string[] =>
 	nodes.flatMap((node) => (node.children ? [node.id, ...getGroupIds(node.children)] : []));

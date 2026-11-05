@@ -1,4 +1,12 @@
-import { createContext, use, useEffect, useState, type AriaAttributes, type MouseEvent } from 'react';
+import {
+	createContext,
+	use,
+	useEffect,
+	useState,
+	type AriaAttributes,
+	type KeyboardEvent,
+	type MouseEvent,
+} from 'react';
 import { TreeView, useTreeViewContext, useTreeViewNodeContext } from '@ark-ui/react/tree-view';
 import classNames from 'classnames';
 
@@ -29,6 +37,23 @@ import type {
 	DsTreeRootProps,
 	DsTreeTreeProps,
 } from './ds-tree.types';
+
+const ROW_SELECTOR = '[data-part="item"], [data-part="branch-control"]';
+
+// zag-js declares `typeahead` but never reads it, and its tree keydown handler skips prevented events
+const preventTypeahead = (event: KeyboardEvent<HTMLDivElement>) => {
+	const target = event.target as HTMLElement;
+	const isTypeaheadKey =
+		event.key.length === 1 && event.key !== ' ' && event.key !== '*' && !event.ctrlKey && !event.metaKey;
+
+	if (!isTypeaheadKey || target.isContentEditable || target.matches('input, textarea, select')) {
+		return;
+	}
+
+	if (target.closest(ROW_SELECTOR)) {
+		event.preventDefault();
+	}
+};
 
 const DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({
 	collection,
@@ -78,6 +103,7 @@ const DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({
 		className={classNames(styles.root, className)}
 		style={style}
 		data-size={size}
+		onKeyDownCapture={typeahead ? undefined : preventTypeahead}
 	>
 		{children}
 	</TreeView.Root>
