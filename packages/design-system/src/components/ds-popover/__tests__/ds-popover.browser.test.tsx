@@ -1,6 +1,7 @@
 import { createRef, useRef, useState, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
+import { DsDrawer } from '../../ds-drawer';
 import { DsTooltip } from '../../ds-tooltip';
 import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
@@ -118,6 +119,56 @@ describe('DsPopover placement and sizing', () => {
 		);
 
 		await expect.element(page.getByRole('dialog', { name: /sized panel/i })).toHaveStyle({ width: '520px' });
+	});
+});
+
+describe('DsPopover stacking', () => {
+	const setPopoverZIndex = (value: string) =>
+		document.documentElement.style.setProperty('--z-index-popover', value);
+	const resetPopoverZIndex = () => document.documentElement.style.removeProperty('--z-index-popover');
+
+	it('stacks the panel at z-index 1000 by default', async () => {
+		await page.render(<Example defaultOpen />);
+
+		await expect.element(getPanel()).toBeVisible();
+		expect(getComputedStyle(getPanel().element()).zIndex).toBe('1000');
+	});
+
+	it('stacks the panel at --z-index-popover when set on :root', async () => {
+		setPopoverZIndex('1234');
+
+		try {
+			await page.render(<Example defaultOpen />);
+
+			await expect.element(getPanel()).toBeVisible();
+			expect(getComputedStyle(getPanel().element()).zIndex).toBe('1234');
+		} finally {
+			resetPopoverZIndex();
+		}
+	});
+
+	it('is the hit target over an open DsDrawer when --z-index-popover is above the drawer', async () => {
+		setPopoverZIndex('1210');
+
+		try {
+			await page.render(
+				<DsDrawer open onOpenChange={() => {}} columns={12}>
+					<DsDrawer.Body>
+						<Example />
+					</DsDrawer.Body>
+				</DsDrawer>,
+			);
+
+			await getTrigger().click();
+			await expect.element(getPanel()).toBeVisible();
+
+			const { left, top, width, height } = getPanel().element().getBoundingClientRect();
+			const hit = document.elementFromPoint(left + width / 2, top + height / 2);
+
+			expect(getPanel().element().contains(hit)).toBe(true);
+		} finally {
+			resetPopoverZIndex();
+		}
 	});
 });
 

@@ -1,5 +1,5 @@
 .panel {
-	z-index: 1000;
+	z-index: var(--z-index-popover, 1000);
 	display: flex;
 	flex-direction: column;
 	background: var(--background);
