@@ -2,6 +2,8 @@
 enabled: true
 ---
 
+<!-- cspell:ignore customfield -->
+
 # Flaky test tracker
 
 Instructions for the weekly **Flaky test tracker** Routine ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). The Routine's stored prompt only points here, so edit this file (in a PR) to change what it does. Anyone can pause it by setting `enabled: false` above, see [Routine switch](README.md#routine-switch). Setup, owner and handover: [README.md](README.md).
@@ -56,8 +58,10 @@ If an open ticket exists, add one comment with the new occurrences (run links, d
 Rank the remaining candidates (re-run signal first, then occurrence count) and confirm the top 5 in this cloud session. Run only the one test, 30 times:
 
 ```bash
-pnpm --filter @drivenets/design-system exec vitest run <test file> --project=<project> -t "<test name>" --repeats=29
+pnpm --filter @drivenets/design-system exec vitest run <test file> --project=<project> -t "<test name>" --repeats=29 --reporter=verbose
 ```
+
+The summary counts a repeated test once (`Tests 1 passed`); the test's own line shows `(repeat x29)`. A failing repeat doesn't stop the rest: the test is reported failed with an error for each failing repeat; count them for the failure rate.
 
 Then run the whole file 3 more times as separate commands, since some flakes only show up with a fresh browser or test order.
 
@@ -65,7 +69,7 @@ Use the package's own filter for tests outside design-system. `storybook-visual`
 
 ```bash
 pnpm --filter @drivenets/design-system test:visual:server --detach
-pnpm --filter @drivenets/design-system test:visual <test file> --run -t "<test name>" --repeats=29
+pnpm --filter @drivenets/design-system test:visual <test file> --run -t "<test name>" --repeats=29 --reporter=verbose
 ```
 
 The VM stops background processes when it pauses, so start the server again after resuming. See [cloud-environment.md](../cloud-environment.md#storybook-and-visual-checks).
@@ -79,16 +83,19 @@ Result per candidate:
 
 One Bug per confirmed or filed test:
 
-| Field       | Value                                                                                                    |
-| ----------- | -------------------------------------------------------------------------------------------------------- |
-| Summary     | `DAP \| Design System \| Flaky test: <ComponentName> – <short test name>`                                |
-| Issue type  | Bug                                                                                                      |
-| Parent      | AR-58393                                                                                                 |
-| Component   | Design System                                                                                            |
-| Labels      | `flaky-test`                                                                                             |
-| Priority    | Low                                                                                                      |
-| Assignee    | The Routine's owner (see [Settings](#settings)), set by account ID                                       |
-| Description | Test file and name, project, CI occurrences with run links, local result, error message, suspected cause |
+| Field            | Value                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| Summary          | `DAP \| Design System \| Flaky test: <ComponentName> – <short test name>`                                |
+| Issue type       | Bug                                                                                                      |
+| Parent           | AR-58393                                                                                                 |
+| Component        | Design System                                                                                            |
+| Labels           | `flaky-test`                                                                                             |
+| Priority         | Low                                                                                                      |
+| Assignee         | The Routine's owner (see [Settings](#settings)), set by account ID                                       |
+| Affects versions | `Not_Required_For_GA` (`versions`: `[{"id": "22193"}]`)                                                  |
+| Environment Type | `Other` (`customfield_12006`: `{"id": "12122"}`)                                                         |
+| Team             | `DAP-Design-System` (`customfield_10200`: `"0955dbd7-52ad-4809-a697-3bddddbeb1a3"`)                      |
+| Description      | Test file and name, project, CI occurrences with run links, local result, error message, suspected cause |
 
 Add a line saying it was filed by the flaky test tracker Routine and link this file.
 
