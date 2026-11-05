@@ -26,10 +26,29 @@ The Routine releases the Design System packages every Wednesday morning without 
 
 Nobody watches this session: never ask a question or wait for an answer. Follow the [`release`](../../../.agents/skills/release/SKILL.md) skill, with these additions:
 
-1. **Prerequisites.** Use `gh` if `gh auth status` succeeds. Otherwise do every step with the session's GitHub tools: list, close and reopen the PR, read its required checks, approve, squash-merge with the expected head commit, find and watch the `Release` workflow run, list releases. Slack is required; without it, stop and say so in the session (there's nowhere to post).
+1. **Prerequisites.** Do every GitHub step with the session's GitHub MCP tools, as listed in [GitHub tools](#github-tools). Skip the GitHub CLI check in the skill's [SETUP.md](../../../.agents/skills/release/SETUP.md): in a cloud session `gh auth status` always fails and `gh pr` commands are blocked, so this is the normal path, not a fallback. Don't mention `gh` or its login in the session or the reports. Slack is required; without it, stop and say so in the session (there's nowhere to post).
 2. **Nothing to release.** If no Release PR is open, or its body has no `## @drivenets/…@x.y.z` headings, post `Weekly release: nothing to release` to the status channel and stop.
 3. **Head changed.** When the skill sends you back to close and reopen, do it at most 2 times in one run, then stop and report.
 4. **Someone else acted.** If the Release PR gets merged or closed by someone else during the run, stop and report. Don't post the announcement.
+
+## GitHub tools
+
+Use these in place of the `gh` commands in the skill. Repository: owner `drivenets`, repo `design-system`.
+
+| Skill step             | Tool calls                                                                                                                                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2. Find the release PR | `list_pull_requests` with `head: drivenets:changeset-release/main`, `state: open`; then `pull_request_read` `get` for the body and `head.sha`                                                                  |
+| 3. Close and reopen    | `update_pull_request` with `state: closed`, then `state: open`                                                                                                                                                 |
+| 4. Wait for checks     | `pull_request_read` `get_check_runs` and `get_status` on the head; repeat until every required check has finished. Wait with a background command between reads, since a foreground `sleep` is blocked         |
+| 5. Approve and merge   | `pull_request_review_write` `create` with `event: APPROVE`; then `merge_pull_request` with `merge_method: squash` and `expectedHeadSha`                                                                        |
+| 6. Wait for publish    | `pull_request_read` `get` for `merge_commit_sha`; `actions_list` `list_workflow_runs` on `release.yml`, the run whose `head_sha` matches; `actions_get` `get_workflow_run` until it completes; `list_releases` |
+
+The MCP tools can't read which checks are required. Get the names with this read-only REST call, which works in cloud sessions:
+
+```bash
+gh api repos/drivenets/design-system/rules/branches/main \
+  --jq '[.[] | select(.type == "required_status_checks") | .parameters.required_status_checks[].context]'
+```
 
 ## Reports
 
