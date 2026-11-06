@@ -87,7 +87,8 @@ const DsCodeInput = ({
 
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	const collapsedSlotRef = useRef<HTMLDivElement>(null);
-	const overlaySlotRef = useRef<HTMLDivElement>(null);
+	// State, not a ref: the overlay mounts only while open, and the host must move once it exists.
+	const [overlaySlot, setOverlaySlot] = useState<HTMLDivElement | null>(null);
 	// Caret/selection saved before the textarea moves to the other slot.
 	const pendingSelectionRef = useRef<TextSelection | null>(null);
 	// True when the user closed the overlay and should land back in the field.
@@ -134,7 +135,7 @@ const DsCodeInput = ({
 	const { host, hostReady, isMovingHostRef } = useEditorHost({
 		isExpanded,
 		collapsedSlotRef,
-		overlaySlotRef,
+		overlaySlot,
 		hostClassName: isExpanded ? panelStyles.editorHost : collapsedStyles.editorHost,
 		textareaRef,
 		pendingSelectionRef,
@@ -388,7 +389,7 @@ const DsCodeInput = ({
 					value={currentValue}
 					isOpen={isExpanded}
 					searchPlaceholder={strings.searchPlaceholder}
-					editorSlotRef={overlaySlotRef}
+					editorSlotRef={setOverlaySlot}
 				/>
 			</DsPopover.Panel>
 			{editor}

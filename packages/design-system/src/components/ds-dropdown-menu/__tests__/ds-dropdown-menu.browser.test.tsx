@@ -6,6 +6,7 @@ import { DsIcon } from '../../ds-icon';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsTypography } from '../../ds-typography';
 import { DsTooltip } from '../../ds-tooltip';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 describe('DsDropdownMenu', () => {
 	it('should open menu when trigger is clicked', async () => {
@@ -282,6 +283,70 @@ describe('DsDropdownMenu', () => {
 			expect(onCollapsedChange).toHaveBeenCalledTimes(2);
 			await expect.element(page.getByRole('menuitem', { name: 'Profile', exact: false })).toBeVisible();
 		});
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+describe.each(modalContainers)('DsDropdownMenu inside $container', ({ Container }) => {
+	const ModalHarness = ({ onSelect }: { onSelect: (value: string) => void }) => {
+		const [open, setOpen] = useState(true);
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<DsDropdownMenu.Root onSelect={onSelect}>
+						<DsDropdownMenu.Trigger>
+							<span>Actions</span>
+						</DsDropdownMenu.Trigger>
+						<DsDropdownMenu.Content>
+							<DsDropdownMenu.Item value="edit">Edit</DsDropdownMenu.Item>
+							<DsDropdownMenu.Root onSelect={onSelect} positioning={{ placement: 'right-start' }}>
+								<DsDropdownMenu.TriggerItem>Share</DsDropdownMenu.TriggerItem>
+								<DsDropdownMenu.Content>
+									<DsDropdownMenu.Item value="share-email">Email</DsDropdownMenu.Item>
+								</DsDropdownMenu.Content>
+							</DsDropdownMenu.Root>
+						</DsDropdownMenu.Content>
+					</DsDropdownMenu.Root>
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	it('exposes menu and submenu items by role', async () => {
+		await page.render(<ModalHarness onSelect={vi.fn()} />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await expect.element(page.getByRole('menuitem', { name: 'Edit' })).toBeVisible();
+
+		await page.getByRole('menuitem', { name: /Share/ }).hover();
+		await userEvent.keyboard('{ArrowRight}');
+
+		await expect.element(page.getByRole('menu', { name: /Share/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: 'Email' })).toBeVisible();
+	});
+
+	it('exposes menu items by role after the modal is closed and reopened', async () => {
+		const onSelect = vi.fn();
+		await page.render(<ModalHarness onSelect={onSelect} />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await page.getByRole('menuitem', { name: 'Edit' }).click();
+		await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await page.getByRole('menuitem', { name: 'Edit' }).click();
+
+		expect(onSelect).toHaveBeenCalledTimes(2);
 	});
 });
 
