@@ -1,5 +1,23 @@
 # @drivenets/design-system
 
+## 0.27.0
+
+### Minor Changes
+
+- d8d0c38: Add a search field to the `DsTable` Columns popup (`columnDisplay`), with new `clearSearch` and `noMatchingColumns` locale strings.
+- b43e06a: Add the `--z-index-popover` CSS custom property, so `DsPopover.Panel` and the `DsTable` column filter popover can open above `DsDrawer` and `DsModal`.
+
+### Patch Changes
+
+- 9fc5955: Bump `@ark-ui/react` to 5.40.0 and `@zag-js/*` to 1.47.0.
+
+  - Fix `DsCheckbox` mounted with `checked="indeterminate"` being announced as unchecked by assistive technology
+
+- 5ed0772: Fix the `DsTooltip` arrow being a different color from the tooltip body.
+- d8d0c38: Fix `DsTree.Root` with `typeahead={false}` still moving focus when a letter is typed.
+  Fix `DsTree.Sortable` sizing the drop space below the list from root nodes that render nothing.
+- fe8d556: Fix `BREAKPOINT_LG` being `NaN` in 0.9.0 through 0.26.0, so responsive props such as `DsStack` `direction` now switch at the `lg` breakpoint.
+
 ## 0.26.0
 
 ### Minor Changes
