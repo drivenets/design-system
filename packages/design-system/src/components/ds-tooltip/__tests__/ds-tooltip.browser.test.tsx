@@ -102,6 +102,26 @@ describe('DsTooltip', () => {
 		await expect.element(page.getByRole('tooltip', { name: 'Now visible' })).toBeVisible();
 	});
 
+	it('draws the arrow in the same color as the tooltip body', async () => {
+		await page.render(
+			<DsTooltip content="Tooltip text" open>
+				<button type="button">Trigger</button>
+			</DsTooltip>,
+		);
+
+		const tooltip = page.getByRole('tooltip');
+		await expect.element(tooltip).toBeVisible();
+
+		const arrowTip = tooltip
+			.element()
+			.querySelector<HTMLElement>('[data-scope="tooltip"][data-part="arrow-tip"]');
+
+		expect(arrowTip).not.toBeNull();
+		expect(getComputedStyle(arrowTip as HTMLElement).backgroundColor).toBe(
+			getComputedStyle(tooltip.element()).backgroundColor,
+		);
+	});
+
 	it('closes immediately when the pointer leaves a non-interactive tooltip', async () => {
 		await page.render(
 			<DsTooltip content="Tooltip text">
