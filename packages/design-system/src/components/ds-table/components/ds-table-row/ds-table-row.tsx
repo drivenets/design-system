@@ -19,6 +19,7 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from '../../utils/constants';
+import { isRowExpanded } from '../../utils/row-expansion';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
@@ -68,7 +69,7 @@ const DsTableRow = <TData extends RowData>({ ref, row, isSelected }: DsTableRowP
 		resizeSizingReady,
 		editing,
 	} = useDsTableContext<TData, unknown>();
-	const isExpanded = row.getIsExpanded();
+	const isExpanded = isRowExpanded(row);
 	const isActive = activeRowId === row.id;
 
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
