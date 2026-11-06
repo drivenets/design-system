@@ -27,6 +27,23 @@ const meta: Meta<typeof DsPopover.Root> = {
 	component: DsPopover.Root,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component: `
+### Stacking
+
+\`DsPopover.Panel\` stacks at \`z-index: 1000\`, below \`DsDrawer\` and \`DsModal\` (1200). To open popovers above a drawer or modal, set \`--z-index-popover\` on \`:root\`:
+
+\`\`\`css
+:root {
+	--z-index-popover: 1210;
+}
+\`\`\`
+
+It applies to every \`DsPopover.Panel\`, including the ones other DS components render, and to the \`DsTable\` column filter popover. \`DsDatePicker\` and \`DsTimePicker\` keep their own, higher tier.
+				`,
+			},
+		},
 	},
 	args: {
 		side: 'bottom',
