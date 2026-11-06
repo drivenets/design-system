@@ -211,6 +211,112 @@ const WithProgressInfographic = () => <DsTable
     expandable={false}
     onRowClick={fn()} />;
 
+## Cell content
+
+### Show code
+{
+  name: 'Cell content',
+  render: () => <DsTable bordered fullWidth rowSize="large" columns={[{
+    accessorKey: 'description',
+    header: 'Plain text',
+    cell: info => info.getValue(),
+    size: 220
+  }, {
+    accessorKey: 'owner',
+    header: 'Icon and label',
+    cell: info => <span className={columnsStyles.nowrapLabel}>
+                            <DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+                        </span>,
+    size: 180
+  }, {
+    accessorKey: 'status',
+    header: 'Flex layout',
+    cell: info => <div className={columnsStyles.iconLabel}>
+                            <DsIcon icon="schedule" size="small" />
+                            <span>{info.getValue<string>()}</span>
+                        </div>,
+    size: 200
+  }, {
+    accessorKey: 'notes',
+    header: 'Clamped typography',
+    cell: info => <DsTypography variant="body-sm-reg" truncate={2}>
+                            {info.getValue<string>()}
+                        </DsTypography>,
+    size: 220
+  }]} data={[{
+    id: '1',
+    description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+    owner: 'Network operations center',
+    status: 'Waiting for approval',
+    notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance'
+  }, {
+    id: '2',
+    description: 'Firmware rollout',
+    owner: 'Platform team',
+    status: 'Scheduled for the next maintenance window',
+    notes: 'Staged rollout'
+  }]} />
+}
+
+### MCP manifest
+const CellContent = () => (
+    <DsTable
+        bordered
+        fullWidth
+        rowSize="large"
+        columns={[
+            { accessorKey: 'description', header: 'Plain text', cell: (info) => info.getValue(), size: 220 },
+            {
+                accessorKey: 'owner',
+                header: 'Icon and label',
+                cell: (info) => (
+                    <span className={columnsStyles.nowrapLabel}>
+                        <DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+                    </span>
+                ),
+                size: 180,
+            },
+            {
+                accessorKey: 'status',
+                header: 'Flex layout',
+                cell: (info) => (
+                    <div className={columnsStyles.iconLabel}>
+                        <DsIcon icon="schedule" size="small" />
+                        <span>{info.getValue<string>()}</span>
+                    </div>
+                ),
+                size: 200,
+            },
+            {
+                accessorKey: 'notes',
+                header: 'Clamped typography',
+                cell: (info) => (
+                    <DsTypography variant="body-sm-reg" truncate={2}>
+                        {info.getValue<string>()}
+                    </DsTypography>
+                ),
+                size: 220,
+            },
+        ]}
+        data={[
+            {
+                id: '1',
+                description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+                owner: 'Network operations center',
+                status: 'Waiting for approval',
+                notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',
+            },
+            {
+                id: '2',
+                description: 'Firmware rollout',
+                owner: 'Platform team',
+                status: 'Scheduled for the next maintenance window',
+                notes: 'Staged rollout',
+            },
+        ]}
+    />
+);
+
 ## Column Hiding
 
 ### Show code

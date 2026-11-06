@@ -1,0 +1,9 @@
+.nowrapLabel {
+	white-space: nowrap;
+}
+
+.iconLabel {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+}
