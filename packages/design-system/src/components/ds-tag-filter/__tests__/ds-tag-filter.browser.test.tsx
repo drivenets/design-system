@@ -25,6 +25,15 @@ const manyFilters: TagFilterItem[] = [
 	{ id: '13', label: 'Last editor: Emery Dance' },
 ];
 
+const smallFilters: TagFilterItem[] = [
+	{ id: '1', label: 'Status: Active', slotProps: { tag: { size: 'small' } } },
+	{ id: '2', label: 'Running: 100 to 10,000', slotProps: { tag: { size: 'small' } } },
+	{ id: '3', label: 'Completed: 20,000 to 100,000', slotProps: { tag: { size: 'small' } } },
+	{ id: '4', label: 'Executor: Category 1, Layer 1', slotProps: { tag: { size: 'small' } } },
+	{ id: '5', label: 'Version: 000.0001-3', slotProps: { tag: { size: 'small' } } },
+	{ id: '6', label: 'Last editor: Kevin Levin', slotProps: { tag: { size: 'small' } } },
+];
+
 // Constrains the row so `manyFilters` overflows the first line deterministically.
 const Narrow = ({ children }: { children: React.ReactNode }) => (
 	<div style={{ width: '320px' }}>{children}</div>
@@ -137,4 +146,72 @@ describe('DsTagFilter', () => {
 		await showLess.click();
 		expect(onExpand).toHaveBeenCalledWith(false);
 	});
+});
+
+describe('DsTagFilter layout stability', () => {
+	// Longer than DsTag's 200ms transitions, so any hover-driven resize has run.
+	const SETTLE_MS = 300;
+	const SAMPLE_MS = 400;
+
+	const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+	const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+
+	const renderSmallFilters = async (width: number) => {
+		const { container, unmount } = await page.render(
+			<div style={{ width: `${String(width)}px` }}>
+				<DsTagFilter items={smallFilters} onClearAll={vi.fn()} onItemDelete={vi.fn()} />
+			</div>,
+		);
+		await wait(SETTLE_MS);
+
+		const area = container.querySelector<HTMLElement>('[aria-live="polite"]');
+		if (!area) {
+			throw new Error('tags area not rendered');
+		}
+		return { area, unmount };
+	};
+
+	const distinctLayoutsPerFrame = async (area: HTMLElement) => {
+		const layouts = new Set<string>();
+		const end = performance.now() + SAMPLE_MS;
+		while (performance.now() < end) {
+			await nextFrame();
+			const tagWidths = [...area.children].map((tag) => tag.getBoundingClientRect().width.toFixed(1));
+			layouts.add(`${String(area.children.length)}|${String(area.offsetHeight)}|${tagWidths.join(',')}`);
+		}
+		return [...layouts];
+	};
+
+	it('keeps the layout when the pointer rests on a tag at widths right on a tag boundary', async () => {
+		// The measurement row is portaled to body, so the viewport must fit every tag.
+		await page.viewport(1280, 900);
+
+		const wide = await renderSmallFilters(2000);
+		const tagWidths = [...wide.area.children].map((tag) => tag.getBoundingClientRect().width);
+		const gap = parseFloat(getComputedStyle(wide.area).columnGap);
+		await wide.unmount();
+
+		const overflowing = await renderSmallFilters(600);
+		const nonTagWidth = 600 - overflowing.area.getBoundingClientRect().width;
+		await overflowing.unmount();
+
+		for (let count = 1; count < smallFilters.length; count++) {
+			const needed = tagWidths.slice(0, count).reduce((sum, width) => sum + width, 0) + gap * (count - 1);
+			const { area, unmount } = await renderSmallFilters(Math.ceil(needed + nonTagWidth) + 2);
+
+			const atRest = await distinctLayoutsPerFrame(area);
+			expect(atRest).toHaveLength(1);
+			expect(area.children).toHaveLength(count);
+
+			for (const tag of [...area.children]) {
+				const locator = page.elementLocator(tag);
+				await locator.hover();
+				await wait(SETTLE_MS);
+				expect(await distinctLayoutsPerFrame(area)).toEqual(atRest);
+				await locator.unhover();
+			}
+
+			await unmount();
+		}
+	}, 60000);
 });

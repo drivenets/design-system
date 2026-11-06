@@ -65,6 +65,32 @@ function TableWithColumnFilters() {
 
 const getDataRows = () => page.getByRole('row').all().slice(1);
 
+describe('DsTable - column filter popover stacking', () => {
+	it('stacks the popover at z-index 1000 by default', async () => {
+		await page.render(<TableWithColumnFilters />);
+
+		await page.getByRole('button', { name: 'Filter column' }).click();
+
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+		expect(getComputedStyle(page.getByRole('dialog').element()).zIndex).toBe('1000');
+	});
+
+	it('stacks the popover at --z-index-popover when set on :root', async () => {
+		document.documentElement.style.setProperty('--z-index-popover', '1234');
+
+		try {
+			await page.render(<TableWithColumnFilters />);
+
+			await page.getByRole('button', { name: 'Filter column' }).click();
+
+			await expect.element(page.getByRole('dialog')).toBeVisible();
+			expect(getComputedStyle(page.getByRole('dialog').element()).zIndex).toBe('1234');
+		} finally {
+			document.documentElement.style.removeProperty('--z-index-popover');
+		}
+	});
+});
+
 describe('DsTable - column filters', () => {
 	it('opens the per-column popover, applies a selection, and filters the rows', async () => {
 		await page.render(<TableWithColumnFilters />);
