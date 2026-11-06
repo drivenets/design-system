@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{n as t,r as n}from"./ds-segment-group-2uUSpMJ7.js";function r(){return(r=e((()=>{t(),n()})))()}export{r as t};
