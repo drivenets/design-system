@@ -246,13 +246,8 @@ export const useColumnResize = <TData extends RowData>({
 		[setColumnSizing, notifyColumnSizingChange],
 	);
 
-	// Utility leaves always take their authored width. After seed, that width can
-	// change (row actions declared or removed, `selectable` toggled). Their sizes
-	// are pinned, so no consumer leaf is missing and the seed below does not refit.
-	// Shift the consumer leaves by the delta so the track still fills the
-	// container — internally only, never via onColumnSizingChange. Declared before
-	// the seed effect so it reads the pre-change utility width that the seed then
-	// overwrites.
+	// Utility columns keep their own width. When it changes, give the difference to the
+	// other columns so they still fill the table. Keep above the seed effect: it overwrites the old width.
 	useLayoutEffect(() => {
 		const consumerLeafIds = requireTable()
 			.getVisibleLeafColumns()
