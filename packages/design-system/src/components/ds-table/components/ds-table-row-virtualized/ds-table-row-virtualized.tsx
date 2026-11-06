@@ -9,6 +9,7 @@ import { TableCell, TableRow } from '../core-table';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
 import { EXPANDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
+import { isRowExpanded } from '../../utils/row-expansion';
 
 export const DsTableRowVirtualized = <TData extends RowData>({
 	row,
@@ -30,7 +31,7 @@ export const DsTableRowVirtualized = <TData extends RowData>({
 		resizeSizingReady,
 		editing,
 	} = useDsTableContext<TData, unknown>();
-	const isExpanded = row.getIsExpanded();
+	const isExpanded = isRowExpanded(row);
 	const isActive = activeRowId === row.id;
 
 	return (
