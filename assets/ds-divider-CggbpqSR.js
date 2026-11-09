@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{n as t}from"./ds-divider-Q9vH1h8f.js";function n(){return(n=e((()=>{t()})))()}export{n as t};
