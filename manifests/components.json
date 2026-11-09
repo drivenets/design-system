@@ -11310,6 +11310,335 @@
       ],
       "import": "import { DsButtonV3, DsPasswordInput, DsStack } from '@drivenets/design-system';"
     },
+    "components-pindevices": {
+      "id": "components-pindevices",
+      "name": "DsPinDevices",
+      "path": "./src/components/ds-pin-devices/ds-pin-devices.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "Map marker for a location that lists its devices on a card above the location's pin. The pin's tip is the bottom-center of the element; position the element so that point sits on the location's coordinates. Hover lifts the card and the pin around the tip, so the anchor never moves. Use `DsMapPin` for a location without devices."
+        ]
+      },
+      "description": "",
+      "summary": "Map marker for a location that lists its devices on a card above the location's pin. The pin's tip is the bottom-center of the element; position the element so that point sits on the location's coordinates. Hover lifts the card and the pin around the tip, so the anchor never moves. Use `DsMapPin` for a location without devices.",
+      "reactDocgen": {
+        "description": "@summary Map marker for a location that lists its devices on a card above the location's pin.\n\nThe pin's tip is the bottom-center of the element; position the element so that point sits on the\nlocation's coordinates. Hover lifts the card and the pin around the tip, so the anchor never moves.\nUse `DsMapPin` for a location without devices.",
+        "methods": [],
+        "displayName": "DsPinDevices",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-pin-devices/ds-pin-devices.tsx",
+        "actualName": "DsPinDevices",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "HTMLDivElement"
+                }
+              ],
+              "raw": "Ref<HTMLDivElement>"
+            },
+            "description": ""
+          },
+          "devices": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "PinDevice"
+                }
+              ],
+              "raw": "PinDevice[]"
+            },
+            "description": "Devices at the location, in display order. Up to 15 are drawn; from 16 on, the first 13 are drawn\nand an indicator shows how many more there are."
+          },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinSizes)[number]"
+            },
+            "description": "Size of the pin under the card.\n@default 'large'",
+            "defaultValue": {
+              "value": "'large'",
+              "computed": false
+            }
+          },
+          "color": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinColors)[number]"
+            },
+            "description": "Color of the pin and of the selected card's border.\n@default 'blue'",
+            "defaultValue": {
+              "value": "'blue'",
+              "computed": false
+            }
+          },
+          "ring": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinRings)[number]"
+            },
+            "description": "Ring around the pin's core, for a secondary status of the location.\n@default 'none'",
+            "defaultValue": {
+              "value": "'none'",
+              "computed": false
+            }
+          },
+          "label": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Short code shown in the pin, e.g. `\"T1\"`."
+          },
+          "badge": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Short code shown in a tag on the pin, e.g. `\"oR\"`."
+          },
+          "badgeBorder": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof mapPinBadgeBorders)[number]"
+            },
+            "description": "Border of the pin's badge.\n@default 'solid'",
+            "defaultValue": {
+              "value": "'solid'",
+              "computed": false
+            }
+          },
+          "selectedDeviceId": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "string | null",
+              "elements": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": "Device whose square shows as selected and is marked with `aria-current`, e.g. while its details are open."
+          },
+          "selected": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the selected border on the card and the pin, and marks the pin with `aria-current`.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "dragging": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the dragged style and raises the card above all others while the consumer moves it.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "aria-label": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Accessible name of the location, used for the card and its pin, e.g. `\"Central office T1, Haifa North\"`."
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "DsPinDevicesLocale"
+            },
+            "description": ""
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: MouseEvent<HTMLButtonElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "MouseEvent",
+                      "elements": [
+                        {
+                          "name": "HTMLButtonElement"
+                        }
+                      ],
+                      "raw": "MouseEvent<HTMLButtonElement>"
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called when the pin is activated."
+          },
+          "onDeviceClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(device: PinDevice, event: MouseEvent<HTMLButtonElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "PinDevice"
+                    },
+                    "name": "device"
+                  },
+                  {
+                    "type": {
+                      "name": "MouseEvent",
+                      "elements": [
+                        {
+                          "name": "HTMLButtonElement"
+                        }
+                      ],
+                      "raw": "MouseEvent<HTMLButtonElement>"
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onMoreDevicesClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: MouseEvent<HTMLButtonElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "MouseEvent",
+                      "elements": [
+                        {
+                          "name": "HTMLButtonElement"
+                        }
+                      ],
+                      "raw": "MouseEvent<HTMLButtonElement>"
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called when the indicator for 16 or more devices is activated, e.g. to open a view with every device."
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-pindevices--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsPinDevices\n    size=\"large\"\n    color=\"blue\"\n    label=\"T1\"\n    aria-label=\"Central office T1, Haifa North\"\n    devices={[\n        { id: 'agg-1', color: 'gray', 'aria-label': 'Aggregation router AG-1' },\n        { id: 'agg-2', color: 'gray', 'aria-label': 'Aggregation router AG-2' },\n        { id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },\n        { id: 'edge-2', color: 'light-blue', 'aria-label': 'Edge router ER-2' },\n        { id: 'nms-1', color: 'dark-pink', 'aria-label': 'Network management NM-1' },\n        { id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },\n        { id: 'acc-2', color: 'orange', 'aria-label': 'Access switch AS-2' },\n    ]} />;",
+          "description": "A location with its devices. Hover it to see the card and the pin lift around the pin's tip."
+        },
+        {
+          "id": "components-pindevices--device-colors",
+          "name": "Device Colors",
+          "snippet": "const DeviceColors = () => <DsPinDevices\n    size=\"large\"\n    color=\"blue\"\n    label=\"T2\"\n    aria-label=\"Central office T2, Haifa South\"\n    devices={[\n        { id: 'gray', color: 'gray', 'aria-label': 'Aggregation' },\n        { id: 'light-blue', color: 'light-blue', 'aria-label': 'Edge' },\n        { id: 'dark-pink', color: 'dark-pink', 'aria-label': 'Network management' },\n        { id: 'orange', color: 'orange', 'aria-label': 'Access' },\n        { id: 'purple', color: 'purple', 'aria-label': 'Virtual' },\n        { id: 'pink', color: 'pink', 'aria-label': 'Passive' },\n        { id: 'teal', color: 'teal', 'aria-label': 'Customer premises' },\n        { id: 'neutral', 'aria-label': 'Unclassified device' },\n    ]} />;",
+          "description": "Map each kind of device to one color so the mix of devices at a location reads at a glance.\nIn Network View: aggregation gray, edge light blue, network management dark pink, access orange,\nvirtual purple, passive pink, customer premises teal. A device without a color is neutral."
+        },
+        {
+          "id": "components-pindevices--device-variant",
+          "name": "Device Variant",
+          "snippet": "const DeviceVariant = () => <DsPinDevices\n    size=\"large\"\n    color=\"blue\"\n    label=\"T2\"\n    aria-label=\"Central office T2, Haifa South\"\n    devices={[\n        { id: 'vm-1', color: 'purple', 'aria-label': 'Virtual VM-1' },\n        { id: 'vm-2', color: 'purple', variant: 'outlined', 'aria-label': 'Nested virtual VM-2' },\n    ]} />;",
+          "description": "`outlined` keeps a neutral fill, to tell apart two kinds of device that share a color, e.g. virtual and nested virtual."
+        },
+        {
+          "id": "components-pindevices--device-borders",
+          "name": "Device Borders",
+          "snippet": "const DeviceBorders = () => <DsPinDevices\n    size=\"medium\"\n    color=\"orange\"\n    label=\"PEP\"\n    aria-label=\"Access site PEP, Haifa North\"\n    devices={[\n        { id: 'solid', color: 'orange', border: 'solid', 'aria-label': 'Access switch, deployed' },\n        { id: 'dotted', color: 'orange', border: 'dotted', 'aria-label': 'Access switch, planned' },\n        { id: 'dashed', color: 'orange', border: 'dashed', 'aria-label': 'Access switch, designed' },\n    ]} />;",
+          "description": "The border shows a device's status, e.g. planned (`dotted`) or in design (`dashed`)."
+        },
+        {
+          "id": "components-pindevices--device-labels",
+          "name": "Device Labels",
+          "snippet": "const DeviceLabels = () => <DsPinDevices\n    size=\"small\"\n    color=\"teal\"\n    aria-label=\"Fiber broadband site, Haifa North\"\n    devices={[\n        { id: 'or', label: 'oR', 'aria-label': 'Optical router' },\n        { id: 'pl', label: 'PL', 'aria-label': 'Patch panel' },\n        { id: 'cpe', color: 'teal', 'aria-label': 'Customer premises equipment' },\n    ]} />;",
+          "description": "A short code in the square marks a kind of equipment, e.g. an optical router (`oR`) or a patch panel (`PL`)."
+        },
+        {
+          "id": "components-pindevices--more-devices",
+          "name": "More Devices",
+          "snippet": "const MoreDevices = () => <DsPinDevices\n    size=\"large\"\n    color=\"blue\"\n    label=\"T1\"\n    aria-label=\"Central office T1, Tel Aviv\"\n    devices={Array.from({ length: 40 }, (_, index) => ({\n        id: `device-${String(index + 1)}`,\n        color: 'gray' as const,\n        'aria-label': `Aggregation router AG-${String(index + 1)}`,\n    }))} />;",
+          "description": "From 16 devices on, the card draws 13 and an indicator shows how many more there are.\nUse `onMoreDevicesClick` to open a view with every device."
+        },
+        {
+          "id": "components-pindevices--selected",
+          "name": "Selected",
+          "snippet": "const Selected = () => <DsPinDevices\n    size=\"medium\"\n    color=\"orange\"\n    label=\"PEP\"\n    selected\n    aria-label=\"Access site PEP, Haifa North\"\n    devices={[\n        { id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },\n        { id: 'acc-2', color: 'orange', 'aria-label': 'Access switch AS-2' },\n        { id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },\n    ]} />;",
+          "description": "The selected location gets a border in the pin's color on the card and the pin."
+        },
+        {
+          "id": "components-pindevices--dragging",
+          "name": "Dragging",
+          "snippet": "const Dragging = () => <DsPinDevices\n    size=\"small\"\n    color=\"teal\"\n    dragging\n    aria-label=\"Fiber broadband site, Haifa North\"\n    devices={[\n        { id: 'cpe-1', color: 'teal', 'aria-label': 'Customer premises CP-1' },\n        { id: 'cpe-2', color: 'teal', 'aria-label': 'Customer premises CP-2' },\n    ]} />;",
+          "description": "Set `dragging` while the user moves the location; it renders above every other marker."
+        },
+        {
+          "id": "components-pindevices--selected-device",
+          "name": "Selected Device",
+          "snippet": "const SelectedDevice = function Render() {\n    const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>('edge-1');\n\n    return (\n        <DsPinDevices\n            label=\"T1\"\n            aria-label=\"Central office T1, Haifa North\"\n            selectedDeviceId={selectedDeviceId}\n            onDeviceClick={(device) => setSelectedDeviceId(device.id)}\n            devices={[\n                { id: 'agg-1', color: 'gray', 'aria-label': 'Aggregation router AG-1' },\n                { id: 'edge-1', color: 'light-blue', 'aria-label': 'Edge router ER-1' },\n                { id: 'edge-2', color: 'light-blue', 'aria-label': 'Edge router ER-2' },\n                { id: 'acc-1', color: 'orange', 'aria-label': 'Access switch AS-1' },\n            ]}\n        />\n    );\n};",
+          "description": "Keep the device whose details are open selected with `selectedDeviceId`."
+        },
+        {
+          "id": "components-pindevices--localized",
+          "name": "Localized",
+          "snippet": "const Localized = () => <DsPinDevices\n    label=\"T1\"\n    aria-label=\"Central office T1, Haifa North\"\n    locale={{ moreDevices: (count) => `Show ${String(count)} hidden devices` }}\n    devices={Array.from({ length: 20 }, (_, index) => ({\n        id: `device-${String(index + 1)}`,\n        color: 'light-blue' as const,\n        'aria-label': `Edge router ER-${String(index + 1)}`,\n    }))} />;",
+          "description": "Translate the accessible name of the indicator for 16 or more devices."
+        }
+      ],
+      "import": "import { DsPinDevices, DsStack } from '@drivenets/design-system';"
+    },
     "components-pintoggle": {
       "id": "components-pintoggle",
       "name": "DsPinToggle",
@@ -35602,6 +35931,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6061
+    "durationMs": 6286
   }
 }
