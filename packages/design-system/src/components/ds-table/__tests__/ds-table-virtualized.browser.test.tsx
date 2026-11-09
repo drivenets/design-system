@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
+import type { DsTableApi } from '../ds-table.types';
 import { columns, type Person } from '../stories/common/story-data';
 
 const statuses: Person['status'][] = ['single', 'relationship', 'complicated'];
@@ -169,5 +170,59 @@ describe('DsTable Virtualized', () => {
 		}
 
 		await expect.element(page.getByText('Expanded: First1'), { timeout: 2000 }).toBeVisible();
+	});
+
+	it('should expand and collapse virtualized rows through the table API', async () => {
+		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable
+					ref={tableRef}
+					columns={columns}
+					data={largeData}
+					virtualized
+					expandable
+					renderExpandedRow={(row) => <div>Expanded: {row.firstName}</div>}
+				/>
+			</div>,
+		);
+
+		tableRef.current?.expandRows(['1', '2']);
+		await expect.element(page.getByText('Expanded: First1')).toBeVisible();
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+
+		tableRef.current?.collapseRow('1');
+		await expect.element(page.getByText('Expanded: First1')).not.toBeInTheDocument();
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+
+		await page.getByRole('button', { name: 'chevron_right' }).nth(1).click();
+		await expect.element(page.getByText('Expanded: First2')).not.toBeInTheDocument();
+		expect(tableRef.current?.getExpandedRowIds()).toEqual([]);
+	});
+
+	it('should render expanded content only for expandable rows after expandAllRows when virtualized', async () => {
+		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable
+					ref={tableRef}
+					columns={columns}
+					data={largeData}
+					virtualized
+					expandable={(row) => row.id !== '1'}
+					renderExpandedRow={(row) => <div>Expanded: {row.firstName}</div>}
+				/>
+			</div>,
+		);
+
+		tableRef.current?.expandAllRows();
+
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+		await expect.element(page.getByText('Expanded: First1')).not.toBeInTheDocument();
+
+		tableRef.current?.collapseAllRows();
+		await expect.element(page.getByText('Expanded: First2')).not.toBeInTheDocument();
 	});
 });
