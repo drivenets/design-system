@@ -244,6 +244,10 @@ $horizontal-description-line-clamp: 2;
 		overflow: clip;
 		min-width: $horizontal-other-min-width;
 
+		&:not([data-current], [data-error]) .stepLabel {
+			color: var(--font-main);
+		}
+
 		&[data-current] {
 			flex-grow: 2;
 			max-width: none;

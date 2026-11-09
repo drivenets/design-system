@@ -515,4 +515,31 @@ describe('DsStepper state colors', () => {
 			await expect.element(separatorLocator(label)).toHaveStyle({ backgroundColor: tokenColor(token) });
 		}
 	});
+
+	it.each([
+		{
+			orientation: 'vertical' as const,
+			labels: {
+				'Completed step': '--font-main',
+				'Current step': '--font-action',
+				'Pending step': '--font-secondary',
+				'Error step': '--font-error',
+			},
+		},
+		{
+			orientation: 'horizontal' as const,
+			labels: {
+				'Completed step': '--font-main',
+				'Current step': '--font-action',
+				'Pending step': '--font-main',
+				'Error step': '--font-error',
+			},
+		},
+	])('colors $orientation labels per step state', async ({ orientation, labels }) => {
+		await page.render(<StateStepper orientation={orientation} />);
+
+		for (const [label, token] of Object.entries(labels)) {
+			await expect.element(byText(label)).toHaveStyle({ color: tokenColor(token) });
+		}
+	});
 });
