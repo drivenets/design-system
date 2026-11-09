@@ -1,5 +1,6 @@
 import {
 	useCallback,
+	useEffect,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -7,12 +8,12 @@ import {
 	type CSSProperties,
 	type RefObject,
 } from 'react';
-import type {
-	columnResizingState,
-	ColumnSizingState,
-	OnChangeFn,
-	ColumnVisibilityState,
-	RowData,
+import {
+	functionalUpdate,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	type RowData,
+	type Updater,
 } from '@tanstack/react-table';
 import {
 	clampColumnSizing,
@@ -21,6 +22,7 @@ import {
 	getResizeOriginSize,
 	growFillLeavesToContainer,
 	isExplicitColumnWidth,
+	isSameColumnSizing,
 	measureLeafHeaderWidths,
 	omitBuiltinColumnSizing,
 	shiftColumnTrack,
@@ -34,15 +36,6 @@ import type { DsTableInstance } from '../ds-table-features';
 
 const TRACK_MATCH_PX = 3;
 
-const INITIAL_COLUMN_RESIZING: columnResizingState = {
-	startOffset: null,
-	startSize: null,
-	deltaOffset: null,
-	deltaPercentage: null,
-	isResizingColumn: false,
-	columnSizingStart: [],
-};
-
 const clampResizeOverlayOffset = (offset: number, tableWidth: number): number => {
 	if (tableWidth <= RESIZE_DIVIDER_WIDTH) {
 		return offset;
@@ -54,8 +47,8 @@ const clampResizeOverlayOffset = (offset: number, tableWidth: number): number =>
 export interface UseColumnResizeOptions {
 	enabled: boolean;
 	/**
-	 * Persisted widths to restore. Merged under live internal state so seed
-	 * measurement fills leaves absent from the map and drags still take effect.
+	 * Persisted widths to restore. They fill leaves that have no width yet; seed
+	 * measurement sizes the leaves absent from the map.
 	 */
 	columnSizing?: Record<string, number>;
 	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
@@ -67,7 +60,7 @@ export interface UseColumnResizeOptions {
 	columnVisibility: ColumnVisibilityState;
 	/**
 	 * Authored widths for injected utility leaves. Overlaid last so they win
-	 * over persist seed and live internal state.
+	 * over persisted and resized widths.
 	 */
 	utilityColumnSizing?: ColumnSizingState;
 }
@@ -102,26 +95,21 @@ export interface UseColumnResizeTableOptions {
 	enableColumnResizing: boolean;
 	columnResizeMode: 'onChange';
 	defaultColumn?: { minSize: number };
-	onColumnSizingChange: OnChangeFn<ColumnSizingState>;
-	onColumnResizingChange: OnChangeFn<columnResizingState>;
+	initialState: { columnSizing: ColumnSizingState };
 }
 
 export interface UseColumnResizeResult<TData extends RowData> {
 	tableOptions: UseColumnResizeTableOptions;
-	state: {
-		columnSizing: ColumnSizingState;
-		columnResizing: columnResizingState;
-	};
 	bind: (table: DsTableInstance<TData>) => UseColumnResizeBindResult;
 }
 
 /**
- * Owns column-resize state, TanStack sizing handlers, origin snapshots, seed
- * measurement, hover/drag overlay model, and the context slice consumed by
- * resize handles.
+ * Drives column resizing on the table's own `columnSizing` and `columnResizing`
+ * state: origin snapshots, seed measurement, hover/drag overlay model, persist
+ * callback, and the context slice consumed by resize handles.
  *
- * Call before `useTable`, spread `tableOptions` / `state` into it, then
- * `bind(table)` during render for CSS vars, overlay, and context.
+ * Call before `useTable`, spread `tableOptions` into it, then `bind(table)`
+ * during render for CSS vars, overlay, and context.
  */
 export const useColumnResize = <TData extends RowData>({
 	enabled,
@@ -131,27 +119,11 @@ export const useColumnResize = <TData extends RowData>({
 	columnVisibility,
 	utilityColumnSizing,
 }: UseColumnResizeOptions): UseColumnResizeResult<TData> => {
-	const [columnResizeState, setColumnResizeState] = useState<{
-		columnSizing: ColumnSizingState;
-		columnResizing: columnResizingState;
-	}>({
-		columnSizing: {},
-		columnResizing: INITIAL_COLUMN_RESIZING,
-	});
-	// One useState so TanStack's mousemove updaters (info then sizing) run in
-	// call order against the same queue. Split hooks apply sizing first, while
-	// the next-width map is still empty.
-	const { columnSizing: internalColumnSizing, columnResizing } = columnResizeState;
-
-	// Persisted widths seed the effective map, but internal state wins so a live
-	// drag (or seed measurement) of a persisted column still takes effect. Passed
-	// to TanStack and read for CSS vars / persist so restore, drag, and persist
-	// all see the same widths.
-	const columnSizing = useMemo<ColumnSizingState>(() => {
-		const merged = columnSizingProp ? { ...columnSizingProp, ...internalColumnSizing } : internalColumnSizing;
-
-		return withUtilityColumnSizing(merged, utilityColumnSizing ?? {});
-	}, [columnSizingProp, internalColumnSizing, utilityColumnSizing]);
+	const [initialColumnSizing] = useState(() =>
+		withUtilityColumnSizing(columnSizingProp ?? {}, utilityColumnSizing ?? {}),
+	);
+	const columnSizingPropRef = useRef(columnSizingProp);
+	columnSizingPropRef.current = columnSizingProp;
 	const [resizeHover, setResizeHover] = useState<{
 		columnId: string;
 		offset: number;
@@ -167,44 +139,54 @@ export const useColumnResize = <TData extends RowData>({
 	const prevUtilityTrackWidthRef = useRef<number | null>(null);
 	const tableRef = useRef<DsTableInstance<TData> | null>(null);
 
-	const columnSizingRef = useRef(columnSizing);
-	columnSizingRef.current = columnSizing;
-	const columnResizingRef = useRef(columnResizing);
-	columnResizingRef.current = columnResizing;
 	const onColumnSizingChangeRef = useRef(onColumnSizingChange);
 	onColumnSizingChangeRef.current = onColumnSizingChange;
 	const leafSizeBoundsRef = useRef<ColumnSizeBoundsSource[]>([]);
 
-	const handleColumnSizingChange: OnChangeFn<ColumnSizingState> = useCallback((updaterOrValue) => {
-		// Resolve against the ref and write it synchronously (same pattern as
-		// columnResizingRef), before queuing the React state update. TanStack's
-		// mouseup applies the final sizing and then fires the persist callback in
-		// the same tick, so the ref must already hold the final widths — the state
-		// updater runs later (at render), which would leave persist reading a stale
-		// last-move value. Resolving against the effective map also keeps persisted
-		// (prop-provided) leaves in the reported map.
-		const next =
-			typeof updaterOrValue === 'function' ? updaterOrValue(columnSizingRef.current) : updaterOrValue;
-		const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
-		columnSizingRef.current = clamped;
-		setColumnResizeState((prev) => ({ ...prev, columnSizing: clamped }));
-	}, []);
-
-	const handleColumnResizingChange: OnChangeFn<columnResizingState> = useCallback((updaterOrValue) => {
-		const prevInfo = columnResizingRef.current;
-		const nextInfo = typeof updaterOrValue === 'function' ? updaterOrValue(prevInfo) : updaterOrValue;
-		const ended = Boolean(prevInfo.isResizingColumn) && nextInfo.isResizingColumn === false;
-
-		columnResizingRef.current = nextInfo;
-		setColumnResizeState((prev) => ({
-			...prev,
-			columnResizing: nextInfo,
-		}));
-
-		if (ended) {
-			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(columnSizingRef.current));
+	const requireTable = useCallback((): DsTableInstance<TData> => {
+		if (!tableRef.current) {
+			throw new Error('useColumnResize: call bind(table) during render before using the table.');
 		}
+
+		return tableRef.current;
 	}, []);
+
+	const getColumnSizing = useCallback(
+		(): ColumnSizingState => requireTable().atoms.columnSizing.get(),
+		[requireTable],
+	);
+
+	const setColumnSizing = useCallback(
+		(updater: Updater<ColumnSizingState>) => {
+			requireTable().setColumnSizing((prev) => {
+				const next = clampColumnSizing(functionalUpdate(updater, prev), leafSizeBoundsRef.current);
+
+				return isSameColumnSizing(prev, next) ? prev : next;
+			});
+		},
+		[requireTable],
+	);
+
+	const notifyColumnSizingChange = useCallback(() => {
+		onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(getColumnSizing()));
+	}, [getColumnSizing]);
+
+	// TanStack drags bypass setColumnSizing's clamp; clamp and persist on drag end.
+	useEffect(() => {
+		const columnResizingAtom = requireTable().atoms.columnResizing;
+		let wasResizing = Boolean(columnResizingAtom.get().isResizingColumn);
+		const { unsubscribe } = columnResizingAtom.subscribe(({ isResizingColumn }) => {
+			const ended = wasResizing && isResizingColumn === false;
+			wasResizing = Boolean(isResizingColumn);
+
+			if (ended) {
+				setColumnSizing((prev) => prev);
+				notifyColumnSizingChange();
+			}
+		});
+
+		return unsubscribe;
+	}, [requireTable, setColumnSizing, notifyColumnSizingChange]);
 
 	const handleResizeHover = useCallback((columnId: string | null, offset: number | null) => {
 		setResizeHover(columnId === null || offset === null ? null : { columnId, offset });
@@ -216,20 +198,21 @@ export const useColumnResize = <TData extends RowData>({
 
 	const handleResizeReset = useCallback(
 		(columnIds: string[]) => {
-			const next = { ...columnSizingRef.current };
+			setColumnSizing((prev) => {
+				const next = { ...prev };
 
-			for (const id of columnIds) {
-				const origin = resizeOriginSizingRef.current[id];
-				if (origin !== undefined) {
-					next[id] = origin;
+				for (const id of columnIds) {
+					const origin = resizeOriginSizingRef.current[id];
+					if (origin !== undefined) {
+						next[id] = origin;
+					}
 				}
-			}
 
-			const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
-			handleColumnSizingChange(clamped);
-			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(clamped));
+				return next;
+			});
+			notifyColumnSizingChange();
 		},
-		[handleColumnSizingChange],
+		[setColumnSizing, notifyColumnSizingChange],
 	);
 
 	const handleResizeKeyboardNudge = useCallback(
@@ -249,68 +232,65 @@ export const useColumnResize = <TData extends RowData>({
 			// Distribute the delta across the boundary's leaves by their current
 			// share. This mirrors TanStack's group-drag scaling and, for a single
 			// leaf, applies the whole delta to it.
-			const next = { ...columnSizingRef.current };
-			for (const leaf of leaves) {
-				const size = leaf.getSize();
-				next[leaf.id] = Math.round(size + delta * (size / totalSize));
-			}
+			setColumnSizing((prev) => {
+				const next = { ...prev };
+				for (const leaf of leaves) {
+					const size = leaf.getSize();
+					next[leaf.id] = Math.round(size + delta * (size / totalSize));
+				}
 
-			const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
-			handleColumnSizingChange(clamped);
-			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(clamped));
+				return next;
+			});
+			notifyColumnSizingChange();
 		},
-		[handleColumnSizingChange],
+		[setColumnSizing, notifyColumnSizingChange],
 	);
 
-	// After seed, utility leaves can change width (row actions declared or removed,
-	// `selectable` toggled). Their sizes are pinned, so no consumer leaf is missing
-	// and the seed below does not refit. Shift the consumer leaves by the delta so
-	// the track still fills the container — internally only, never via
-	// onColumnSizingChange. Declared before the seed effect so it reads the
-	// pre-change utility width that the seed then overwrites.
+	// Utility columns keep their own width. When it changes, give the difference to the
+	// other columns so they still fill the table. Keep above the seed effect: it overwrites the old width.
 	useLayoutEffect(() => {
-		if (!enabled) {
-			return;
-		}
-
-		const prevUtilityTrackWidth = prevUtilityTrackWidthRef.current;
-		if (prevUtilityTrackWidth === null || prevUtilityTrackWidth === utilityTrackWidth) {
-			return;
-		}
-
-		const container = containerRef.current;
-		const table = tableRef.current;
-		if (!container || !table) {
-			return;
-		}
-
-		prevUtilityTrackWidthRef.current = utilityTrackWidth;
-
-		const consumerLeafIds = table
+		const consumerLeafIds = requireTable()
 			.getVisibleLeafColumns()
 			.map((column) => column.id)
 			.filter((id) => !BUILTIN_COLUMN_IDS.has(id));
-		let consumerTotal = 0;
 
-		for (const id of consumerLeafIds) {
-			consumerTotal += columnSizingRef.current[id] ?? 0;
-		}
+		const getUtilityTrackShift = (): number => {
+			const prevUtilityTrackWidth = prevUtilityTrackWidthRef.current;
+			const container = containerRef.current;
+			if (
+				!enabled ||
+				prevUtilityTrackWidth === null ||
+				prevUtilityTrackWidth === utilityTrackWidth ||
+				!container
+			) {
+				return 0;
+			}
 
-		const track = getColumnTrackWidth(container);
+			prevUtilityTrackWidthRef.current = utilityTrackWidth;
 
-		if (Math.abs(consumerTotal + prevUtilityTrackWidth - track) > TRACK_MATCH_PX) {
-			return;
-		}
+			const columnSizing = getColumnSizing();
+			let consumerTotal = 0;
 
-		handleColumnSizingChange(
-			shiftColumnTrack(
-				columnSizingRef.current,
-				consumerLeafIds,
-				prevUtilityTrackWidth - utilityTrackWidth,
-				leafSizeBoundsRef.current,
+			for (const id of consumerLeafIds) {
+				consumerTotal += columnSizing[id] ?? 0;
+			}
+
+			if (Math.abs(consumerTotal + prevUtilityTrackWidth - getColumnTrackWidth(container)) > TRACK_MATCH_PX) {
+				return 0;
+			}
+
+			return prevUtilityTrackWidth - utilityTrackWidth;
+		};
+
+		const shift = getUtilityTrackShift();
+
+		setColumnSizing((prev) =>
+			withUtilityColumnSizing(
+				shift === 0 ? prev : shiftColumnTrack(prev, consumerLeafIds, shift, leafSizeBoundsRef.current),
+				utilityColumnSizing ?? {},
 			),
 		);
-	}, [enabled, utilityTrackWidth, handleColumnSizingChange]);
+	}, [enabled, utilityTrackWidth, utilityColumnSizing, requireTable, getColumnSizing, setColumnSizing]);
 
 	useLayoutEffect(() => {
 		prevScrollbarWidthRef.current = null;
@@ -343,7 +323,9 @@ export const useColumnResize = <TData extends RowData>({
 				.map((column) => column.id);
 			// Excludes the vertical scrollbar gutter, whether the scrollbar fills it or not.
 			const trackWidth = getColumnTrackWidth(container);
-			const missing = collectMissingLeafSizing(measured, columnSizingRef.current, trackWidth, fillableIds);
+			const persisted = omitBuiltinColumnSizing(columnSizingPropRef.current ?? {});
+			const columnSizing = { ...persisted, ...getColumnSizing() };
+			const missing = collectMissingLeafSizing(measured, columnSizing, trackWidth, fillableIds);
 
 			for (const column of leaves) {
 				const measuredWidth = measured[column.id];
@@ -357,22 +339,20 @@ export const useColumnResize = <TData extends RowData>({
 				);
 			}
 
-			if (Object.keys(missing).length > 0) {
-				const bounds = leafSizeBoundsRef.current;
-				const clamped = clampColumnSizing(missing, bounds);
-				const grown = growFillLeavesToContainer(
-					clamped,
-					columnSizingRef.current,
-					Object.keys(measured),
-					trackWidth,
-					fillableIds,
-					bounds,
-				);
-				handleColumnSizingChange((prev) => ({
-					...grown,
-					...prev,
-				}));
-			}
+			const bounds = leafSizeBoundsRef.current;
+			const grown = growFillLeavesToContainer(
+				clampColumnSizing(missing, bounds),
+				columnSizing,
+				Object.keys(measured),
+				trackWidth,
+				fillableIds,
+				bounds,
+			);
+			setColumnSizing((prev) => ({
+				...grown,
+				...persisted,
+				...prev,
+			}));
 
 			prevScrollbarWidthRef.current = getReservedScrollbarWidth(container);
 			prevUtilityTrackWidthRef.current = utilityTrackWidthRef.current;
@@ -392,7 +372,7 @@ export const useColumnResize = <TData extends RowData>({
 		observer.observe(container);
 
 		return () => observer.disconnect();
-	}, [enabled, columns, columnVisibility, handleColumnSizingChange]);
+	}, [enabled, columns, columnVisibility, getColumnSizing, setColumnSizing]);
 
 	// After seed, the table can start or stop overflowing vertically (Infinite
 	// Scroll, filter, shorter viewport), which reserves or frees the scrollbar gutter.
@@ -417,10 +397,11 @@ export const useColumnResize = <TData extends RowData>({
 		}
 
 		const leafIds = table.getVisibleLeafColumns().map((column) => column.id);
+		const columnSizing = getColumnSizing();
 		let leafTotal = 0;
 
 		for (const id of leafIds) {
-			leafTotal += columnSizingRef.current[id] ?? 0;
+			leafTotal += columnSizing[id] ?? 0;
 		}
 
 		const delta = prevScrollbarWidth - reservedScrollbarWidth;
@@ -431,10 +412,8 @@ export const useColumnResize = <TData extends RowData>({
 			return;
 		}
 
-		handleColumnSizingChange(
-			shiftColumnTrack(columnSizingRef.current, leafIds, delta, leafSizeBoundsRef.current),
-		);
-	}, [enabled, reservedScrollbarWidth, handleColumnSizingChange]);
+		setColumnSizing(shiftColumnTrack(columnSizing, leafIds, delta, leafSizeBoundsRef.current));
+	}, [enabled, reservedScrollbarWidth, getColumnSizing, setColumnSizing]);
 
 	const tableOptions = useMemo<UseColumnResizeTableOptions>(
 		() => ({
@@ -445,16 +424,16 @@ export const useColumnResize = <TData extends RowData>({
 			// off would clamp unrelated columns (e.g. 36px utility columns) up to the
 			// resize minimum and break existing layouts.
 			...(enabled ? { defaultColumn: { minSize: RESIZE_MIN_COLUMN_WIDTH } } : {}),
-			onColumnSizingChange: handleColumnSizingChange,
-			onColumnResizingChange: handleColumnResizingChange,
+			initialState: { columnSizing: initialColumnSizing },
 		}),
-		[enabled, handleColumnSizingChange, handleColumnResizingChange],
+		[enabled, initialColumnSizing],
 	);
 
 	const bind = (table: DsTableInstance<TData>): UseColumnResizeBindResult => {
 		tableRef.current = table;
 		leafSizeBoundsRef.current = table.getAllLeafColumns();
 
+		const columnSizing = table.atoms.columnSizing.get();
 		const visibleLeafIds = table.getVisibleLeafColumns().map((column) => column.id);
 		const resizeSizingReady =
 			enabled && visibleLeafIds.length > 0 && visibleLeafIds.every((id) => columnSizing[id] !== undefined);
@@ -482,6 +461,7 @@ export const useColumnResize = <TData extends RowData>({
 			};
 		}
 
+		const columnResizing = table.atoms.columnResizing.get();
 		const isResizingColumn = columnResizing.isResizingColumn;
 		const resizingHeader =
 			typeof isResizingColumn === 'string'
@@ -520,10 +500,6 @@ export const useColumnResize = <TData extends RowData>({
 
 	return {
 		tableOptions,
-		state: {
-			columnSizing,
-			columnResizing,
-		},
 		bind,
 	};
 };

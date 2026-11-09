@@ -409,6 +409,29 @@ describe('DsTable - resizable columns', () => {
 		expect(lastCall.firstName).toBe(220);
 	});
 
+	it('fires onColumnSizingChange with the minSize width when dragged past it', async () => {
+		const onColumnSizingChange = vi.fn();
+		const columns: DsColumnDef<Row>[] = [
+			{
+				accessorKey: 'firstName',
+				header: 'First Name',
+				cell: (info) => info.getValue(),
+				size: 200,
+				minSize: 120,
+			},
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
+		];
+		await page.render(
+			<DsTable columns={columns} data={rows} resizableColumns onColumnSizingChange={onColumnSizingChange} />,
+		);
+
+		await dragHandleBy(getHandle('firstName'), -150);
+
+		await expect.poll(() => onColumnSizingChange.mock.calls.length).toBe(1);
+		const lastCall = onColumnSizingChange.mock.lastCall?.[0] as Record<string, number>;
+		expect(lastCall.firstName).toBe(120);
+	});
+
 	it('fires onColumnSizingChange with the next sizing map on drag', async () => {
 		const onColumnSizingChange = vi.fn();
 		await page.render(
@@ -1023,6 +1046,71 @@ describe('DsTable - resizable columns', () => {
 		);
 
 		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(240);
+	});
+
+	it('restores a persisted width that arrives with a column added after mount', async () => {
+		const columns: DsColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		const { rerender } = await page.render(<DsTable columns={columns} data={rows} resizableColumns />);
+		await expect.poll(() => getHeaderCell('lastName').style.width).not.toBe('');
+
+		await rerender(
+			<DsTable
+				columns={[...columns, { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue() }]}
+				data={rows}
+				resizableColumns
+				columnSizing={{ age: 130 }}
+			/>,
+		);
+
+		await expect.poll(() => Math.round(widthOf('age'))).toBe(130);
+	});
+
+	it('keeps a resized width when the persisted width changes', async () => {
+		const { rerender } = await page.render(
+			<DsTable columns={sizedColumns} data={rows} resizableColumns columnSizing={{ firstName: 200 }} />,
+		);
+		await dragHandleBy(getHandle('firstName'), 40);
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(240);
+
+		await rerender(
+			<DsTable columns={sizedColumns} data={rows} resizableColumns columnSizing={{ firstName: 300 }} />,
+		);
+
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(240);
+	});
+
+	it('fires onColumnSizingChange once per drag, on mouseup', async () => {
+		const onColumnSizingChange = vi.fn();
+		await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				resizableColumns
+				onColumnSizingChange={onColumnSizingChange}
+			/>,
+		);
+
+		const handle = getHandle('firstName');
+		const startX = handle.getBoundingClientRect().right;
+		const start = Math.round(widthOf('firstName'));
+
+		dispatchPointer('pointerdown', handle, startX);
+		await waitUntilDragging();
+		dispatchMouse('mousemove', handle.ownerDocument, startX + 20);
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start + 20);
+		dispatchMouse('mousemove', handle.ownerDocument, startX + 40);
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start + 40);
+		expect(onColumnSizingChange).not.toHaveBeenCalled();
+
+		dispatchMouse('mouseup', handle.ownerDocument, startX + 40);
+
+		await expect.poll(() => onColumnSizingChange.mock.calls.length).toBe(1);
+		await new Promise(requestAnimationFrame);
+		expect(onColumnSizingChange).toHaveBeenCalledTimes(1);
+		expect(onColumnSizingChange).toHaveBeenCalledWith({ firstName: start + 40, lastName: 200, age: 120 });
 	});
 
 	it('exposes a focusable separator with the current width', async () => {

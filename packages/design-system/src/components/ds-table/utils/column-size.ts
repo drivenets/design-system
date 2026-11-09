@@ -491,6 +491,12 @@ export const getRowActionsColumnWidth = (
 	return slots * ROW_ACTION_BUTTON_SIZE + (slots - 1) * ROW_ACTIONS_GAP + 2 * ROW_ACTIONS_CELL_PADDING;
 };
 
+export const isSameColumnSizing = (a: ColumnSizingState, b: ColumnSizingState): boolean => {
+	const aIds = Object.keys(a);
+
+	return aIds.length === Object.keys(b).length && aIds.every((id) => a[id] === b[id]);
+};
+
 /**
  * Drops any utility ids from `columnSizing`, then applies `utilityColumnSizing`
  * so those leaves always take the authored width.
