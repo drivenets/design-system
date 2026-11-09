@@ -7,7 +7,10 @@ export interface DsKeyValuePairProps {
 	/** Label rendered for the key side of the pair (left or top depending on `orientation`). */
 	keyLabel: ReactNode;
 
-	/** Shown when the editor is not active (read-only or not hovered). */
+	/**
+	 * Shown when the editor is not active (read-only or not hovered). Overflowing text is cut
+	 * with an ellipsis and shown in full in a tooltip on hover.
+	 */
 	value?: ReactNode;
 
 	/**

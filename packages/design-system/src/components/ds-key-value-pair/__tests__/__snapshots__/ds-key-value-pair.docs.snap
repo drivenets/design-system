@@ -34,11 +34,28 @@ const ReadOnlyHorizontal = () => <DsKeyValuePair
     readOnly
     orientation="horizontal" />;
 
+## Truncated Value
+
+### Show code
+<DsKeyValuePair
+  keyLabel="Site"
+  orientation="horizontal"
+  readOnly
+  value="dn-site-frankfurt-eu-central-1-rack-12-spine-04"
+/>
+
+### MCP manifest
+const TruncatedValue = () => <DsKeyValuePair
+    keyLabel="Site"
+    value="dn-site-frankfurt-eu-central-1-rack-12-spine-04"
+    readOnly
+    orientation="horizontal" />;
+
 ## Custom Label
 
 ### Show code
 <DsKeyValuePair
-  keyLabel={<span className="_iconLabel_kby19_30"><DsIcon icon="info" size="tiny"/>Serial Number</span>}
+  keyLabel={<span className="_iconLabel_15djj_34"><DsIcon icon="info" size="tiny"/>Serial Number</span>}
   orientation="horizontal"
   readOnly
   value="99887766"
