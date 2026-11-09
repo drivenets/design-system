@@ -317,6 +317,101 @@ const CellContent = () => (
     />
 );
 
+## Auto row height
+
+### Show code
+{
+  name: 'Auto row height',
+  render: () => <DsTable bordered fullWidth rowSize="auto" columns={[{
+    accessorKey: 'description',
+    header: 'Description',
+    cell: info => info.getValue(),
+    size: 220
+  }, {
+    accessorKey: 'owner',
+    header: 'Owner',
+    cell: info => <span className={columnsStyles.nowrapLabel}>
+                            <DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+                        </span>,
+    size: 180
+  }, {
+    accessorKey: 'steps',
+    header: 'Steps',
+    cell: info => <div>
+                            {info.getValue<string[]>().map(step => <div key={step}>{step}</div>)}
+                        </div>,
+    size: 220
+  }, {
+    accessorKey: 'notes',
+    header: 'Notes',
+    cell: info => info.getValue(),
+    size: 220
+  }]} data={[{
+    id: '1',
+    description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+    owner: 'Network operations center',
+    steps: ['Pause monitoring', 'Copy configuration', 'Verify checksums', 'Resume monitoring'],
+    notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance'
+  }, {
+    id: '2',
+    description: 'Firmware rollout',
+    owner: 'Platform team',
+    steps: ['Staged rollout'],
+    notes: 'On schedule'
+  }]} />
+}
+
+### MCP manifest
+const AutoRowHeight = () => (
+    <DsTable
+        bordered
+        fullWidth
+        rowSize="auto"
+        columns={[
+            { accessorKey: 'description', header: 'Description', cell: (info) => info.getValue(), size: 220 },
+            {
+                accessorKey: 'owner',
+                header: 'Owner',
+                cell: (info) => (
+                    <span className={columnsStyles.nowrapLabel}>
+                        <DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+                    </span>
+                ),
+                size: 180,
+            },
+            {
+                accessorKey: 'steps',
+                header: 'Steps',
+                cell: (info) => (
+                    <div>
+                        {info.getValue<string[]>().map((step) => (
+                            <div key={step}>{step}</div>
+                        ))}
+                    </div>
+                ),
+                size: 220,
+            },
+            { accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 220 },
+        ]}
+        data={[
+            {
+                id: '1',
+                description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+                owner: 'Network operations center',
+                steps: ['Pause monitoring', 'Copy configuration', 'Verify checksums', 'Resume monitoring'],
+                notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',
+            },
+            {
+                id: '2',
+                description: 'Firmware rollout',
+                owner: 'Platform team',
+                steps: ['Staged rollout'],
+                notes: 'On schedule',
+            },
+        ]}
+    />
+);
+
 ## Column Hiding
 
 ### Show code

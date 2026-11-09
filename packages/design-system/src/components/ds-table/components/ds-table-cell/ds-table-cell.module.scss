@@ -18,3 +18,12 @@ $phrasing-elements: 'span, a, strong, em, b, i, code, small, abbr, time, mark, s
 		max-height: max(100%, 2lh);
 	}
 }
+
+.tableCellWrap {
+	flex: 1;
+	min-width: 0;
+	padding-block: var(--xs);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+}
