@@ -23,7 +23,7 @@ Design System consumers file every request as a Jira Bug: real bugs, missing pro
 | Version           | The `AR` version with the latest release date among the Affects versions and Fix versions of the current sprint's tickets (`v26.3` in `DAP 2026 S15`, over `v262.11` and `v26.2`). Find it by checking the project's unreleased versions from the latest release date down: the first one with a match for `sprint = <ID> AND (affectedVersion = "<version>" OR fixVersion = "<version>")` |
 | Screenshots       | Branch `claude/pr-screenshots` of `iromanchuk-dn/design-system`, the owner's fork, which the Routine has as its second repository                                                                                                                                                                                                                                                          |
 | Slack             | `#design-system-ai-notifications`, only for the message in [step 8](#8-open-the-pr)                                                                                                                                                                                                                                                                                                        |
-| Owner             | The Jira user the Atlassian connector runs as: get its account ID with `atlassianUserInfo` at the start of the run. Assignee "unclaimed" means no assignee or the owner                                                                                                                                                                                                                    |
+| Owner             | The Jira user the Atlassian connector runs as: get its account ID with `atlassianUserInfo` at the start of the run                                                                                                                                                                                                                                                                         |
 | DS team           | Jira: Ihor Romanchuk, Michal Murawski, Valentine Polessky. GitHub: `iromanchuk-dn`, `mmurawski-dn`, `vpolessky-dn`                                                                                                                                                                                                                                                                         |
 | PR reviewers      | The DS team's GitHub accounts, except the owner (who authors the PR). CODEOWNERS adds the rest                                                                                                                                                                                                                                                                                             |
 | Connectors        | Atlassian (Jira), Figma and Slack. Figma is **read-only**: never call a tool that creates or changes a Figma file                                                                                                                                                                                                                                                                          |
@@ -101,10 +101,11 @@ Skip the ticket (no comment, no label) when any of these is true. Run this check
 | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | Labels   | `ds-bot:skip`                                                                                                                   |
 | Status   | Anything other than `Open`, or `Pending Info` / `Pending repro` together with `ds-bot:needs-info` or `ds-bot:retry`             |
-| Assignee | Set, and not the owner                                                                                                          |
 | Lock     | `ds-bot:working` was added less than 3 hours ago (issue changelog). Older: the previous run died, so remove the label and go on |
 | Comments | Only for tickets without `ds-bot`: a DS team member other than the reporter commented in the last 7 days                        |
 | GitHub   | An open PR or a branch pushed in the last 14 days with the ticket key in its title, branch name or body                         |
+
+The assignee is not a signal: reporters often assign a ticket when they file it. A person takes a ticket over by moving it out of `Open` or adding `ds-bot:skip`.
 
 A PR with the key **merged** in the last 30 days is not a skip: ask the reporter whether that PR fixed it (step 4 comment), set `ds-bot:needs-info`, and stop.
 
@@ -153,7 +154,7 @@ Post a claim comment, then work on a branch `claude/ar-<number>-<short-slug>` fr
 
 ```
 DS request triage (automated)
-Working on this now; I'll open a PR or report back here. To keep it for yourself, move it to In Progress, assign someone, or add the ds-bot:skip label.
+Working on this now; I'll open a PR or report back here. To keep it for yourself, move it to In Progress or add the ds-bot:skip label.
 ```
 
 - **Behavior or accessibility bug:** write one failing test in the component's `__tests__/*.browser.test.tsx` that pins the bug through the public API ([`browser-tests`](../../../.agents/skills/browser-tests/SKILL.md), [`tdd`](../../../.agents/skills/tdd/SKILL.md)). It must fail for the right reason before any fix.

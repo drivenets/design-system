@@ -15,6 +15,7 @@ const DsKeyValuePair = ({
 	style,
 }: DsKeyValuePairProps) => {
 	const editable = !readOnly && !!editInput;
+	const isTextValue = typeof value === 'string' || typeof value === 'number';
 
 	return (
 		<div
@@ -34,7 +35,13 @@ const DsKeyValuePair = ({
 				tabIndex={editable ? 0 : undefined}
 				data-editable={editable || undefined}
 			>
-				<DsTypography variant="body-sm-reg" asChild>
+				<DsTypography
+					variant="body-sm-reg"
+					truncate
+					tooltip={!editable && isTextValue}
+					tooltipContent={value}
+					asChild
+				>
 					<div className={styles.valueDisplay}>{value}</div>
 				</DsTypography>
 
