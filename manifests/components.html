@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/106 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/106 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/106 without API description</a><span class="filter-pill ok" aria-disabled="true">664 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/664 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/106 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/106 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/106 without API description</a><span class="filter-pill ok" aria-disabled="true">665 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/665 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -13793,7 +13793,7 @@ variant?: (typeof dsIllustrationVariants)[number] = &#39;no-tasks&#39;</code></p
       <div class="badges">
         <label for="c-46-components-keyvaluepair-props" class="badge ok as-toggle">8 prop types</label>
         <label for="c-46-components-keyvaluepair-info" class="badge info as-toggle">1 info</label>
-        <label for="c-46-components-keyvaluepair-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-46-components-keyvaluepair-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -13863,7 +13863,8 @@ ref?: Ref&lt;HTMLDivElement&gt;
 style?: CSSProperties
 
 /**
- * Shown when the editor is not active (read-only or not hovered).
+ * Shown when the editor is not active (read-only or not hovered). Overflowing text is cut
+ * with an ellipsis and shown in full in a tooltip on hover.
  */
 value?: ReactNode</code></pre>
           </div>
@@ -13917,6 +13918,21 @@ import { DsIcon } from '../ds-icon';</code></pre>
               <pre><code>const ReadOnlyHorizontal = () =&gt; &lt;DsKeyValuePair
     keyLabel=&quot;MAC&quot;
     value=&quot;00:1A:2B:3C:4D:5E&quot;
+    readOnly
+    orientation=&quot;horizontal&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Truncated Value</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">A value wider than its container is cut to one line with an ellipsis. Hover it to read the
+full value in a tooltip; values that fit show no tooltip.</div>
+              <pre><code>const TruncatedValue = () =&gt; &lt;DsKeyValuePair
+    keyLabel=&quot;Site&quot;
+    value=&quot;dn-site-frankfurt-eu-central-1-rack-12-spine-04&quot;
     readOnly
     orientation=&quot;horizontal&quot; /&gt;;</code></pre>
               

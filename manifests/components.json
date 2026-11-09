@@ -9685,7 +9685,7 @@
             "tsType": {
               "name": "ReactNode"
             },
-            "description": "Shown when the editor is not active (read-only or not hovered)."
+            "description": "Shown when the editor is not active (read-only or not hovered). Overflowing text is cut\nwith an ellipsis and shown in full in a tooltip on hover."
           },
           "readOnly": {
             "required": false,
@@ -9756,6 +9756,12 @@
           "id": "components-keyvaluepair--read-only-horizontal",
           "name": "Read Only Horizontal",
           "snippet": "const ReadOnlyHorizontal = () => <DsKeyValuePair\n    keyLabel=\"MAC\"\n    value=\"00:1A:2B:3C:4D:5E\"\n    readOnly\n    orientation=\"horizontal\" />;"
+        },
+        {
+          "id": "components-keyvaluepair--truncated-value",
+          "name": "Truncated Value",
+          "snippet": "const TruncatedValue = () => <DsKeyValuePair\n    keyLabel=\"Site\"\n    value=\"dn-site-frankfurt-eu-central-1-rack-12-spine-04\"\n    readOnly\n    orientation=\"horizontal\" />;",
+          "description": "A value wider than its container is cut to one line with an ellipsis. Hover it to read the\nfull value in a tooltip; values that fit show no tooltip."
         },
         {
           "id": "components-keyvaluepair--custom-label",
@@ -35931,6 +35937,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6055
+    "durationMs": 3666
   }
 }
