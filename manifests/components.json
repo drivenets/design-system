@@ -20507,6 +20507,12 @@
           "warning": "Incomplete snippet: `Status` could not be resolved statically."
         },
         {
+          "id": "components-table-columns--cell-content",
+          "name": "Cell content",
+          "snippet": "const CellContent = () => (\n    <DsTable\n        bordered\n        fullWidth\n        rowSize=\"large\"\n        columns={[\n            { accessorKey: 'description', header: 'Plain text', cell: (info) => info.getValue(), size: 220 },\n            {\n                accessorKey: 'owner',\n                header: 'Icon and label',\n                cell: (info) => (\n                    <span className={columnsStyles.nowrapLabel}>\n                        <DsIcon icon=\"person\" size=\"tiny\" /> {info.getValue<string>()}\n                    </span>\n                ),\n                size: 180,\n            },\n            {\n                accessorKey: 'status',\n                header: 'Flex layout',\n                cell: (info) => (\n                    <div className={columnsStyles.iconLabel}>\n                        <DsIcon icon=\"schedule\" size=\"small\" />\n                        <span>{info.getValue<string>()}</span>\n                    </div>\n                ),\n                size: 200,\n            },\n            {\n                accessorKey: 'notes',\n                header: 'Clamped typography',\n                cell: (info) => (\n                    <DsTypography variant=\"body-sm-reg\" truncate={2}>\n                        {info.getValue<string>()}\n                    </DsTypography>\n                ),\n                size: 220,\n            },\n        ]}\n        data={[\n            {\n                id: '1',\n                description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',\n                owner: 'Network operations center',\n                status: 'Waiting for approval',\n                notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',\n            },\n            {\n                id: '2',\n                description: 'Firmware rollout',\n                owner: 'Platform team',\n                status: 'Scheduled for the next maintenance window',\n                notes: 'Staged rollout',\n            },\n        ]}\n    />\n);",
+          "description": "Text, spans and links wrap and clamp to two lines with an ellipsis, and inline `nowrap` content\nends in an ellipsis on one line. Cells that render their own block or flex layout don't get the\ntable's clamp, so clamp long text inside them, e.g. with `DsTypography` `truncate`."
+        },
+        {
           "id": "components-table-columns--column-hiding",
           "name": "Column Hiding",
           "snippet": "const ColumnHiding = () => {\n    const columnsToToggle = [\n        { id: 'age', label: 'Age' },\n        { id: 'visits', label: 'Visits' },\n        { id: 'status', label: 'Status' },\n        { id: 'progress', label: 'Profile Progress' },\n    ];\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n        age: true,\n        visits: true,\n        status: true,\n        progress: true,\n    });\n\n    const toggleColumn = (columnId: string) => {\n        setColumnVisibility((prev) => ({\n            ...prev,\n            [columnId]: !prev[columnId],\n        }));\n    };\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\" gap={16} flexWrap=\"wrap\">\n                {columnsToToggle.map((column) => (\n                    <DsCheckbox\n                        key={column.id}\n                        label={column.label}\n                        checked={columnVisibility[column.id]}\n                        onCheckedChange={() => toggleColumn(column.id)}\n                    />\n                ))}\n            </DsStack>\n\n            <DsTable\n                columns={columns}\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columnVisibility={columnVisibility}\n                onColumnVisibilityChange={setColumnVisibility} />\n        </DsStack>\n    );\n};",
@@ -20537,7 +20543,7 @@
           "description": "The minimal opt-in: `columnDisplay` adds the Columns popup and `reorderableColumns`\na drag handle to each of its rows."
         }
       ],
-      "import": "import { DsButtonV3, DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { ProgressInfographic } from './components';\nimport classnames from 'classnames';\nimport styles from './ds-table.stories.module.scss';\nimport { fn } from 'storybook/test';"
+      "import": "import {\n  DsButtonV3,\n  DsCheckbox,\n  DsIcon,\n  DsStack,\n  DsTable,\n  DsTypography,\n  ProgressInfographic,\n} from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { ProgressInfographic } from './components';\nimport classnames from 'classnames';\nimport styles from './ds-table.stories.module.scss';\nimport { fn } from 'storybook/test';"
     },
     "components-table-editable": {
       "id": "components-table-editable",
@@ -35596,6 +35602,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5736
+    "durationMs": 6061
   }
 }

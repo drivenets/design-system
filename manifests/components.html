@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/105 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/105 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/105 without API description</a><span class="filter-pill ok" aria-disabled="true">653 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/653 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/105 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/105 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/105 without API description</a><span class="filter-pill ok" aria-disabled="true">654 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/654 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -23215,7 +23215,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
       <div class="badges">
         <label for="c-78-components-table-columns-props" class="badge ok as-toggle">52 prop types</label>
         
-        <label for="c-78-components-table-columns-stories" class="badge ok as-toggle">6 stories · 1 incomplete</label>
+        <label for="c-78-components-table-columns-stories" class="badge ok as-toggle">7 stories · 1 incomplete</label>
         
         
       </div>
@@ -23722,7 +23722,15 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButtonV3, DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';
+                <pre><code>import {
+  DsButtonV3,
+  DsCheckbox,
+  DsIcon,
+  DsStack,
+  DsTable,
+  DsTypography,
+  ProgressInfographic,
+} from '@drivenets/design-system';
 import { columns, defaultData } from './common/story-data';
 import { ProgressInfographic } from './components';
 import classnames from 'classnames';
@@ -23768,6 +23776,74 @@ import { fn } from 'storybook/test';</code></pre>
     expandable={false}
     onRowClick={fn()} /&gt;;</code></pre>
               <div class="snippet-warning">Incomplete snippet: `Status` could not be resolved statically.</div>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Cell content</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Text, spans and links wrap and clamp to two lines with an ellipsis, and inline `nowrap` content
+ends in an ellipsis on one line. Cells that render their own block or flex layout don&#39;t get the
+table&#39;s clamp, so clamp long text inside them, e.g. with `DsTypography` `truncate`.</div>
+              <pre><code>const CellContent = () =&gt; (
+    &lt;DsTable
+        bordered
+        fullWidth
+        rowSize=&quot;large&quot;
+        columns={[
+            { accessorKey: &#39;description&#39;, header: &#39;Plain text&#39;, cell: (info) =&gt; info.getValue(), size: 220 },
+            {
+                accessorKey: &#39;owner&#39;,
+                header: &#39;Icon and label&#39;,
+                cell: (info) =&gt; (
+                    &lt;span className={columnsStyles.nowrapLabel}&gt;
+                        &lt;DsIcon icon=&quot;person&quot; size=&quot;tiny&quot; /&gt; {info.getValue&lt;string&gt;()}
+                    &lt;/span&gt;
+                ),
+                size: 180,
+            },
+            {
+                accessorKey: &#39;status&#39;,
+                header: &#39;Flex layout&#39;,
+                cell: (info) =&gt; (
+                    &lt;div className={columnsStyles.iconLabel}&gt;
+                        &lt;DsIcon icon=&quot;schedule&quot; size=&quot;small&quot; /&gt;
+                        &lt;span&gt;{info.getValue&lt;string&gt;()}&lt;/span&gt;
+                    &lt;/div&gt;
+                ),
+                size: 200,
+            },
+            {
+                accessorKey: &#39;notes&#39;,
+                header: &#39;Clamped typography&#39;,
+                cell: (info) =&gt; (
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; truncate={2}&gt;
+                        {info.getValue&lt;string&gt;()}
+                    &lt;/DsTypography&gt;
+                ),
+                size: 220,
+            },
+        ]}
+        data={[
+            {
+                id: &#39;1&#39;,
+                description: &#39;Weekly backup of the core routers, kept for ninety days in the primary data center&#39;,
+                owner: &#39;Network operations center&#39;,
+                status: &#39;Waiting for approval&#39;,
+                notes: &#39;Runs every Sunday at midnight and pauses during maintenance windows announced in advance&#39;,
+            },
+            {
+                id: &#39;2&#39;,
+                description: &#39;Firmware rollout&#39;,
+                owner: &#39;Platform team&#39;,
+                status: &#39;Scheduled for the next maintenance window&#39;,
+                notes: &#39;Staged rollout&#39;,
+            },
+        ]}
+    /&gt;
+);</code></pre>
+              
             </div>
             <div class="note ok">
               <div class="row">
