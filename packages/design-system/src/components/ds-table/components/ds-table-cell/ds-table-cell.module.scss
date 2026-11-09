@@ -1,12 +1,20 @@
 @use '../../../../styles/typography';
 
+$phrasing-elements: 'span, a, strong, em, b, i, code, small, abbr, time, mark, sub, sup, br, svg, img';
+
 .tableCellEllipsis {
 	flex: 1;
 	min-width: 0;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	@include typography.line-clamp(2);
+	line-clamp: 2;
 	text-overflow: ellipsis;
 	word-break: break-word;
+
+	// WebKit collapses a line clamp that wraps a flex row to one line; phrasing elements are rarely flex rows.
+	&:has(> :not(#{$phrasing-elements})) {
+		display: block;
+		-webkit-line-clamp: none;
+		line-clamp: none;
+		max-height: max(100%, 2lh);
+	}
 }
