@@ -542,4 +542,31 @@ describe('DsStepper state colors', () => {
 			await expect.element(byText(label)).toHaveStyle({ color: tokenColor(token) });
 		}
 	});
+
+	it.each([
+		{
+			orientation: 'vertical' as const,
+			descriptions: {
+				'Completed description': '--font-secondary',
+				'Current description': '--font-main',
+				'Pending description': '--font-secondary',
+				'Error description': '--font-secondary',
+			},
+		},
+		{
+			orientation: 'horizontal' as const,
+			descriptions: {
+				'Completed description': '--font-secondary',
+				'Current description': '--font-secondary',
+				'Pending description': '--font-secondary',
+				'Error description': '--font-secondary',
+			},
+		},
+	])('colors $orientation descriptions per step state', async ({ orientation, descriptions }) => {
+		await page.render(<StateStepper orientation={orientation} />);
+
+		for (const [description, token] of Object.entries(descriptions)) {
+			await expect.element(byText(description)).toHaveStyle({ color: tokenColor(token) });
+		}
+	});
 });

@@ -164,7 +164,7 @@ $horizontal-description-line-clamp: 2;
 		margin: 0;
 		font-size: $description-font-size;
 		line-height: $description-line-height;
-		color: var(--background-deselected);
+		color: var(--font-secondary);
 	}
 
 	&[data-current] {
@@ -177,14 +177,8 @@ $horizontal-description-line-clamp: 2;
 		}
 	}
 
-	&[data-complete] {
-		.stepLabel {
-			color: var(--font-main);
-		}
-
-		.stepDescription {
-			color: var(--font-secondary);
-		}
+	&[data-complete] .stepLabel {
+		color: var(--font-main);
 	}
 
 	.stepContent:not(.stepContentSingle) .stepActions {
@@ -256,6 +250,10 @@ $horizontal-description-line-clamp: 2;
 
 			.stepLabel {
 				flex-shrink: 0;
+			}
+
+			.stepDescription {
+				color: var(--font-secondary);
 			}
 		}
 	}
