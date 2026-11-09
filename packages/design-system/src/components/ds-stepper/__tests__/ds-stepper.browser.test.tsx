@@ -488,6 +488,28 @@ describe('DsStepper', () => {
 	});
 });
 
+describe('DsNextStepButton', () => {
+	it('shows a decorative trailing arrow after custom children', async () => {
+		await page.render(
+			<DsStepper count={2} orientation="horizontal" actions={<DsNextStepButton>Continue</DsNextStepButton>}>
+				<DsStep index={0}>
+					<DsStepContent index={0} label="First" />
+				</DsStep>
+				<DsStep index={1}>
+					<DsStepContent index={1} label="Second" />
+				</DsStep>
+			</DsStepper>,
+		);
+
+		const button = page.getByRole('button', { name: 'Continue', exact: true });
+		await expect.element(button).toBeInTheDocument();
+
+		const arrow = button.getByText('arrow_forward', { exact: true });
+		await expect.element(arrow).toHaveAttribute('aria-hidden', 'true');
+		expect(arrow.element().previousSibling?.textContent).toBe('Continue');
+	});
+});
+
 describe('DsStepper state colors', () => {
 	it.each([
 		{
