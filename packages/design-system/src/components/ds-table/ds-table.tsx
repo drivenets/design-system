@@ -94,7 +94,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<ColumnVisibilityState>({});
 	const [internalStickyColumns, setInternalStickyColumns] = React.useState<DsTableStickyColumns>({});
-	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
 	const { DragWrapper, SortableWrapper } = useDragAndDrop<TData>({
 		isDragEnabled: reorderable && !virtualized,
@@ -138,15 +137,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		() => ({ ...baseColumnVisibility, ...collapsedVisibility }),
 		[baseColumnVisibility, collapsedVisibility],
 	);
-
-	const handleRowSelectionChange = (
-		updaterOrValue: RowSelectionState | ((old: RowSelectionState) => RowSelectionState),
-	) => {
-		const newRowSelection =
-			typeof updaterOrValue === 'function' ? updaterOrValue(rowSelection) : updaterOrValue;
-		setRowSelection(newRowSelection);
-		onSelectionChange?.(newRowSelection);
-	};
 
 	// Boolean flags only — an inline `selectable` / `expandable` callback must
 	// not rebuild column defs (and remount cells) on every parent render.
@@ -233,7 +223,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnFiltersChange: handleColumnFiltersChange,
 		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onColumnPinningChange: handleColumnPinningChange,
-		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
 		// TanStack resets expansion whenever `data` changes identity; keep it across re-renders.
 		autoResetExpanded: false,
@@ -243,7 +232,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 			columnFilters,
 			columnVisibility,
 			columnPinning,
-			rowSelection,
 		},
 		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
@@ -257,6 +245,18 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		);
 		return unsubscribe;
 	}, [table.atoms.sorting]);
+
+	const onSelectionChangeRef = React.useRef(onSelectionChange);
+	onSelectionChangeRef.current = onSelectionChange;
+
+	React.useEffect(() => {
+		const { unsubscribe } = table.atoms.rowSelection.subscribe((nextRowSelection) =>
+			onSelectionChangeRef.current?.(nextRowSelection),
+		);
+		return unsubscribe;
+	}, [table.atoms.rowSelection]);
+
+	const { rowSelection } = table.state;
 
 	const { columnSizeVars, activeResize, context: resizeContext } = resize.bind(table);
 
