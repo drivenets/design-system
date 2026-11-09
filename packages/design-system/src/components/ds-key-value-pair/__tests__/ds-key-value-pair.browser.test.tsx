@@ -17,10 +17,7 @@ const MANUFACTURER_OPTIONS: DsSelectOption[] = [
 	{ label: 'Nokia', value: 'nokia' },
 ];
 
-// `userEvent.tab()` is unreliable when the next focus target is a `<div tabindex="0">` inside the
-// vitest browser iframe. Focus the editable container directly to trigger the `:focus-within`
-// reveal deterministically.
-const focusEditableContainerOf = (text: string) => {
+const editableContainerOf = (text: string) => {
 	const container = page
 		.getByText(text, { exact: false })
 		.element()
@@ -30,7 +27,14 @@ const focusEditableContainerOf = (text: string) => {
 		throw new Error(`No editable value-container ancestor for text "${text}"`);
 	}
 
-	container.focus();
+	return container;
+};
+
+// `userEvent.tab()` is unreliable when the next focus target is a `<div tabindex="0">` inside the
+// vitest browser iframe. Focus the editable container directly to trigger the `:focus-within`
+// reveal deterministically.
+const focusEditableContainerOf = (text: string) => {
+	editableContainerOf(text).focus();
 };
 
 const blurActiveElement = () => {
@@ -55,6 +59,19 @@ const renderWithParkedMouse = async (component: ReactNode) => {
 
 const parkMouse = async () => {
 	await userEvent.hover(page.getByTestId(MOUSE_PARK_TEST_ID));
+};
+
+const LONG_VALUE = 'dn-site-frankfurt-eu-central-1-rack-12-spine-04';
+const NARROW_WIDTH_PX = 200;
+// Longer than DsTooltip's 200ms open delay, so an absent tooltip is really absent.
+const TOOLTIP_SETTLE_MS = 400;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const expectOverflowing = (text: string) => {
+	const element = page.getByText(text, { exact: true }).element();
+
+	expect(element.scrollWidth).toBeGreaterThan(element.clientWidth);
 };
 
 describe('DsKeyValuePair', () => {
@@ -369,5 +386,81 @@ describe('DsKeyValuePair', () => {
 		await expect.element(page.getByText('Active', { exact: false })).toBeVisible();
 		await expect.element(page.getByText('Tag-name').first()).toBeVisible();
 		await expect.element(page.getByText('Cisco Systems').first()).toBeVisible();
+	});
+});
+
+describe('DsKeyValuePair value truncation', () => {
+	it.each(['horizontal', 'vertical'] as const)(
+		'shows the full value in a tooltip when it overflows (%s)',
+		async (orientation) => {
+			await renderWithParkedMouse(
+				<div style={{ width: NARROW_WIDTH_PX }}>
+					<DsKeyValuePair keyLabel="Site" value={LONG_VALUE} readOnly orientation={orientation} />
+				</div>,
+			);
+
+			expectOverflowing(LONG_VALUE);
+
+			const valueDisplay = page.getByText(LONG_VALUE, { exact: true }).element();
+			await page.elementLocator(valueDisplay).hover();
+
+			const tooltip = page.getByRole('tooltip', { name: LONG_VALUE });
+			await expect.element(tooltip).toBeVisible();
+
+			const tooltipText = tooltip.getByText(LONG_VALUE, { exact: true }).element();
+			expect(getComputedStyle(tooltipText).color).toBe(getComputedStyle(tooltip.element()).color);
+		},
+	);
+
+	it('does not show a tooltip when the value fits', async () => {
+		await renderWithParkedMouse(
+			<div style={{ width: NARROW_WIDTH_PX }}>
+				<DsKeyValuePair keyLabel="Site" value="dn-site-1" readOnly orientation="horizontal" />
+			</div>,
+		);
+
+		await page.getByText('dn-site-1', { exact: true }).hover();
+		await wait(TOOLTIP_SETTLE_MS);
+
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('reveals the editor instead of a tooltip when an overflowing editable value is hovered', async () => {
+		await renderWithParkedMouse(
+			<div style={{ width: NARROW_WIDTH_PX }}>
+				<DsKeyValuePair
+					keyLabel="Site"
+					value={LONG_VALUE}
+					orientation="horizontal"
+					editInput={<DsTextInput defaultValue={LONG_VALUE} size="small" />}
+				/>
+			</div>,
+		);
+
+		expectOverflowing(LONG_VALUE);
+
+		// Hover swaps the value out for the editor, so hover its container rather than the vanishing text.
+		await page.elementLocator(editableContainerOf(LONG_VALUE)).hover();
+
+		await expect.element(page.getByRole('textbox')).toBeVisible();
+		await wait(TOOLTIP_SETTLE_MS);
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('does not show a tooltip for an overflowing non-text value', async () => {
+		await renderWithParkedMouse(
+			<div style={{ width: NARROW_WIDTH_PX }}>
+				<DsKeyValuePair keyLabel="Site" value={<span>{LONG_VALUE}</span>} readOnly orientation="horizontal" />
+			</div>,
+		);
+
+		const value = page.getByText(LONG_VALUE, { exact: true });
+		const valueDisplay = value.element().parentElement as HTMLElement;
+		expect(valueDisplay.scrollWidth).toBeGreaterThan(valueDisplay.clientWidth);
+
+		await value.hover();
+		await wait(TOOLTIP_SETTLE_MS);
+
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});
 });
