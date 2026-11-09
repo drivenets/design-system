@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDatePicker from '../ds-date-picker';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 describe('DsDatePicker', () => {
 	beforeEach(() => {
@@ -184,5 +185,55 @@ describe('DsDatePicker', () => {
 		input.element().blur();
 
 		await expect.element(input).toHaveValue('03/20/2026');
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+// Real timers: the modal's exit animation must finish before it can reopen.
+describe.each(modalContainers)('DsDatePicker inside $container', ({ Container }) => {
+	const ModalHarness = () => {
+		const [open, setOpen] = useState(true);
+		const [value, setValue] = useState<Date | null>(new Date('2026-01-10T12:00:00'));
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<DsDatePicker value={value} onChange={setValue} />
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	it('should expose the calendar by role and select a date', async () => {
+		await page.render(<ModalHarness />);
+
+		await page.getByRole('button', { name: /open calendar/i }).click();
+
+		await expect.element(page.getByRole('grid')).toBeVisible();
+		await page.getByRole('button', { name: /Choose.*January 15, 2026/i }).click();
+
+		await expect.element(page.getByPlaceholder('mm/dd/yyyy')).toHaveValue('01/15/2026');
+	});
+
+	it('should expose the calendar by role after the modal is closed and reopened', async () => {
+		await page.render(<ModalHarness />);
+
+		await page.getByRole('button', { name: /open calendar/i }).click();
+		await page.getByRole('button', { name: /Choose.*January 15, 2026/i }).click();
+		await expect.element(page.getByRole('grid')).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await page.getByRole('button', { name: /open calendar/i }).click();
+
+		await expect.element(page.getByRole('grid')).toBeVisible();
+		await expect.element(page.getByRole('button', { name: /Choose.*January 20, 2026/i })).toBeVisible();
 	});
 });

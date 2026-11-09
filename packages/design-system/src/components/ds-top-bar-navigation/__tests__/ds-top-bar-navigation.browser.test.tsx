@@ -355,8 +355,7 @@ describe('DsTopBarNavigation', () => {
 
 			// The avatar falls back to initials when no `src` is given.
 			await expect.element(trigger.getByText('JD')).toBeVisible();
-			// Ark keeps the menu mounted but hidden, so assert on visibility, not presence.
-			await expect.element(page.getByText('Profile')).not.toBeVisible();
+			await expect.element(page.getByText('Profile')).not.toBeInTheDocument();
 
 			await trigger.click();
 
@@ -365,7 +364,7 @@ describe('DsTopBarNavigation', () => {
 			await page.getByRole('menuitem', { name: 'Log out' }).click();
 
 			expect(onSelect).toHaveBeenCalledWith('logout');
-			await expect.element(page.getByText('Log out')).not.toBeVisible();
+			await expect.element(page.getByText('Log out')).not.toBeInTheDocument();
 		});
 
 		it('renders the avatar photo when src is set', async () => {
@@ -445,7 +444,7 @@ describe('DsTopBarNavigation', () => {
 
 			await trigger.click({ force: true });
 
-			await expect.element(page.getByText('Profile')).not.toBeVisible();
+			await expect.element(page.getByText('Profile')).not.toBeInTheDocument();
 			expect(onOpenChange).not.toHaveBeenCalled();
 		});
 
