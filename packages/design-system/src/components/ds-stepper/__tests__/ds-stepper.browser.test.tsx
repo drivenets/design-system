@@ -30,6 +30,39 @@ const stepWrapper = (label: string) => byText(label).element().closest(ITEM_SELE
 
 const stepLocator = (label: string) => page.elementLocator(stepWrapper(label));
 
+const separatorLocator = (label: string) =>
+	page.elementLocator(stepWrapper(label).querySelector('[data-part="separator"]') as HTMLElement);
+
+const tokenColor = (token: string) => {
+	const probe = document.createElement('span');
+	probe.style.color = `var(${token})`;
+	document.body.append(probe);
+	const { color } = getComputedStyle(probe);
+	probe.remove();
+
+	return color;
+};
+
+const stateSteps = [
+	{ label: 'Completed step', description: 'Completed description' },
+	{ label: 'Current step', description: 'Current description' },
+	{ label: 'Pending step', description: 'Pending description' },
+	{ label: 'Error step', description: 'Error description', variant: 'error' as const },
+	{ label: 'Last step', description: 'Last description' },
+];
+
+function StateStepper({ orientation }: { orientation: 'vertical' | 'horizontal' }) {
+	return (
+		<DsStepper count={stateSteps.length} activeStep={1} orientation={orientation}>
+			{stateSteps.map((step, index) => (
+				<DsStep index={index} key={index} variant={step.variant}>
+					<DsStepContent index={index} label={step.label} description={step.description} />
+				</DsStep>
+			))}
+		</DsStepper>
+	);
+}
+
 describe('DsStepper', () => {
 	it('renders every step label and description in the vertical layout', async () => {
 		await page.render(
@@ -452,5 +485,34 @@ describe('DsStepper', () => {
 
 		await expect.element(stepLocator('Validation')).toHaveAttribute('data-current');
 		await expect.element(stepLocator('Validation')).toHaveAttribute('data-error');
+	});
+});
+
+describe('DsStepper state colors', () => {
+	it.each([
+		{
+			orientation: 'vertical' as const,
+			separators: {
+				'Completed step': '--background-primary',
+				'Current step': '--background-primary',
+				'Pending step': '--border',
+				'Error step': '--border-contrast',
+			},
+		},
+		{
+			orientation: 'horizontal' as const,
+			separators: {
+				'Completed step': '--border-contrast',
+				'Current step': '--outline-moderate',
+				'Pending step': '--border-contrast',
+				'Error step': '--border-contrast',
+			},
+		},
+	])('colors $orientation separators per step state', async ({ orientation, separators }) => {
+		await page.render(<StateStepper orientation={orientation} />);
+
+		for (const [label, token] of Object.entries(separators)) {
+			await expect.element(separatorLocator(label)).toHaveStyle({ backgroundColor: tokenColor(token) });
+		}
 	});
 });

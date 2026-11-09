@@ -205,6 +205,10 @@ $horizontal-description-line-clamp: 2;
 		border-color: var(--background-error);
 	}
 
+	.indicatorContainer .separator {
+		background: var(--border-contrast);
+	}
+
 	.stepLabel {
 		color: var(--font-error);
 	}
@@ -289,13 +293,13 @@ $horizontal-description-line-clamp: 2;
 		min-width: 0;
 		background: var(--border-contrast);
 
-		&[data-complete] {
-			background: var(--background-primary);
-		}
-
 		&[data-current] {
 			background: var(--outline-moderate);
 		}
+	}
+
+	.step[data-error] .horizontalSeparator {
+		background: var(--border-contrast);
 	}
 
 	.stepDescription {
