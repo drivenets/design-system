@@ -50,6 +50,26 @@ export const ReadOnlyHorizontal: Story = {
 	},
 };
 
+/**
+ * A value wider than its container is cut to one line with an ellipsis. Hover it to read the
+ * full value in a tooltip; values that fit show no tooltip.
+ */
+export const TruncatedValue: Story = {
+	args: {
+		keyLabel: 'Site',
+		value: 'dn-site-frankfurt-eu-central-1-rack-12-spine-04',
+		readOnly: true,
+		orientation: 'horizontal',
+	},
+	decorators: [
+		(Story) => (
+			<div className={storyStyles.truncatedDemo}>
+				<Story />
+			</div>
+		),
+	],
+};
+
 export const CustomLabel: Story = {
 	args: {
 		keyLabel: (

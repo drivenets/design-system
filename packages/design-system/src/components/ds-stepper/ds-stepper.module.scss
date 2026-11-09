@@ -164,7 +164,7 @@ $horizontal-description-line-clamp: 2;
 		margin: 0;
 		font-size: $description-font-size;
 		line-height: $description-line-height;
-		color: var(--background-deselected);
+		color: var(--font-secondary);
 	}
 
 	&[data-current] {
@@ -177,14 +177,8 @@ $horizontal-description-line-clamp: 2;
 		}
 	}
 
-	&[data-complete] {
-		.stepLabel {
-			color: var(--font-main);
-		}
-
-		.stepDescription {
-			color: var(--font-secondary);
-		}
+	&[data-complete] .stepLabel {
+		color: var(--font-main);
 	}
 
 	.stepContent:not(.stepContentSingle) .stepActions {
@@ -203,6 +197,10 @@ $horizontal-description-line-clamp: 2;
 		background: var(--background-error-secondary-hover);
 		color: var(--background-error);
 		border-color: var(--background-error);
+	}
+
+	.indicatorContainer .separator {
+		background: var(--border-contrast);
 	}
 
 	.stepLabel {
@@ -240,6 +238,10 @@ $horizontal-description-line-clamp: 2;
 		overflow: clip;
 		min-width: $horizontal-other-min-width;
 
+		&:not([data-current], [data-error]) .stepLabel {
+			color: var(--font-main);
+		}
+
 		&[data-current] {
 			flex-grow: 2;
 			max-width: none;
@@ -248,6 +250,10 @@ $horizontal-description-line-clamp: 2;
 
 			.stepLabel {
 				flex-shrink: 0;
+			}
+
+			.stepDescription {
+				color: var(--font-secondary);
 			}
 		}
 	}
@@ -289,13 +295,13 @@ $horizontal-description-line-clamp: 2;
 		min-width: 0;
 		background: var(--border-contrast);
 
-		&[data-complete] {
-			background: var(--background-primary);
-		}
-
 		&[data-current] {
 			background: var(--outline-moderate);
 		}
+	}
+
+	.step[data-error] .horizontalSeparator {
+		background: var(--border-contrast);
 	}
 
 	.stepDescription {
