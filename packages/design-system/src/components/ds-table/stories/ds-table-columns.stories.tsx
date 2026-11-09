@@ -5,10 +5,13 @@ import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsCheckbox } from '../../ds-checkbox';
+import { DsIcon } from '../../ds-icon';
 import { DsStack } from '../../ds-stack';
+import { DsTypography } from '../../ds-typography';
 import DsTable from '../ds-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import styles from './ds-table.stories.module.scss';
+import columnsStyles from './ds-table-columns.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import {
 	fullHeightDecorator,
@@ -66,6 +69,72 @@ export const WithProgressInfographic: Story = {
 		}),
 		data: defaultData,
 	},
+};
+
+/**
+ * Text, spans and links wrap and clamp to two lines with an ellipsis, and inline `nowrap` content
+ * ends in an ellipsis on one line. Cells that render their own block or flex layout don't get the
+ * table's clamp, so clamp long text inside them, e.g. with `DsTypography` `truncate`.
+ */
+export const CellContent: Story = {
+	name: 'Cell content',
+	render: () => (
+		<DsTable
+			bordered
+			fullWidth
+			rowSize="large"
+			columns={[
+				{ accessorKey: 'description', header: 'Plain text', cell: (info) => info.getValue(), size: 220 },
+				{
+					accessorKey: 'owner',
+					header: 'Icon and label',
+					cell: (info) => (
+						<span className={columnsStyles.nowrapLabel}>
+							<DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+						</span>
+					),
+					size: 180,
+				},
+				{
+					accessorKey: 'status',
+					header: 'Flex layout',
+					cell: (info) => (
+						<div className={columnsStyles.iconLabel}>
+							<DsIcon icon="schedule" size="small" />
+							<span>{info.getValue<string>()}</span>
+						</div>
+					),
+					size: 200,
+				},
+				{
+					accessorKey: 'notes',
+					header: 'Clamped typography',
+					cell: (info) => (
+						<DsTypography variant="body-sm-reg" truncate={2}>
+							{info.getValue<string>()}
+						</DsTypography>
+					),
+					size: 220,
+				},
+			]}
+			data={[
+				{
+					id: '1',
+					description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+					owner: 'Network operations center',
+					status: 'Waiting for approval',
+					notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',
+				},
+				{
+					id: '2',
+					description: 'Firmware rollout',
+					owner: 'Platform team',
+					status: 'Scheduled for the next maintenance window',
+					notes: 'Staged rollout',
+				},
+			]}
+		/>
+	),
 };
 
 /**
