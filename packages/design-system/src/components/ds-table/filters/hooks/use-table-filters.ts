@@ -10,7 +10,7 @@ import type {
 	FilterState,
 	ResolvedColumnFilter,
 } from '../types/filter-adapter.types';
-import type { DsCellContext, DsColumnDef } from '../../ds-table-features';
+import type { DsCellContext, DsColumnDef, DsFilterFn } from '../../ds-table-features';
 
 const resolveColumnAdapterId = (
 	meta: ColumnFilterMeta | ResolvedColumnFilter | undefined,
@@ -143,7 +143,7 @@ export function useTableFilters<TData extends RowData, TValue, TCellValue>({
 
 				return {
 					...col,
-					filterFn: adapter.columnFilterFn,
+					filterFn: adapter.columnFilterFn satisfies DsFilterFn<TData>,
 					...(cellRenderer && {
 						cell: (info: DsCellContext<TData>) => cellRenderer(info.getValue<TCellValue>()),
 					}),

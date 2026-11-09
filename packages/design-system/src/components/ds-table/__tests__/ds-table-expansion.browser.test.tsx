@@ -5,6 +5,24 @@ import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 
+const EXPAND_BUTTON = { name: 'chevron_right' } as const;
+
+const createRef = () => {
+	const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+	const tableApi = () => {
+		if (!tableRef.current) {
+			throw new Error('DsTable did not set its ref');
+		}
+
+		return tableRef.current;
+	};
+
+	return { tableRef, tableApi };
+};
+
+const renderDetails = (row: Person) => <div>Details for {row.firstName}</div>;
+
 describe('DsTable Expansion', () => {
 	it('should expand and collapse rows', async () => {
 		const data = defaultData.slice(0, 5);
@@ -162,5 +180,268 @@ describe('DsTable Expansion', () => {
 
 		tableApi().expandAllRows();
 		await expect.poll(() => tableApi().getExpandedRowIds()).toEqual(['2', '3', '4', '5']);
+	});
+
+	it('should give every row an expander when expandable is true', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		expect(page.getByRole('button', EXPAND_BUTTON).all()).toHaveLength(5);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(4).click();
+		await expect.element(page.getByText('Details for Peter')).toBeVisible();
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Tanner')).not.toBeInTheDocument();
+		await expect.element(page.getByText('Details for Peter')).toBeVisible();
+	});
+
+	it('should render no expander column when expandable is false', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable={false}
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await expect.element(page.getByText('Tanner')).toBeVisible();
+		expect(page.getByRole('button', EXPAND_BUTTON).all()).toHaveLength(0);
+	});
+
+	it('should render the expanded content right below its row', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(1).click();
+
+		await expect.element(page.getByRole('row').nth(2)).toMatchTextContent('Kevin');
+		await expect.element(page.getByRole('row').nth(3)).toHaveTextContent('Details for Kevin');
+		await expect.element(page.getByRole('row').nth(4)).toMatchTextContent('John');
+	});
+
+	it('should not call onRowClick when toggling the expander', async () => {
+		const clicked: string[] = [];
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+				onRowClick={(row) => clicked.push(row.id)}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		expect(clicked).toEqual([]);
+	});
+
+	it('should collapse a single row with collapseRow and leave the others expanded', async () => {
+		const { tableRef, tableApi } = createRef();
+
+		await page.render(
+			<DsTable
+				ref={tableRef}
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		tableApi().expandRows(['1', '2']);
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+
+		tableApi().collapseRow('1');
+		await expect.element(page.getByText('Details for Tanner')).not.toBeInTheDocument();
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+		expect(tableApi().getExpandedRowIds()).toEqual(['2']);
+	});
+
+	it('should replace the expanded rows with expandRows', async () => {
+		const { tableRef, tableApi } = createRef();
+
+		await page.render(
+			<DsTable
+				ref={tableRef}
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		tableApi().expandRow('1');
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		tableApi().expandRows(['3', '4']);
+		await expect.element(page.getByText('Details for John')).toBeVisible();
+		await expect.element(page.getByText('Details for Jane')).toBeVisible();
+		await expect.element(page.getByText('Details for Tanner')).not.toBeInTheDocument();
+		expect(tableApi().getExpandedRowIds()).toEqual(['3', '4']);
+	});
+
+	it('should keep UI and API expansion in sync', async () => {
+		const { tableRef, tableApi } = createRef();
+
+		await page.render(
+			<DsTable
+				ref={tableRef}
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(2).click();
+		await expect.element(page.getByText('Details for John')).toBeVisible();
+		expect(tableApi().getExpandedRowIds()).toEqual(['3']);
+
+		tableApi().expandRow('5');
+		await expect.element(page.getByText('Details for Peter')).toBeVisible();
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(4).click();
+		await expect.element(page.getByText('Details for Peter')).not.toBeInTheDocument();
+		expect(tableApi().getExpandedRowIds()).toEqual(['3']);
+
+		tableApi().collapseAllRows();
+		await expect.element(page.getByText('Details for John')).not.toBeInTheDocument();
+		expect(tableApi().getExpandedRowIds()).toEqual([]);
+	});
+
+	it('should expand only the expandable rows with expandAllRows', async () => {
+		const { tableRef, tableApi } = createRef();
+
+		await page.render(
+			<DsTable
+				ref={tableRef}
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable={(row) => row.firstName !== 'Tanner'}
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		tableApi().expandAllRows();
+
+		await expect.element(page.getByText('Details for Peter')).toBeVisible();
+		await expect.element(page.getByText('Details for Tanner')).not.toBeInTheDocument();
+		expect(tableApi().getExpandedRowIds()).toEqual(['2', '3', '4', '5']);
+	});
+
+	it('should keep rows expanded when the parent re-renders with new data of the same rows', async () => {
+		function Wrapper() {
+			const [data, setData] = useState(() => defaultData.slice(0, 5));
+
+			return (
+				<>
+					<button type="button" onClick={() => setData((prev) => prev.map((row) => ({ ...row })))}>
+						Refresh data
+					</button>
+					<DsTable columns={columns} data={data} expandable renderExpandedRow={renderDetails} />
+				</>
+			);
+		}
+
+		await page.render(<Wrapper />);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(1).click();
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+
+		await page.getByRole('button', { name: 'Refresh data' }).click();
+
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+	});
+
+	it('should keep a row expanded when its expandable callback changes identity', async () => {
+		const { rerender } = await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable={(row) => row.id !== '1'}
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+
+		await rerender(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable={(row) => row.id !== '1'}
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await expect.element(page.getByText('Details for Kevin')).toBeVisible();
+	});
+
+	it('should keep an expanded row expanded after sorting', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		await page.getByText('First Name').click();
+		await page.getByText('First Name').click();
+
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(2)).toHaveTextContent('Details for Tanner');
+	});
+
+	it('should pick up a new renderExpandedRow between renders', async () => {
+		const { rerender } = await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={renderDetails}
+			/>,
+		);
+
+		await page.getByRole('button', EXPAND_BUTTON).nth(0).click();
+		await expect.element(page.getByText('Details for Tanner')).toBeVisible();
+
+		await rerender(
+			<DsTable
+				columns={columns}
+				data={defaultData.slice(0, 5)}
+				expandable
+				renderExpandedRow={(row) => <div>Updated details for {row.firstName}</div>}
+			/>,
+		);
+
+		await expect.element(page.getByText('Updated details for Tanner')).toBeVisible();
 	});
 });

@@ -5,9 +5,10 @@ import {
 	type RowSelectionState,
 	type ColumnFiltersState,
 	type ColumnPinningState,
-	type SortingState,
 	useTable,
 	type ColumnVisibilityState,
+	functionalUpdate,
+	type Updater,
 } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
@@ -90,7 +91,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const columnsProp: DsColumnDef<TData, any>[] = rawColumns;
 	const [data, setData] = React.useState(tableData);
-	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<ColumnVisibilityState>({});
 	const [internalStickyColumns, setInternalStickyColumns] = React.useState<DsTableStickyColumns>({});
@@ -105,23 +105,20 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	});
 
 	const columnFilters = externalColumnFilters ?? internalColumnFilters;
-	const handleColumnFiltersChange = (
-		updaterOrValue: ColumnFiltersState | ((old: ColumnFiltersState) => ColumnFiltersState),
-	) => {
-		const newFilters = typeof updaterOrValue === 'function' ? updaterOrValue(columnFilters) : updaterOrValue;
-		if (onColumnFiltersChange) {
-			onColumnFiltersChange(newFilters);
-		} else {
+	const handleColumnFiltersChange = (updater: Updater<ColumnFiltersState>) => {
+		const newFilters = functionalUpdate(updater, columnFilters);
+
+		if (externalColumnFilters === undefined) {
 			setInternalColumnFilters(newFilters);
 		}
+
+		onColumnFiltersChange?.(newFilters);
 	};
 
 	const baseColumnVisibility = externalColumnVisibility ?? internalColumnVisibility;
-	const handleColumnVisibilityChange = (
-		updaterOrValue: ColumnVisibilityState | ((old: ColumnVisibilityState) => ColumnVisibilityState),
-	) => {
-		const newVisibility =
-			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
+	// Applied to the consumer's visibility only, so collapsed groups never leak into it.
+	const handleColumnVisibilityChange = (updater: Updater<ColumnVisibilityState>) => {
+		const newVisibility = functionalUpdate(updater, baseColumnVisibility);
 
 		if (externalColumnVisibility === undefined) {
 			setInternalColumnVisibility(newVisibility);
@@ -140,12 +137,6 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		() => ({ ...baseColumnVisibility, ...collapsedVisibility }),
 		[baseColumnVisibility, collapsedVisibility],
 	);
-
-	const handleSortingChange = (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
-		const newSorting = typeof updaterOrValue === 'function' ? updaterOrValue(sorting) : updaterOrValue;
-		setSorting(newSorting);
-		onSortingChange?.(newSorting);
-	};
 
 	// Boolean flags only — an inline `selectable` / `expandable` callback must
 	// not rebuild column defs (and remount cells) on every parent render.
@@ -229,8 +220,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		features: dsTableFeatures,
 		data: loading ? skeletonData : reorderable ? data : tableData,
 		columns: loading ? skeletonColumns : columns,
-		onSortingChange: handleSortingChange,
-		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
+		onColumnFiltersChange: handleColumnFiltersChange,
 		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onColumnPinningChange: handleColumnPinningChange,
 		getRowId: (row) => row.id,
@@ -239,14 +229,22 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		getRowCanExpand: typeof expandable === 'function' ? (row) => expandable(row.original) : () => expandable,
 		...resize.tableOptions,
 		state: {
-			sorting,
 			columnFilters,
 			columnVisibility,
 			columnPinning,
-			...resize.state,
 		},
 		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
+
+	const onSortingChangeRef = React.useRef(onSortingChange);
+	onSortingChangeRef.current = onSortingChange;
+
+	React.useEffect(() => {
+		const { unsubscribe } = table.atoms.sorting.subscribe((nextSorting) =>
+			onSortingChangeRef.current?.(nextSorting),
+		);
+		return unsubscribe;
+	}, [table.atoms.sorting]);
 
 	const onSelectionChangeRef = React.useRef(onSelectionChange);
 	onSelectionChangeRef.current = onSelectionChange;

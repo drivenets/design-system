@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
+import type { DsTableApi } from '../ds-table.types';
 import { columns, type Person } from '../stories/common/story-data';
 
 const statuses: Person['status'][] = ['single', 'relationship', 'complicated'];
@@ -69,6 +70,33 @@ describe('DsTable Virtualized', () => {
 				return (second?.getBoundingClientRect().top ?? 0) - (first?.getBoundingClientRect().top ?? 0);
 			})
 			.toBeGreaterThan(0);
+	});
+
+	it('should sort rows, show the sort indicator, and call onSortingChange on header click', async () => {
+		const onSortingChange = vi.fn();
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable columns={columns} data={largeData} virtualized onSortingChange={onSortingChange} />
+			</div>,
+		);
+
+		const visitsHeader = page.getByText('Visits');
+		const firstBodyRow = page.getByRole('row').nth(1);
+
+		await visitsHeader.click();
+
+		await expect.element(firstBodyRow.getByText('First200', { exact: true })).toBeInTheDocument();
+		await expect.element(page.getByText('arrow_drop_down')).toBeVisible();
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'visits', desc: true }]);
+
+		await visitsHeader.click();
+
+		await expect.element(firstBodyRow.getByText('First1', { exact: true })).toBeInTheDocument();
+		await expect.element(page.getByText('arrow_drop_up')).toBeVisible();
+		await expect.element(page.getByText('arrow_drop_down')).not.toBeInTheDocument();
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'visits', desc: false }]);
+		expect(onSortingChange).toHaveBeenCalledTimes(2);
 	});
 
 	it('should persist selection through scroll', async () => {
@@ -142,5 +170,59 @@ describe('DsTable Virtualized', () => {
 		}
 
 		await expect.element(page.getByText('Expanded: First1'), { timeout: 2000 }).toBeVisible();
+	});
+
+	it('should expand and collapse virtualized rows through the table API', async () => {
+		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable
+					ref={tableRef}
+					columns={columns}
+					data={largeData}
+					virtualized
+					expandable
+					renderExpandedRow={(row) => <div>Expanded: {row.firstName}</div>}
+				/>
+			</div>,
+		);
+
+		tableRef.current?.expandRows(['1', '2']);
+		await expect.element(page.getByText('Expanded: First1')).toBeVisible();
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+
+		tableRef.current?.collapseRow('1');
+		await expect.element(page.getByText('Expanded: First1')).not.toBeInTheDocument();
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+
+		await page.getByRole('button', { name: 'chevron_right' }).nth(1).click();
+		await expect.element(page.getByText('Expanded: First2')).not.toBeInTheDocument();
+		expect(tableRef.current?.getExpandedRowIds()).toEqual([]);
+	});
+
+	it('should render expanded content only for expandable rows after expandAllRows when virtualized', async () => {
+		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable
+					ref={tableRef}
+					columns={columns}
+					data={largeData}
+					virtualized
+					expandable={(row) => row.id !== '1'}
+					renderExpandedRow={(row) => <div>Expanded: {row.firstName}</div>}
+				/>
+			</div>,
+		);
+
+		tableRef.current?.expandAllRows();
+
+		await expect.element(page.getByText('Expanded: First2')).toBeVisible();
+		await expect.element(page.getByText('Expanded: First1')).not.toBeInTheDocument();
+
+		tableRef.current?.collapseAllRows();
+		await expect.element(page.getByText('Expanded: First2')).not.toBeInTheDocument();
 	});
 });

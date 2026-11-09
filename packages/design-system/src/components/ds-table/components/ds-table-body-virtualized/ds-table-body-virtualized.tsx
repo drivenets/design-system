@@ -9,6 +9,7 @@ import { useInfiniteScroll } from './use-infinite-scroll';
 import { useBodyOffsetTop } from './use-body-offset-top';
 import { useDsTableContext } from '../../context/ds-table-context';
 import type { DsRow } from '../../ds-table-features';
+import { isRowExpanded } from '../../utils/row-expansion';
 
 export const DsTableBodyVirtualized = <TData extends RowData>({
 	table,
@@ -28,7 +29,7 @@ export const DsTableBodyVirtualized = <TData extends RowData>({
 	const { rows } = table.getRowModel();
 
 	const rowsAndExpandedRowContent = rows.flatMap((row) =>
-		row.getIsExpanded() ? [{ row }, { row, isExpandedRowContent: true }] : [{ row }],
+		isRowExpanded(row) ? [{ row }, { row, isExpandedRowContent: true }] : [{ row }],
 	);
 
 	const getItemKey = (index: number) => {

@@ -1,4 +1,4 @@
-import { flexRender, type RowData } from '@tanstack/react-table';
+import { FlexRender, type RowData } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { TableHead, TableHeader, TableRow } from '../core-table';
@@ -75,7 +75,7 @@ const DsTableHeader = <TData extends RowData>({ table }: DsTableHeaderProps<TDat
 									}}
 									{...stickyAttributes}
 								>
-									{!header.isPlaceholder && flexRender(header.column.columnDef.header, header.getContext())}
+									{!header.isPlaceholder && <FlexRender header={header} />}
 									{isTopRow && (
 										<span className={styles.columnDisplaySlot}>
 											<DsTableColumnDisplay table={table} />
@@ -154,7 +154,7 @@ const DsTableHeader = <TData extends RowData>({ table }: DsTableHeaderProps<TDat
 										className={styles.headerLabelStack}
 									>
 										<DsTableHeaderLabel tooltipText={tooltipText}>
-											{flexRender(headerDef, header.getContext())}
+											<FlexRender header={header} />
 										</DsTableHeaderLabel>
 									</DsStack>
 									{canSort && sortDirection && (
