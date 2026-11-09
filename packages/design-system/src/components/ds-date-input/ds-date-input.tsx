@@ -126,6 +126,9 @@ const DsDateInput = ({
 					onOpenChange?.(details.open);
 				}
 			}}
+			// A modal aria-hides content already portalled to <body> when it opens: https://github.com/chakra-ui/ark/issues/3728
+			lazyMount
+			unmountOnExit
 			{...datePickerProps}
 		>
 			<DatePicker.Control

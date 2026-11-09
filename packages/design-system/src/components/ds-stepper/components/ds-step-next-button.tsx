@@ -1,5 +1,6 @@
 import { useStepper } from '../hooks/use-stepper';
 import { DsButton, type DsButtonUnifiedProps } from '../../ds-button';
+import { DsIcon } from '../../ds-icon';
 
 // TODO: Use the new button props once we deprecate the legacy button.
 type DsLegacyButtonProps = Extract<DsButtonUnifiedProps, { design?: undefined | 'legacy' }> & {
@@ -17,6 +18,7 @@ export function DsNextStepButton({ children, size = 'small', ...rest }: DsNextSt
 	return (
 		<DsButton {...context.stepsApi.getNextTriggerProps()} size={size} {...rest}>
 			{children}
+			<DsIcon icon="arrow_forward" size="tiny" aria-hidden />
 		</DsButton>
 	);
 }

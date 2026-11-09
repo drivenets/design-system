@@ -6,6 +6,7 @@ import { DsTooltip } from '../../ds-tooltip';
 import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
 import styles from '../ds-popover.stories.module.scss';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 const PLACEHOLDER_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
@@ -36,7 +37,7 @@ describe('DsPopover', () => {
 	it('opens on trigger click and reveals the panel content', async () => {
 		await page.render(<Example />);
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		await getTrigger().click();
 
@@ -63,7 +64,7 @@ describe('DsPopover', () => {
 
 		await userEvent.keyboard('{Escape}');
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('closes when clicking outside the panel', async () => {
@@ -79,7 +80,7 @@ describe('DsPopover', () => {
 
 		await page.getByRole('button', { name: 'Outside' }).click();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('respects the controlled open prop', async () => {
@@ -89,7 +90,7 @@ describe('DsPopover', () => {
 		// Controlled: parent ignores the request, so the trigger cannot self-open the panel.
 		await getTrigger().click();
 		expect(onOpenChange).toHaveBeenCalledWith(true);
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		await rerender(<Example open onOpenChange={onOpenChange} />);
 		await expect.element(getPanel()).toBeVisible();
@@ -289,14 +290,14 @@ describe('DsPopover legacy call form', () => {
 		const panel = page.getByRole('dialog', { name: /legacy details/i });
 		const trigger = page.getByRole('button', { name: /open popover/i });
 
-		await expect.element(page.getByText(/dallas/i)).not.toBeVisible();
+		await expect.element(page.getByText(/dallas/i)).not.toBeInTheDocument();
 
 		await trigger.click();
 		await expect.element(panel).toBeVisible();
 		await expect.element(panel.getByText(/dallas/i)).toBeVisible();
 
 		await page.getByRole('button', { name: 'Outside' }).click();
-		await expect.element(page.getByText(/dallas/i)).not.toBeVisible();
+		await expect.element(page.getByText(/dallas/i)).not.toBeInTheDocument();
 
 		await trigger.click();
 		await expect.element(panel).toBeVisible();
@@ -345,7 +346,7 @@ describe('DsPopover openOn="hover"', () => {
 		await renderHoverExample();
 
 		await getTrigger().hover();
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		await expect.element(getPanel()).toBeVisible();
 	});
@@ -376,7 +377,7 @@ describe('DsPopover openOn="hover"', () => {
 		await getPanel().hover();
 		await getPanel().unhover();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('still opens and closes on click', async () => {
@@ -387,7 +388,7 @@ describe('DsPopover openOn="hover"', () => {
 		await expect.element(getPanel()).toBeVisible();
 
 		await getTrigger().click();
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('keeps a hover-opened panel open when the trigger is clicked', async () => {
@@ -422,7 +423,7 @@ describe('DsPopover openOn="hover"', () => {
 
 		await getTrigger().unhover();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('keeps a pinned panel open when the pointer enters and leaves it', async () => {
@@ -448,7 +449,7 @@ describe('DsPopover openOn="hover"', () => {
 		await getTrigger().click();
 		await getTrigger().click();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('does not carry a pin over to the next hover-opened session', async () => {
@@ -457,14 +458,14 @@ describe('DsPopover openOn="hover"', () => {
 		await getTrigger().click();
 		await expect.element(getPanel()).toBeVisible();
 		await userEvent.keyboard('{Escape}');
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		await getTrigger().unhover();
 		await getTrigger().hover();
 		await expect.element(getPanel()).toBeVisible();
 		await getTrigger().unhover();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('stays closed after a quick open-close click pair, before the hover delay elapses', async () => {
@@ -475,7 +476,7 @@ describe('DsPopover openOn="hover"', () => {
 		await getTrigger().click();
 		await wait(OPEN_DELAY * 2);
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('ignores touch pointers so a tap stays a plain click', async () => {
@@ -484,7 +485,7 @@ describe('DsPopover openOn="hover"', () => {
 		pointerEnterTrigger('touch');
 
 		await wait(OPEN_DELAY * 2);
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		// The same synthetic path with a mouse pointer does open it — the guard is on
 		// `pointerType`, not on the test's events failing to reach the handler at all.
@@ -500,7 +501,7 @@ describe('DsPopover openOn="hover"', () => {
 
 		await userEvent.keyboard('{Escape}');
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('lets a controlled open prop win over hover intent', async () => {
@@ -511,7 +512,7 @@ describe('DsPopover openOn="hover"', () => {
 
 		// Hover reports intent, but the parent owns the state and said no.
 		await vi.waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(true));
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 });
 
@@ -560,7 +561,7 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 
 		// "Hover away" — move the pointer off the trigger, as in the reported repro.
 		await getTrigger().unhover();
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 		await wait(300);
 
 		// Ark restores focus to the trigger on close; under hover the user never
@@ -573,7 +574,7 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 		await getTrigger().unhover();
 
 		await getElsewhere().click();
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 
 		// Tab from the input onto the trigger.
 		await userEvent.keyboard('{Tab}');
@@ -594,10 +595,10 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 		trigger.click();
 		await expect.element(panelText()).toBeVisible();
 		trigger.click();
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 
 		await wait(openDelay + 100);
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 	});
 
 	it('leaves focus on the trigger when Escape closes a tab-opened panel', async () => {
@@ -609,7 +610,7 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 		await expect.element(panelText()).toBeVisible();
 
 		await userEvent.keyboard('{Escape}');
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 		await wait(300);
 
 		expect(document.activeElement?.textContent).toBe('Open details');
@@ -628,7 +629,7 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 		await wait(200);
 
 		await userEvent.keyboard('{Escape}');
-		await expect.element(panelText()).not.toBeVisible();
+		await expect.element(panelText()).not.toBeInTheDocument();
 		await wait(300);
 
 		// Focus was genuinely inside the panel, so it must not be stranded on <body>.
@@ -667,7 +668,7 @@ describe('DsPopover.Anchor', () => {
 		await expect.element(getPanel()).toBeVisible();
 
 		await page.getByRole('button', { name: 'Outside' }).click();
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 });
 
@@ -791,7 +792,7 @@ describe('DsPopover focus', () => {
 		(getPanel().element() as HTMLElement).focus();
 		await userEvent.keyboard('{Escape}');
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 		await expect.element(page.getByRole('button', { name: /return here/i })).toHaveFocus();
 	});
 
@@ -836,7 +837,7 @@ describe('DsPopover focus', () => {
 		(getPanel().element() as HTMLElement).focus();
 		await userEvent.keyboard('{Escape}');
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 		expect(onCloseAutoFocus).toHaveBeenCalled();
 		await expect.element(page.getByRole('button', { name: /return here/i })).toHaveFocus();
 		await expect.element(getTrigger()).not.toHaveFocus();
@@ -865,6 +866,36 @@ describe('DsPopover.Panel id', () => {
 		await expect
 			.element(page.getByRole('dialog', { name: /sized panel/i }))
 			.toHaveAttribute('id', 'device-panel');
+	});
+});
+
+describe('DsPopover accessible name', () => {
+	const NamedPanel = ({ headers }: { headers: number }) => (
+		<DsPopover.Root>
+			<DsPopover.Trigger>
+				<button type="button">Open</button>
+			</DsPopover.Trigger>
+			<DsPopover.Panel aria-label="Quick info">
+				{Array.from({ length: headers }, (_, i) => (
+					<DsPopover.Header key={i}>Device details</DsPopover.Header>
+				))}
+				<DsPopover.Content>
+					<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+				</DsPopover.Content>
+			</DsPopover.Panel>
+		</DsPopover.Root>
+	);
+
+	it('keeps the header name while any header is rendered, and falls back to aria-label without one', async () => {
+		const { rerender } = await page.render(<NamedPanel headers={2} />);
+		await page.getByRole('button', { name: 'Open' }).click();
+		await expect.element(page.getByRole('dialog', { name: 'Device details' })).toBeVisible();
+
+		await rerender(<NamedPanel headers={1} />);
+		await expect.element(page.getByRole('dialog', { name: 'Device details' })).toBeVisible();
+
+		await rerender(<NamedPanel headers={0} />);
+		await expect.element(page.getByRole('dialog', { name: 'Quick info' })).toBeVisible();
 	});
 });
 
@@ -943,7 +974,7 @@ describe('DsPopover with a tooltip disabled while open', () => {
 
 		// The pointer leaves the trigger while the tooltip is disabled.
 		await page.getByRole('button', { name: 'Outside' }).click();
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 
 		await getTrigger().hover();
 		await expect.element(page.getByRole('tooltip', { name: 'Preview' })).toBeVisible();
@@ -979,7 +1010,7 @@ describe.each([
 		// The trigger must stay excluded from outside-click dismissal, or this click closes then reopens.
 		await getTrigger().click();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 		expect(onOpenChange.mock.calls).toEqual([[true], [false]]);
 	});
 
@@ -991,7 +1022,7 @@ describe.each([
 
 		await getTrigger().click();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 	});
 
 	it('returns focus to the trigger when Escape closes the panel', async () => {
@@ -1002,7 +1033,7 @@ describe.each([
 
 		await userEvent.keyboard('{Escape}');
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 		await expect.element(getTrigger()).toHaveFocus();
 	});
 });
@@ -1075,7 +1106,7 @@ describe('DsPopover.CloseTrigger', () => {
 
 		await getPanel().getByRole('button', { name: 'Close' }).click();
 
-		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeInTheDocument();
 		await expect.element(getTrigger()).toHaveFocus();
 	});
 
@@ -1102,5 +1133,51 @@ describe('DsPopover.CloseTrigger', () => {
 		await page.render(<CloseExample open />);
 
 		await expect.element(page.getByRole('dialog', { name: 'Device details', exact: true })).toBeVisible();
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+describe.each(modalContainers)('DsPopover inside $container', ({ Container }) => {
+	const ModalHarness = () => {
+		const [open, setOpen] = useState(true);
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<Example />
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	it('exposes the panel by role', async () => {
+		await page.render(<ModalHarness />);
+
+		await getTrigger().click();
+
+		await expect.element(getPanel()).toBeVisible();
+		await expect.element(getPanel().getByText(/edge router is online/i)).toBeVisible();
+	});
+
+	it('exposes the panel by role after the modal is closed and reopened', async () => {
+		await page.render(<ModalHarness />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+		await getTrigger().click();
+		await expect.element(getPanel()).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await getTrigger().click();
+
+		await expect.element(getPanel()).toBeVisible();
 	});
 });

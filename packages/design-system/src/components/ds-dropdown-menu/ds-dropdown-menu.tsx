@@ -67,6 +67,9 @@ const Root: React.FC<DsDropdownMenuRootProps> = ({
 			onHighlightChange={(details) => onHighlightChange?.(details.highlightedValue)}
 			positioning={positioning}
 			closeOnSelect={!preventCloseOnSelect}
+			// A modal aria-hides content already portalled to <body> when it opens: https://github.com/chakra-ui/ark/issues/3728
+			lazyMount
+			unmountOnExit
 		>
 			{children}
 		</Menu.Root>

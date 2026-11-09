@@ -56,6 +56,8 @@ const DsPopoverRoot = ({
 	const pinned = useRef(false);
 	const [contentId, setContentId] = useState<string>();
 	const ownTriggerId = useId();
+	const titleId = useId();
+	const [titleCount, setTitleCount] = useState(0);
 	const injectedTriggerId = useRef<string | undefined>(undefined);
 	const [focusInPanel, setFocusInPanel] = useState(false);
 
@@ -100,6 +102,8 @@ const DsPopoverRoot = ({
 				matchAnchorWidth,
 				registerAnchor,
 				registerContentId: setContentId,
+				titleId: titleCount > 0 ? titleId : undefined,
+				registerTitle: setTitleCount,
 				registerTriggerId: (id) => {
 					injectedTriggerId.current = id;
 				},
@@ -121,10 +125,14 @@ const DsPopoverRoot = ({
 				open={open}
 				defaultOpen={defaultOpen}
 				modal={modal}
+				// A modal aria-hides content already portalled to <body> when it opens: https://github.com/chakra-ui/ark/issues/3728
+				lazyMount
+				unmountOnExit
 				ids={{
 					// Resolved on every lookup, so an id an outer wrapper (e.g. DsTooltip) puts on the
 					// trigger is found from the first effect, including a panel open on mount.
 					trigger: () => injectedTriggerId.current ?? ownTriggerId,
+					title: titleId,
 					...(contentId ? { content: contentId } : {}),
 				}}
 				// Trigger focus is lost when open on hover
@@ -205,7 +213,7 @@ const DsPopoverPanel = ({
 	id,
 	'aria-label': ariaLabel,
 }: DsPopoverPanelProps) => {
-	const { matchAnchorWidth, registerContentId, hoverIntent } = useDsPopoverContext();
+	const { matchAnchorWidth, registerContentId, hoverIntent, titleId } = useDsPopoverContext();
 	const hoverProps = useHoverIntentProps();
 	const resolvedWidth = width ?? (matchAnchorWidth ? MATCHED_PANEL_WIDTH : DEFAULT_PANEL_WIDTH);
 
@@ -231,6 +239,8 @@ const DsPopoverPanel = ({
 					onBlur={onBlur}
 					ref={ref}
 					aria-label={ariaLabel}
+					// Zag looks for the title only when the popover mounts, before a lazily mounted panel has one.
+					aria-labelledby={titleId}
 					className={classNames(styles.panel, className)}
 					style={{ ...style, width: resolvedWidth }}
 				>
@@ -241,17 +251,27 @@ const DsPopoverPanel = ({
 	);
 };
 
-const DsPopoverHeader = ({ icon, actions, className, style, children }: DsPopoverHeaderProps) => (
-	<div className={classNames(styles.header, className)} style={style}>
-		{icon && <span className={styles.headerIcon}>{icon}</span>}
-		<Popover.Title className={styles.title} asChild>
-			<DsTypography variant="heading3" color="main">
-				{children}
-			</DsTypography>
-		</Popover.Title>
-		{actions && <div className={styles.headerActions}>{actions}</div>}
-	</div>
-);
+const DsPopoverHeader = ({ icon, actions, className, style, children }: DsPopoverHeaderProps) => {
+	const { registerTitle } = useDsPopoverContext();
+
+	useLayoutEffect(() => {
+		registerTitle((count) => count + 1);
+
+		return () => registerTitle((count) => count - 1);
+	}, [registerTitle]);
+
+	return (
+		<div className={classNames(styles.header, className)} style={style}>
+			{icon && <span className={styles.headerIcon}>{icon}</span>}
+			<Popover.Title className={styles.title} asChild>
+				<DsTypography variant="heading3" color="main">
+					{children}
+				</DsTypography>
+			</Popover.Title>
+			{actions && <div className={styles.headerActions}>{actions}</div>}
+		</div>
+	);
+};
 
 const DsPopoverCloseTrigger = ({ className, style, ref, locale }: DsPopoverCloseTriggerProps) => (
 	<Popover.CloseTrigger asChild>

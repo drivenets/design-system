@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsTagFilter } from '../../ds-tag-filter';
 import { createCheckboxFilterAdapter, useTableFilters } from '../filters';
+import { modalContainers } from '../../../../vitest/modal-containers';
 
 type DeviceRow = {
 	id: string;
@@ -199,5 +201,53 @@ describe('DsTable - column filters', () => {
 
 		await expect.element(ascending).not.toBeInTheDocument();
 		await expect.element(descending).not.toBeInTheDocument();
+	});
+});
+
+// A modal aria-hides content already portalled to <body> when it opens, so it must mount after.
+describe.each(modalContainers)('DsTable column filters inside $container', ({ Container }) => {
+	const ModalHarness = () => {
+		const [open, setOpen] = useState(true);
+
+		return (
+			<>
+				<button type="button" onClick={() => setOpen(true)}>
+					Open modal
+				</button>
+				<Container open={open} onOpenChange={setOpen}>
+					<TableWithColumnFilters />
+					<button type="button" onClick={() => setOpen(false)}>
+						Close modal
+					</button>
+				</Container>
+			</>
+		);
+	};
+
+	it('exposes the filter popover by role', async () => {
+		await page.render(<ModalHarness />);
+
+		await page.getByRole('button', { name: 'Filter column' }).click();
+
+		await expect.element(page.getByRole('checkbox', { name: 'PP-LGX' })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Save' })).toBeVisible();
+	});
+
+	it('exposes the filter popover by role after the modal is closed and reopened', async () => {
+		await page.render(<ModalHarness />);
+
+		const trigger = page.getByRole('button', { name: 'Filter column' });
+		await trigger.click();
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).toBeVisible();
+		await trigger.click();
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await page.getByRole('button', { name: 'Filter column' }).click();
+
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Save' })).toBeVisible();
 	});
 });

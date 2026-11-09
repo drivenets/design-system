@@ -51,6 +51,9 @@ export const DsTableColumnFilterPopover = ({
 			open={open}
 			onOpenChange={handleOpenChange}
 			positioning={{ placement: 'bottom-end', gutter: 4 }}
+			// A modal aria-hides content already portalled to <body> when it opens: https://github.com/chakra-ui/ark/issues/3728
+			lazyMount
+			unmountOnExit
 		>
 			<Popover.Trigger asChild>
 				<DsButtonV3
