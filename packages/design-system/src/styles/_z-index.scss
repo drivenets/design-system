@@ -1,7 +1,15 @@
+/* value */
 :root {
-	--z-index-popover: 1000;
-	--z-index-drawer: 1200;
-	--z-index-modal: 1200;
-	--z-index-dropdown: 9999;
-	--z-index-tooltip: 9999;
+	--z-index-1000: 1000;
+	--z-index-1200: 1200;
+	--z-index-9999: 9999;
+}
+
+/* alias */
+:root {
+	--z-index-popover: var(--z-index-1000);
+	--z-index-drawer: var(--z-index-1200);
+	--z-index-modal: var(--z-index-1200);
+	--z-index-dropdown: var(--z-index-9999);
+	--z-index-tooltip: var(--z-index-9999);
 }
