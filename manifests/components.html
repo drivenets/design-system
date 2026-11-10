@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/106 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/106 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/106 without API description</a><span class="filter-pill ok" aria-disabled="true">665 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/665 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/106 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/106 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/106 without API description</a><span class="filter-pill ok" aria-disabled="true">665 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/665 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">7 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.2s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -44463,6 +44463,78 @@ Every row tagged `Changed` in the tables above. Visual retesting is required whe
 | Token (old → new)        | Old value | New value | Δ        |
 | ------------------------ | --------- | --------- | -------- |
 | `--spacing-20` → `--4xl` | `80px`    | `72px`    | **−8px** |
+</code></pre>
+          </div>
+        </div>
+  </div>
+</article>
+<article
+  class="card is-doc no-doc-error"
+  role="listitem"
+  aria-label="Docs">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Guidelines/Z-index</h2>
+      <div class="badges">
+        
+        <label for="doc-6-guidelines-z-index-docs-content" class="badge ok as-toggle">view content</label>
+      </div>
+    </div>
+    <div class="meta" title="./src/stories/z-index.mdx">guidelines-z-index--docs · ./src/stories/z-index.mdx</div>
+    <div># Z-index Portaled overlays stack in tiers. Each tier is a CSS custom property on `:root`,...</div>
+  </div>
+
+  <!-- Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="doc-6-guidelines-z-index-docs-content" class="tg tg-content" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-content">
+          <div class="mdx-content">
+            <pre><code>import { Meta } from &#39;@storybook/addon-docs/blocks&#39;;
+
+&lt;Meta title=&quot;Guidelines/Z-index&quot; /&gt;
+
+# Z-index
+
+Portaled overlays stack in tiers. Each tier is a CSS custom property on `:root`, so an app can place its own
+overlays between the DS tiers, or move a tier, without reading the compiled CSS.
+
+Tokens come in two layers, like the colors: value tokens hold the numbers, and tier tokens point at them. Components
+and apps read the tier tokens.
+
+| Tier token           | Value token      | Default | Tier                                    | Read by today    |
+| -------------------- | ---------------- | ------- | --------------------------------------- | ---------------- |
+| `--z-index-popover`  | `--z-index-1000` | `1000`  | Popovers anchored to page content       | `DsPopover`      |
+| `--z-index-drawer`   | `--z-index-1200` | `1200`  | Drawer panels                           | —                |
+| `--z-index-modal`    | `--z-index-1200` | `1200`  | Modal and dialog content                | —                |
+| `--z-index-dropdown` | `--z-index-9999` | `9999`  | Select, autocomplete and dropdown menus | `DsAutocomplete` |
+| `--z-index-tooltip`  | `--z-index-9999` | `9999`  | Tooltips                                | —                |
+
+Overlays are moving onto these tokens one component at a time. Until a component reads its token, overriding the
+token doesn&#39;t move that component.
+
+## Placing an app overlay
+
+Read the tokens instead of copying their numbers:
+
+```css
+.app-banner {
+	z-index: calc(var(--z-index-modal) + 1);
+}
+```
+
+## Moving a tier
+
+Override the token on `:root`:
+
+```css
+:root {
+	--z-index-popover: 1100;
+}
+```
 </code></pre>
           </div>
         </div>
