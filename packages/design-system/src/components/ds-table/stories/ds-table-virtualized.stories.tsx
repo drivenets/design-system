@@ -18,6 +18,7 @@ import styles from './ds-table.stories.module.scss';
 import editableStyles from './ds-table-editable.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { generateChangeNotes, type ChangeNote } from './common/story-notes-data';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Virtualized',
@@ -514,5 +515,38 @@ export const VirtualizedWithColumnDisplay: Story = {
 		virtualized: true,
 		columnDisplay: true,
 		reorderableColumns: true,
+	},
+};
+
+const changeNoteColumns: ColumnDef<ChangeNote>[] = [
+	{ accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },
+	{ accessorKey: 'owner', header: 'Owner', cell: (info) => info.getValue(), size: 200 },
+	{ accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 420 },
+];
+
+/**
+ * `rowSize="auto"` with row virtualization. Each row is measured as it renders,
+ * so rows of different heights scroll without overlapping or leaving gaps.
+ */
+export const VirtualizedAutoRowHeight: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render() {
+		const [data] = useState(() => generateChangeNotes(VIRTUALIZED_ROW_COUNT));
+
+		return (
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable
+					bordered
+					fullWidth
+					stickyHeader
+					virtualized
+					rowSize="auto"
+					data={data}
+					columns={changeNoteColumns}
+				/>
+			</div>
+		);
 	},
 };

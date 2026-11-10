@@ -480,3 +480,80 @@ const ValidateOnAsyncSave = () => {
             }} />
     );
 };
+
+## Auto Row Height
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [data, setData] = useState(() => generateChangeNotes(6));
+    const columns: ColumnDef<ChangeNote>[] = [{
+      accessorKey: 'change',
+      header: 'Change',
+      cell: info => info.getValue(),
+      size: 140
+    }, {
+      accessorKey: 'owner',
+      header: 'Owner',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+      size: 200
+    }, {
+      accessorKey: 'notes',
+      header: 'Notes',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+      size: 420
+    }];
+    return <DsTable bordered fullWidth stickyHeader rowSize="auto" data={data} columns={columns} onCellEdit={(row, columnId, value) => {
+      setData(rows => rows.map(note => note.id === row.id ? {
+        ...note,
+        [columnId]: value
+      } : note));
+    }} />;
+  }
+}
+
+### MCP manifest
+const AutoRowHeight = function Render() {
+    const [data, setData] = useState(() => generateChangeNotes(6));
+
+    const columns: ColumnDef<ChangeNote>[] = [
+        { accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },
+        {
+            accessorKey: 'owner',
+            header: 'Owner',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+            size: 200,
+        },
+        {
+            accessorKey: 'notes',
+            header: 'Notes',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+            size: 420,
+        },
+    ];
+
+    return (
+        <DsTable
+            bordered
+            fullWidth
+            stickyHeader
+            rowSize="auto"
+            data={data}
+            columns={columns}
+            onCellEdit={(row, columnId, value) => {
+                setData((rows) => rows.map((note) => (note.id === row.id ? { ...note, [columnId]: value } : note)));
+            }}
+        />
+    );
+};
