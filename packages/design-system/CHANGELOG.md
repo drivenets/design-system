@@ -1,5 +1,29 @@
 # @drivenets/design-system
 
+## 0.27.0
+
+### Minor Changes
+
+- d8d0c38: Add a search field to the `DsTable` Columns popup (`columnDisplay`), with new `clearSearch` and `noMatchingColumns` locale strings.
+- 0bc1a60: Add `DsPinDevices` component
+- b43e06a: Add the `--z-index-popover` CSS custom property, so `DsPopover.Panel` and the `DsTable` column filter popover can open above `DsDrawer` and `DsModal`.
+- a0c2136: Add `--z-index-popover`, `--z-index-drawer`, `--z-index-modal`, `--z-index-dropdown` and `--z-index-tooltip` tokens so apps can stack their own overlays against the design system's tiers.
+
+### Patch Changes
+
+- 9fc5955: Bump `@ark-ui/react` to 5.40.0 and `@zag-js/*` to 1.47.0.
+
+  - Fix `DsCheckbox` mounted with `checked="indeterminate"` being announced as unchecked by assistive technology
+
+- b390d34: Show the full `DsKeyValuePair` value in a tooltip on hover when it is truncated.
+- 2caad9a: Fix `DsStepper` to match the design: in the horizontal stepper only the current step's line is highlighted and pending labels use the main text color, error steps use a neutral line, step descriptions use the secondary text color, and `DsNextStepButton` shows a trailing arrow.
+- 5ec047e: Fix `DsTable` cells showing an icon beside wrapping text being cut to one line in Safari; cells with their own block or flex layout no longer get the two-line clamp, but text, spans and links still do.
+- 5ed0772: Fix the `DsTooltip` arrow being a different color from the tooltip body.
+- d8d0c38: Fix `DsTree.Root` with `typeahead={false}` still moving focus when a letter is typed.
+  Fix `DsTree.Sortable` sizing the drop space below the list from root nodes that render nothing.
+- fe8d556: Fix `BREAKPOINT_LG` being `NaN` in 0.9.0 through 0.26.0, so responsive props such as `DsStack` `direction` now switch at the `lg` breakpoint.
+- 2835841: Fix `DsPopover`, `DsDropdownMenu`, `DsDatePicker`, `DsDateRangePicker`, `DsDateInput`, `DsTimePicker`, `DsCodeInput` and `DsTable` column filter popups being unreachable by screen readers inside `DsModal` and `DsDialog`.
+
 ## 0.26.0
 
 ### Minor Changes
