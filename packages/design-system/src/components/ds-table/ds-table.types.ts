@@ -14,7 +14,7 @@ import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-b
 /**
  * Row size variants based on Figma design specifications
  */
-export type DsTableRowSize = 'small' | 'medium' | 'large';
+export type DsTableRowSize = 'small' | 'medium' | 'large' | 'auto';
 
 /**
  * Column ids kept in view during horizontal scroll, per side. Array order is the
@@ -406,7 +406,9 @@ export interface DsDataTableProps<TData, TValue> {
 	fullWidth?: boolean;
 
 	/**
-	 * Row size variant (small: 36px, medium: 48px, large: 64px)
+	 * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+	 * row to fit its content, at least the medium height, and cell text wraps
+	 * instead of being clamped to two lines.
 	 * @default 'medium'
 	 */
 	rowSize?: DsTableRowSize;

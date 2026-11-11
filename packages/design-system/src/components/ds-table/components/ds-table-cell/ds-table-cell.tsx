@@ -8,7 +8,7 @@ import styles from './ds-table-cell.module.scss';
 import type { DsTableCellProps } from './ds-table-cell.types';
 
 export const DsTableCell = <TData, TValue>({ row, cell }: DsTableCellProps<TData, TValue>) => {
-	const { editing, loading } = useDsTableContext<TData, TValue>();
+	const { editing, loading, rowSize } = useDsTableContext<TData, TValue>();
 	const isCellBeingEdited =
 		editing !== null && editing.cell.row.id === row.id && editing.cell.column.id === cell.column.id;
 
@@ -17,15 +17,26 @@ export const DsTableCell = <TData, TValue>({ row, cell }: DsTableCellProps<TData
 		return <DsTableRowActionsCell row={row} />;
 	}
 
-	return <CellContent cell={cell} isCellBeingEdited={isCellBeingEdited} />;
+	return (
+		<CellContent
+			cell={cell}
+			isCellBeingEdited={isCellBeingEdited}
+			contentClassName={rowSize === 'auto' ? styles.tableCellWrap : styles.tableCellEllipsis}
+		/>
+	);
 };
 
 interface CellContentProps<TData, TValue> {
 	cell: Cell<TData, TValue>;
 	isCellBeingEdited: boolean;
+	contentClassName: string | undefined;
 }
 
-const CellContent = <TData, TValue>({ cell, isCellBeingEdited }: CellContentProps<TData, TValue>) => {
+const CellContent = <TData, TValue>({
+	cell,
+	isCellBeingEdited,
+	contentClassName,
+}: CellContentProps<TData, TValue>) => {
 	const columnDef = cell.column.columnDef;
 	const isEditable = typeof columnDef.editCell === 'function';
 
@@ -36,16 +47,10 @@ const CellContent = <TData, TValue>({ cell, isCellBeingEdited }: CellContentProp
 	if (isEditable) {
 		return (
 			<DsTableEditableCell cell={cell}>
-				<div className={styles.tableCellEllipsis}>
-					{flexRender(cell.column.columnDef.cell, cell.getContext())}
-				</div>
+				<div className={contentClassName}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
 			</DsTableEditableCell>
 		);
 	}
 
-	return (
-		<div className={styles.tableCellEllipsis}>
-			{flexRender(cell.column.columnDef.cell, cell.getContext())}
-		</div>
-	);
+	return <div className={contentClassName}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
 };

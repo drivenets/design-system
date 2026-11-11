@@ -103,6 +103,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 						[styles.sizeSmall]: rowSize === 'small',
 						[styles.sizeMedium]: rowSize === 'medium',
 						[styles.sizeLarge]: rowSize === 'large',
+						[styles.sizeAuto]: rowSize === 'auto',
 					},
 					onRowClick && styles.clickableRow,
 					!bordered && styles.rowNoBorder,

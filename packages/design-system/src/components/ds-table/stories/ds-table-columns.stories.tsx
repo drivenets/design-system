@@ -138,6 +138,64 @@ export const CellContent: Story = {
 };
 
 /**
+ * `rowSize="auto"` grows each row to fit its content, never below the medium row height.
+ * Cell text wraps instead of being clamped to two lines, and multi-line cells show every line.
+ * Works in virtualized tables too.
+ */
+export const AutoRowHeight: Story = {
+	name: 'Auto row height',
+	render: () => (
+		<DsTable
+			bordered
+			fullWidth
+			rowSize="auto"
+			columns={[
+				{ accessorKey: 'description', header: 'Description', cell: (info) => info.getValue(), size: 220 },
+				{
+					accessorKey: 'owner',
+					header: 'Owner',
+					cell: (info) => (
+						<span className={columnsStyles.nowrapLabel}>
+							<DsIcon icon="person" size="tiny" /> {info.getValue<string>()}
+						</span>
+					),
+					size: 180,
+				},
+				{
+					accessorKey: 'steps',
+					header: 'Steps',
+					cell: (info) => (
+						<div>
+							{info.getValue<string[]>().map((step) => (
+								<div key={step}>{step}</div>
+							))}
+						</div>
+					),
+					size: 220,
+				},
+				{ accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 220 },
+			]}
+			data={[
+				{
+					id: '1',
+					description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',
+					owner: 'Network operations center',
+					steps: ['Pause monitoring', 'Copy configuration', 'Verify checksums', 'Resume monitoring'],
+					notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',
+				},
+				{
+					id: '2',
+					description: 'Firmware rollout',
+					owner: 'Platform team',
+					steps: ['Staged rollout'],
+					notes: 'On schedule',
+				},
+			]}
+		/>
+	),
+};
+
+/**
  * Show or hide columns dynamically via the controlled `columnVisibility` /
  * `onColumnVisibilityChange` props — useful for customizable table views or
  * responsive layouts. Toggle a checkbox to add or remove the matching column.

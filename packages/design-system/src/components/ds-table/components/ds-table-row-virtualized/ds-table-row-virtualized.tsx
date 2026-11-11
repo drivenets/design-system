@@ -57,6 +57,7 @@ export const DsTableRowVirtualized = <TData,>({
 					[styles.sizeSmall]: rowSize === 'small',
 					[styles.sizeMedium]: rowSize === 'medium',
 					[styles.sizeLarge]: rowSize === 'large',
+					[styles.sizeAuto]: rowSize === 'auto',
 				},
 				isExpandedRowContent && styles.expandedRowContent,
 				onRowClick && styles.clickableRow,

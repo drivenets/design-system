@@ -14,6 +14,7 @@ import {
 } from '../components/edit/cell-editors';
 import { fullHeightDecorator } from './common/story-decorators';
 import { defaultData, type Person, type Status } from './common/story-data';
+import { generateChangeNotes, type ChangeNote } from './common/story-notes-data';
 import editableStyles from './ds-table-editable.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -304,6 +305,51 @@ export const ValidateOnAsyncSave: Story = {
 					setData((rows) =>
 						rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
 					);
+				}}
+			/>
+		);
+	},
+};
+
+/**
+ * Editable cells with `rowSize="auto"`. Long values wrap and grow the row.
+ * Double-click a cell to edit it.
+ */
+export const AutoRowHeight: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render() {
+		const [data, setData] = useState(() => generateChangeNotes(6));
+
+		const columns: ColumnDef<ChangeNote>[] = [
+			{ accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },
+			{
+				accessorKey: 'owner',
+				header: 'Owner',
+				cell: (info) => info.getValue(),
+				editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+				size: 200,
+			},
+			{
+				accessorKey: 'notes',
+				header: 'Notes',
+				cell: (info) => info.getValue(),
+				editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,
+				size: 420,
+			},
+		];
+
+		return (
+			<DsTable
+				bordered
+				fullWidth
+				stickyHeader
+				rowSize="auto"
+				data={data}
+				columns={columns}
+				onCellEdit={(row, columnId, value) => {
+					setData((rows) => rows.map((note) => (note.id === row.id ? { ...note, [columnId]: value } : note)));
 				}}
 			/>
 		);

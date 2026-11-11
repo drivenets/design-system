@@ -44,6 +44,10 @@
 	&.sizeLarge {
 		height: var(--ds-table-row-large);
 	}
+
+	&.sizeAuto {
+		min-height: var(--ds-table-row-medium);
+	}
 }
 
 .expandedRow {
