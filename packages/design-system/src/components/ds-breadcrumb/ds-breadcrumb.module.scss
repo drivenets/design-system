@@ -11,19 +11,25 @@
 	display: flex;
 	align-items: center;
 
-	&:hover {
-		color: var(--background-primary);
+	&:hover,
+	&:focus-visible {
+		color: var(--font-action);
 		background: var(--background-action-tertiary-hover);
 	}
 
-	&:active {
-		color: var(--background-primary-hover);
-		background: var(--background-action-secondary-hover);
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: 0;
 	}
 
-	&:focus {
-		outline: 2px solid var(--background-primary);
-		outline-offset: 0;
+	&:active {
+		color: var(--font-action);
+		background: var(--background-action-secondary-hover);
+		font-weight: var(--font-weight-semi-bold);
+	}
+
+	&:is(:hover, :focus-visible, :active) .label {
+		text-decoration: underline;
 	}
 
 	&:disabled {
