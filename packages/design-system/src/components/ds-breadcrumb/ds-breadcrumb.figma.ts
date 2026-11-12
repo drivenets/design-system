@@ -5,7 +5,7 @@
 // `DAP_Breadcrumbs-nav_v01` maps to `DsBreadcrumb`. Its `steps`/`icons`/`back` variants do
 // not map to props: the trail is built from a single `items` array (Figma's fixed
 // `steps=1..7` variants only exist because a component can't repeat an array), the per-item
-// icon lives in each `items` entry, and there is no back-navigation feature in code. `items`
+// icon lives in each `items` entry, and `back` maps to the standalone `DsBreadcrumbBack`. `items`
 // is required data, so it is emitted as an empty placeholder (see `ds-select.figma.ts`). The
 // single-crumb atom `DAP_Breadcrumbs-item_v01` has no public export and is intentionally not
 // connected.
