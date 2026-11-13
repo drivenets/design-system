@@ -50,7 +50,7 @@ describe('isExplicitColumnWidth', () => {
 
 describe('getColumnSizeStyle', () => {
 	it('returns fill styles when not explicit', () => {
-		expect(getColumnSizeStyle(defaultColumnSizing.size, false)).toEqual({ flex: 1, minWidth: 0 });
+		expect(getColumnSizeStyle(defaultColumnSizing.size, false)).toEqual({ flex: 1, minWidth: 0, width: 0 });
 	});
 
 	it('returns fixed styles when explicit, including at the default size value', () => {

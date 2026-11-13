@@ -122,6 +122,77 @@ describe('DsTable - Columns', () => {
 		expect(lastName.getBoundingClientRect().width).toBeGreaterThan(150);
 	});
 
+	describe('fitting the container', () => {
+		const LONG_TEXT =
+			'A long value that is much wider than its share of a narrow table and has to be truncated';
+		const longRows: SizedRow[] = [{ id: '1', firstName: LONG_TEXT, lastName: LONG_TEXT }];
+
+		const getScrollContainer = (): HTMLElement => {
+			const container = document.querySelector('table')?.parentElement;
+			if (!container) {
+				throw new Error('Expected the table scroll container');
+			}
+			return container;
+		};
+
+		it('fits unsized columns with long content into the container instead of scrolling', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name' },
+				{ accessorKey: 'lastName', header: 'Last Name' },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBe(container.clientWidth);
+		});
+
+		it('fits unsized columns in a column group into the container', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{
+					id: 'name',
+					header: 'Name',
+					columns: [
+						{ accessorKey: 'firstName', header: 'First Name' },
+						{ accessorKey: 'lastName', header: 'Last Name' },
+					],
+				},
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBe(container.clientWidth);
+		});
+
+		it('scrolls horizontally when authored column sizes exceed the container', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', size: 400 },
+				{ accessorKey: 'lastName', header: 'Last Name', size: 400 },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+		});
+	});
+
 	describe('column display', () => {
 		const groupedColumns: ColumnDef<Person>[] = [
 			{

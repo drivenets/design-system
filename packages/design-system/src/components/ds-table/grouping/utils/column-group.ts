@@ -59,7 +59,13 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
 		isFirstLeafFill ? GROUP_START_BORDER : '0px',
 	].join(' + ');
 
-	return { flexGrow: flexCount, flexShrink: 0, flexBasis: `calc(${basis})`, minWidth: `calc(${basis})` };
+	return {
+		flexGrow: flexCount,
+		flexShrink: 0,
+		flexBasis: `calc(${basis})`,
+		minWidth: `calc(${basis})`,
+		width: `calc(${basis})`,
+	};
 };
 
 /**
