@@ -53,14 +53,15 @@ export const isExplicitColumnWidth = (
  *
  * Explicit columns get a fixed `width` plus `minWidth` and `flexShrink: 0` so they
  * enforce horizontal overflow on the table container. Fill columns grow evenly via
- * `flex: 1`.
+ * `flex: 1` and never widen the table past its container.
  */
 export const getColumnSizeStyle = (columnSize: number, isExplicit: boolean): CSSProperties => {
 	if (isExplicit) {
 		return { width: columnSize, minWidth: columnSize, flexShrink: 0 };
 	}
 
-	return { flex: 1, minWidth: 0 };
+	// The table is `width: max-content`; a zero width keeps fill cell content out of that size.
+	return { flex: 1, minWidth: 0, width: 0 };
 };
 
 export const getHeaderSizeCssVar = (headerId: string): string => `--header-${headerId}-size`;
