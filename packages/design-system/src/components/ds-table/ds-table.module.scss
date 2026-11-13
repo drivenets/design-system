@@ -207,7 +207,11 @@ $expanded-content-inset: calc(var(--standard) + #{vars.$border-width});
 	}
 }
 
+// Fill cells add no width to the table, so a fit-content parent takes the
+// intrinsic width set inline instead of collapsing.
 .dataTableContainer {
+	contain: inline-size;
+
 	tbody {
 		&:has(> .emptyStateRow > .emptyState) {
 			position: sticky;
