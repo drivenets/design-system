@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { DsToastProvider, useToaster } from '../ds-toast-context';
 import { DsButton } from '../../ds-button';
 import { DsStack } from '../../ds-stack';
@@ -95,6 +95,77 @@ describe('DsToast', () => {
 		expect(onAbort).toHaveBeenCalledOnce();
 		await expect.element(page.getByTestId('last-action')).toHaveTextContent('abort');
 		await expect.element(page.getByText('File upload failed')).not.toBeInTheDocument();
+	});
+
+	describe('close button', () => {
+		const renderToast = async (onDismiss = vi.fn()) => {
+			await page.render(
+				<DsToastProvider>
+					<ToastTrigger
+						variant="success"
+						title="Saved"
+						description="All good."
+						onDismiss={onDismiss}
+						persistent
+					/>
+				</DsToastProvider>,
+			);
+			await page.getByRole('button', { name: 'Show toast' }).click();
+
+			return page.getByRole('button', { name: 'Dismiss notification' });
+		};
+
+		it('renders as a light tertiary icon-only button', async () => {
+			const close = await renderToast();
+
+			await expect.element(close).toHaveAttribute('data-variant', 'tertiary');
+			await expect.element(close).toHaveAttribute('data-color', 'light');
+			await expect.element(close).toHaveAttribute('data-size', 'small');
+			await expect.element(close).toHaveAttribute('data-icon-only');
+			await expect.element(close).not.toHaveAttribute('aria-pressed');
+		});
+
+		it('lines up with the title without pushing the description down', async () => {
+			await renderToast();
+			await expect.poll(() => getPart('root')?.dataset.state).toBe('open');
+
+			const rectOf = (part: string) => getPart(part)?.getBoundingClientRect() ?? new DOMRect();
+			const title = rectOf('title');
+			const close = rectOf('close-trigger');
+			const description = rectOf('description');
+			const root = getPart('root');
+			const rowGap = root ? parseFloat(getComputedStyle(root).rowGap) : NaN;
+
+			expect(close.top + close.height / 2).toBeCloseTo(title.top + title.height / 2, 0);
+			expect(description.top - title.bottom).toBeCloseTo(rowGap, 0);
+		});
+
+		it('dismisses the toast and calls onDismiss when clicked', async () => {
+			const onDismiss = vi.fn();
+			const close = await renderToast(onDismiss);
+
+			await close.click();
+
+			expect(onDismiss).toHaveBeenCalledOnce();
+			await expect.element(page.getByText('Saved')).not.toBeInTheDocument();
+		});
+
+		it('is reachable with Tab, shows a focus ring and dismisses with Enter', async () => {
+			const onDismiss = vi.fn();
+			const close = await renderToast(onDismiss);
+			await expect.element(close).toBeVisible();
+
+			await userEvent.tab();
+			await expect.element(page.getByRole('region').getByRole('status')).toHaveFocus();
+			await userEvent.tab();
+			await expect.element(close).toHaveFocus();
+			expect(getComputedStyle(close.element()).outlineStyle).toBe('solid');
+
+			await userEvent.keyboard('{Enter}');
+
+			expect(onDismiss).toHaveBeenCalledOnce();
+			await expect.element(page.getByText('Saved')).not.toBeInTheDocument();
+		});
 	});
 
 	it('stacks multiple toasts and clears them with Dismiss all', async () => {

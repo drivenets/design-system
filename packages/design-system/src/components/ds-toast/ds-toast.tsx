@@ -2,6 +2,7 @@ import type React from 'react';
 import { type CreateToasterReturn, Toast, Toaster } from '@ark-ui/react';
 import styles from './ds-toast.module.scss';
 import type { DsToastProps, ToastVariant } from './ds-toast.types';
+import { DsButtonV3 } from '../ds-button-v3';
 import { type IconType, DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
@@ -37,8 +38,15 @@ const DsToast = ({
 				<Toast.Description>{description}</Toast.Description>
 			</DsTypography>
 		)}
-		<Toast.CloseTrigger onClick={onDismiss}>
-			<DsIcon icon="close" size="small" />
+		<Toast.CloseTrigger onClick={onDismiss} asChild>
+			<DsButtonV3
+				variant="tertiary"
+				color="light"
+				size="small"
+				icon="close"
+				// DsButtonV3 always sets `aria-pressed`; a close button is not a toggle.
+				aria-pressed={undefined}
+			/>
 		</Toast.CloseTrigger>
 		{actions && <div className={styles.actions}>{actions}</div>}
 	</Toast.Root>
