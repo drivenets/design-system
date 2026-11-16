@@ -283,8 +283,6 @@ const DsPopoverCloseTrigger = ({ className, style, ref, locale }: DsPopoverClose
 			className={className}
 			style={style}
 			aria-label={locale?.close ?? DEFAULT_CLOSE_TRIGGER_LOCALE.close}
-			// Icon-only DsButtonV3 always sets `aria-pressed`; a close button is not a toggle.
-			aria-pressed={undefined}
 		/>
 	</Popover.CloseTrigger>
 );

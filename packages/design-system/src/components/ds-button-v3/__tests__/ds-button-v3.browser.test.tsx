@@ -207,6 +207,20 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toHaveAttribute('data-selected', 'true');
 	});
 
+	it('sets aria-pressed only when selected is passed', async () => {
+		await page.render(
+			<>
+				<DsButtonV3>Plain</DsButtonV3>
+				<DsButtonV3 selected={false}>Off</DsButtonV3>
+				<DsButtonV3 selected>On</DsButtonV3>
+			</>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Plain' })).not.toHaveAttribute('aria-pressed');
+		await expect.element(page.getByRole('button', { name: 'Off' })).toHaveAttribute('aria-pressed', 'false');
+		await expect.element(page.getByRole('button', { name: 'On' })).toHaveAttribute('aria-pressed', 'true');
+	});
+
 	it('spreads rest props onto the button element', async () => {
 		await page.render(
 			<DsButtonV3 data-testid="my-btn" aria-label="Spread">

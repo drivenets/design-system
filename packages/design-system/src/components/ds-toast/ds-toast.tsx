@@ -39,14 +39,7 @@ const DsToast = ({
 			</DsTypography>
 		)}
 		<Toast.CloseTrigger onClick={onDismiss} asChild>
-			<DsButtonV3
-				variant="tertiary"
-				color="light"
-				size="small"
-				icon="close"
-				// DsButtonV3 always sets `aria-pressed`; a close button is not a toggle.
-				aria-pressed={undefined}
-			/>
+			<DsButtonV3 variant="tertiary" color="light" size="small" icon="close" />
 		</Toast.CloseTrigger>
 		{actions && <div className={styles.actions}>{actions}</div>}
 	</Toast.Root>
