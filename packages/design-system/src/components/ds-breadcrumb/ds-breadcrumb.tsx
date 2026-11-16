@@ -50,7 +50,7 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 									>
 										{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
 										<span className={styles.label}>{selectedOption?.label || item.label}</span>
-										<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
+										<DsIcon icon="keyboard_arrow_down" size="tiny" className={styles.dropdownIcon} />
 									</DsDropdownMenu.Trigger>
 									<DsDropdownMenu.Content>
 										<DsDropdownMenu.Header>

@@ -190,6 +190,25 @@ describe('DsBreadcrumb', () => {
 		await expect.element(page.getByRole('button', { name: /Vienna HQ/ })).not.toBeInTheDocument();
 	});
 
+	it('renders a 16px chevron in the dropdown trigger and keeps the leading icon at 20px', async () => {
+		await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+
+		const trigger = page.getByRole('button', { name: /Router A/ });
+
+		await expect
+			.element(trigger.getByText('keyboard_arrow_down', { exact: true }))
+			.toHaveStyle({ fontSize: '16px' });
+		await expect.element(trigger.getByText('device_hub', { exact: true })).toHaveStyle({ fontSize: '20px' });
+	});
+
+	it('keeps link segment icons at 20px', async () => {
+		await renderWithRouter({ items: defaultItems }, '/inventory/catalog');
+
+		const homeLink = page.getByRole('link', { name: /Home/ });
+
+		await expect.element(homeLink.getByText('home', { exact: true })).toHaveStyle({ fontSize: '20px' });
+	});
+
 	it('calls onSelect when a link segment is activated', async () => {
 		const onSelect = vi.fn();
 		await renderWithRouter({ items: defaultItems, onSelect }, '/inventory/catalog');
