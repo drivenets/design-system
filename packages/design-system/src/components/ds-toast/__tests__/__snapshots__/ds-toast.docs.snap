@@ -318,14 +318,14 @@ const NoTitle = () => {
           title: 'File upload failed',
           description: 'Your file could not be uploaded.',
           persistent: true,
-          actions: <DsStack direction="row" gap="var(--xs)" justifyContent="flex-end">
-                            <DsButton design="v1.2" variant="ghost" onClick={() => dismissToast(id)}>
-                                Abort
-                            </DsButton>
-                            <DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
-                                Re-try
-                            </DsButton>
-                        </DsStack>
+          actions: <>
+                            <DsButtonV3 variant="tertiary" color="light" size="small" onClick={() => dismissToast(id)}>
+                                Cancel
+                            </DsButtonV3>
+                            <DsButtonV3 variant="secondary" color="light" size="small" onClick={() => dismissToast(id)}>
+                                Retry
+                            </DsButtonV3>
+                        </>
         });
       };
       return <DsButton design="v1.2" variant="filled" onClick={showToast}>
@@ -350,14 +350,14 @@ const WithActions = () => {
                 description: 'Your file could not be uploaded.',
                 persistent: true,
                 actions: (
-                    <DsStack direction="row" gap="var(--xs)" justifyContent="flex-end">
-                        <DsButton design="v1.2" variant="ghost" onClick={() => dismissToast(id)}>
-                            Abort
-                        </DsButton>
-                        <DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
-                            Re-try
-                        </DsButton>
-                    </DsStack>
+                    <>
+                        <DsButtonV3 variant="tertiary" color="light" size="small" onClick={() => dismissToast(id)}>
+                            Cancel
+                        </DsButtonV3>
+                        <DsButtonV3 variant="secondary" color="light" size="small" onClick={() => dismissToast(id)}>
+                            Retry
+                        </DsButtonV3>
+                    </>
                 ),
             });
         };

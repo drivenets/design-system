@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsToastProvider, useToaster } from '../ds-toast-context';
 import { DsButton } from '../../ds-button';
-import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
 import type { DsToastProps } from '../ds-toast.types';
 
 const LONG_DESCRIPTION =
@@ -14,6 +14,51 @@ const ToastTrigger = (props: DsToastProps) => {
 
 	return (
 		<DsButton design="v1.2" variant="filled" onClick={() => createToast(props)}>
+			Show toast
+		</DsButton>
+	);
+};
+
+const ToastWithActions = ({ onCancel, onRetry }: { onCancel?: () => void; onRetry?: () => void }) => {
+	const { createToast, dismissToast } = useToaster();
+
+	const showToast = () => {
+		const id = createToast({
+			variant: 'warning',
+			title: 'File upload failed',
+			description: 'Your file could not be uploaded.',
+			persistent: true,
+			actions: (
+				<>
+					<DsButtonV3
+						variant="tertiary"
+						color="light"
+						size="small"
+						onClick={() => {
+							onCancel?.();
+							dismissToast(id);
+						}}
+					>
+						Cancel
+					</DsButtonV3>
+					<DsButtonV3
+						variant="secondary"
+						color="light"
+						size="small"
+						onClick={() => {
+							onRetry?.();
+							dismissToast(id);
+						}}
+					>
+						Retry
+					</DsButtonV3>
+				</>
+			),
+		});
+	};
+
+	return (
+		<DsButton design="v1.2" variant="filled" onClick={showToast}>
 			Show toast
 		</DsButton>
 	);
@@ -33,68 +78,44 @@ const isInViewportHeight = (el: HTMLElement | null) => {
 };
 
 describe('DsToast', () => {
-	it('renders a toast with actions and dismisses it when an action is clicked', async () => {
-		const onAbort = vi.fn();
-
-		const Harness = () => {
-			const { createToast, dismissToast } = useToaster();
-			const [lastAction, setLastAction] = useState<string>();
-
-			const showToast = () => {
-				const id = createToast({
-					variant: 'warning',
-					title: 'File upload failed',
-					description: 'Your file could not be uploaded.',
-					persistent: true,
-					actions: (
-						<DsStack direction="row" gap="var(--xs)">
-							<DsButton
-								design="v1.2"
-								variant="ghost"
-								onClick={() => {
-									onAbort();
-									setLastAction('abort');
-									dismissToast(id);
-								}}
-							>
-								Abort
-							</DsButton>
-							<DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
-								Re-try
-							</DsButton>
-						</DsStack>
-					),
-				});
-			};
-
-			return (
-				<>
-					<DsButton design="v1.2" variant="filled" onClick={showToast}>
-						Show toast
-					</DsButton>
-					{lastAction && <span data-testid="last-action">{lastAction}</span>}
-				</>
-			);
-		};
+	it.each(['Cancel', 'Retry'])('runs the %s action handler and dismisses the toast', async (label) => {
+		const onAction = vi.fn<(label: string) => void>();
 
 		await page.render(
 			<DsToastProvider>
-				<Harness />
+				<ToastWithActions onCancel={() => onAction('Cancel')} onRetry={() => onAction('Retry')} />
 			</DsToastProvider>,
 		);
 
 		await page.getByRole('button', { name: 'Show toast' }).click();
-
 		await expect.element(page.getByText('File upload failed')).toBeVisible();
 		await expect.element(page.getByText('Your file could not be uploaded.')).toBeVisible();
-		await expect.element(page.getByRole('button', { name: 'Abort' })).toBeVisible();
-		await expect.element(page.getByRole('button', { name: 'Re-try' })).toBeVisible();
 
-		await page.getByRole('button', { name: 'Abort' }).click();
+		await page.getByRole('button', { name: label }).click();
 
-		expect(onAbort).toHaveBeenCalledOnce();
-		await expect.element(page.getByTestId('last-action')).toHaveTextContent('abort');
+		expect(onAction).toHaveBeenCalledExactlyOnceWith(label);
 		await expect.element(page.getByText('File upload failed')).not.toBeInTheDocument();
+	});
+
+	it('lays out actions right-aligned with a gap, without a consumer wrapper', async () => {
+		await page.viewport(1280, 720);
+		await page.render(
+			<DsToastProvider>
+				<ToastWithActions />
+			</DsToastProvider>,
+		);
+
+		await page.getByRole('button', { name: 'Show toast' }).click();
+		await expect.poll(() => getPart('root')?.dataset.state).toBe('open');
+
+		const cancel = page.getByRole('button', { name: 'Cancel' }).element();
+		const retry = page.getByRole('button', { name: 'Retry' }).element();
+
+		await expect
+			.poll(() => retry.getBoundingClientRect().left - cancel.getBoundingClientRect().right)
+			.toBe(8);
+		expect(retry.getBoundingClientRect().right).toBe(retry.parentElement?.getBoundingClientRect().right);
+		expect(retry.getBoundingClientRect().top).toBe(cancel.getBoundingClientRect().top);
 	});
 
 	it('stacks multiple toasts and clears them with Dismiss all', async () => {
