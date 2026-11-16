@@ -338,6 +338,137 @@ describe('DsTable sticky columns', () => {
 		});
 	});
 
+	describe('stickyUtilityColumns', () => {
+		it('scrolls the reorder, expander and select columns with the content when left is false', async () => {
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						reorderable
+						expandable
+						selectable
+						renderExpandedRow={() => null}
+						{...rowActions}
+						stickyUtilityColumns={{ left: false }}
+					/>
+				</Frame>,
+			);
+
+			const headerIds = [...document.querySelectorAll('thead th')].map((cell) =>
+				cell.getAttribute('data-column-id'),
+			);
+			expect(headerIds.slice(0, 4)).toEqual([
+				REORDER_COLUMN_ID,
+				EXPANDER_COLUMN_ID,
+				SELECT_COLUMN_ID,
+				'firstName',
+			]);
+
+			await scrollToLeft(300);
+
+			for (const id of [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID]) {
+				expect(getHeaderCell(id)).not.toHaveAttribute('data-sticky');
+				expect(getBodyCell(id)).not.toHaveAttribute('data-sticky');
+				expect(visibleRight(getBodyCell(id))).toBeLessThanOrEqual(0);
+			}
+
+			const container = getScrollContainer();
+			expect(getBodyCell(ROW_ACTIONS_COLUMN_ID)).toHaveAttribute('data-sticky', 'right');
+			expect(visibleRight(getBodyCell(ROW_ACTIONS_COLUMN_ID))).toBeCloseTo(container.clientWidth, 0);
+		});
+
+		it('scrolls the row actions column with the content when right is false', async () => {
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						expandable
+						renderExpandedRow={() => null}
+						{...rowActions}
+						stickyUtilityColumns={{ right: false }}
+					/>
+				</Frame>,
+			);
+
+			const headerIds = [...document.querySelectorAll('thead th')].map((cell) =>
+				cell.getAttribute('data-column-id'),
+			);
+			expect(headerIds.at(-1)).toBe(ROW_ACTIONS_COLUMN_ID);
+
+			await scrollToLeft(0);
+			const container = getScrollContainer();
+
+			expect(getHeaderCell(ROW_ACTIONS_COLUMN_ID)).not.toHaveAttribute('data-sticky');
+			expect(getBodyCell(ROW_ACTIONS_COLUMN_ID)).not.toHaveAttribute('data-sticky');
+			expect(visibleLeft(getBodyCell(ROW_ACTIONS_COLUMN_ID))).toBeGreaterThanOrEqual(container.clientWidth);
+
+			await scrollToLeft(300);
+			expect(getBodyCell(EXPANDER_COLUMN_ID)).toHaveAttribute('data-sticky', 'left');
+			expect(visibleLeft(getBodyCell(EXPANDER_COLUMN_ID))).toBeCloseTo(0, 0);
+		});
+
+		it('keeps the utility columns of a side sticky while consumer columns are sticky on it', async () => {
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						expandable
+						renderExpandedRow={() => null}
+						{...rowActions}
+						stickyColumns={{ left: ['firstName'], right: ['status'] }}
+						stickyUtilityColumns={{ left: false, right: false }}
+					/>
+				</Frame>,
+			);
+
+			const headerIds = [...document.querySelectorAll('thead th')].map((cell) =>
+				cell.getAttribute('data-column-id'),
+			);
+			expect(headerIds.slice(0, 2)).toEqual([EXPANDER_COLUMN_ID, 'firstName']);
+			expect(headerIds.slice(-2)).toEqual(['status', ROW_ACTIONS_COLUMN_ID]);
+			expect(getBodyCell(EXPANDER_COLUMN_ID)).toHaveAttribute('data-sticky', 'left');
+			expect(getBodyCell(ROW_ACTIONS_COLUMN_ID)).toHaveAttribute('data-sticky', 'right');
+		});
+
+		it('lets a nested table in an expanded row scroll its utility columns with its cells', async () => {
+			await page.render(
+				<Frame height={500}>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						expandable
+						renderExpandedRow={() => (
+							<DsTable
+								columns={wideColumns}
+								data={rows.slice(0, 2)}
+								expandable
+								renderExpandedRow={() => null}
+								{...rowActions}
+								stickyUtilityColumns={{ left: false, right: false }}
+							/>
+						)}
+						{...rowActions}
+					/>
+				</Frame>,
+			);
+
+			await page.getByRole('button', { name: 'chevron_right' }).nth(0).click();
+			await expect.poll(() => document.querySelectorAll('table').length).toBe(2);
+
+			const nestedTable = document.querySelectorAll('table')[1];
+			if (!(nestedTable instanceof HTMLElement)) {
+				throw new Error('Expected the nested table');
+			}
+
+			expect(nestedTable.querySelectorAll('[data-sticky]')).toHaveLength(0);
+			expect(getHeaderCell(EXPANDER_COLUMN_ID)).toHaveAttribute('data-sticky', 'left');
+			expect(getHeaderCell(ROW_ACTIONS_COLUMN_ID)).toHaveAttribute('data-sticky', 'right');
+		});
+	});
+
 	describe('state', () => {
 		it('keeps its own state when stickyColumns is omitted', async () => {
 			const onStickyColumnsChange = vi.fn();

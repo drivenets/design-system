@@ -83,6 +83,29 @@ describe('resolveColumnPinning', () => {
 		});
 	});
 
+	it('leaves the utility columns of a side unpinned when stickyUtilityColumns turns it off', () => {
+		expect(resolveColumnPinning(undefined, flatColumns, undefined, { left: false })).toEqual({
+			left: [],
+			right: RIGHT_UTILITIES,
+		});
+		expect(resolveColumnPinning({ left: ['firstName'] }, flatColumns, undefined, { right: false })).toEqual({
+			left: [...LEFT_UTILITIES, 'firstName'],
+			right: [],
+		});
+	});
+
+	it('keeps the utility columns of a side pinned while consumer columns are sticky on it', () => {
+		expect(
+			resolveColumnPinning({ left: ['firstName'], right: ['status'] }, flatColumns, undefined, {
+				left: false,
+				right: false,
+			}),
+		).toEqual({
+			left: [...LEFT_UTILITIES, 'firstName'],
+			right: ['status', ...RIGHT_UTILITIES],
+		});
+	});
+
 	it('ignores utility ids listed by the consumer', () => {
 		expect(
 			resolveColumnPinning(

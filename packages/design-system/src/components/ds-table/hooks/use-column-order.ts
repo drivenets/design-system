@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ColumnDef, ColumnOrderState, ColumnPinningState, Updater } from '@tanstack/react-table';
-import type { DsTableStickyColumns } from '../ds-table.types';
+import type { DsTableStickyColumns, DsTableStickyUtilityColumns } from '../ds-table.types';
 import { resolveColumnPinning, toStickyColumns } from '../utils/sticky-columns';
 import {
 	getColumnDefLeafIds,
@@ -37,6 +37,7 @@ export interface UseColumnOrderOptions<TData, TValue> {
 	onColumnOrderChange?: (columnOrder: string[]) => void;
 	stickyColumns?: DsTableStickyColumns;
 	onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) => void;
+	stickyUtilityColumns?: DsTableStickyUtilityColumns;
 	/** Sticky columns follow `columnOrder`, and pinning moves a column between the sticky and scrolling blocks */
 	reorderEnabled: boolean;
 }
@@ -48,6 +49,7 @@ export const useColumnOrder = <TData, TValue>({
 	onColumnOrderChange,
 	stickyColumns: externalStickyColumns,
 	onStickyColumnsChange,
+	stickyUtilityColumns,
 	reorderEnabled,
 }: UseColumnOrderOptions<TData, TValue>) => {
 	const [internalStickyColumns, setInternalStickyColumns] = useState<DsTableStickyColumns>({});
@@ -123,11 +125,17 @@ export const useColumnOrder = <TData, TValue>({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [landedPin]);
 
+	const stickyLeftUtilities = stickyUtilityColumns?.left;
+	const stickyRightUtilities = stickyUtilityColumns?.right;
 	const columnPinning = useMemo(
-		() => resolveColumnPinning(stickyColumns, columnDefs, reorderEnabled ? columnOrder : undefined),
-		// Keyed on content so an inline `stickyColumns` object doesn't re-pin every render.
+		() =>
+			resolveColumnPinning(stickyColumns, columnDefs, reorderEnabled ? columnOrder : undefined, {
+				left: stickyLeftUtilities,
+				right: stickyRightUtilities,
+			}),
+		// Keyed on content so inline `stickyColumns` / `stickyUtilityColumns` objects don't re-pin every render.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[stickyColumnsKey, columnDefs, reorderEnabled, columnOrder],
+		[stickyColumnsKey, columnDefs, reorderEnabled, columnOrder, stickyLeftUtilities, stickyRightUtilities],
 	);
 	const handleColumnPinningChange = (updater: Updater<ColumnPinningState>) => {
 		const nextStickyColumns = toStickyColumns(
