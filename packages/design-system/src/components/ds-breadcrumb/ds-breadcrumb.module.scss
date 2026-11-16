@@ -74,11 +74,16 @@
 	@include typography.body-sm-md;
 }
 
-.trigger {
+.trigger,
+.back {
 	@include breadcrumb-item;
 	background: none;
 	border: none;
 	cursor: pointer;
+}
+
+.label {
+	white-space: nowrap;
 }
 
 .icon {
