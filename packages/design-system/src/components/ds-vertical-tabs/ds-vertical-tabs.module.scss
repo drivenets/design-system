@@ -1,5 +1,7 @@
 @use '../../styles/typography';
 
+$indicator-width: var(--4xs);
+
 .tabList {
 	display: flex;
 	flex-direction: column;
@@ -25,24 +27,30 @@
 	flex-shrink: 0;
 	border: none;
 	border-bottom: 1px solid var(--border);
+	border-right: $indicator-width solid transparent;
 	background: var(--background-secondary);
 	cursor: pointer;
 	text-align: left;
 	color: var(--font-secondary);
 	transition:
 		background-color 0.2s,
+		border-color 0.2s,
 		color 0.2s;
 	gap: var(--xs);
 
-	&:hover:not(:disabled):not(.selected):not([data-disabled]) {
+	&:hover:not(:disabled):not([aria-selected='true']):not([data-disabled]) {
 		background: var(--background-action-tertiary-hover);
 		color: var(--font-main);
 	}
 
-	&.selected,
-	&[data-state='active'] {
-		background: var(--background-action-secondary-hover);
+	&[aria-selected='true'] {
+		background: var(--background-active-status);
+		border-right-color: var(--border-action-primary);
 		color: var(--font-main);
+
+		&:hover:not(:disabled):not([data-disabled]) {
+			background: var(--background-action-secondary-hover);
+		}
 	}
 
 	&:disabled,
