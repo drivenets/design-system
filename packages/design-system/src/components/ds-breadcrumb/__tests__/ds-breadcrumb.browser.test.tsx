@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent, type Locator } from 'vitest/browser';
 import {
 	createMemoryHistory,
 	createRootRoute,
@@ -140,7 +140,7 @@ describe('DsBreadcrumb', () => {
 	it('marks the last link segment as current page', async () => {
 		await renderWithRouter({ items: defaultItems }, '/inventory/catalog');
 
-		const catalogLink = page.getByText('Catalog', { exact: false });
+		const catalogLink = page.getByRole('link', { name: /Catalog/ });
 		await expect.element(catalogLink).toHaveAttribute('aria-current', 'page');
 	});
 
@@ -149,7 +149,7 @@ describe('DsBreadcrumb', () => {
 
 		await page.getByText('Inventory', { exact: false }).click();
 
-		const inventoryLink = page.getByText('Inventory', { exact: false });
+		const inventoryLink = page.getByRole('link', { name: /Inventory/ });
 		await expect.element(inventoryLink).toHaveAttribute('aria-current', 'page');
 		await expect.element(page.getByText('Catalog')).not.toBeInTheDocument();
 	});
@@ -196,5 +196,91 @@ describe('DsBreadcrumb', () => {
 
 		await page.getByText('Inventory', { exact: false }).click();
 		expect(onSelect).toHaveBeenCalledWith('/inventory');
+	});
+
+	describe('label underline', () => {
+		const crumbs = [
+			{
+				kind: 'link',
+				label: 'Network Visibility',
+				getCrumb: () => page.getByRole('link', { name: 'Network Visibility' }),
+			},
+			{
+				kind: 'dropdown trigger',
+				label: 'Vienna HQ',
+				getCrumb: () => page.getByRole('button', { name: /Vienna HQ/ }),
+			},
+		];
+
+		const getLabel = (crumb: Locator, label: string) => crumb.getByText(label, { exact: true });
+
+		const expectOnlyLabelUnderlined = async (crumb: Locator, label: string) => {
+			await expect.element(getLabel(crumb, label)).toHaveStyle({ textDecorationLine: 'underline' });
+			await expect.element(crumb).toHaveStyle({ textDecorationLine: 'none' });
+		};
+
+		const movePointerAwayFromCrumbs = () =>
+			page.elementLocator(document.documentElement).hover({ position: { x: 0, y: window.innerHeight - 1 } });
+
+		it('does not underline crumbs at rest, including the current page', async () => {
+			await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+			await movePointerAwayFromCrumbs();
+
+			const currentPage = page.getByRole('button', { name: /Router A/ });
+			await expect.element(currentPage).toHaveAttribute('aria-current', 'page');
+			await expect.element(getLabel(currentPage, 'Router A')).toHaveStyle({ textDecorationLine: 'none' });
+
+			for (const { getCrumb, label } of crumbs) {
+				await expect.element(getLabel(getCrumb(), label)).toHaveStyle({ textDecorationLine: 'none' });
+			}
+		});
+
+		it.each(crumbs)('underlines the label of a $kind crumb on hover', async ({ getCrumb, label }) => {
+			await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+
+			const crumb = getCrumb();
+			await crumb.hover();
+
+			await expect.element(getLabel(crumb, label)).toHaveStyle({ textDecorationLine: 'underline' });
+			await expect.element(crumb).toHaveStyle({ textDecorationLine: 'none' });
+		});
+
+		it('underlines the label and outlines a crumb focused with the keyboard', async () => {
+			await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+
+			await userEvent.keyboard('{Tab}');
+
+			const homeLink = page.getByRole('link', { name: 'Home' });
+			await expect.element(homeLink).toHaveFocus();
+			await expect.element(homeLink).toHaveStyle({ outlineStyle: 'solid' });
+			await expectOnlyLabelUnderlined(homeLink, 'Home');
+		});
+
+		it('does not outline a crumb focused by a mouse click', async () => {
+			await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+
+			const link = page.getByRole('link', { name: 'Network Visibility' });
+			await link.click();
+
+			await expect.element(link).toHaveFocus();
+			await expect.element(link).toHaveStyle({ outlineStyle: 'none' });
+		});
+
+		it.each(crumbs)(
+			'underlines and emphasizes the label of a $kind crumb while pressed',
+			async ({ getCrumb, label }) => {
+				await renderWithRouter({ items: dropdownItems }, '/network/vienna/router-a');
+
+				const crumb = getCrumb();
+
+				await Promise.all([
+					crumb.click({ delay: 1000 }),
+					(async () => {
+						await expect.element(crumb).toHaveStyle({ fontWeight: '600' });
+						await expectOnlyLabelUnderlined(crumb, label);
+					})(),
+				]);
+			},
+		);
 	});
 });
