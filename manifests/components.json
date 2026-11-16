@@ -927,6 +927,94 @@
       ],
       "import": "import { DsBotButton } from '@drivenets/design-system';"
     },
+    "components-breadcrumbback": {
+      "id": "components-breadcrumbback",
+      "name": "DsBreadcrumbBack",
+      "path": "./src/components/ds-breadcrumb/ds-breadcrumb-back.stories.tsx",
+      "jsDocTags": {},
+      "description": "Standalone back crumb for drawer and modal drill-down headers.",
+      "reactDocgen": {
+        "description": "Standalone back crumb for drawer and modal drill-down headers.",
+        "methods": [],
+        "displayName": "DsBreadcrumbBack",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-breadcrumb/ds-breadcrumb-back.tsx",
+        "actualName": "DsBreadcrumbBack",
+        "exportName": "default",
+        "props": {
+          "href": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Destination; renders a router link instead of a button."
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/** @default 'Back' */\n\tlabel?: string;\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "label",
+                    "value": {
+                      "name": "string",
+                      "required": false
+                    },
+                    "description": "@default 'Back'"
+                  }
+                ]
+              }
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "() => void",
+              "signature": {
+                "arguments": [],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called when the back crumb is activated."
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-breadcrumbback--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsBreadcrumbBack onClick={fn()} />;",
+          "description": "A standalone back crumb for drawer and modal drill-down headers. It looks like a breadcrumb\nitem but is not part of a trail."
+        },
+        {
+          "id": "components-breadcrumbback--link",
+          "name": "Link",
+          "snippet": "const Link = () => <DsBreadcrumbBack href=\"/inventory\" />;",
+          "description": "Pass `href` to render it as a router link to the parent page."
+        },
+        {
+          "id": "components-breadcrumbback--localized",
+          "name": "Localized",
+          "snippet": "const Localized = () => <DsBreadcrumbBack locale={{ label: 'Back to list' }} />;",
+          "description": "Translate the label through `locale`; it is also the accessible name."
+        }
+      ],
+      "import": "import { DsBreadcrumbBack } from '@drivenets/design-system';\nimport { RouterProvider } from '@tanstack/react-router';\nimport { fn } from 'storybook/test';"
+    },
     "components-breadcrumb": {
       "id": "components-breadcrumb",
       "name": "DsBreadcrumb",
@@ -35937,6 +36025,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4089
+    "durationMs": 3599
   }
 }
