@@ -40,7 +40,7 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 									onClick={() => onSelect?.(item.href)}
 								>
 									{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
-									{item.label}
+									<span className={styles.label}>{item.label}</span>
 								</Link>
 							) : (
 								<DsDropdownMenu.Root onSelect={onSelect}>
@@ -49,7 +49,7 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 										aria-current={index === items.length - 1 ? 'page' : undefined}
 									>
 										{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
-										{selectedOption?.label || item.label}
+										<span className={styles.label}>{selectedOption?.label || item.label}</span>
 										<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
 									</DsDropdownMenu.Trigger>
 									<DsDropdownMenu.Content>
