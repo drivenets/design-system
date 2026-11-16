@@ -149,3 +149,33 @@ const WithDropdown = function Render(args) {
         />
     );
 };
+
+# DsBreadcrumbBack docs snippets
+
+## Default
+
+### Show code
+<DsBreadcrumbBack onClick={() => {}} />
+
+### MCP manifest
+const Default = () => <DsBreadcrumbBack onClick={fn()} />;
+
+## Link
+
+### Show code
+<DsBreadcrumbBack href="/inventory" />
+
+### MCP manifest
+const Link = () => <DsBreadcrumbBack href="/inventory" />;
+
+## Localized
+
+### Show code
+<DsBreadcrumbBack
+ locale={{
+   label: 'Back to list'
+ }}
+/>
+
+### MCP manifest
+const Localized = () => <DsBreadcrumbBack locale={{ label: 'Back to list' }} />;
