@@ -286,20 +286,26 @@ describe('DsModal full screen', () => {
 		await expect.element(page.getByRole('dialog')).toBeVisible();
 		await waitForModalAnimations();
 
-		await fullScreenTrigger().click();
-
-		// Freeze the resize halfway to inspect a mid-transition frame
-		const transitions = getModal()
-			.getAnimations()
-			.filter((animation) => animation instanceof CSSTransition);
-		expect(transitions.length).toBeGreaterThan(0);
-		transitions.forEach((transition) => {
-			transition.pause();
-			transition.currentTime = 100;
+		const modal = getModal();
+		const transitions: CSSTransition[] = [];
+		// The resize can finish before click() resolves on a slow runner, so freeze it halfway before the first frame
+		const observer = new MutationObserver(() => {
+			observer.disconnect();
+			transitions.push(...modal.getAnimations().filter((animation) => animation instanceof CSSTransition));
+			transitions.forEach((transition) => {
+				transition.pause();
+				transition.currentTime = 100;
+			});
 		});
+		observer.observe(modal, { attributes: true, attributeFilter: ['data-full-screen'] });
 
-		const modalRect = getModal().getBoundingClientRect();
-		const footer = styles.footer ? getModal().getElementsByClassName(styles.footer).item(0) : null;
+		await fullScreenTrigger().click();
+		observer.disconnect();
+
+		expect(transitions.length).toBeGreaterThan(0);
+
+		const modalRect = modal.getBoundingClientRect();
+		const footer = styles.footer ? modal.getElementsByClassName(styles.footer).item(0) : null;
 
 		expect(modalRect.width).toBeGreaterThan(0);
 		expect(modalRect.width).toBeLessThan(document.documentElement.clientWidth);
