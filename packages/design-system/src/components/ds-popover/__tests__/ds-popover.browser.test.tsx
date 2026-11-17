@@ -899,7 +899,9 @@ describe('DsPopover accessible name', () => {
 	});
 });
 
-type CompositionProps = Pick<DsPopoverRootProps, 'defaultOpen' | 'onOpenChange'>;
+type CompositionProps = Pick<DsPopoverRootProps, 'defaultOpen' | 'onOpenChange'> & {
+	onTooltipOpenChange?: (open: boolean) => void;
+};
 
 const PanelBody = () => (
 	<DsPopover.Panel width={200}>
@@ -910,9 +912,9 @@ const PanelBody = () => (
 	</DsPopover.Panel>
 );
 
-const TooltipAroundTrigger = (props: CompositionProps) => (
+const TooltipAroundTrigger = ({ onTooltipOpenChange, ...props }: CompositionProps) => (
 	<DsPopover.Root {...props}>
-		<DsTooltip content="Preview">
+		<DsTooltip content="Preview" onOpenChange={onTooltipOpenChange}>
 			<DsPopover.Trigger>
 				<button type="button">Open details</button>
 			</DsPopover.Trigger>
@@ -921,10 +923,10 @@ const TooltipAroundTrigger = (props: CompositionProps) => (
 	</DsPopover.Root>
 );
 
-const TooltipInsideTrigger = (props: CompositionProps) => (
+const TooltipInsideTrigger = ({ onTooltipOpenChange, ...props }: CompositionProps) => (
 	<DsPopover.Root {...props}>
 		<DsPopover.Trigger>
-			<DsTooltip content="Preview">
+			<DsTooltip content="Preview" onOpenChange={onTooltipOpenChange}>
 				<button type="button">Open details</button>
 			</DsTooltip>
 		</DsPopover.Trigger>
@@ -986,15 +988,21 @@ describe.each([
 	['DsPopover.Trigger > DsTooltip', TooltipInsideTrigger],
 ])('DsPopover composed with DsTooltip (%s)', (_, Composition) => {
 	it('shows the tooltip on hover and swaps it for the panel on click', async () => {
-		await page.render(<Composition />);
+		const onTooltipOpenChange = vi.fn<(open: boolean) => void>();
+		// A pointer leave and re-entry (e.g. layout shifting under the resting pointer) re-shows the tooltip, so check it at the swap.
+		const onOpenChange = vi.fn(() => ({ tooltipOpen: onTooltipOpenChange.mock.lastCall?.[0] }));
+
+		await page.render(<Composition onOpenChange={onOpenChange} onTooltipOpenChange={onTooltipOpenChange} />);
 
 		await getTrigger().hover();
 		await expect.element(page.getByRole('tooltip', { name: 'Preview' })).toBeVisible();
+		expect(onTooltipOpenChange).toHaveBeenCalledWith(true);
 
 		await getTrigger().click();
 
 		await expect.element(getPanel()).toBeVisible();
-		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+		expect(onOpenChange.mock.calls).toEqual([[true]]);
+		expect(onOpenChange).toHaveReturnedWith({ tooltipOpen: false });
 		await expect.element(getTrigger()).toHaveAttribute('aria-haspopup', 'dialog');
 		await expect.element(getTrigger()).toHaveAttribute('data-state', 'open');
 	});
