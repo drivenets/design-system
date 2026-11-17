@@ -65,7 +65,7 @@ export const Default: Story = {
 };
 
 /**
- * Utility columns are always sticky: selection and expansion stay on the left
+ * Utility columns are sticky by default: selection and expansion stay on the left
  * before the consumer columns, and row actions stay on the right after them.
  */
 export const WithRowActions: Story = {
@@ -313,6 +313,47 @@ export const Expandable: Story = {
 							stickyColumns={{ left: ['firstName'] }}
 						/>
 					</DsStack>
+				)}
+			/>
+		);
+	},
+};
+
+/**
+ * `stickyUtilityColumns` lets the expander, select and reorder columns (`left`)
+ * or the row actions column (`right`) scroll with the content. Here a table
+ * nested in an expanded row turns both off, so its expander and row actions
+ * scroll with its cells. A side stays sticky while `stickyColumns` has columns
+ * on it.
+ */
+export const StickyUtilityColumns: Story = {
+	args: {
+		expandable: true,
+		secondaryRowActions: [{ icon: 'delete', label: 'Delete', onClick: fn() }],
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const tableRef = useRef<DsTableApi<Person>>(null);
+
+		useEffect(() => {
+			tableRef.current?.expandRows(['1']);
+		}, []);
+
+		return (
+			<DsTable
+				{...args}
+				ref={tableRef}
+				renderExpandedRow={() => (
+					<DsTable
+						columns={wideColumns}
+						data={defaultData.slice(0, 2)}
+						expandable
+						renderExpandedRow={() => null}
+						secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]}
+						stickyUtilityColumns={{ left: false, right: false }}
+					/>
 				)}
 			/>
 		);
