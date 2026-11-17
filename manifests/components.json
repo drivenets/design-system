@@ -15395,7 +15395,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -15418,6 +15418,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -16734,7 +16741,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -16757,6 +16764,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -18059,7 +18073,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -18082,6 +18096,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -19382,7 +19403,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -19405,6 +19426,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -20726,7 +20754,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -20749,6 +20777,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -22081,7 +22116,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -22104,6 +22139,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -23411,7 +23453,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -23434,6 +23476,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -24747,7 +24796,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -24770,6 +24819,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -26072,7 +26128,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -26095,6 +26151,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -27421,7 +27484,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -27444,6 +27507,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -28794,7 +28864,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -28817,6 +28887,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -30119,7 +30196,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -30142,6 +30219,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -31455,7 +31539,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -31478,6 +31562,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -31662,7 +31753,7 @@
           "id": "components-table-sticky-columns--with-row-actions",
           "name": "With Row Actions",
           "snippet": "const WithRowActions = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    stickyColumns={{ left: ['firstName'], right: ['status'] }}\n    selectable\n    primaryRowActions={[\n        { icon: 'edit', label: 'Edit', onClick: fn() },\n        { icon: 'download', label: 'Download', onClick: fn() },\n    ]}\n    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]} />;",
-          "description": "Utility columns are always sticky: selection and expansion stay on the left\nbefore the consumer columns, and row actions stay on the right after them."
+          "description": "Utility columns are sticky by default: selection and expansion stay on the left\nbefore the consumer columns, and row actions stay on the right after them."
         },
         {
           "id": "components-table-sticky-columns--column-display",
@@ -31705,6 +31796,12 @@
           "name": "Expandable",
           "snippet": "const Expandable = () => {\n    const tableRef = useRef<DsTableApi<Person>>(null);\n\n    useEffect(() => {\n        tableRef.current?.expandRows(['1']);\n    }, []);\n\n    return (\n        <DsTable\n            columns={[\n                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue())}%`,\n                    size: 200,\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            data={defaultData}\n            onRowClick={fn()}\n            stickyColumns={{ left: ['firstName'] }}\n            expandable\n            ref={tableRef}\n            renderExpandedRow={(row) => (\n                <DsStack direction=\"column\" gap=\"var(--xs)\">\n                    <DsTypography variant=\"body-sm-semi-bold\">\n                        Recent visits for {row.firstName} {row.lastName}\n                    </DsTypography>\n                    <DsTable\n                        columns={[\n                            { accessorKey: 'firstName', header: 'First Name', size: 180 },\n                            { accessorKey: 'lastName', header: 'Last Name', size: 180 },\n                            { accessorKey: 'age', header: 'Age', size: 140 },\n                            { accessorKey: 'visits', header: 'Visits', size: 160 },\n                            { accessorKey: 'status', header: 'Status', size: 160 },\n                        ]}\n                        data={defaultData.slice(0, 2)}\n                        stickyColumns={{ left: ['firstName'] }}\n                    />\n                </DsStack>\n            )} />\n    );\n};",
           "description": "Expanded row content stays in the visible area while the table scrolls\nhorizontally, and its background spans the full row. A nested table fits the\nvisible width, scrolls on its own and keeps its own sticky columns."
+        },
+        {
+          "id": "components-table-sticky-columns--sticky-utility-columns",
+          "name": "Sticky Utility Columns",
+          "snippet": "const StickyUtilityColumns = () => {\n    const tableRef = useRef<DsTableApi<Person>>(null);\n\n    useEffect(() => {\n        tableRef.current?.expandRows(['1']);\n    }, []);\n\n    return (\n        <DsTable\n            columns={[\n                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue())}%`,\n                    size: 200,\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            data={defaultData}\n            onRowClick={fn()}\n            expandable\n            secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]}\n            ref={tableRef}\n            renderExpandedRow={() => (\n                <DsTable\n                    columns={wideColumns}\n                    data={defaultData.slice(0, 2)}\n                    expandable\n                    renderExpandedRow={() => null}\n                    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]}\n                    stickyUtilityColumns={{ left: false, right: false }}\n                />\n            )} />\n    );\n};",
+          "description": "`stickyUtilityColumns` lets the expander, select and reorder columns (`left`)\nor the row actions column (`right`) scroll with the content. Here a table\nnested in an expanded row turns both off, so its expander and row actions\nscroll with its cells. A side stays sticky while `stickyColumns` has columns\non it."
         },
         {
           "id": "components-table-sticky-columns--reorderable",
@@ -32828,7 +32925,7 @@
             "tsType": {
               "name": "DsTableStickyColumns"
             },
-            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is sticky right, after them. Listing their ids\n  has no effect; use `stickyUtilityColumns` to let them scroll.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
           },
           "onStickyColumnsChange": {
             "required": false,
@@ -32851,6 +32948,13 @@
               }
             },
             "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "stickyUtilityColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyUtilityColumns"
+            },
+            "description": "Lets the utility columns of a side scroll with the content instead of\nstaying in view, for example in a table nested in an expanded row.\n@default { left: true, right: true }\n@example\n```tsx\n<DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />\n```"
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -36025,6 +36129,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 7307
+    "durationMs": 5717
   }
 }

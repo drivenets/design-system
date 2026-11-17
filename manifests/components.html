@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/107 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/107 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/107 without API description</a><span class="filter-pill ok" aria-disabled="true">668 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/668 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">7 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/107 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/107 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/107 without API description</a><span class="filter-pill ok" aria-disabled="true">669 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/669 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">7 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>7.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -21109,7 +21109,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-76-components-table-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-76-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -21138,7 +21138,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21547,10 +21547,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -21579,6 +21579,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -21769,7 +21780,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-77-components-table-active-row-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-77-components-table-active-row-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-77-components-table-active-row-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21798,7 +21809,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22207,10 +22218,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -22239,6 +22250,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -22430,7 +22452,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-78-components-table-filters-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-78-components-table-filters-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-78-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -22459,7 +22481,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22868,10 +22890,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -22900,6 +22922,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -23041,7 +23074,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-79-components-table-column-groups-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-79-components-table-column-groups-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-79-components-table-column-groups-stories" class="badge ok as-toggle">5 stories · 4 incomplete</label>
         
@@ -23070,7 +23103,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23479,10 +23512,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -23511,6 +23544,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -23709,7 +23753,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-80-components-table-columns-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-80-components-table-columns-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-80-components-table-columns-stories" class="badge ok as-toggle">7 stories · 1 incomplete</label>
         
@@ -23738,7 +23782,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24147,10 +24191,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -24179,6 +24223,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -24565,7 +24620,7 @@ a drag handle to each of its rows.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-81-components-table-editable-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-81-components-table-editable-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-81-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -24594,7 +24649,7 @@ a drag handle to each of its rows.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25003,10 +25058,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -25035,6 +25090,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -25386,7 +25452,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-82-components-table-expansion-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-82-components-table-expansion-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-82-components-table-expansion-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -25415,7 +25481,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25824,10 +25890,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -25856,6 +25922,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -26131,7 +26208,7 @@ after the table remounts.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-83-components-table-loading-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-83-components-table-loading-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-83-components-table-loading-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -26160,7 +26237,7 @@ after the table remounts.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -26569,10 +26646,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -26601,6 +26678,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -26703,7 +26791,7 @@ of the default bar.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-84-components-table-resizable-columns-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-84-components-table-resizable-columns-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-84-components-table-resizable-columns-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -26732,7 +26820,7 @@ of the default bar.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27141,10 +27229,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -27173,6 +27261,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -27456,7 +27555,7 @@ width and has no resize handle.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-85-components-table-row-actions-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-85-components-table-row-actions-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-85-components-table-row-actions-stories" class="badge ok as-toggle">11 stories · 1 incomplete</label>
         
@@ -27485,7 +27584,7 @@ width and has no resize handle.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27894,10 +27993,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -27926,6 +28025,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -28469,7 +28579,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-86-components-table-search-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-86-components-table-search-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-86-components-table-search-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -28498,7 +28608,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -28907,10 +29017,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -28939,6 +29049,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -29141,7 +29262,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-87-components-table-selection-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-87-components-table-selection-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-87-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -29170,7 +29291,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -29579,10 +29700,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -29611,6 +29732,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -29830,9 +29962,9 @@ once the cap is reached.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-88-components-table-sticky-columns-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-88-components-table-sticky-columns-props" class="badge ok as-toggle">53 prop types</label>
         
-        <label for="c-88-components-table-sticky-columns-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-88-components-table-sticky-columns-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -29859,7 +29991,7 @@ once the cap is reached.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -30268,10 +30400,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -30300,6 +30432,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
@@ -30382,7 +30525,7 @@ not supported.</div>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Utility columns are always sticky: selection and expansion stay on the left
+              <div class="hint">Utility columns are sticky by default: selection and expansion stay on the left
 before the consumer columns, and row actions stay on the right after them.</div>
               <pre><code>const WithRowActions = () =&gt; &lt;DsTable
     columns={[
@@ -30723,6 +30866,58 @@ visible width, scrolls on its own and keeps its own sticky columns.</div>
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">Sticky Utility Columns</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`stickyUtilityColumns` lets the expander, select and reorder columns (`left`)
+or the row actions column (`right`) scroll with the content. Here a table
+nested in an expanded row turns both off, so its expander and row actions
+scroll with its cells. A side stays sticky while `stickyColumns` has columns
+on it.</div>
+              <pre><code>const StickyUtilityColumns = () =&gt; {
+    const tableRef = useRef&lt;DsTableApi&lt;Person&gt;&gt;(null);
+
+    useEffect(() =&gt; {
+        tableRef.current?.expandRows([&#39;1&#39;]);
+    }, []);
+
+    return (
+        &lt;DsTable
+            columns={[
+                { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+                {
+                    accessorKey: &#39;progress&#39;,
+                    header: &#39;Profile Progress&#39;,
+                    cell: (info) =&gt; `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            expandable
+            secondaryRowActions={[{ icon: &#39;delete&#39;, label: &#39;Delete&#39;, onClick: fn() }]}
+            ref={tableRef}
+            renderExpandedRow={() =&gt; (
+                &lt;DsTable
+                    columns={wideColumns}
+                    data={defaultData.slice(0, 2)}
+                    expandable
+                    renderExpandedRow={() =&gt; null}
+                    secondaryRowActions={[{ icon: &#39;delete&#39;, label: &#39;Delete&#39;, onClick: fn() }]}
+                    stickyUtilityColumns={{ left: false, right: false }}
+                /&gt;
+            )} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">Reorderable</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -30770,7 +30965,7 @@ the consumer sticky columns.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-89-components-table-virtualized-props" class="badge ok as-toggle">52 prop types</label>
+        <label for="c-89-components-table-virtualized-props" class="badge ok as-toggle">53 prop types</label>
         
         <label for="c-89-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
         
@@ -30799,7 +30994,7 @@ the consumer sticky columns.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">52 prop types</span>
+              <span class="badge ok">53 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -31208,10 +31403,10 @@ showSelectAllCheckbox?: boolean
  * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
  * pass it with `onStickyColumnsChange` to control it.
  * 
- * - The reorder, expander and select columns are always sticky left, before
+ * - The reorder, expander and select columns are sticky left, before
  *   these columns. The row actions column (or, without row actions, the
- *   `columnDisplay` column) is always sticky right, after them. Listing
- *   their ids has no effect.
+ *   `columnDisplay` column) is sticky right, after them. Listing their ids
+ *   has no effect; use `stickyUtilityColumns` to let them scroll.
  * - Listing a group id, or any leaf of a group, makes every leaf of that
  *   top-level group sticky.
  * - A sticky column without `size` renders at a fixed width (its
@@ -31240,6 +31435,17 @@ stickyColumns?: DsTableStickyColumns
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
+
+/**
+ * Lets the utility columns of a side scroll with the content instead of
+ * staying in view, for example in a table nested in an expanded row.
+ * @default { left: true, right: true }
+ * @example
+ * ```tsx
+ * &lt;DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} /&gt;
+ * ```
+ */
+stickyUtilityColumns?: DsTableStickyUtilityColumns
 
 /**
  * Whether the table is virtualized. The table takes its height from its
