@@ -1,0 +1,105 @@
+@use 'sass:map';
+
+$line-width: 2px;
+$selected-line-width: 4px;
+$halo-width: 8px;
+$hit-area-width: 16px;
+$planned-dash: 1 5;
+$designed-dash: 10 11;
+$hover-overlay: 30%;
+$elevation-hover: drop-shadow(0 2px 6px rgb(0 0 0 / 22%));
+$elevation-selected: drop-shadow(0 3px 12px rgb(0 0 0 / 20%));
+
+$type-colors: (
+	'och': var(--schema-purple),
+	'odu': var(--schema-fuchsia),
+	'oms': var(--schema-blue),
+	'ots': var(--schema-amber),
+	'fbb-gpon': var(--schema-teal),
+	'fbb-pon-access': var(--color-dap-red-200),
+	'fbb-pon-network': rgb(0 168 224),
+	'carrier-ethernet-customer': var(--schema-pink),
+	'carrier-ethernet-infra': var(--schema-lime),
+	'network-management': var(--color-dap-dark-blue-150),
+);
+
+.technology {
+	--technology-color: #{map.get($type-colors, 'och')};
+
+	display: block;
+	flex-shrink: 0;
+	overflow: visible;
+	pointer-events: none;
+	transition: filter 0.2s;
+
+	@each $type, $color in $type-colors {
+		&[data-type='#{$type}'] {
+			--technology-color: #{$color};
+		}
+	}
+
+	&[data-stage='planned'] .line {
+		stroke-dasharray: $planned-dash;
+	}
+
+	&[data-stage='designed'] .line {
+		stroke-dasharray: $designed-dash;
+	}
+
+	&[data-interactive] {
+		outline: none;
+
+		&:hover,
+		&:focus-visible {
+			filter: $elevation-hover;
+
+			.line {
+				stroke: color-mix(in srgb, var(--technology-color), black $hover-overlay);
+			}
+		}
+	}
+
+	&[data-selected] {
+		filter: $elevation-selected;
+
+		.line {
+			stroke-width: $selected-line-width;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		&,
+		.line {
+			transition: none;
+		}
+	}
+}
+
+.line,
+.halo,
+.hitArea {
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	vector-effect: non-scaling-stroke;
+}
+
+.line {
+	stroke: var(--technology-color);
+	stroke-width: $line-width;
+	transition:
+		stroke 0.2s,
+		stroke-width 0.2s;
+}
+
+.halo {
+	stroke: var(--border-inverse);
+	stroke-width: $halo-width;
+}
+
+.hitArea {
+	stroke: transparent;
+	stroke-width: $hit-area-width;
+	cursor: pointer;
+	pointer-events: stroke;
+}

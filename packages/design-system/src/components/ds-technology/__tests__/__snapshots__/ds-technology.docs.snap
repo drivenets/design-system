@@ -1,0 +1,171 @@
+# DsTechnology docs snippets
+
+## Default
+
+### Show code
+<DsTechnology type="och" />
+
+### MCP manifest
+const Default = () => <DsTechnology type="och" />;
+
+## Planned
+
+### Show code
+<DsTechnology
+  stage="planned"
+  type="oms"
+/>
+
+### MCP manifest
+const Planned = () => <DsTechnology type="oms" stage="planned" />;
+
+## Designed
+
+### Show code
+<DsTechnology
+  stage="designed"
+  type="fbb-gpon"
+/>
+
+### MCP manifest
+const Designed = () => <DsTechnology type="fbb-gpon" stage="designed" />;
+
+## Selected
+
+### Show code
+<DsTechnology
+  aria-label="OTS link Haifa North to Tel Aviv"
+  selected
+  type="ots"
+/>
+
+### MCP manifest
+const Selected = () => <DsTechnology type="ots" selected aria-label="OTS link Haifa North to Tel Aviv" />;
+
+## Clickable
+
+### Show code
+<DsTechnology
+  aria-label="Carrier Ethernet service Haifa North to Tel Aviv"
+  onClick={() => {}}
+  type="carrier-ethernet-customer"
+/>
+
+### MCP manifest
+const Clickable = () => <DsTechnology
+    type="carrier-ethernet-customer"
+    aria-label="Carrier Ethernet service Haifa North to Tel Aviv"
+    onClick={fn()} />;
+
+## In Legend
+
+### Show code
+<DsTag
+  label="ODU"
+  slots={{
+    icon: <DsTechnology className="_legendSample_1ae4f_10" type="odu"/>
+  }}
+/>
+
+### MCP manifest
+const InLegend = (args) => (
+    <DsTag label="ODU" slots={{ icon: <DsTechnology {...args} className={styles.legendSample} /> }} />
+);
+
+## Custom Path
+
+### Show code
+<svg className="_canvas_1ae4f_1">
+  <DsTechnology
+    aria-label="PON network link, site A to site B"
+    path="M24 136 C120 16 216 16 336 96"
+    type="fbb-pon-network"
+  />
+</svg>
+
+### MCP manifest
+const CustomPath = () => <svg className={styles.canvas}>
+    <DsTechnology
+        type="fbb-pon-network"
+        path="M24 136 C120 16 216 16 336 96"
+        aria-label="PON network link, site A to site B" />
+</svg>;
+
+## Selectable
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [selectedId, setSelectedId] = useState<string | null>('och');
+    const lines = [{
+      id: 'och',
+      type: 'och',
+      label: 'OCH service, site A to site B',
+      path: 'M24 136 C120 16 216 16 336 40'
+    }, {
+      id: 'odu',
+      type: 'odu',
+      label: 'ODU service, site A to site C',
+      path: 'M24 136 C140 150 240 60 336 136'
+    }, {
+      id: 'oms',
+      type: 'oms',
+      label: 'OMS link, site D to site C',
+      path: 'M24 24 C120 120 240 150 336 136'
+    }] as const;
+    const ordered = [...lines].sort((a, b) => Number(a.id === selectedId) - Number(b.id === selectedId));
+    return <svg className={styles.canvas}>
+                {ordered.map(line => <DsTechnology key={line.id} type={line.type} path={line.path} selected={line.id === selectedId} aria-label={line.label} onClick={() => setSelectedId(line.id === selectedId ? null : line.id)} />)}
+            </svg>;
+  }
+}
+
+### MCP manifest
+const Selectable = function Render() {
+    const [selectedId, setSelectedId] = useState<string | null>('och');
+
+    const lines = [
+        {
+            id: 'och',
+            type: 'och',
+            label: 'OCH service, site A to site B',
+            path: 'M24 136 C120 16 216 16 336 40',
+        },
+        {
+            id: 'odu',
+            type: 'odu',
+            label: 'ODU service, site A to site C',
+            path: 'M24 136 C140 150 240 60 336 136',
+        },
+        {
+            id: 'oms',
+            type: 'oms',
+            label: 'OMS link, site D to site C',
+            path: 'M24 24 C120 120 240 150 336 136',
+        },
+    ] as const;
+
+    const ordered = [...lines].sort((a, b) => Number(a.id === selectedId) - Number(b.id === selectedId));
+
+    return (
+        <svg className={styles.canvas}>
+            {ordered.map((line) => (
+                <DsTechnology
+                    key={line.id}
+                    type={line.type}
+                    path={line.path}
+                    selected={line.id === selectedId}
+                    aria-label={line.label}
+                    onClick={() => setSelectedId(line.id === selectedId ? null : line.id)}
+                />
+            ))}
+        </svg>
+    );
+};

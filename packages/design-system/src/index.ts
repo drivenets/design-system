@@ -68,6 +68,7 @@ export * from './components/ds-table';
 export * from './components/ds-tabs';
 export * from './components/ds-tag';
 export * from './components/ds-tag-filter';
+export * from './components/ds-technology';
 export * from './components/ds-text-input';
 export * from './components/ds-textarea';
 export * from './components/ds-time-picker';
