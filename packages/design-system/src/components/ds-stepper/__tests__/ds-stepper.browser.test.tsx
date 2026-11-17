@@ -4,6 +4,7 @@ import { page } from 'vitest/browser';
 import { DsStepper, DsStep, DsNextStepButton, DsStepContent } from '../index';
 import { DsIcon } from '../../ds-icon';
 import { DsPanel, type DsPanelVariant } from '../../ds-panel';
+import styles from '../ds-stepper.module.scss';
 
 const verticalSteps = [
 	{ label: 'Project details', description: 'Enter project name and basic configuration' },
@@ -42,6 +43,39 @@ const tokenColor = (token: string) => {
 
 	return color;
 };
+
+const ALIGNMENT_TOLERANCE_PX = 1;
+
+const center = (target: Element | Range) => {
+	const { x, y, width, height } = target.getBoundingClientRect();
+
+	return { x: x + width / 2, y: y + height / 2 };
+};
+
+// Measure the glyphs, not the label box, so padding cannot fake a centered label.
+const labelText = (label: string) => {
+	const range = document.createRange();
+	range.selectNodeContents(byText(label).element());
+
+	return range;
+};
+
+const separator = (label: string) => separatorLocator(label).element();
+
+const indicatorCircle = (label: string) => {
+	const circle = stepWrapper(label).querySelector(`.${styles.indicator}`);
+
+	if (!circle) {
+		throw new Error(`No indicator circle for "${label}"`);
+	}
+
+	return circle;
+};
+
+const offCenterSteps = (labels: string[], axis: 'x' | 'y', part: (label: string) => Element | Range) =>
+	labels
+		.map((label) => ({ label, offset: center(part(label))[axis] - center(indicatorCircle(label))[axis] }))
+		.filter(({ offset }) => Math.abs(offset) > ALIGNMENT_TOLERANCE_PX);
 
 const stateSteps = [
 	{ label: 'Completed step', description: 'Completed description' },
@@ -590,5 +624,66 @@ describe('DsStepper state colors', () => {
 		for (const [description, token] of Object.entries(descriptions)) {
 			await expect.element(byText(description)).toHaveStyle({ color: tokenColor(token) });
 		}
+	});
+});
+
+describe('DsStepper alignment', () => {
+	const stepLabels = stateSteps.map((step) => step.label);
+	const connectedLabels = stepLabels.slice(0, -1);
+
+	it.each([
+		{ layout: 'vertical', orientation: 'vertical' as const, withDescription: true },
+		{ layout: 'vertical compact', orientation: 'vertical' as const, withDescription: false },
+		{ layout: 'horizontal', orientation: 'horizontal' as const, withDescription: true },
+		{ layout: 'horizontal compact', orientation: 'horizontal' as const, withDescription: false },
+	])('centers each $layout label on its indicator circle', async ({ orientation, withDescription }) => {
+		await page.render(
+			<DsStepper count={stateSteps.length} activeStep={1} orientation={orientation}>
+				{stateSteps.map((step, index) => (
+					<DsStep index={index} key={index} variant={step.variant}>
+						<DsStepContent
+							index={index}
+							label={step.label}
+							description={withDescription ? step.description : undefined}
+						/>
+					</DsStep>
+				))}
+			</DsStepper>,
+		);
+
+		expect(offCenterSteps(stepLabels, 'y', labelText)).toEqual([]);
+	});
+
+	it('centers each vertical connector line horizontally on its indicator circle', async () => {
+		await page.render(<StateStepper orientation="vertical" />);
+
+		expect(offCenterSteps(connectedLabels, 'x', separator)).toEqual([]);
+	});
+
+	it('centers each horizontal connector line vertically on its indicator circle', async () => {
+		await page.render(<StateStepper orientation="horizontal" />);
+
+		expect(offCenterSteps(connectedLabels, 'y', separator)).toEqual([]);
+	});
+
+	it('centers the floating single-variant label on its indicator circle', async () => {
+		await page.render(
+			<DsPanel open variant="floating" draggable disablePadding>
+				<DsStepper count={verticalSteps.length} variant="single" floating>
+					{verticalSteps.map((step, index) => (
+						<DsStep index={index} key={index}>
+							<DsStepContent
+								index={index}
+								label={step.label}
+								description={step.description}
+								actions={<DsNextStepButton>Next</DsNextStepButton>}
+							/>
+						</DsStep>
+					))}
+				</DsStepper>
+			</DsPanel>,
+		);
+
+		expect(offCenterSteps(['Project details'], 'y', labelText)).toEqual([]);
 	});
 });
