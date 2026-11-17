@@ -91,6 +91,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnOrderChange,
 		stickyColumns: externalStickyColumns,
 		onStickyColumnsChange,
+		stickyUtilityColumns,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -210,6 +211,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnOrderChange,
 		stickyColumns: externalStickyColumns,
 		onStickyColumnsChange,
+		stickyUtilityColumns,
 		reorderEnabled: reorderableColumns && columnDisplay,
 	});
 

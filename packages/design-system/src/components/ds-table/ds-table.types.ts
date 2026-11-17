@@ -35,6 +35,26 @@ export interface DsTableStickyColumns {
 }
 
 /**
+ * Whether the utility columns stay in view during horizontal scroll, per side.
+ */
+export interface DsTableStickyUtilityColumns {
+	/**
+	 * The reorder, expander and select columns. They stay sticky while
+	 * `stickyColumns.left` has columns, since those follow them.
+	 * @default true
+	 */
+	left?: boolean;
+
+	/**
+	 * The row actions column, or the column display column without row actions.
+	 * It stays sticky while `stickyColumns.right` has columns, since those
+	 * precede it.
+	 * @default true
+	 */
+	right?: boolean;
+}
+
+/**
  * Overridable, user-facing strings used by the table (e.g. accessible labels for
  * the column-group collapse toggle). Pass a partial object via the `locale` prop
  * to localize.
@@ -674,10 +694,10 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
 	 * pass it with `onStickyColumnsChange` to control it.
 	 *
-	 * - The reorder, expander and select columns are always sticky left, before
+	 * - The reorder, expander and select columns are sticky left, before
 	 *   these columns. The row actions column (or, without row actions, the
-	 *   `columnDisplay` column) is always sticky right, after them. Listing
-	 *   their ids has no effect.
+	 *   `columnDisplay` column) is sticky right, after them. Listing their ids
+	 *   has no effect; use `stickyUtilityColumns` to let them scroll.
 	 * - Listing a group id, or any leaf of a group, makes every leaf of that
 	 *   top-level group sticky.
 	 * - A sticky column without `size` renders at a fixed width (its
@@ -709,6 +729,17 @@ export interface DsDataTableProps<TData, TValue> {
 	 * only, never utility column ids.
 	 */
 	onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) => void;
+
+	/**
+	 * Lets the utility columns of a side scroll with the content instead of
+	 * staying in view, for example in a table nested in an expanded row.
+	 * @default { left: true, right: true }
+	 * @example
+	 * ```tsx
+	 * <DsTable expandable secondaryRowActions={actions} stickyUtilityColumns={{ left: false, right: false }} />
+	 * ```
+	 */
+	stickyUtilityColumns?: DsTableStickyUtilityColumns;
 
 	/**
 	 * Controlled list of collapsed column-group ids. A group is collapsible when its
