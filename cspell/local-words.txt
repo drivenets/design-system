@@ -26,6 +26,7 @@ Fira
 fromentries
 Gbps
 gnmi
+GPON
 greyscale
 gstatic
 haspopup
