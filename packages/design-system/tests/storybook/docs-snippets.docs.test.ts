@@ -17,6 +17,7 @@ const COMPONENTS = [
 	'breadcrumb',
 	'bulk-actions',
 	'button-v3',
+	'cable',
 	'card',
 	'catalog-layout',
 	'checkbox',
