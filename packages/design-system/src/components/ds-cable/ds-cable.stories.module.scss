@@ -1,0 +1,24 @@
+.stage {
+	position: relative;
+	min-width: 360px;
+	min-height: 120px;
+}
+
+.map {
+	position: relative;
+	width: 480px;
+	height: 280px;
+	border-radius: var(--standard);
+	background: var(--background-page);
+}
+
+.pin {
+	position: absolute;
+	transform: translate(-50%, -100%);
+}
+
+.matrix {
+	position: relative;
+	width: 456px;
+	height: 392px;
+}
