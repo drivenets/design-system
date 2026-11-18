@@ -5,7 +5,7 @@ import {
 	type ColumnSizingState,
 	type VisibilityState,
 } from '@tanstack/react-table';
-import { isExplicitColumnWidth } from '../../utils/column-size';
+import { getFillColumnMinWidth, isExplicitColumnWidth } from '../../utils/column-size';
 import { BUILTIN_COLUMN_IDS } from '../../utils/constants';
 
 // A fill leaf header grows from its inline padding (`.headerCell`), which the group cell, having none, must add back
@@ -33,6 +33,7 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
 	let flexCount = 0;
 	let innerBorderCount = 0;
 	let isFirstLeafFill = false;
+	const fillLeafMinWidths: string[] = [];
 
 	for (const [index, leaf] of leafColumns.entries()) {
 		if (isExplicitColumnWidth(leaf, columnSizing)) {
@@ -41,11 +42,17 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
 		}
 
 		flexCount += 1;
+		let border = '0px';
 		if (index === 0) {
 			isFirstLeafFill = true;
+			border = GROUP_START_BORDER;
 		} else if (groupBoundaryIds.has(leaf.id)) {
 			innerBorderCount += 1;
+			border = GROUP_BORDER;
 		}
+		fillLeafMinWidths.push(
+			`max(${String(getFillColumnMinWidth(leaf))}px, ${FILL_LEAF_INLINE_PADDING} + ${border})`,
+		);
 	}
 
 	if (flexCount === 0) {
@@ -58,13 +65,14 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
 		`${String(innerBorderCount)} * ${GROUP_BORDER}`,
 		isFirstLeafFill ? GROUP_START_BORDER : '0px',
 	].join(' + ');
+	const minWidth = [`${String(fixedWidth)}px`, ...fillLeafMinWidths].join(' + ');
 
 	return {
 		flexGrow: flexCount,
 		flexShrink: 0,
 		flexBasis: `calc(${basis})`,
-		minWidth: `calc(${basis})`,
-		width: `calc(${basis})`,
+		minWidth: `calc(${minWidth})`,
+		width: `calc(${minWidth})`,
 	};
 };
 

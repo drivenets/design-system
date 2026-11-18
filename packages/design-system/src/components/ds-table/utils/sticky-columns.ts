@@ -1,7 +1,12 @@
 import type { CSSProperties } from 'react';
 import type { Cell, Column, ColumnPinningState, Table } from '@tanstack/react-table';
 import type { DsTableStickyColumns, DsTableStickyUtilityColumns } from '../ds-table.types';
-import { getBodyCellSizeStyle, getColumnSizeCssVar, isExplicitColumnWidth } from './column-size';
+import {
+	getBodyCellSizeStyle,
+	getColumnSizeCssVar,
+	getFillColumnMinWidth,
+	isExplicitColumnWidth,
+} from './column-size';
 import {
 	BUILTIN_COLUMN_IDS,
 	COLUMN_DISPLAY_COLUMN_ID,
@@ -326,7 +331,13 @@ export const getBodyCellLayoutProps = <TData>(
 
 	return {
 		style: {
-			...getBodyCellSizeStyle(cell.column.id, cell.column.getSize(), isExplicit, resizeSizingReady),
+			...getBodyCellSizeStyle(
+				cell.column.id,
+				cell.column.getSize(),
+				isExplicit,
+				resizeSizingReady,
+				getFillColumnMinWidth(cell.column),
+			),
 			...stickyStyle,
 		},
 		stickyAttributes,

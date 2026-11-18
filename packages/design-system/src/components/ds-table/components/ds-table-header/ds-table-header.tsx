@@ -6,7 +6,11 @@ import styles from './ds-table-header.module.scss';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
-import { getHeaderCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
+import {
+	getFillColumnMinWidth,
+	getHeaderCellSizeStyle,
+	isExplicitColumnWidth,
+} from '../../utils/column-size';
 import { COLUMN_DISPLAY_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 import { getStickyCellProps, hasFixedStickyWidth } from '../../utils/sticky-columns';
 import { DsStack } from '../../../ds-stack';
@@ -83,6 +87,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 											header.getSize(),
 											isExplicitColumnWidth(header.column, resizeSizingReady ? columnSizing : {}),
 											!!resizeSizingReady,
+											getFillColumnMinWidth(header.column),
 										),
 										...stickyStyle,
 									}}
@@ -113,6 +118,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 											header.getSize(),
 											isExplicitColumnWidth(header.column, resizeSizingReady ? columnSizing : {}) || isSticky,
 											!!resizeSizingReady,
+											getFillColumnMinWidth(header.column),
 										),
 										...stickyStyle,
 									}}
@@ -133,6 +139,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 								header.column.getSize(),
 								isExplicitColumnWidth(header.column, resizeSizingReady ? columnSizing : {}) || isSticky,
 								!!resizeSizingReady,
+								getFillColumnMinWidth(header.column),
 							),
 							...stickyStyle,
 						};

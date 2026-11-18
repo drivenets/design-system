@@ -7,7 +7,7 @@ import { DsModal } from '../../ds-modal';
 import DsTable from '../ds-table';
 import type { DsDataTableProps } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
-import { COLUMN_DISPLAY_COLUMN_ID } from '../utils/constants';
+import { COLUMN_DISPLAY_COLUMN_ID, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
@@ -173,6 +173,42 @@ describe('DsTable - Columns', () => {
 			const container = getScrollContainer();
 
 			expect(container.scrollWidth).toBe(container.clientWidth);
+		});
+
+		it('keeps unsized columns at their minimum width next to sized columns wider than the container', async () => {
+			type MixedRow = SizedRow & { age: number };
+			const columns: ColumnDef<MixedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', size: 400 },
+				{ accessorKey: 'age', header: 'Age' },
+				{ accessorKey: 'lastName', header: 'Last Name', size: 400, minSize: 120 },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={[{ id: '1', firstName: 'Ada', lastName: 'Lovelace', age: 36 }]} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(getHeaderCell('age').getBoundingClientRect().width).toBe(RESIZE_MIN_COLUMN_WIDTH);
+			expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+		});
+
+		it('keeps unsized columns at their minSize when it is wider than the default minimum', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', minSize: 200 },
+				{ accessorKey: 'lastName', header: 'Last Name', minSize: 200 },
+			];
+
+			await page.render(
+				<div style={{ width: 300 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			expect(getHeaderCell('firstName').getBoundingClientRect().width).toBe(200);
+			expect(getHeaderCell('lastName').getBoundingClientRect().width).toBe(200);
 		});
 
 		it('scrolls horizontally when authored column sizes exceed the container', async () => {
