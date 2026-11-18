@@ -102,6 +102,9 @@ $toast-max-height: 400px;
 
 .actions {
 	grid-area: actions;
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--xs);
 	margin-top: var(--sm);
 }
 

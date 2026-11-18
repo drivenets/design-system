@@ -16,7 +16,11 @@ const extended = instance.getEnum('Extended', { True: true, False: false });
 const cta = instance.getEnum('CTA', { True: true, False: false });
 
 const titleLine = extended ? `\n\ttitle: 'Title',` : '';
-const actionsLine = cta ? `\n\tactions: <DsButtonV3 variant="secondary">Action</DsButtonV3>,` : '';
+const secondaryAction = '<DsButtonV3 variant="secondary" color="light" size="small">Action</DsButtonV3>';
+const actions = extended
+	? `(\n\t\t<>\n\t\t\t<DsButtonV3 variant="tertiary" color="light" size="small">Action</DsButtonV3>\n\t\t\t${secondaryAction}\n\t\t</>\n\t)`
+	: secondaryAction;
+const actionsLine = cta ? `\n\tactions: ${actions},` : '';
 
 export default {
 	example: figma.code`const { createToast } = useToaster();
