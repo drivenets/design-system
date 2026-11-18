@@ -88,26 +88,55 @@ describe('DsBulkActions', () => {
 					<DsBulkActions.Item
 						icon="drive_file_move"
 						label="Move"
-						aria-label="Move 3 XPU servers"
+						aria-label="Move 3 items"
 						onClick={moveHandler}
 					/>
 					<DsBulkActions.Item
 						icon="share"
 						label="Share"
-						aria-label="Share 3 XPU servers"
+						aria-label="Share 3 items"
 						menu={[{ value: 'email', label: 'Email', onSelect: vi.fn() }]}
 					/>
 				</DsBulkActions>
 			</div>,
 		);
 
-		await page.getByRole('button', { name: 'Move 3 XPU servers', exact: true }).click();
+		await page.getByRole('button', { name: 'Move 3 items', exact: true }).click();
 		expect(moveHandler).toHaveBeenCalledOnce();
 
-		await expect
-			.element(page.getByRole('button', { name: 'Share 3 XPU servers', exact: true }))
-			.toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Share 3 items', exact: true })).toBeVisible();
 		await expect.element(page.getByRole('button', { name: 'Move', exact: true })).not.toBeInTheDocument();
+		await expect.element(page.getByRole('button', { name: 'Share', exact: true })).not.toBeInTheDocument();
+	});
+
+	it('keeps an Item aria-label as the accessible name when the action overflows into More', async () => {
+		const moveHandler = vi.fn();
+
+		await page.render(
+			<div style={{ position: 'relative', minHeight: 240 }}>
+				<DsBulkActions selectedCount={3} onClearSelection={vi.fn()} style={{ width: 280 }}>
+					<DsBulkActions.Item icon="alarm" label="Notify" onClick={vi.fn()} />
+					<DsBulkActions.Item
+						icon="share"
+						label="Share"
+						aria-label="Share 3 items"
+						menu={[{ value: 'email', label: 'Email', onSelect: vi.fn() }]}
+					/>
+					<DsBulkActions.Item
+						icon="drive_file_move"
+						label="Move"
+						aria-label="Move 3 items"
+						onClick={moveHandler}
+					/>
+				</DsBulkActions>
+			</div>,
+		);
+
+		await page.getByRole('button', { name: 'More' }).click();
+
+		await expect.element(page.getByRole('menuitem', { name: 'Share 3 items', exact: true })).toBeVisible();
+		await page.getByRole('menuitem', { name: 'Move 3 items', exact: true }).click();
+		expect(moveHandler).toHaveBeenCalledOnce();
 	});
 
 	it('sizes the toolbar to its content instead of stretching to the parent', async () => {

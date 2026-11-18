@@ -41,6 +41,11 @@ export interface DsBulkActionsLocale {
 interface DsBulkActionsMenuEntryBase {
 	value: string;
 	label: string;
+	/**
+	 * Accessible name for the entry. Include the visible `label`.
+	 * @default `label`
+	 */
+	'aria-label'?: string;
 	icon?: IconType;
 	disabled?: boolean;
 	/**
@@ -78,8 +83,8 @@ interface DsBulkActionsItemSharedProps {
 	disabled?: boolean;
 
 	/**
-	 * Accessible name for the action, e.g. `"Move 3 servers"`. Overrides `label` for screen readers on the toolbar button; an action collapsed into More is named by `label`.
-	 * @default label
+	 * Accessible name for the action, e.g. `"Move 3 servers"`. Include the visible `label`. Also names the action when it overflows into the menu.
+	 * @default `label`
 	 */
 	'aria-label'?: string;
 
