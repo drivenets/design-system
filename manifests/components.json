@@ -14651,7 +14651,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -14664,10 +14664,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -15997,7 +16001,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -16010,10 +16014,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -17329,7 +17337,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -17342,10 +17350,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -18659,7 +18671,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -18672,10 +18684,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -20010,7 +20026,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -20023,10 +20039,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -20967,6 +20987,12 @@
           "description": "Text, spans and links wrap and clamp to two lines with an ellipsis, and inline `nowrap` content\nends in an ellipsis on one line. Cells that render their own block or flex layout don't get the\ntable's clamp, so clamp long text inside them, e.g. with `DsTypography` `truncate`."
         },
         {
+          "id": "components-table-columns--auto-row-height",
+          "name": "Auto row height",
+          "snippet": "const AutoRowHeight = () => (\n    <DsTable\n        bordered\n        fullWidth\n        rowSize=\"auto\"\n        columns={[\n            { accessorKey: 'description', header: 'Description', cell: (info) => info.getValue(), size: 220 },\n            {\n                accessorKey: 'owner',\n                header: 'Owner',\n                cell: (info) => (\n                    <span className={columnsStyles.nowrapLabel}>\n                        <DsIcon icon=\"person\" size=\"tiny\" /> {info.getValue<string>()}\n                    </span>\n                ),\n                size: 180,\n            },\n            {\n                accessorKey: 'steps',\n                header: 'Steps',\n                cell: (info) => (\n                    <div>\n                        {info.getValue<string[]>().map((step) => (\n                            <div key={step}>{step}</div>\n                        ))}\n                    </div>\n                ),\n                size: 220,\n            },\n            { accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 220 },\n        ]}\n        data={[\n            {\n                id: '1',\n                description: 'Weekly backup of the core routers, kept for ninety days in the primary data center',\n                owner: 'Network operations center',\n                steps: ['Pause monitoring', 'Copy configuration', 'Verify checksums', 'Resume monitoring'],\n                notes: 'Runs every Sunday at midnight and pauses during maintenance windows announced in advance',\n            },\n            {\n                id: '2',\n                description: 'Firmware rollout',\n                owner: 'Platform team',\n                steps: ['Staged rollout'],\n                notes: 'On schedule',\n            },\n        ]}\n    />\n);",
+          "description": "`rowSize=\"auto\"` grows each row to fit its content, never below the medium row height.\nCell text wraps instead of being clamped to two lines, and multi-line cells show every line.\nWorks in virtualized tables too."
+        },
+        {
           "id": "components-table-columns--column-hiding",
           "name": "Column Hiding",
           "snippet": "const ColumnHiding = () => {\n    const columnsToToggle = [\n        { id: 'age', label: 'Age' },\n        { id: 'visits', label: 'Visits' },\n        { id: 'status', label: 'Status' },\n        { id: 'progress', label: 'Profile Progress' },\n    ];\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n        age: true,\n        visits: true,\n        status: true,\n        progress: true,\n    });\n\n    const toggleColumn = (columnId: string) => {\n        setColumnVisibility((prev) => ({\n            ...prev,\n            [columnId]: !prev[columnId],\n        }));\n    };\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\" gap={16} flexWrap=\"wrap\">\n                {columnsToToggle.map((column) => (\n                    <DsCheckbox\n                        key={column.id}\n                        label={column.label}\n                        checked={columnVisibility[column.id]}\n                        onCheckedChange={() => toggleColumn(column.id)}\n                    />\n                ))}\n            </DsStack>\n\n            <DsTable\n                columns={columns}\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columnVisibility={columnVisibility}\n                onColumnVisibilityChange={setColumnVisibility} />\n        </DsStack>\n    );\n};",
@@ -21372,7 +21398,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -21385,10 +21411,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -22332,6 +22362,12 @@
           "name": "Validate on Async Save",
           "snippet": "const ValidateOnAsyncSave = () => {\n    const [data, setData] = useState(defaultData);\n\n    const saveFirstName = (value: string, signal: AbortSignal): Promise<string | null> =>\n        new Promise((resolve, reject) => {\n            const timeout = setTimeout(() => {\n                const trimmed = value.trim();\n                if (trimmed.length === 0) {\n                    resolve('First name is required');\n                    return;\n                }\n                if (trimmed.toLowerCase() === 'taken') {\n                    resolve('This name is already taken');\n                    return;\n                }\n                resolve(null);\n            }, 900);\n\n            signal.addEventListener('abort', () => {\n                clearTimeout(timeout);\n                reject(new DOMException('Aborted', 'AbortError'));\n            });\n        });\n\n    const columns: ColumnDef<Person>[] = [\n        {\n            accessorKey: 'id',\n            header: 'ID',\n            size: 60,\n            cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,\n        },\n        {\n            accessorKey: 'firstName',\n            header: 'First Name',\n            cell: (info) => info.getValue(),\n            editCell: (info: CellContext<Person, string>) => (\n                <DsTableEditCellText cellContext={info} placeholder=\"Enter first name\" />\n            ),\n        },\n        {\n            accessorKey: 'lastName',\n            header: 'Last Name',\n            cell: (info) => info.getValue(),\n        },\n    ];\n\n    return (\n        <DsTable\n            stickyHeader\n            bordered\n            fullWidth\n            data={data}\n            columns={columns}\n            onCellEdit={async (row, columnId, value, signal) => {\n                const error = await saveFirstName(value as string, signal);\n                if (error !== null) {\n                    return error;\n                }\n                setData((rows) =>\n                    rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),\n                );\n            }} />\n    );\n};",
           "description": "`onCellEdit` may be async: save inside it, resolve to an error `string` to keep\nthe cell open or `void`/`null` to commit. The editor locks while saving, and\n`signal` aborts if you Cancel/Escape. Try `taken` to see a server-side rejection."
+        },
+        {
+          "id": "components-table-editable--auto-row-height",
+          "name": "Auto Row Height",
+          "snippet": "const AutoRowHeight = function Render() {\n    const [data, setData] = useState(() => generateChangeNotes(6));\n\n    const columns: ColumnDef<ChangeNote>[] = [\n        { accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },\n        {\n            accessorKey: 'owner',\n            header: 'Owner',\n            cell: (info) => info.getValue(),\n            editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,\n            size: 200,\n        },\n        {\n            accessorKey: 'notes',\n            header: 'Notes',\n            cell: (info) => info.getValue(),\n            editCell: (info: CellContext<ChangeNote, string>) => <DsTableEditCellText cellContext={info} />,\n            size: 420,\n        },\n    ];\n\n    return (\n        <DsTable\n            bordered\n            fullWidth\n            stickyHeader\n            rowSize=\"auto\"\n            data={data}\n            columns={columns}\n            onCellEdit={(row, columnId, value) => {\n                setData((rows) => rows.map((note) => (note.id === row.id ? { ...note, [columnId]: value } : note)));\n            }}\n        />\n    );\n};",
+          "description": "Editable cells with `rowSize=\"auto\"`. Long values wrap and grow the row.\nDouble-click a cell to edit it."
         }
       ],
       "import": "import {\n  DsFormControl,\n  DsTable,\n  DsTableEditCellNumber,\n  DsTableEditCellSelect,\n  DsTableEditCellText,\n  DsTag,\n} from '@drivenets/design-system';"
@@ -22709,7 +22745,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -22722,10 +22758,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -24052,7 +24092,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -24065,10 +24105,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -25384,7 +25428,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -25397,10 +25441,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -26363,6 +26411,12 @@
           "name": "Persisted widths",
           "snippet": "const PersistedWidths = () => {\n    const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';\n    const [tableKey, setTableKey] = useState(0);\n\n    let persistedWidths: Record<string, number>;\n    try {\n        persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;\n    } catch {\n        persistedWidths = {};\n    }\n\n    return (\n        <DsStack direction=\"column\" gap={16} width=\"100%\">\n            <DsStack direction=\"column\" gap={8}>\n                <DsTypography variant=\"heading4\">Persisted widths</DsTypography>\n                <DsTypography variant=\"body-sm-reg\" color=\"secondary\">Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next\n                                            mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are\n                                            measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored\n                                            widths remounts from the default layout.\n                                        </DsTypography>\n            </DsStack>\n\n            <DsStack direction=\"row\">\n                <DsButtonV3\n                    variant=\"secondary\"\n                    size=\"small\"\n                    onClick={() => {\n                        localStorage.removeItem(STORAGE_KEY);\n                        setTableKey((key) => key + 1);\n                    }}>Reset stored widths\n                                        </DsButtonV3>\n            </DsStack>\n\n            <DsTable\n                data={defaultData}\n                columns={columns}\n                resizableColumns\n                stickyHeader\n                bordered\n                fullWidth\n                key={tableKey}\n                columnSizing={persistedWidths}\n                onColumnSizingChange={(columnSizing) => {\n                    localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));\n                }} />\n        </DsStack>\n    );\n};",
           "description": "Restore column widths across remounts via `columnSizing`."
+        },
+        {
+          "id": "components-table-resizable-columns--auto-row-height",
+          "name": "Auto Row Height",
+          "snippet": "const AutoRowHeight = () => (\n    <DsTable\n        bordered\n        fullWidth\n        stickyHeader\n        resizableColumns\n        rowSize=\"auto\"\n        data={generateChangeNotes(6)}\n        columns={[\n            { accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },\n            { accessorKey: 'owner', header: 'Owner', cell: (info) => info.getValue(), size: 200 },\n            { accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 420 },\n        ]}\n    />\n);",
+          "description": "Resizable columns with `rowSize=\"auto\"`. Narrow the Notes column and its text\nwraps onto more lines, growing the rows; widen it and the rows shrink back."
         }
       ],
       "import": "import { DsButtonV3, DsStack, DsTable, DsTypography } from '@drivenets/design-system';\nimport { defaultData, columns } from './common/story-data';"
@@ -26740,7 +26794,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -26753,10 +26807,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -28120,7 +28178,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -28133,10 +28191,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -29452,7 +29514,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -29465,10 +29527,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -30795,7 +30861,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -30808,10 +30874,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -32181,7 +32251,7 @@
             "required": false,
             "tsType": {
               "name": "union",
-              "raw": "'small' | 'medium' | 'large'",
+              "raw": "'small' | 'medium' | 'large' | 'auto'",
               "elements": [
                 {
                   "name": "literal",
@@ -32194,10 +32264,14 @@
                 {
                   "name": "literal",
                   "value": "'large'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'auto'"
                 }
               ]
             },
-            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each\nrow to fit its content, at least the medium height, and cell text wraps\ninstead of being clamped to two lines.\n@default 'medium'"
           },
           "resizableColumns": {
             "required": false,
@@ -33172,6 +33246,12 @@
           "name": "Virtualized With Column Display",
           "snippet": "const VirtualizedWithColumnDisplay = () => {\n    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);\n\n    return (\n        <DsTable\n            columns={columns}\n            stickyHeader\n            bordered\n            fullWidth\n            expandable={false}\n            onRowClick={fn()}\n            virtualized\n            columnDisplay\n            reorderableColumns\n            data={data} />\n    );\n};",
           "description": "Row virtualization with the Columns button. Hidden columns drop out of every\nvirtualized row, and `reorderableColumns` lets users reorder columns from the popup."
+        },
+        {
+          "id": "components-table-virtualized--virtualized-auto-row-height",
+          "name": "Virtualized Auto Row Height",
+          "snippet": "const VirtualizedAutoRowHeight = function Render() {\n    const [data] = useState(() => generateChangeNotes(VIRTUALIZED_ROW_COUNT));\n\n    return (\n        <div className={styles.virtualizedTableWrapper}>\n            <DsTable\n                bordered\n                fullWidth\n                stickyHeader\n                virtualized\n                rowSize=\"auto\"\n                data={data}\n                columns={changeNoteColumns}\n            />\n        </div>\n    );\n};",
+          "description": "`rowSize=\"auto\"` with row virtualization. Each row is measured as it renders,\nso rows of different heights scroll without overlapping or leaving gaps."
         }
       ],
       "import": "import {\n  DsButtonV3,\n  DsSpinner,\n  DsStack,\n  DsTable,\n  DsTableEditCellNumber,\n  DsTableEditCellSelect,\n  DsTableEditCellText,\n  DsTypography,\n} from '@drivenets/design-system';\nimport { columns } from './common/story-data';\nimport { fn } from 'storybook/test';\nimport { DsStack } from '../../ds-stack';\nimport { DsButtonV3 } from '../../ds-button-v3';"
@@ -36125,6 +36205,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4099
+    "durationMs": 5867
   }
 }

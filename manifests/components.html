@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/107 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/107 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/107 without API description</a><span class="filter-pill ok" aria-disabled="true">669 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/669 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">7 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/107 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">62/107 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/107 without API description</a><span class="filter-pill ok" aria-disabled="true">673 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/673 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">7 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -21496,10 +21496,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -22167,10 +22169,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -22839,10 +22843,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -23461,10 +23467,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -23754,7 +23762,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
       <div class="badges">
         <label for="c-80-components-table-columns-props" class="badge ok as-toggle">53 prop types</label>
         
-        <label for="c-80-components-table-columns-stories" class="badge ok as-toggle">7 stories · 1 incomplete</label>
+        <label for="c-80-components-table-columns-stories" class="badge ok as-toggle">8 stories · 1 incomplete</label>
         
         
       </div>
@@ -24140,10 +24148,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -24397,6 +24407,66 @@ table&#39;s clamp, so clamp long text inside them, e.g. with `DsTypography` `tru
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">Auto row height</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`rowSize=&quot;auto&quot;` grows each row to fit its content, never below the medium row height.
+Cell text wraps instead of being clamped to two lines, and multi-line cells show every line.
+Works in virtualized tables too.</div>
+              <pre><code>const AutoRowHeight = () =&gt; (
+    &lt;DsTable
+        bordered
+        fullWidth
+        rowSize=&quot;auto&quot;
+        columns={[
+            { accessorKey: &#39;description&#39;, header: &#39;Description&#39;, cell: (info) =&gt; info.getValue(), size: 220 },
+            {
+                accessorKey: &#39;owner&#39;,
+                header: &#39;Owner&#39;,
+                cell: (info) =&gt; (
+                    &lt;span className={columnsStyles.nowrapLabel}&gt;
+                        &lt;DsIcon icon=&quot;person&quot; size=&quot;tiny&quot; /&gt; {info.getValue&lt;string&gt;()}
+                    &lt;/span&gt;
+                ),
+                size: 180,
+            },
+            {
+                accessorKey: &#39;steps&#39;,
+                header: &#39;Steps&#39;,
+                cell: (info) =&gt; (
+                    &lt;div&gt;
+                        {info.getValue&lt;string[]&gt;().map((step) =&gt; (
+                            &lt;div key={step}&gt;{step}&lt;/div&gt;
+                        ))}
+                    &lt;/div&gt;
+                ),
+                size: 220,
+            },
+            { accessorKey: &#39;notes&#39;, header: &#39;Notes&#39;, cell: (info) =&gt; info.getValue(), size: 220 },
+        ]}
+        data={[
+            {
+                id: &#39;1&#39;,
+                description: &#39;Weekly backup of the core routers, kept for ninety days in the primary data center&#39;,
+                owner: &#39;Network operations center&#39;,
+                steps: [&#39;Pause monitoring&#39;, &#39;Copy configuration&#39;, &#39;Verify checksums&#39;, &#39;Resume monitoring&#39;],
+                notes: &#39;Runs every Sunday at midnight and pauses during maintenance windows announced in advance&#39;,
+            },
+            {
+                id: &#39;2&#39;,
+                description: &#39;Firmware rollout&#39;,
+                owner: &#39;Platform team&#39;,
+                steps: [&#39;Staged rollout&#39;],
+                notes: &#39;On schedule&#39;,
+            },
+        ]}
+    /&gt;
+);</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">Column Hiding</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -24621,7 +24691,7 @@ a drag handle to each of its rows.</div>
       <div class="badges">
         <label for="c-81-components-table-editable-props" class="badge ok as-toggle">53 prop types</label>
         
-        <label for="c-81-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-81-components-table-editable-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -25007,10 +25077,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -25431,6 +25503,51 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
 };</code></pre>
               
             </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Auto Row Height</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Editable cells with `rowSize=&quot;auto&quot;`. Long values wrap and grow the row.
+Double-click a cell to edit it.</div>
+              <pre><code>const AutoRowHeight = function Render() {
+    const [data, setData] = useState(() =&gt; generateChangeNotes(6));
+
+    const columns: ColumnDef&lt;ChangeNote&gt;[] = [
+        { accessorKey: &#39;change&#39;, header: &#39;Change&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        {
+            accessorKey: &#39;owner&#39;,
+            header: &#39;Owner&#39;,
+            cell: (info) =&gt; info.getValue(),
+            editCell: (info: CellContext&lt;ChangeNote, string&gt;) =&gt; &lt;DsTableEditCellText cellContext={info} /&gt;,
+            size: 200,
+        },
+        {
+            accessorKey: &#39;notes&#39;,
+            header: &#39;Notes&#39;,
+            cell: (info) =&gt; info.getValue(),
+            editCell: (info: CellContext&lt;ChangeNote, string&gt;) =&gt; &lt;DsTableEditCellText cellContext={info} /&gt;,
+            size: 420,
+        },
+    ];
+
+    return (
+        &lt;DsTable
+            bordered
+            fullWidth
+            stickyHeader
+            rowSize=&quot;auto&quot;
+            data={data}
+            columns={columns}
+            onCellEdit={(row, columnId, value) =&gt; {
+                setData((rows) =&gt; rows.map((note) =&gt; (note.id === row.id ? { ...note, [columnId]: value } : note)));
+            }}
+        /&gt;
+    );
+};</code></pre>
+              
+            </div>
         </div>
     
     
@@ -25839,10 +25956,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -26595,10 +26714,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -26792,7 +26913,7 @@ of the default bar.</div>
       <div class="badges">
         <label for="c-84-components-table-resizable-columns-props" class="badge ok as-toggle">53 prop types</label>
         
-        <label for="c-84-components-table-resizable-columns-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-84-components-table-resizable-columns-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -27178,10 +27299,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -27532,6 +27655,31 @@ width and has no resize handle.</div>
         &lt;/DsStack&gt;
     );
 };</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Auto Row Height</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Resizable columns with `rowSize=&quot;auto&quot;`. Narrow the Notes column and its text
+wraps onto more lines, growing the rows; widen it and the rows shrink back.</div>
+              <pre><code>const AutoRowHeight = () =&gt; (
+    &lt;DsTable
+        bordered
+        fullWidth
+        stickyHeader
+        resizableColumns
+        rowSize=&quot;auto&quot;
+        data={generateChangeNotes(6)}
+        columns={[
+            { accessorKey: &#39;change&#39;, header: &#39;Change&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+            { accessorKey: &#39;owner&#39;, header: &#39;Owner&#39;, cell: (info) =&gt; info.getValue(), size: 200 },
+            { accessorKey: &#39;notes&#39;, header: &#39;Notes&#39;, cell: (info) =&gt; info.getValue(), size: 420 },
+        ]}
+    /&gt;
+);</code></pre>
               
             </div>
         </div>
@@ -27942,10 +28090,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -28966,10 +29116,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -29649,10 +29801,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -30349,10 +30503,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -30966,7 +31122,7 @@ the consumer sticky columns.</div>
       <div class="badges">
         <label for="c-89-components-table-virtualized-props" class="badge ok as-toggle">53 prop types</label>
         
-        <label for="c-89-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-89-components-table-virtualized-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -31352,10 +31508,12 @@ reorderableColumnWidth?: number
 resizableColumns?: boolean
 
 /**
- * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * Row size variant (small: 36px, medium: 48px, large: 64px). `auto` grows each
+ * row to fit its content, at least the medium height, and cell text wraps
+ * instead of being clamped to two lines.
  * @default &#39;medium&#39;
  */
-rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; | &#39;auto&#39;
 
 /**
  * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
@@ -31897,6 +32055,33 @@ virtualized row, and `reorderableColumns` lets users reorder columns from the po
             columnDisplay
             reorderableColumns
             data={data} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Virtualized Auto Row Height</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`rowSize=&quot;auto&quot;` with row virtualization. Each row is measured as it renders,
+so rows of different heights scroll without overlapping or leaving gaps.</div>
+              <pre><code>const VirtualizedAutoRowHeight = function Render() {
+    const [data] = useState(() =&gt; generateChangeNotes(VIRTUALIZED_ROW_COUNT));
+
+    return (
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                bordered
+                fullWidth
+                stickyHeader
+                virtualized
+                rowSize=&quot;auto&quot;
+                data={data}
+                columns={changeNoteColumns}
+            /&gt;
+        &lt;/div&gt;
     );
 };</code></pre>
               
