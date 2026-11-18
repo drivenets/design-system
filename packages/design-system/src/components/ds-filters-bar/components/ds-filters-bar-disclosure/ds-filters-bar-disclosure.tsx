@@ -18,8 +18,6 @@ export const Disclosure = ({ ref, className, style }: DsFiltersBarDisclosureSlot
 			variant="secondary"
 			size="small"
 			icon="special-adv-filters"
-			// A disclosure, not a toggle button: `aria-expanded` carries the state.
-			aria-pressed={undefined}
 			aria-expanded={expanded}
 			aria-controls={toolbarId}
 			aria-label={expanded ? locale.collapse : locale.expand}

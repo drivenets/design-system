@@ -1,5 +1,17 @@
 # @drivenets/design-system
 
+## 0.28.0
+
+### Minor Changes
+
+- 3cecbf9: Add `DsBreadcrumbBack`, a standalone back crumb for drawer and modal drill-down headers.
+- b4c82b5: Add `stickyUtilityColumns` to `DsTable` to let the expander, select, reorder and row actions columns scroll with the content.
+
+### Patch Changes
+
+- 95b10e8: Fix the `DsBreadcrumb` dropdown crumb to show a chevron instead of a drop-down triangle, matching the design.
+- 15710a6: Match `DsBreadcrumb` item hover, keyboard focus and pressed states to the design, and stop a mouse click from leaving a focus outline.
+
 ## 0.27.0
 
 ### Minor Changes

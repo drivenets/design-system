@@ -672,3 +672,41 @@ const VirtualizedWithColumnDisplay = () => {
             data={data} />
     );
 };
+
+## Virtualized Auto Row Height
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [data] = useState(() => generateChangeNotes(VIRTUALIZED_ROW_COUNT));
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable bordered fullWidth stickyHeader virtualized rowSize="auto" data={data} columns={changeNoteColumns} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const VirtualizedAutoRowHeight = function Render() {
+    const [data] = useState(() => generateChangeNotes(VIRTUALIZED_ROW_COUNT));
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                bordered
+                fullWidth
+                stickyHeader
+                virtualized
+                rowSize="auto"
+                data={data}
+                columns={changeNoteColumns}
+            />
+        </div>
+    );
+};

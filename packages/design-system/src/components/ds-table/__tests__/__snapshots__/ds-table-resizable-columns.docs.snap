@@ -1120,3 +1120,42 @@ const PersistedWidths = () => {
         </DsStack>
     );
 };
+
+## Auto Row Height
+
+### Show code
+{
+  render: () => <DsTable bordered fullWidth stickyHeader resizableColumns rowSize="auto" data={generateChangeNotes(6)} columns={[{
+    accessorKey: 'change',
+    header: 'Change',
+    cell: info => info.getValue(),
+    size: 140
+  }, {
+    accessorKey: 'owner',
+    header: 'Owner',
+    cell: info => info.getValue(),
+    size: 200
+  }, {
+    accessorKey: 'notes',
+    header: 'Notes',
+    cell: info => info.getValue(),
+    size: 420
+  }]} />
+}
+
+### MCP manifest
+const AutoRowHeight = () => (
+    <DsTable
+        bordered
+        fullWidth
+        stickyHeader
+        resizableColumns
+        rowSize="auto"
+        data={generateChangeNotes(6)}
+        columns={[
+            { accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },
+            { accessorKey: 'owner', header: 'Owner', cell: (info) => info.getValue(), size: 200 },
+            { accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 420 },
+        ]}
+    />
+);

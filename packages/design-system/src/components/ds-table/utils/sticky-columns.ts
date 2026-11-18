@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { Cell, Column, ColumnPinningState, Table } from '@tanstack/react-table';
-import type { DsTableStickyColumns } from '../ds-table.types';
+import type { DsTableStickyColumns, DsTableStickyUtilityColumns } from '../ds-table.types';
 import { getBodyCellSizeStyle, getColumnSizeCssVar, isExplicitColumnWidth } from './column-size';
 import {
 	BUILTIN_COLUMN_IDS,
@@ -12,10 +12,10 @@ import {
 } from './constants';
 import { type ColumnDefNode, getColumnDefId, getColumnDefLeafIds, sortByColumnOrder } from './column-order';
 
-/** Visual order of the always-sticky left utility columns (matches `getAugmentedColumns`). */
+/** Visual order of the left utility columns (matches `getAugmentedColumns`). */
 const LEFT_UTILITY_COLUMN_IDS = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID] as const;
 
-/** Always-sticky right utility columns; a table renders at most one of them. */
+/** Right utility columns; a table renders at most one of them. */
 const RIGHT_UTILITY_COLUMN_IDS = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID] as const;
 
 export type DsTableStickySide = 'left' | 'right';
@@ -54,25 +54,30 @@ const sortIdsByColumnOrder = (ids: string[], columnOrder: readonly string[] | un
 	columnOrder ? sortByColumnOrder(ids, columnOrder, (id) => [id]) : ids;
 
 /**
- * Public `stickyColumns` → TanStack `columnPinning`, with utility columns always
+ * Public `stickyColumns` → TanStack `columnPinning`, with utility columns
  * pinned (left: reorder / expander / select, right: row actions or column
- * display). A column listed on both sides stays on the left. Consumer columns
- * keep `stickyColumns` order, or follow `columnOrder` when it is given.
+ * display) unless `stickyUtilityColumns` turns a side off and no consumer
+ * column is sticky on it. A column listed on both sides stays on the left.
+ * Consumer columns keep `stickyColumns` order, or follow `columnOrder` when it
+ * is given.
  */
 export const resolveColumnPinning = (
 	stickyColumns: DsTableStickyColumns | undefined,
 	columnDefs: readonly ColumnDefNode[],
 	columnOrder?: readonly string[],
+	stickyUtilityColumns?: DsTableStickyUtilityColumns,
 ): ColumnPinningState => {
 	const left = sortIdsByColumnOrder(expandToGroupLeaves(stickyColumns?.left ?? [], columnDefs), columnOrder);
 	const right = sortIdsByColumnOrder(
 		expandToGroupLeaves(stickyColumns?.right ?? [], columnDefs).filter((id) => !left.includes(id)),
 		columnOrder,
 	);
+	const pinLeftUtilities = stickyUtilityColumns?.left !== false || left.length > 0;
+	const pinRightUtilities = stickyUtilityColumns?.right !== false || right.length > 0;
 
 	return {
-		left: [...LEFT_UTILITY_COLUMN_IDS, ...left],
-		right: [...right, ...RIGHT_UTILITY_COLUMN_IDS],
+		left: pinLeftUtilities ? [...LEFT_UTILITY_COLUMN_IDS, ...left] : left,
+		right: pinRightUtilities ? [...right, ...RIGHT_UTILITY_COLUMN_IDS] : right,
 	};
 };
 

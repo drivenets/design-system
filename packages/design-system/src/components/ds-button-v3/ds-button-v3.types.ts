@@ -39,9 +39,8 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 	size?: ButtonV3Size;
 
 	/**
-	 * Whether the button is in a selected/pressed state. Used for toggle buttons
-	 * and segmented controls.
-	 * @default false
+	 * Pressed state for toggle buttons and segmented controls, exposed as `aria-pressed`.
+	 * Leave unset on plain action buttons so they are not announced as toggles.
 	 */
 	selected?: boolean;
 

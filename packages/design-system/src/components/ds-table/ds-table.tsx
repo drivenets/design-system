@@ -40,6 +40,7 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
 	small: 36,
 	medium: 48,
 	large: 64,
+	auto: 48,
 };
 
 /**
@@ -90,6 +91,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnOrderChange,
 		stickyColumns: externalStickyColumns,
 		onStickyColumnsChange,
+		stickyUtilityColumns,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -209,6 +211,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnOrderChange,
 		stickyColumns: externalStickyColumns,
 		onStickyColumnsChange,
+		stickyUtilityColumns,
 		reorderEnabled: reorderableColumns && columnDisplay,
 	});
 
