@@ -40,6 +40,7 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
 	small: 36,
 	medium: 48,
 	large: 64,
+	auto: 48,
 };
 
 /**
