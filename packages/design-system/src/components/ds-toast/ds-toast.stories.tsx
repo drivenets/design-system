@@ -3,6 +3,7 @@ import { DsToast } from './ds-toast';
 import { DsToastProvider, useToaster } from './ds-toast-context';
 import { toastVariants } from './ds-toast.types';
 import { DsButton } from '../ds-button';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsToast> = {
@@ -200,8 +201,8 @@ export const NoTitle: Story = {
 };
 
 /**
- * Pass `actions` to render buttons inside the toast. Action handlers typically dismiss the
- * toast with `dismissToast(id)` — pair actions with `persistent` so the toast waits for a choice.
+ * Pass up to two small `color="light"` `DsButtonV3` actions: tertiary first, secondary last.
+ * Handlers usually call `dismissToast(id)`; pair actions with `persistent` so the toast waits.
  */
 export const WithActions: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
@@ -216,14 +217,14 @@ export const WithActions: Story = {
 					description: 'Your file could not be uploaded.',
 					persistent: true,
 					actions: (
-						<DsStack direction="row" gap="var(--xs)" justifyContent="flex-end">
-							<DsButton design="v1.2" variant="ghost" onClick={() => dismissToast(id)}>
-								Abort
-							</DsButton>
-							<DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
-								Re-try
-							</DsButton>
-						</DsStack>
+						<>
+							<DsButtonV3 variant="tertiary" color="light" size="small" onClick={() => dismissToast(id)}>
+								Cancel
+							</DsButtonV3>
+							<DsButtonV3 variant="secondary" color="light" size="small" onClick={() => dismissToast(id)}>
+								Retry
+							</DsButtonV3>
+						</>
 					),
 				});
 			};

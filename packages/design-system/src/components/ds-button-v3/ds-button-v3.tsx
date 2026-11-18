@@ -36,7 +36,7 @@ const DsButtonV3 = ({
 	color = 'default',
 	variant = 'primary',
 	size = 'medium',
-	selected = false,
+	selected,
 	highEmphasis = false,
 	type = 'button',
 	id,
