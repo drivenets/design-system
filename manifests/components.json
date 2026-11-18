@@ -1782,11 +1782,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the button is in a selected/pressed state. Used for toggle buttons\nand segmented controls.\n@default false",
-            "defaultValue": {
-              "value": "false",
-              "computed": false
-            }
+            "description": "Pressed state for toggle buttons and segmented controls, exposed as `aria-pressed`.\nLeave unset on plain action buttons so they are not announced as toggles."
           },
           "highEmphasis": {
             "required": false,
@@ -36129,6 +36125,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4507
+    "durationMs": 4099
   }
 }
