@@ -1454,6 +1454,82 @@ const Expandable = () => {
     );
 };
 
+## Sticky Utility Columns
+
+### Show code
+{
+  args: {
+    expandable: true,
+    secondaryRowActions: [{
+      icon: 'delete',
+      label: 'Delete',
+      onClick: fn()
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    useEffect(() => {
+      tableRef.current?.expandRows(['1']);
+    }, []);
+    return <DsTable {...args} ref={tableRef} renderExpandedRow={() => <DsTable columns={wideColumns} data={defaultData.slice(0, 2)} expandable renderExpandedRow={() => null} secondaryRowActions={[{
+      icon: 'delete',
+      label: 'Delete',
+      onClick: fn()
+    }]} stickyUtilityColumns={{
+      left: false,
+      right: false
+    }} />} />;
+  }
+}
+
+### MCP manifest
+const StickyUtilityColumns = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+
+    useEffect(() => {
+        tableRef.current?.expandRows(['1']);
+    }, []);
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            expandable
+            secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]}
+            ref={tableRef}
+            renderExpandedRow={() => (
+                <DsTable
+                    columns={wideColumns}
+                    data={defaultData.slice(0, 2)}
+                    expandable
+                    renderExpandedRow={() => null}
+                    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]}
+                    stickyUtilityColumns={{ left: false, right: false }}
+                />
+            )} />
+    );
+};
+
 ## Reorderable
 
 ### Show code
