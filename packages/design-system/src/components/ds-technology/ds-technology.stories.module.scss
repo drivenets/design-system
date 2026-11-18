@@ -1,0 +1,33 @@
+$canvas-width: 360px;
+$canvas-height: 160px;
+$legend-sample-width: 16px;
+$legend-sample-height: 8px;
+$matrix-label-width: 180px;
+
+.canvas {
+	display: block;
+	width: $canvas-width;
+	height: $canvas-height;
+	overflow: visible;
+	border-radius: var(--xs);
+	background: var(--background-page);
+}
+
+.legendSample {
+	width: $legend-sample-width;
+	height: $legend-sample-height;
+}
+
+.matrix {
+	display: grid;
+	padding: var(--lg);
+	gap: var(--lg);
+	background: var(--background-page);
+}
+
+.matrixRow {
+	display: grid;
+	grid-template-columns: $matrix-label-width repeat(7, auto);
+	align-items: center;
+	gap: var(--xl);
+}

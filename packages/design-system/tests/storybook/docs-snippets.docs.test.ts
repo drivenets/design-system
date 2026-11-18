@@ -67,6 +67,7 @@ const COMPONENTS = [
 	'tabs',
 	'tag',
 	'tag-filter',
+	'technology',
 	'text-input',
 	'textarea',
 	'time-picker',
