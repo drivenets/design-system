@@ -34766,8 +34766,8 @@
         {
           "id": "components-toast--with-actions",
           "name": "With Actions",
-          "snippet": "const WithActions = () => {\n    const ToastTrigger = () => {\n        const { createToast, dismissToast } = useToaster();\n\n        const showToast = () => {\n            const id = createToast({\n                variant: 'warning',\n                title: 'File upload failed',\n                description: 'Your file could not be uploaded.',\n                persistent: true,\n                actions: (\n                    <DsStack direction=\"row\" gap=\"var(--xs)\" justifyContent=\"flex-end\">\n                        <DsButton design=\"v1.2\" variant=\"ghost\" onClick={() => dismissToast(id)}>\n                            Abort\n                        </DsButton>\n                        <DsButton design=\"v1.2\" variant=\"danger\" onClick={() => dismissToast(id)}>\n                            Re-try\n                        </DsButton>\n                    </DsStack>\n                ),\n            });\n        };\n\n        return (\n            <DsButton design=\"v1.2\" variant=\"filled\" onClick={showToast}>\n                Show toast with actions\n            </DsButton>\n        );\n    };\n\n    return (\n        <DsToastProvider>\n            <ToastTrigger />\n        </DsToastProvider>\n    );\n};",
-          "description": "Pass `actions` to render buttons inside the toast. Action handlers typically dismiss the\ntoast with `dismissToast(id)` — pair actions with `persistent` so the toast waits for a choice."
+          "snippet": "const WithActions = () => {\n    const ToastTrigger = () => {\n        const { createToast, dismissToast } = useToaster();\n\n        const showToast = () => {\n            const id = createToast({\n                variant: 'warning',\n                title: 'File upload failed',\n                description: 'Your file could not be uploaded.',\n                persistent: true,\n                actions: (\n                    <>\n                        <DsButtonV3 variant=\"tertiary\" color=\"light\" size=\"small\" onClick={() => dismissToast(id)}>\n                            Cancel\n                        </DsButtonV3>\n                        <DsButtonV3 variant=\"secondary\" color=\"light\" size=\"small\" onClick={() => dismissToast(id)}>\n                            Retry\n                        </DsButtonV3>\n                    </>\n                ),\n            });\n        };\n\n        return (\n            <DsButton design=\"v1.2\" variant=\"filled\" onClick={showToast}>\n                Show toast with actions\n            </DsButton>\n        );\n    };\n\n    return (\n        <DsToastProvider>\n            <ToastTrigger />\n        </DsToastProvider>\n    );\n};",
+          "description": "Pass up to two small `color=\"light\"` `DsButtonV3` actions: tertiary first, secondary last.\nHandlers usually call `dismissToast(id)`; pair actions with `persistent` so the toast waits."
         },
         {
           "id": "components-toast--long-content",
@@ -34788,7 +34788,7 @@
           "description": "Toasts stack up to the provider's `max` (default 3). `dismissAllToasts` clears them at once."
         }
       ],
-      "import": "import { DsButton, DsStack, DsToast, DsToastProvider } from '@drivenets/design-system';"
+      "import": "import { DsButton, DsButtonV3, DsStack, DsToast, DsToastProvider } from '@drivenets/design-system';"
     },
     "components-toggle": {
       "id": "components-toggle",
@@ -36129,6 +36129,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6001
+    "durationMs": 6343
   }
 }
