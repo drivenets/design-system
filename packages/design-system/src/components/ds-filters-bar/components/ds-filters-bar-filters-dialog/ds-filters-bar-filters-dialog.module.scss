@@ -7,7 +7,6 @@ $content-height: 472px;
 $content-max-height: 70vh;
 $tab-list-width: 200px;
 $tab-height: var(--2xl);
-$tab-indicator-width: var(--4xs);
 $counter-dot-size: var(--2xs);
 $transition-duration: 0.2s;
 
@@ -52,16 +51,10 @@ $transition-duration: 0.2s;
 	min-height: $tab-height;
 	padding: 0 var(--xs) 0 var(--standard);
 	border-bottom: none;
-	border-right: $tab-indicator-width solid transparent;
 	color: var(--font-main);
-
-	&[aria-selected='true'] {
-		background: var(--background-active-status);
-		border-right-color: var(--border-action-primary);
-	}
 }
 
-// Outranks DsVerticalTabs' hover rule, which would otherwise repaint the selected tab.
+// Keeps the selected background on hover instead of DsVerticalTabs' selected-hover color.
 .tabs .tabList .tab[aria-selected='true']:hover:not([data-disabled]) {
 	background: var(--background-active-status);
 }

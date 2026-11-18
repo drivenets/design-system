@@ -153,7 +153,7 @@ Full-height divider for the active resize boundary (hover or drag).
 _Avoid_: resize handle, drag line
 
 **Sticky column**:
-A **Leaf column** kept in view at the left or right edge while the table scrolls horizontally. Consumers choose them with `stickyColumns`; the **Utility columns** are always sticky.
+A **Leaf column** kept in view at the left or right edge while the table scrolls horizontally. Consumers choose them with `stickyColumns`; the **Utility columns** are sticky unless `stickyUtilityColumns` turns a side off.
 _Avoid_: pinned column (TanStack's term), frozen column, fixed column
 
 **Edge divider**:
@@ -278,7 +278,7 @@ _Avoid_: maintenance branch, hotfix branch
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 - A table has one scroll container for both axes; the header and every **Sticky column** stick inside it, and its vertical scrollbar sits at the visible right edge
-- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the **Column display** column on the right) and are always sticky
+- **Utility columns** are **Sticky columns** by default (select, expander and reorder on the left, the **Row actions column** or the **Column display** column on the right); `stickyUtilityColumns` lets a side scroll, except while consumer **Sticky columns** are on that side
 - Making one **Leaf column** of a **Column group** sticky makes the whole top-level group sticky
 - A **Column display** search shows the rows that match plus a **Reference row** for each non-matching ancestor; a matching **Column group** shows only its matching descendants
 - A **Reference row** is context, not a control: it shows its group's true state but cannot be toggled or made sticky

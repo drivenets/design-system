@@ -21,7 +21,10 @@ $separator-offset: var(--sm);
 $label-padding: var(--4xs) 0;
 $label-font-size: var(--body-font-size-md);
 $label-font-size-single: var(--body-font-size-sm);
-$label-line-height: 1.5;
+$label-line-height: var(--body-line-height-md);
+$label-line-height-single: var(--body-line-height-small);
+$label-padding-block-start: calc(($indicator-size - $label-line-height) / 2);
+$label-padding-block-end: var(--4xs);
 $label-font-weight: var(--font-weight-medium);
 $description-font-size: var(--body-font-size-sm);
 $description-line-height: 1.4;
@@ -72,6 +75,7 @@ $horizontal-description-line-clamp: 2;
 	@include mixins.disabled-overlay;
 
 	.root.variantSingle & {
+		align-items: center;
 		padding-block: $step-single-padding-block;
 		padding-inline-start: $step-single-padding-inline-start;
 		padding-inline-end: $step-single-padding-inline-end;
@@ -149,14 +153,16 @@ $horizontal-description-line-clamp: 2;
 	}
 
 	.stepLabel {
-		padding: $label-padding;
+		padding-block: $label-padding-block-start $label-padding-block-end;
 		font-size: $label-font-size;
 		line-height: $label-line-height;
 		font-weight: $label-font-weight;
 		color: var(--font-secondary);
 
 		.root.variantSingle & {
+			padding: $label-padding;
 			font-size: $label-font-size-single;
+			line-height: $label-line-height-single;
 		}
 	}
 
@@ -231,7 +237,7 @@ $horizontal-description-line-clamp: 2;
 	.step {
 		flex: 1 1 0;
 		align-self: stretch;
-		align-items: center;
+		align-items: flex-start;
 		padding: var(--3xs) var(--xs);
 		gap: var(--sm);
 		border-radius: var(--2xs);
