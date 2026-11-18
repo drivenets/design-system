@@ -10,16 +10,27 @@ overlays between the DS tiers, or move a tier, without reading the compiled CSS.
 Tokens come in two layers, like the colors: value tokens hold the numbers, and tier tokens point at them. Components
 and apps read the tier tokens.
 
-| Tier token           | Value token      | Default | Tier                                    | Read by today    |
-| -------------------- | ---------------- | ------- | --------------------------------------- | ---------------- |
-| `--z-index-popover`  | `--z-index-1000` | `1000`  | Popovers anchored to page content       | `DsPopover`      |
-| `--z-index-drawer`   | `--z-index-1200` | `1200`  | Drawer panels                           | —                |
-| `--z-index-modal`    | `--z-index-1200` | `1200`  | Modal and dialog content                | —                |
-| `--z-index-dropdown` | `--z-index-9999` | `9999`  | Select, autocomplete and dropdown menus | `DsAutocomplete` |
-| `--z-index-tooltip`  | `--z-index-9999` | `9999`  | Tooltips                                | —                |
+| Tier token           | Value token      | Default | Tier                                    | Read by today                                                                                                      |
+| -------------------- | ---------------- | ------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `--z-index-popover`  | `--z-index-1000` | `1000`  | Popovers anchored to page content       | `DsPopover`, `DsTable` column filters, `DsChipGroup`                                                               |
+| `--z-index-drawer`   | `--z-index-1200` | `1200`  | Drawer panels                           | `DsDrawer`                                                                                                         |
+| `--z-index-modal`    | `--z-index-1200` | `1200`  | Modal and dialog content                | `DsModal`, `DsDialog`                                                                                              |
+| `--z-index-dropdown` | `--z-index-9999` | `9999`  | Select, autocomplete and dropdown menus | `DsSelect`, `DsAutocomplete`, `DsDropdownMenu`, `DsDateInput`, `DsDatePicker`, `DsTimePicker`, `DsTable`, `DsTree` |
+| `--z-index-tooltip`  | `--z-index-9999` | `9999`  | Tooltips                                | `DsTooltip`                                                                                                        |
 
-Overlays are moving onto these tokens one component at a time. Until a component reads its token, overriding the
-token doesn't move that component.
+Some layers sit at a fixed offset from their tier and move with it:
+
+| Layer                                       | Z-index                  |
+| ------------------------------------------- | ------------------------ |
+| `DsModal` and `DsDialog` backdrop           | `--z-index-modal` − 1    |
+| `DsDrawer` backdrop                         | `--z-index-drawer` − 200 |
+| `DsChipGroup` overflow list                 | `--z-index-popover` + 1  |
+| `DsDropdownMenu` submenus                   | `--z-index-dropdown` + 1 |
+| `DsDatePicker` time picker                  | `--z-index-dropdown` + 1 |
+| `DsTree` drag preview                       | `--z-index-dropdown` + 1 |
+| `DsTable` tooltips on secondary row actions | `--z-index-dropdown` + 2 |
+
+`DsToast` and `DsMainMenu` don't read a tier yet, and menus inside `DsCommentBubble` and `DsCommentCard` stay at `1300`.
 
 ## Placing an app overlay
 

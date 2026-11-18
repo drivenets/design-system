@@ -25,5 +25,5 @@
 }
 
 .timePickerPopoverContent {
-	z-index: dropdown.$dropdown-z-index + 1;
+	z-index: dropdown.z-index(1);
 }

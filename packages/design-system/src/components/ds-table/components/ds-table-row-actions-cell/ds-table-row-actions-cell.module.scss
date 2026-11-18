@@ -59,7 +59,7 @@
 
 // Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
 .secondaryActionTooltip[data-part='content'] {
-	z-index: dropdown.$dropdown-z-index + 2;
+	z-index: dropdown.z-index(2);
 }
 
 .visuallyHidden {

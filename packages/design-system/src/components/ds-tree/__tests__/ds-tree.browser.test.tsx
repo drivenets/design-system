@@ -1,5 +1,5 @@
 import { type CSSProperties, type ReactNode, useEffect, useState } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsDialog } from '../../ds-dialog';
 import { DsDropdownMenu } from '../../ds-dropdown-menu';
@@ -10,6 +10,7 @@ import { DsTree } from '../ds-tree';
 import styles from '../ds-tree.module.scss';
 import { createDsTreeCollection } from '../ds-tree.utils';
 import type { DsTreeDropPosition, DsTreeNode, DsTreeRootProps, DsTreeSortableProps } from '../ds-tree.types';
+import { findElement, readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 const nodes: DsTreeNode[] = [
 	{
@@ -2667,5 +2668,26 @@ describe('DsTree empty group', () => {
 			'router-1',
 		]);
 		await expect.element(parent).toHaveAttribute('aria-checked', 'true');
+	});
+});
+
+describe('DsTree.Sortable stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const renderDragLayer = async () => {
+		await page.render(<SortableTree />);
+		await expect.element(page.getByText('Logs')).toBeVisible();
+
+		return findElement(byClass(styles.dragLayer));
+	};
+
+	it('stacks the drag layer just above dropdowns by default', async () => {
+		expect(readZIndex(await renderDragLayer())).toBe(10000);
+	});
+
+	it('moves the drag layer with --z-index-dropdown', async () => {
+		setZIndexTier('dropdown', 5000);
+
+		expect(readZIndex(await renderDragLayer())).toBe(5001);
 	});
 });

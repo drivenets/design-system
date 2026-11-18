@@ -1,11 +1,12 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { type Locator, page, userEvent } from 'vitest/browser';
 import type { RowAction, SecondaryRowAction } from '../components/ds-table-row-actions-cell';
 import DsTable from '../ds-table';
 import type { Action } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { ROW_ACTIONS_COLUMN_ID } from '../utils/constants';
+import { readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 const narrowContainerWidth = 720;
 
@@ -804,5 +805,54 @@ describe('DsTable - Row Actions', () => {
 
 			await expect.element(row.getByRole('cell').last()).toHaveTextContent('consumer content');
 		});
+	});
+});
+
+describe('DsTable - Row Actions stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const openSecondaryActionTooltip = async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{
+						icon: 'delete_outline',
+						label: 'Delete',
+						disabled: () => true,
+						tooltip: 'No permission',
+						onClick: vi.fn(),
+					},
+				]}
+			/>,
+		);
+
+		const row = page.getByRole('row').nth(1);
+		await row.hover();
+		await row.getByRole('button', { name: /more actions/i }).click();
+		await page.getByRole('menuitem', { name: /delete/i }).hover();
+		await expect.element(page.getByRole('tooltip', { name: 'No permission' })).toBeVisible();
+
+		return {
+			menu: page.getByRole('menu').element(),
+			tooltip: page.getByRole('tooltip', { name: 'No permission' }).element(),
+		};
+	};
+
+	it('stacks secondary action tooltips two above the menu by default', async () => {
+		const { menu, tooltip } = await openSecondaryActionTooltip();
+
+		expect(readZIndex(menu)).toBe(9999);
+		expect(readZIndex(tooltip)).toBe(10001);
+	});
+
+	it('moves the menu and its tooltips with --z-index-dropdown', async () => {
+		setZIndexTier('dropdown', 5000);
+
+		const { menu, tooltip } = await openSecondaryActionTooltip();
+
+		expect(readZIndex(menu)).toBe(5000);
+		expect(readZIndex(tooltip)).toBe(5002);
 	});
 });

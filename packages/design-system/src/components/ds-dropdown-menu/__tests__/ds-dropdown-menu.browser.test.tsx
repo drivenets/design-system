@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsDropdownMenu, DsDropdownMenuLegacy } from '../ds-dropdown-menu';
 import { DsIcon } from '../../ds-icon';
@@ -7,6 +7,7 @@ import { DsCheckbox } from '../../ds-checkbox';
 import { DsTypography } from '../../ds-typography';
 import { DsTooltip } from '../../ds-tooltip';
 import { modalContainers } from '../../../../vitest/modal-containers';
+import { readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 describe('DsDropdownMenu', () => {
 	it('should open menu when trigger is clicked', async () => {
@@ -414,5 +415,53 @@ describe('DsDropdownMenuLegacy', () => {
 		await expect.element(page.getByRole('menuitem', { name: /Delete/ })).toBeVisible();
 		await expect.element(page.getByRole('menuitem', { name: /Share/ })).toBeVisible();
 		await expect.element(page.getByRole('menuitem', { name: /Disabled Option/ })).toBeVisible();
+	});
+});
+
+describe('DsDropdownMenu stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const openMenuAndSubmenu = async () => {
+		await page.render(
+			<DsDropdownMenu.Root>
+				<DsDropdownMenu.Trigger>
+					<span>Actions</span>
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Item value="edit">Edit</DsDropdownMenu.Item>
+					<DsDropdownMenu.Root positioning={{ placement: 'right-start' }}>
+						<DsDropdownMenu.TriggerItem>Share</DsDropdownMenu.TriggerItem>
+						<DsDropdownMenu.Content>
+							<DsDropdownMenu.Item value="email">Email</DsDropdownMenu.Item>
+						</DsDropdownMenu.Content>
+					</DsDropdownMenu.Root>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>,
+		);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await expect.element(page.getByRole('menu')).toBeVisible();
+		const menu = page.getByRole('menu').element();
+
+		await page.getByRole('menuitem', { name: /Share/ }).click();
+		await expect.element(page.getByRole('menu', { name: /Share/ })).toBeVisible();
+
+		return { menu, submenu: page.getByRole('menu', { name: /Share/ }).element() };
+	};
+
+	it('stacks the menu at 9999 and the submenu just above it by default', async () => {
+		const { menu, submenu } = await openMenuAndSubmenu();
+
+		expect(readZIndex(menu)).toBe(9999);
+		expect(readZIndex(submenu)).toBe(10000);
+	});
+
+	it('moves the menu and submenu with --z-index-dropdown', async () => {
+		setZIndexTier('dropdown', 5000);
+
+		const { menu, submenu } = await openMenuAndSubmenu();
+
+		expect(readZIndex(menu)).toBe(5000);
+		expect(readZIndex(submenu)).toBe(5001);
 	});
 });

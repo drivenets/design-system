@@ -20,7 +20,7 @@
 	&[data-side='right'],
 	&[data-side='left'] {
 		margin-top: -1px;
-		z-index: 10000;
+		z-index: dropdown.z-index(1);
 	}
 }
 

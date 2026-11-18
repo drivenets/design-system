@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDrawer from '../ds-drawer';
 import type { DsDrawerProps } from '../ds-drawer.types';
+import { findElement, readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 const ControlledDrawer = (props: Partial<DsDrawerProps>) => {
 	const [open, setOpen] = useState(false);
@@ -281,5 +282,39 @@ describe('DsDrawer', () => {
 			expect(document.body.style.pointerEvents).not.toBe('none');
 			expect(document.body.getAttribute('aria-hidden')).toBeNull();
 		});
+	});
+});
+
+describe('DsDrawer stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const renderOpenDrawer = async () => {
+		await page.render(
+			<DsDrawer open onOpenChange={() => {}} backdrop>
+				<DsDrawer.Body>Drawer body</DsDrawer.Body>
+			</DsDrawer>,
+		);
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+
+		return {
+			drawer: page.getByRole('dialog').element(),
+			backdrop: await findElement('[data-scope="dialog"][data-part="backdrop"]'),
+		};
+	};
+
+	it('stacks the drawer at 1200 and the backdrop at 1000 by default', async () => {
+		const { drawer, backdrop } = await renderOpenDrawer();
+
+		expect(readZIndex(drawer)).toBe(1200);
+		expect(readZIndex(backdrop)).toBe(1000);
+	});
+
+	it('moves the drawer and keeps the backdrop below it with --z-index-drawer', async () => {
+		setZIndexTier('drawer', 1500);
+
+		const { drawer, backdrop } = await renderOpenDrawer();
+
+		expect(readZIndex(drawer)).toBe(1500);
+		expect(readZIndex(backdrop)).toBe(1300);
 	});
 });

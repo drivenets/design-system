@@ -42,7 +42,7 @@
 	padding: var(--xs);
 	max-height: 80vh;
 	overflow-y: auto;
-	z-index: 1001;
+	z-index: calc(var(--z-index-popover, 1000) + 1);
 	min-width: 300px;
 	max-width: 500px;
 }
