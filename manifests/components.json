@@ -2087,6 +2087,204 @@
       ],
       "import": "import { DsButtonNew, DsIcon, DsSpinner } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';\nimport { DsIcon } from '../../../ds-icon';\nimport { DsSpinner } from '../../../ds-spinner';"
     },
+    "components-cable": {
+      "id": "components-cable",
+      "name": "DsCable",
+      "path": "./src/components/ds-cable/ds-cable.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "Line for one cable between two locations on a map, colored by type and styled by status. Fills its nearest positioned ancestor and draws in that ancestor's pixel coordinates, so it lines up with pins positioned in the same element. It can also be nested in an `<svg>`. Render one per cable."
+        ]
+      },
+      "description": "",
+      "summary": "Line for one cable between two locations on a map, colored by type and styled by status. Fills its nearest positioned ancestor and draws in that ancestor's pixel coordinates, so it lines up with pins positioned in the same element. It can also be nested in an `<svg>`. Render one per cable.",
+      "reactDocgen": {
+        "description": "@summary Line for one cable between two locations on a map, colored by type and styled by status.\n\nFills its nearest positioned ancestor and draws in that ancestor's pixel coordinates, so it lines up\nwith pins positioned in the same element. It can also be nested in an `<svg>`. Render one per cable.",
+        "methods": [],
+        "displayName": "DsCable",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-cable/ds-cable.tsx",
+        "actualName": "DsCable",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "SVGSVGElement"
+                }
+              ],
+              "raw": "Ref<SVGSVGElement>"
+            },
+            "description": ""
+          },
+          "type": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof cableTypes)[number]"
+            },
+            "description": "Kind of cable; sets the color.\n@default 'general'",
+            "defaultValue": {
+              "value": "'general'",
+              "computed": false
+            }
+          },
+          "line": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof cableLines)[number]"
+            },
+            "description": "Line style, for the status of the cable, e.g. deployed (`solid`), planned (`dotted`)\nor in design (`dashed`).\n@default 'solid'",
+            "defaultValue": {
+              "value": "'solid'",
+              "computed": false
+            }
+          },
+          "selected": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the selected style, raises the cable above unselected ones and marks it with `aria-current`.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "aria-label": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Accessible name of the cable, e.g. `\"IOF cable, Haifa North to Haifa South, planned\"`.\nRequired because the line does not identify the cable on its own."
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: MouseEvent<SVGGElement> | KeyboardEvent<SVGGElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "union",
+                      "raw": "MouseEvent<SVGGElement> | KeyboardEvent<SVGGElement>",
+                      "elements": [
+                        {
+                          "name": "MouseEvent",
+                          "elements": [
+                            {
+                              "name": "SVGGElement"
+                            }
+                          ],
+                          "raw": "MouseEvent<SVGGElement>"
+                        },
+                        {
+                          "name": "KeyboardEvent",
+                          "elements": [
+                            {
+                              "name": "SVGGElement"
+                            }
+                          ],
+                          "raw": "KeyboardEvent<SVGGElement>"
+                        }
+                      ]
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Makes the cable interactive: it reacts to hover, takes keyboard focus and fires on click, Enter\nand Space. Without it the cable is a static image that lets pointer events through."
+          },
+          "curvature": {
+            "defaultValue": {
+              "value": "0",
+              "computed": false
+            },
+            "required": false
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-cable--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsCable\n    from={{ x: 40, y: 60 }}\n    to={{ x: 320, y: 60 }}\n    aria-label=\"Cable, Haifa North to Haifa South\" />;",
+          "description": "A cable between two points of its positioned parent. Without `onClick` it is a static image."
+        },
+        {
+          "id": "components-cable--type",
+          "name": "Type",
+          "snippet": "const Type = () => <DsCable\n    from={{ x: 40, y: 60 }}\n    to={{ x: 320, y: 60 }}\n    type=\"iof\"\n    aria-label=\"IOF cable, Haifa North to Haifa South\" />;",
+          "description": "Each kind of cable has its own color; keep one type per kind across the map."
+        },
+        {
+          "id": "components-cable--dotted",
+          "name": "Dotted",
+          "snippet": "const Dotted = () => <DsCable\n    from={{ x: 40, y: 60 }}\n    to={{ x: 320, y: 60 }}\n    type=\"tie\"\n    line=\"dotted\"\n    aria-label=\"Tie cable, Haifa North to Haifa South, planned\" />;",
+          "description": "A dotted line marks a secondary status, e.g. a planned cable in Network View."
+        },
+        {
+          "id": "components-cable--dashed",
+          "name": "Dashed",
+          "snippet": "const Dashed = () => <DsCable\n    from={{ x: 40, y: 60 }}\n    to={{ x: 320, y: 60 }}\n    type=\"loop\"\n    line=\"dashed\"\n    aria-label=\"Loop cable, Haifa North to Haifa South, designed\" />;",
+          "description": "A dashed line marks another status, e.g. a cable still being designed in Network View."
+        },
+        {
+          "id": "components-cable--curved",
+          "name": "Curved",
+          "snippet": "const Curved = () => <DsCable\n    from={{ x: 40, y: 100 }}\n    to={{ x: 320, y: 100 }}\n    curvature={0.25}\n    type=\"iof\"\n    aria-label=\"IOF cable, Haifa North to Haifa South\" />;",
+          "description": "Bend a cable to route it around other content, or to tell apart cables that share both ends."
+        },
+        {
+          "id": "components-cable--custom-path",
+          "name": "Custom Path",
+          "snippet": "const CustomPath = () => <DsCable\n    path=\"M40 100C120 100 120 20 180 20S240 100 320 100\"\n    type=\"tie\"\n    aria-label=\"Tie cable, Haifa North to Haifa South\" />;",
+          "description": "Pass path data when the route is more than a single bend, e.g. one projected from map coordinates."
+        },
+        {
+          "id": "components-cable--selected",
+          "name": "Selected",
+          "snippet": "const Selected = () => <DsCable\n    from={{ x: 40, y: 60 }}\n    to={{ x: 320, y: 60 }}\n    selected\n    aria-label=\"Cable, Haifa North to Haifa South\" />;",
+          "description": "The selected cable is heavier and stays above unselected cables."
+        },
+        {
+          "id": "components-cable--interactive",
+          "name": "Interactive",
+          "snippet": "const Interactive = function Render() {\n    const [selected, setSelected] = useState(false);\n\n    return (\n        <DsCable\n            from={{ x: 40, y: 60 }}\n            to={{ x: 320, y: 60 }}\n            type=\"iof\"\n            selected={selected}\n            aria-label=\"IOF cable, Haifa North to Haifa South\"\n            onClick={() => setSelected(!selected)}\n        />\n    );\n};",
+          "description": "With `onClick` the cable reacts to hover, takes keyboard focus and is activated with Enter or Space."
+        },
+        {
+          "id": "components-cable--between-pins",
+          "name": "Between Pins",
+          "snippet": "const BetweenPins = function Render() {\n    const [selectedId, setSelectedId] = useState<string | null>('iof');\n\n    return (\n        <div className={styles.map}>\n            <DsCable\n                from={{ x: 80, y: 200 }}\n                to={{ x: 400, y: 120 }}\n                type=\"iof\"\n                selected={selectedId === 'iof'}\n                aria-label=\"IOF cable, Haifa North to Haifa South\"\n                onClick={() => setSelectedId('iof')}\n            />\n            <DsCable\n                from={{ x: 80, y: 200 }}\n                to={{ x: 400, y: 120 }}\n                curvature={0.2}\n                type=\"tie\"\n                line=\"dotted\"\n                selected={selectedId === 'tie'}\n                aria-label=\"Tie cable, Haifa North to Haifa South, planned\"\n                onClick={() => setSelectedId('tie')}\n            />\n            <DsCable\n                from={{ x: 80, y: 200 }}\n                to={{ x: 400, y: 120 }}\n                curvature={-0.2}\n                type=\"loop\"\n                line=\"dashed\"\n                selected={selectedId === 'loop'}\n                aria-label=\"Loop cable, Haifa North to Haifa South, designed\"\n                onClick={() => setSelectedId('loop')}\n            />\n            <DsMapPin\n                className={styles.pin}\n                style={{ left: 80, top: 200 }}\n                label=\"T1\"\n                aria-label=\"Central office T1, Haifa North\"\n            />\n            <DsMapPin\n                className={styles.pin}\n                style={{ left: 400, top: 120 }}\n                label=\"T2\"\n                aria-label=\"Central office T2, Haifa South\"\n            />\n        </div>\n    );\n};",
+          "description": "Cables and pins share one positioned parent, so cable ends and pin tips use the same coordinates."
+        }
+      ],
+      "import": "import { DsCable, DsMapPin } from '@drivenets/design-system';"
+    },
     "components-card": {
       "id": "components-card",
       "name": "DsCard.Root",
@@ -36382,6 +36580,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4351
+    "durationMs": 4327
   }
 }
