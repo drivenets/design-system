@@ -20,15 +20,15 @@ and apps read the tier tokens.
 
 Some layers sit at a fixed offset from their tier and move with it:
 
-| Layer                                       | Z-index                  |
-| ------------------------------------------- | ------------------------ |
-| `DsModal` and `DsDialog` backdrop           | `--z-index-modal` − 1    |
-| `DsDrawer` backdrop                         | `--z-index-drawer` − 200 |
-| `DsChipGroup` overflow list                 | `--z-index-popover` + 1  |
-| `DsDropdownMenu` submenus                   | `--z-index-dropdown` + 1 |
-| `DsDatePicker` time picker                  | `--z-index-dropdown` + 1 |
-| `DsTree` drag preview                       | `--z-index-dropdown` + 1 |
-| `DsTable` tooltips on secondary row actions | `--z-index-dropdown` + 2 |
+| Layer                                       | Z-index                                                |
+| ------------------------------------------- | ------------------------------------------------------ |
+| `DsModal` and `DsDialog` backdrop           | `--z-index-modal` − 1                                  |
+| `DsDrawer` backdrop                         | `--z-index-drawer` − 200                               |
+| `DsChipGroup` overflow list                 | `--z-index-popover` + 1                                |
+| `DsDropdownMenu` submenus                   | `--z-index-dropdown` + 1                               |
+| `DsDatePicker` time picker                  | `--z-index-dropdown` + 1                               |
+| `DsTree` drag preview                       | `--z-index-dropdown` + 1                               |
+| `DsTable` tooltips on secondary row actions | `--z-index-tooltip`, at least `--z-index-dropdown` + 2 |
 
 `DsToast` and `DsMainMenu` don't read a tier yet, and menus inside `DsCommentBubble` and `DsCommentCard` stay at `1300`.
 

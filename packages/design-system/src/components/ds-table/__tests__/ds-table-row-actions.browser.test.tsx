@@ -847,12 +847,21 @@ describe('DsTable - Row Actions stacking', () => {
 		expect(readZIndex(tooltip)).toBe(10001);
 	});
 
-	it('moves the menu and its tooltips with --z-index-dropdown', async () => {
-		setZIndexTier('dropdown', 5000);
+	it('keeps secondary action tooltips two above the menu when --z-index-dropdown rises past the tooltip tier', async () => {
+		setZIndexTier('dropdown', 12000);
 
 		const { menu, tooltip } = await openSecondaryActionTooltip();
 
-		expect(readZIndex(menu)).toBe(5000);
-		expect(readZIndex(tooltip)).toBe(5002);
+		expect(readZIndex(menu)).toBe(12000);
+		expect(readZIndex(tooltip)).toBe(12002);
+	});
+
+	it('moves secondary action tooltips with --z-index-tooltip', async () => {
+		setZIndexTier('tooltip', 20000);
+
+		const { menu, tooltip } = await openSecondaryActionTooltip();
+
+		expect(readZIndex(menu)).toBe(9999);
+		expect(readZIndex(tooltip)).toBe(20000);
 	});
 });
