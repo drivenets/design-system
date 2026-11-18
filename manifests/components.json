@@ -33771,6 +33771,183 @@
       ],
       "import": "import { DsIcon, DsSelect, DsTag, DsTypography } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';\nimport { DsIcon } from '../ds-icon';"
     },
+    "components-technology": {
+      "id": "components-technology",
+      "name": "DsTechnology",
+      "path": "./src/components/ds-technology/ds-technology.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "Line that shows which network technology carries one service path, e.g. between two locations on a map. The color comes from `type` and the line pattern from `stage`. Without `path` it draws a small sample curve for legends and filters; resizing that sample keeps the line thickness. It renders an `<svg>`, so it works on its own or nested inside another `<svg>`, and lets pointer events through everywhere except on a clickable line."
+        ]
+      },
+      "description": "",
+      "summary": "Line that shows which network technology carries one service path, e.g. between two locations on a map. The color comes from `type` and the line pattern from `stage`. Without `path` it draws a small sample curve for legends and filters; resizing that sample keeps the line thickness. It renders an `<svg>`, so it works on its own or nested inside another `<svg>`, and lets pointer events through everywhere except on a clickable line.",
+      "reactDocgen": {
+        "description": "@summary Line that shows which network technology carries one service path, e.g. between two locations on a map.\n\nThe color comes from `type` and the line pattern from `stage`. Without `path` it draws a small sample\ncurve for legends and filters; resizing that sample keeps the line thickness. It renders an `<svg>`,\nso it works on its own or nested inside another `<svg>`, and lets pointer events through everywhere\nexcept on a clickable line.",
+        "methods": [],
+        "displayName": "DsTechnology",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-technology/ds-technology.tsx",
+        "actualName": "DsTechnology",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "SVGSVGElement"
+                }
+              ],
+              "raw": "Ref<SVGSVGElement>"
+            },
+            "description": ""
+          },
+          "type": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof technologyTypes)[number]"
+            },
+            "description": "Technology the path belongs to. Sets the line color, which is fixed per type.\n@default 'och'",
+            "defaultValue": {
+              "value": "'och'",
+              "computed": false
+            }
+          },
+          "stage": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof technologyStages)[number]"
+            },
+            "description": "Lifecycle stage of the path: `deployed` is solid, `planned` is dotted, `designed` is dashed.\n@default 'deployed'",
+            "defaultValue": {
+              "value": "'deployed'",
+              "computed": false
+            }
+          },
+          "path": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "SVG path data (the `d` attribute) of the line, in the pixel space of the element, e.g. a curve\nbetween two locations. Size and position the element with `className` or `style`, or render it\ninside a parent `<svg>` to share that parent's coordinates. Without it, a fixed-size sample\ncurve is drawn, for legends and filters."
+          },
+          "selected": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the selected style (thicker line on a light halo) and marks the line with `aria-current`.\nRender the selected line after the others so it is drawn on top.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "aria-label": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Accessible name, e.g. `\"OCH service Haifa North to Tel Aviv, planned\"`. Required with `onClick`.\nWithout it and without `onClick`, the line is hidden from assistive technology."
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: MouseEvent<SVGSVGElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "MouseEvent",
+                      "elements": [
+                        {
+                          "name": "SVGSVGElement"
+                        }
+                      ],
+                      "raw": "MouseEvent<SVGSVGElement>"
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Makes the line a button: it reacts to hover and focus, is reachable with Tab and is activated\nwith a click, Enter or Space. The clickable area is wider than the visible line."
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-technology--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsTechnology type=\"och\" />;",
+          "description": "The sample curve of one technology, for legends and filters. The color is fixed per `type`."
+        },
+        {
+          "id": "components-technology--planned",
+          "name": "Planned",
+          "snippet": "const Planned = () => <DsTechnology type=\"oms\" stage=\"planned\" />;",
+          "description": "A dotted line marks a path that is planned but not deployed yet."
+        },
+        {
+          "id": "components-technology--designed",
+          "name": "Designed",
+          "snippet": "const Designed = () => <DsTechnology type=\"fbb-gpon\" stage=\"designed\" />;",
+          "description": "A dashed line marks a path that is still being designed."
+        },
+        {
+          "id": "components-technology--selected",
+          "name": "Selected",
+          "snippet": "const Selected = () => <DsTechnology type=\"ots\" selected aria-label=\"OTS link Haifa North to Tel Aviv\" />;",
+          "description": "The selected line is thicker and sits on a light halo, so it stands out from the lines around it."
+        },
+        {
+          "id": "components-technology--clickable",
+          "name": "Clickable",
+          "snippet": "const Clickable = () => <DsTechnology\n    type=\"carrier-ethernet-customer\"\n    aria-label=\"Carrier Ethernet service Haifa North to Tel Aviv\"\n    onClick={fn()} />;",
+          "description": "With `onClick` the line is a button: hover or focus it to see the feedback, activate it with a click,\nEnter or Space. Give it an `aria-label` that identifies the path."
+        },
+        {
+          "id": "components-technology--in-legend",
+          "name": "In Legend",
+          "snippet": "const InLegend = (args) => (\n    <DsTag label=\"ODU\" slots={{ icon: <DsTechnology {...args} className={styles.legendSample} /> }} />\n);",
+          "description": "Give the sample curve a size to fit it next to a label; the line keeps its thickness."
+        },
+        {
+          "id": "components-technology--custom-path",
+          "name": "Custom Path",
+          "snippet": "const CustomPath = () => <svg className={styles.canvas}>\n    <DsTechnology\n        type=\"fbb-pon-network\"\n        path=\"M24 136 C120 16 216 16 336 96\"\n        aria-label=\"PON network link, site A to site B\" />\n</svg>;",
+          "description": "Pass `path` to draw the line between two points. Inside a parent `<svg>` the path uses that parent's\ncoordinates, so many lines can share one canvas."
+        },
+        {
+          "id": "components-technology--selectable",
+          "name": "Selectable",
+          "snippet": "const Selectable = function Render() {\n    const [selectedId, setSelectedId] = useState<string | null>('och');\n\n    const lines = [\n        {\n            id: 'och',\n            type: 'och',\n            label: 'OCH service, site A to site B',\n            path: 'M24 136 C120 16 216 16 336 40',\n        },\n        {\n            id: 'odu',\n            type: 'odu',\n            label: 'ODU service, site A to site C',\n            path: 'M24 136 C140 150 240 60 336 136',\n        },\n        {\n            id: 'oms',\n            type: 'oms',\n            label: 'OMS link, site D to site C',\n            path: 'M24 24 C120 120 240 150 336 136',\n        },\n    ] as const;\n\n    const ordered = [...lines].sort((a, b) => Number(a.id === selectedId) - Number(b.id === selectedId));\n\n    return (\n        <svg className={styles.canvas}>\n            {ordered.map((line) => (\n                <DsTechnology\n                    key={line.id}\n                    type={line.type}\n                    path={line.path}\n                    selected={line.id === selectedId}\n                    aria-label={line.label}\n                    onClick={() => setSelectedId(line.id === selectedId ? null : line.id)}\n                />\n            ))}\n        </svg>\n    );\n};",
+          "description": "Keep the selection in state and render the selected line last, so its halo covers the lines it\ncrosses."
+        }
+      ],
+      "import": "import { DsTag, DsTechnology, DsTypography } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';"
+    },
     "components-textinput": {
       "id": "components-textinput",
       "name": "DsTextInput",
@@ -36205,6 +36382,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5867
+    "durationMs": 4351
   }
 }
