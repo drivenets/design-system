@@ -32,7 +32,7 @@ interface BulkActionsContextValue {
 const BulkActionsContext = createContext<BulkActionsContextValue>({ menuPlacement: 'bottom' });
 
 const Item = (props: DsBulkActionsItemProps) => {
-	const { className, style, ref, width, icon, label, disabled } = props;
+	const { className, style, ref, width, icon, label, disabled, 'aria-label': ariaLabel } = props;
 	const { menuPlacement } = useContext(BulkActionsContext);
 	const { mode, buttonStyle } = resolveItemWidth(width);
 
@@ -43,6 +43,7 @@ const Item = (props: DsBulkActionsItemProps) => {
 					<TooltipMenuTrigger
 						icon={icon}
 						label={label}
+						aria-label={ariaLabel}
 						disabled={disabled}
 						itemWidth={mode}
 						buttonStyle={buttonStyle}
@@ -56,6 +57,7 @@ const Item = (props: DsBulkActionsItemProps) => {
 					<ActionButton
 						icon={icon}
 						label={label}
+						aria-label={ariaLabel}
 						onClick={props.onClick}
 						disabled={disabled}
 						itemWidth={mode}

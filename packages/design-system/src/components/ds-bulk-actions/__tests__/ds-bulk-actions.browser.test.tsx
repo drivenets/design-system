@@ -79,6 +79,37 @@ describe('DsBulkActions', () => {
 		expect(deleteHandler).toHaveBeenCalledOnce();
 	});
 
+	it('uses an Item aria-label as the action accessible name instead of its label', async () => {
+		const moveHandler = vi.fn();
+
+		await page.render(
+			<div style={{ position: 'relative', minHeight: 120 }}>
+				<DsBulkActions selectedCount={3} onClearSelection={vi.fn()}>
+					<DsBulkActions.Item
+						icon="drive_file_move"
+						label="Move"
+						aria-label="Move 3 XPU servers"
+						onClick={moveHandler}
+					/>
+					<DsBulkActions.Item
+						icon="share"
+						label="Share"
+						aria-label="Share 3 XPU servers"
+						menu={[{ value: 'email', label: 'Email', onSelect: vi.fn() }]}
+					/>
+				</DsBulkActions>
+			</div>,
+		);
+
+		await page.getByRole('button', { name: 'Move 3 XPU servers', exact: true }).click();
+		expect(moveHandler).toHaveBeenCalledOnce();
+
+		await expect
+			.element(page.getByRole('button', { name: 'Share 3 XPU servers', exact: true }))
+			.toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Move', exact: true })).not.toBeInTheDocument();
+	});
+
 	it('sizes the toolbar to its content instead of stretching to the parent', async () => {
 		const parentWidth = 800;
 

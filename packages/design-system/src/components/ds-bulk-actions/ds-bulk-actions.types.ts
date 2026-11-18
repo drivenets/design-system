@@ -77,6 +77,12 @@ interface DsBulkActionsItemSharedProps {
 	 */
 	disabled?: boolean;
 
+	/**
+	 * Accessible name for the action, e.g. `"Move 3 servers"`. Overrides `label` for screen readers on the toolbar button; an action collapsed into More is named by `label`.
+	 * @default label
+	 */
+	'aria-label'?: string;
+
 	className?: string;
 	style?: CSSProperties;
 	ref?: Ref<HTMLDivElement>;

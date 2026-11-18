@@ -50,12 +50,14 @@ export const MenuEntries = ({ entries }: { entries: DsBulkActionsMenuEntry[] }) 
 export const TooltipMenuTrigger = ({
 	icon,
 	label,
+	'aria-label': ariaLabel,
 	disabled,
 	itemWidth,
 	buttonStyle,
 }: {
 	icon: IconType;
 	label: string;
+	'aria-label'?: string;
 	disabled?: boolean;
 	itemWidth: ItemWidthLayout['mode'];
 	buttonStyle?: CSSProperties;
@@ -66,6 +68,7 @@ export const TooltipMenuTrigger = ({
 				<ActionButton
 					icon={icon}
 					label={label}
+					aria-label={ariaLabel}
 					disabled={disabled}
 					itemWidth={itemWidth}
 					style={buttonStyle}

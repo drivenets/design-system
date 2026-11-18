@@ -21,6 +21,7 @@ export const ActionButton = ({
 	style,
 	itemWidth = 'fixed',
 	ref,
+	'aria-label': ariaLabel = label,
 	...rest
 }: ActionButtonProps) => (
 	<button
@@ -28,7 +29,7 @@ export const ActionButton = ({
 		style={style}
 		onClick={onClick}
 		disabled={disabled}
-		aria-label={label}
+		aria-label={ariaLabel}
 		data-item-width={itemWidth}
 		{...rest}
 		type="button"
