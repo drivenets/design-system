@@ -1,0 +1,294 @@
+# DsCable docs snippets
+
+## Default
+
+### Show code
+<DsCable
+  aria-label="Cable, Haifa North to Haifa South"
+  from={{
+    x: 40,
+    y: 60
+  }}
+  to={{
+    x: 320,
+    y: 60
+  }}
+/>
+
+### MCP manifest
+const Default = () => <DsCable
+    from={{ x: 40, y: 60 }}
+    to={{ x: 320, y: 60 }}
+    aria-label="Cable, Haifa North to Haifa South" />;
+
+## Type
+
+### Show code
+<DsCable
+  aria-label="IOF cable, Haifa North to Haifa South"
+  from={{
+    x: 40,
+    y: 60
+  }}
+  to={{
+    x: 320,
+    y: 60
+  }}
+  type="iof"
+/>
+
+### MCP manifest
+const Type = () => <DsCable
+    from={{ x: 40, y: 60 }}
+    to={{ x: 320, y: 60 }}
+    type="iof"
+    aria-label="IOF cable, Haifa North to Haifa South" />;
+
+## Dotted
+
+### Show code
+<DsCable
+  aria-label="Tie cable, Haifa North to Haifa South, planned"
+  from={{
+    x: 40,
+    y: 60
+  }}
+  line="dotted"
+  to={{
+    x: 320,
+    y: 60
+  }}
+  type="tie"
+/>
+
+### MCP manifest
+const Dotted = () => <DsCable
+    from={{ x: 40, y: 60 }}
+    to={{ x: 320, y: 60 }}
+    type="tie"
+    line="dotted"
+    aria-label="Tie cable, Haifa North to Haifa South, planned" />;
+
+## Dashed
+
+### Show code
+<DsCable
+  aria-label="Loop cable, Haifa North to Haifa South, designed"
+  from={{
+    x: 40,
+    y: 60
+  }}
+  line="dashed"
+  to={{
+    x: 320,
+    y: 60
+  }}
+  type="loop"
+/>
+
+### MCP manifest
+const Dashed = () => <DsCable
+    from={{ x: 40, y: 60 }}
+    to={{ x: 320, y: 60 }}
+    type="loop"
+    line="dashed"
+    aria-label="Loop cable, Haifa North to Haifa South, designed" />;
+
+## Curved
+
+### Show code
+<DsCable
+  aria-label="IOF cable, Haifa North to Haifa South"
+  curvature={0.25}
+  from={{
+    x: 40,
+    y: 100
+  }}
+  to={{
+    x: 320,
+    y: 100
+  }}
+  type="iof"
+/>
+
+### MCP manifest
+const Curved = () => <DsCable
+    from={{ x: 40, y: 100 }}
+    to={{ x: 320, y: 100 }}
+    curvature={0.25}
+    type="iof"
+    aria-label="IOF cable, Haifa North to Haifa South" />;
+
+## Custom Path
+
+### Show code
+<DsCable
+  aria-label="Tie cable, Haifa North to Haifa South"
+  path="M40 100C120 100 120 20 180 20S240 100 320 100"
+  type="tie"
+/>
+
+### MCP manifest
+const CustomPath = () => <DsCable
+    path="M40 100C120 100 120 20 180 20S240 100 320 100"
+    type="tie"
+    aria-label="Tie cable, Haifa North to Haifa South" />;
+
+## Selected
+
+### Show code
+<DsCable
+  aria-label="Cable, Haifa North to Haifa South"
+  from={{
+    x: 40,
+    y: 60
+  }}
+  selected
+  to={{
+    x: 320,
+    y: 60
+  }}
+/>
+
+### MCP manifest
+const Selected = () => <DsCable
+    from={{ x: 40, y: 60 }}
+    to={{ x: 320, y: 60 }}
+    selected
+    aria-label="Cable, Haifa North to Haifa South" />;
+
+## Interactive
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [selected, setSelected] = useState(false);
+    return <DsCable from={{
+      x: 40,
+      y: 60
+    }} to={{
+      x: 320,
+      y: 60
+    }} type="iof" selected={selected} aria-label="IOF cable, Haifa North to Haifa South" onClick={() => setSelected(!selected)} />;
+  }
+}
+
+### MCP manifest
+const Interactive = function Render() {
+    const [selected, setSelected] = useState(false);
+
+    return (
+        <DsCable
+            from={{ x: 40, y: 60 }}
+            to={{ x: 320, y: 60 }}
+            type="iof"
+            selected={selected}
+            aria-label="IOF cable, Haifa North to Haifa South"
+            onClick={() => setSelected(!selected)}
+        />
+    );
+};
+
+## Between Pins
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [selectedId, setSelectedId] = useState<string | null>('iof');
+    return <div className={styles.map}>
+                <DsCable from={{
+        x: 80,
+        y: 200
+      }} to={{
+        x: 400,
+        y: 120
+      }} type="iof" selected={selectedId === 'iof'} aria-label="IOF cable, Haifa North to Haifa South" onClick={() => setSelectedId('iof')} />
+                <DsCable from={{
+        x: 80,
+        y: 200
+      }} to={{
+        x: 400,
+        y: 120
+      }} curvature={0.2} type="tie" line="dotted" selected={selectedId === 'tie'} aria-label="Tie cable, Haifa North to Haifa South, planned" onClick={() => setSelectedId('tie')} />
+                <DsCable from={{
+        x: 80,
+        y: 200
+      }} to={{
+        x: 400,
+        y: 120
+      }} curvature={-0.2} type="loop" line="dashed" selected={selectedId === 'loop'} aria-label="Loop cable, Haifa North to Haifa South, designed" onClick={() => setSelectedId('loop')} />
+                <DsMapPin className={styles.pin} style={{
+        left: 80,
+        top: 200
+      }} label="T1" aria-label="Central office T1, Haifa North" />
+                <DsMapPin className={styles.pin} style={{
+        left: 400,
+        top: 120
+      }} label="T2" aria-label="Central office T2, Haifa South" />
+            </div>;
+  }
+}
+
+### MCP manifest
+const BetweenPins = function Render() {
+    const [selectedId, setSelectedId] = useState<string | null>('iof');
+
+    return (
+        <div className={styles.map}>
+            <DsCable
+                from={{ x: 80, y: 200 }}
+                to={{ x: 400, y: 120 }}
+                type="iof"
+                selected={selectedId === 'iof'}
+                aria-label="IOF cable, Haifa North to Haifa South"
+                onClick={() => setSelectedId('iof')}
+            />
+            <DsCable
+                from={{ x: 80, y: 200 }}
+                to={{ x: 400, y: 120 }}
+                curvature={0.2}
+                type="tie"
+                line="dotted"
+                selected={selectedId === 'tie'}
+                aria-label="Tie cable, Haifa North to Haifa South, planned"
+                onClick={() => setSelectedId('tie')}
+            />
+            <DsCable
+                from={{ x: 80, y: 200 }}
+                to={{ x: 400, y: 120 }}
+                curvature={-0.2}
+                type="loop"
+                line="dashed"
+                selected={selectedId === 'loop'}
+                aria-label="Loop cable, Haifa North to Haifa South, designed"
+                onClick={() => setSelectedId('loop')}
+            />
+            <DsMapPin
+                className={styles.pin}
+                style={{ left: 80, top: 200 }}
+                label="T1"
+                aria-label="Central office T1, Haifa North"
+            />
+            <DsMapPin
+                className={styles.pin}
+                style={{ left: 400, top: 120 }}
+                label="T2"
+                aria-label="Central office T2, Haifa South"
+            />
+        </div>
+    );
+};
