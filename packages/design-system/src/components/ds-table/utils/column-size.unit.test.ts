@@ -8,6 +8,7 @@ import {
 	getColumnSizeCssVar,
 	getColumnSizeCssVars,
 	getColumnSizeStyle,
+	getFillColumnMinWidth,
 	getHeaderCellSizeStyle,
 	getHeaderSizeCssVar,
 	getResizableColumnStyle,
@@ -50,7 +51,30 @@ describe('isExplicitColumnWidth', () => {
 
 describe('getColumnSizeStyle', () => {
 	it('returns fill styles when not explicit', () => {
-		expect(getColumnSizeStyle(defaultColumnSizing.size, false)).toEqual({ flex: 1, minWidth: 0 });
+		expect(getColumnSizeStyle(defaultColumnSizing.size, false)).toEqual({
+			flex: 1,
+			minWidth: RESIZE_MIN_COLUMN_WIDTH,
+			width: 0,
+		});
+	});
+
+	it('uses the given minimum width for fill columns', () => {
+		expect(getColumnSizeStyle(defaultColumnSizing.size, false, 120)).toEqual({
+			flex: 1,
+			minWidth: 120,
+			width: 0,
+		});
+	});
+});
+
+describe('getFillColumnMinWidth', () => {
+	it('uses the resize minimum when minSize is smaller or missing', () => {
+		expect(getFillColumnMinWidth({ columnDef: {} })).toBe(RESIZE_MIN_COLUMN_WIDTH);
+		expect(getFillColumnMinWidth({ columnDef: { minSize: 20 } })).toBe(RESIZE_MIN_COLUMN_WIDTH);
+	});
+
+	it('uses minSize when it is larger', () => {
+		expect(getFillColumnMinWidth({ columnDef: { minSize: 120 } })).toBe(120);
 	});
 
 	it('returns fixed styles when explicit, including at the default size value', () => {

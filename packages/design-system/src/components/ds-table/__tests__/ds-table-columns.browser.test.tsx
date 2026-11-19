@@ -7,7 +7,7 @@ import { DsModal } from '../../ds-modal';
 import DsTable from '../ds-table';
 import type { DsDataTableProps } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
-import { COLUMN_DISPLAY_COLUMN_ID } from '../utils/constants';
+import { COLUMN_DISPLAY_COLUMN_ID, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
@@ -120,6 +120,113 @@ describe('DsTable - Columns', () => {
 		expect(Math.round(firstName.getBoundingClientRect().width)).toBe(150);
 		expect(lastName.style.flex.startsWith('1')).toBe(true);
 		expect(lastName.getBoundingClientRect().width).toBeGreaterThan(150);
+	});
+
+	describe('fitting the container', () => {
+		const LONG_TEXT =
+			'A long value that is much wider than its share of a narrow table and has to be truncated';
+		const longRows: SizedRow[] = [{ id: '1', firstName: LONG_TEXT, lastName: LONG_TEXT }];
+
+		const getScrollContainer = (): HTMLElement => {
+			const container = document.querySelector('table')?.parentElement;
+			if (!container) {
+				throw new Error('Expected the table scroll container');
+			}
+			return container;
+		};
+
+		it('fits unsized columns with long content into the container instead of scrolling', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name' },
+				{ accessorKey: 'lastName', header: 'Last Name' },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBe(container.clientWidth);
+		});
+
+		it('fits unsized columns in a column group into the container', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{
+					id: 'name',
+					header: 'Name',
+					columns: [
+						{ accessorKey: 'firstName', header: 'First Name' },
+						{ accessorKey: 'lastName', header: 'Last Name' },
+					],
+				},
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBe(container.clientWidth);
+		});
+
+		it('keeps unsized columns at their minimum width next to sized columns wider than the container', async () => {
+			type MixedRow = SizedRow & { age: number };
+			const columns: ColumnDef<MixedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', size: 400 },
+				{ accessorKey: 'age', header: 'Age' },
+				{ accessorKey: 'lastName', header: 'Last Name', size: 400, minSize: 120 },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={[{ id: '1', firstName: 'Ada', lastName: 'Lovelace', age: 36 }]} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(getHeaderCell('age').getBoundingClientRect().width).toBe(RESIZE_MIN_COLUMN_WIDTH);
+			expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+		});
+
+		it('keeps unsized columns at their minSize when it is wider than the default minimum', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', minSize: 200 },
+				{ accessorKey: 'lastName', header: 'Last Name', minSize: 200 },
+			];
+
+			await page.render(
+				<div style={{ width: 300 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			expect(getHeaderCell('firstName').getBoundingClientRect().width).toBe(200);
+			expect(getHeaderCell('lastName').getBoundingClientRect().width).toBe(200);
+		});
+
+		it('scrolls horizontally when authored column sizes exceed the container', async () => {
+			const columns: ColumnDef<SizedRow>[] = [
+				{ accessorKey: 'firstName', header: 'First Name', size: 400 },
+				{ accessorKey: 'lastName', header: 'Last Name', size: 400 },
+			];
+
+			await page.render(
+				<div style={{ width: 600 }}>
+					<DsTable columns={columns} data={longRows} />
+				</div>,
+			);
+
+			const container = getScrollContainer();
+
+			expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+		});
 	});
 
 	describe('column display', () => {
