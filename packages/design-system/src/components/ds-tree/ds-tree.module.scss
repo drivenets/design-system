@@ -362,7 +362,7 @@ $level-indent: var(--ds-tree-indent-per-level, calc(#{$indent-per-level} + #{$ha
 .dragLayer {
 	position: fixed;
 	inset: 0 auto auto 0;
-	z-index: dropdown.$dropdown-z-index + 1;
+	z-index: dropdown.z-index(1);
 }
 
 .dragPreview {

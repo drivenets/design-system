@@ -5,7 +5,7 @@
 	position: fixed;
 	inset: 0;
 	background: rgba(0, 0, 0, 0.32);
-	z-index: 1199;
+	z-index: calc(var(--z-index-modal, 1200) - 1);
 }
 
 .dialog {
@@ -20,7 +20,7 @@
 	padding: 12px;
 	min-width: 320px;
 	min-height: 120px;
-	z-index: 1200;
+	z-index: var(--z-index-modal, 1200);
 	position: fixed;
 	top: 50%;
 	left: 50%;

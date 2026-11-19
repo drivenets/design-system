@@ -3,6 +3,14 @@
 
 $dropdown-z-index: 9999;
 
+@function z-index($offset: 0) {
+	@if $offset == 0 {
+		@return var(--z-index-dropdown, $dropdown-z-index);
+	}
+
+	@return calc(var(--z-index-dropdown, $dropdown-z-index) + $offset);
+}
+
 @mixin dropdown-content {
 	--_shadow-size: 15px;
 	--_shadow-y-offset: 5px;
@@ -13,7 +21,7 @@ $dropdown-z-index: 9999;
 	border: 1px solid var(--border-secondary);
 	background: var(--background);
 	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(0, 0, 0, 0.15);
-	z-index: $dropdown-z-index;
+	z-index: z-index();
 	width: var(--reference-width);
 
 	&[data-state='open'] {

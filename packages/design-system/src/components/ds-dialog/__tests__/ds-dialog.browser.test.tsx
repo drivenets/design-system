@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDialog from '../ds-dialog';
 import type { DsDialogProps } from '../ds-dialog.types';
+import styles from '../ds-dialog.module.scss';
+import { findElement, readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 const ControlledDialog = (props: Partial<DsDialogProps>) => {
 	const [open, setOpen] = useState(false);
@@ -52,5 +54,41 @@ describe('DsDialog', () => {
 		expect(dialogElement.style.position).toBe('fixed');
 		expect(dialogElement.style.top).toBe('60px');
 		expect(dialogElement.style.left).toBe('20px');
+	});
+});
+
+const byClass = (className: string | undefined) => `.${className ?? ''}`;
+
+describe('DsDialog stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const renderOpenDialog = async () => {
+		await page.render(
+			<DsDialog open title="Settings">
+				<p>Dialog body</p>
+			</DsDialog>,
+		);
+		await expect.element(page.getByRole('dialog', { name: 'Settings' })).toBeVisible();
+
+		return {
+			content: page.getByRole('dialog', { name: 'Settings' }).element(),
+			backdrop: await findElement(byClass(styles.overlay)),
+		};
+	};
+
+	it('stacks the content at 1200 and the backdrop just below it by default', async () => {
+		const { content, backdrop } = await renderOpenDialog();
+
+		expect(readZIndex(content)).toBe(1200);
+		expect(readZIndex(backdrop)).toBe(1199);
+	});
+
+	it('moves the content and backdrop with --z-index-modal', async () => {
+		setZIndexTier('modal', 1500);
+
+		const { content, backdrop } = await renderOpenDialog();
+
+		expect(readZIndex(content)).toBe(1500);
+		expect(readZIndex(backdrop)).toBe(1499);
 	});
 });

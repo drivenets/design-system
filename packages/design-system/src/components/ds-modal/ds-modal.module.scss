@@ -11,7 +11,7 @@ $trigger-divider-height: 16px;
 	inset: 0;
 	background: var(--background-brand);
 	opacity: 0.4;
-	z-index: 1199;
+	z-index: calc(var(--z-index-modal, 1200) - 1);
 
 	&[data-state='open'] {
 		animation: fade-in-overlay 0.2s ease-in-out both;
@@ -48,7 +48,7 @@ $trigger-divider-height: 16px;
 	background: var(--background);
 	border-radius: 4px;
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
-	z-index: 1200;
+	z-index: var(--z-index-modal, 1200);
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;

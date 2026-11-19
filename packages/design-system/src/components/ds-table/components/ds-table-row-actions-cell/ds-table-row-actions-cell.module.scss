@@ -57,9 +57,9 @@
 	margin-inline-start: auto;
 }
 
-// Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
+// Submenus stack above the dropdown tier, so tooltips on their items must clear them too.
 .secondaryActionTooltip[data-part='content'] {
-	z-index: dropdown.$dropdown-z-index + 2;
+	z-index: max(var(--z-index-tooltip, 9999), #{dropdown.z-index(2)});
 }
 
 .visuallyHidden {
