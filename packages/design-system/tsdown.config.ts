@@ -16,7 +16,7 @@ export default defineConfig({
 	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
 	platform: 'browser',
-	dts: { generator: 'tsgo', tsgo: { path: 'tsc' } },
+	dts: { generator: 'tsc' },
 	sourcemap: false,
 	clean: true,
 	outDir: 'dist',

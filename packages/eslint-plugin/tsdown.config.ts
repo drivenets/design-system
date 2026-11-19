@@ -4,7 +4,7 @@ export default defineConfig({
 	tsconfig: './tsconfig.build.json',
 	entry: ['src/index.ts'],
 	format: ['cjs', 'esm'],
-	dts: { generator: 'tsgo', tsgo: { path: 'tsc' } },
+	dts: { generator: 'tsc' },
 	sourcemap: false,
 	clean: true,
 	deps: {
