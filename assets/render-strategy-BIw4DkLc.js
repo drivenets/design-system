@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{_ as t,g as n,h as r,v as i}from"./runtime-CBA0MHDV.js";var a,o,s;function c(){return(c=e((()=>{i(),n(),[a,o]=t({name:`RenderStrategyContext`,hookName:`useRenderStrategyContext`,providerName:`<RenderStrategyPropsProvider />`}),s=e=>r()(e,[`lazyMount`,`unmountOnExit`,`hideMode`])})))()}export{o as i,c as n,s as r,a as t};
