@@ -15,6 +15,10 @@ updates:
     cooldown:
       default-days: 1 # zizmor: ignore[dependabot-cooldown] We're fine with 1 day.
 
+    ignore:
+      # Upgraded manually, since major versions need a `DsTable` migration.
+      - dependency-name: '@tanstack/react-table'
+
     groups:
       # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
       # See: https://github.com/dependabot/dependabot-core/issues/14824
