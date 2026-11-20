@@ -4,7 +4,7 @@ export default defineConfig({
 	tsconfig: './tsconfig.build.json',
 	entry: ['src/cli.ts'],
 	format: 'esm',
-	dts: { generator: 'tsc' },
+	dts: { generator: 'tsgo', tsgo: { moduleUrl: import.meta.resolve('@typescript/native') } },
 	sourcemap: false,
 	clean: true,
 	deps: {
