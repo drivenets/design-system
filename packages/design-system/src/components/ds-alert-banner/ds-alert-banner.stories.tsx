@@ -163,8 +163,8 @@ export const Closable: Story = {
 };
 
 /**
- * Attach follow-up actions with `DsAlertBanner.Actions`. Keep the primary action
- * first and limit the count so the banner stays scannable.
+ * Attach follow-up actions with `DsAlertBanner.Actions`: a small `secondary`
+ * button for the main action first, then a small `tertiary` button for the other.
  */
 export const WithActions: Story = {
 	args: {
@@ -179,10 +179,10 @@ export const WithActions: Story = {
 				You successfully read this important alert message. Choose how you want to proceed.
 			</DsAlertBanner.Body>
 			<DsAlertBanner.Actions>
-				<DsButtonV3 color="error" variant="primary" size="small">
+				<DsButtonV3 variant="secondary" size="small">
 					Proceed
 				</DsButtonV3>
-				<DsButtonV3 variant="secondary" size="small">
+				<DsButtonV3 variant="tertiary" size="small">
 					Skip
 				</DsButtonV3>
 			</DsAlertBanner.Actions>
