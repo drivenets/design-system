@@ -1,5 +1,24 @@
 # @drivenets/design-system
 
+## 0.29.0
+
+### Minor Changes
+
+- dc325ba: Add `DsCable`, a line for one cable between two locations on a map.
+- 368f1a1: Add `rowSize="auto"` to `DsTable` so rows grow to fit wrapped or multi-line cell content.
+- d1855b0: Add `DsTechnology`, a line that shows the network technology and lifecycle stage of a service path.
+
+### Patch Changes
+
+- bb01a77: Fix screen readers announcing a `DsButtonV3` without `selected` as a toggle button.
+- f208a7f: Fix `DsStepper` step labels and connector lines not lining up with the center of the step indicator.
+- 88ce255: Fix `DsTable` columns without a `size` widening the table past its container when they hold long content.
+- b66c003: Fix `DsToast` `actions` so footer buttons line up on the right with even spacing, without a wrapper.
+- bb01a77: Match the `DsToast` close button's hover and focus states to the design.
+- 48cf303: Fix the selected `DsVerticalTabs.Tab` so it shows the blue background and blue right border from the design.
+- 2f6b7d3: Update dependencies
+- cff8d68: Update dependencies
+
 ## 0.28.0
 
 ### Minor Changes
