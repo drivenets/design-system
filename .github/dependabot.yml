@@ -82,3 +82,6 @@ updates:
 
       github-actions:
         group-by: dependency-name
+        # `group-by` takes precedence over the codeql group above, splitting init and analyze into separate PRs.
+        exclude-patterns:
+          - 'github/codeql-action*'
