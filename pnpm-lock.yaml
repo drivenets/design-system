@@ -381,8 +381,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       csstype:
-        specifier: ^3.2.3
-        version: 3.2.3
+        specifier: ^3.2.4
+        version: 3.2.4
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: 'catalog:'
@@ -627,8 +627,8 @@ importers:
   packages/mcp:
     dependencies:
       '@epic-web/cachified':
-        specifier: ^5.6.3
-        version: 5.6.3
+        specifier: ^5.6.5
+        version: 5.6.5
       '@storybook/mcp':
         specifier: 10.6.7
         version: 10.6.7(@typescript/typescript6@6.0.2)
@@ -1386,8 +1386,8 @@ packages:
   '@emnapi/wasi-threads@2.2.0':
     resolution: {integrity: sha512-JP7OYH38Q7+pyTAe14raZHLQIK7BDKbdwji+Xi3pcd/6QkJYQH3SX4wu6EplGrGJWRepoNzedfm0G3B9Z4e9Rw==}
 
-  '@epic-web/cachified@5.6.3':
-    resolution: {integrity: sha512-SHVZOm3h9/iXN3aoONTIouoOVQpBSwgJFo/NPGvTqTI1YHRDer6g9kP4iEhZ7UfWDvNiUCqOvC5f8cQ88yhf5w==}
+  '@epic-web/cachified@5.6.5':
+    resolution: {integrity: sha512-R+zKPYsrIJ0Y2pumvdl4voibze3W1dF+IQs8OTdvxwX7WizFB0HhCy+P3OQnu+BLS2DzPGd+SboBfEbyhbsBfA==}
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -4730,6 +4730,9 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  csstype@3.2.4:
+    resolution: {integrity: sha512-PoKaoPzQapnEoqUSnHx1u6W6ku8CVEgKsnpmmzU3m1nwkidpPBQ8V/Zq2+bWNrsOKoKLwTGdbx6xF7BXP1zLVQ==}
 
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
@@ -8402,7 +8405,7 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@epic-web/cachified@5.6.3': {}
+  '@epic-web/cachified@5.6.5': {}
 
   '@esbuild/aix-ppc64@0.28.2':
     optional: true
@@ -9985,7 +9988,7 @@ snapshots:
 
   '@types/react@19.3.0':
     dependencies:
-      csstype: 3.2.3
+      csstype: 3.2.4
 
   '@types/resolve@1.20.6': {}
 
@@ -11663,6 +11666,8 @@ snapshots:
       rrweb-cssom: 0.8.0
 
   csstype@3.2.3: {}
+
+  csstype@3.2.4: {}
 
   damerau-levenshtein@1.0.8: {}
 
