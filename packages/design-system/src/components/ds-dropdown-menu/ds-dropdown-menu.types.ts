@@ -193,6 +193,10 @@ export interface DsDropdownMenuItemProps extends Pick<
 	 */
 	onClick?: Menu.ItemProps['onClick'];
 	/**
+	 * Accessible name for the item when its visible content is not descriptive enough. Include the visible text.
+	 */
+	'aria-label'?: string;
+	/**
 	 * Whether the item is selected (applies selected styling)
 	 */
 	selected?: boolean;
