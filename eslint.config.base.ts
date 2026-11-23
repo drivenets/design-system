@@ -108,6 +108,10 @@ export default defineConfig(
 				},
 			],
 
+			// New in 8.73.0 and buggy: false positives on subclasses, and makes other type-aware rules see `any`.
+			// TODO: Re-enable once the fixes for typescript-eslint/typescript-eslint#13214 and #13218 are released.
+			'@typescript-eslint/no-unsafe-class-instance-assignment': 'off',
+
 			// Stylistic rules.
 			'@typescript-eslint/consistent-type-imports': [
 				'error',
