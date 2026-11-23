@@ -1,8 +1,8 @@
-import type { Rolldown } from 'tsdown';
+import type { Plugin } from 'rolldown';
 import babel from '@rolldown/plugin-babel';
 import { reactCompilerPreset } from '@vitejs/plugin-react';
 
-export function reactCompilerRolldownPlugin(): Promise<Rolldown.Plugin> {
+export function reactCompilerRolldownPlugin(): Promise<Plugin> {
 	return babel({
 		presets: [reactCompilerPreset()],
 		include: [/src\/.*\.tsx?/],

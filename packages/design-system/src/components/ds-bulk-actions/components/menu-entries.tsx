@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import styles from '../ds-bulk-actions.module.scss';
 import type { DsBulkActionsMenuEntry } from '../ds-bulk-actions.types';
 import { isSubmenuEntry, type ItemWidthLayout } from '../ds-bulk-actions.utils';
-import { ActionButton } from './action-button';
+import { ActionButton, type ActionButtonProps } from './action-button';
 import { DsDropdownMenu } from '../../ds-dropdown-menu';
 import { DsIcon, type IconType } from '../../ds-icon';
 import { DsTooltip } from '../../ds-tooltip';
@@ -22,7 +22,7 @@ export const MenuEntries = ({ entries }: { entries: DsBulkActionsMenuEntry[] }) 
 			if (isSubmenuEntry(entry) && entry.menu.length > 0 && !entry.disabled) {
 				return (
 					<DsDropdownMenu.Root key={entry.value} positioning={{ placement: SUBMENU_PLACEMENT }}>
-						<DsDropdownMenu.TriggerItem>
+						<DsDropdownMenu.TriggerItem aria-label={entry['aria-label']}>
 							<MenuEntryLabel icon={entry.icon} label={entry.label} />
 						</DsDropdownMenu.TriggerItem>
 						<DsDropdownMenu.Content>
@@ -36,6 +36,7 @@ export const MenuEntries = ({ entries }: { entries: DsBulkActionsMenuEntry[] }) 
 				<DsDropdownMenu.Item
 					key={entry.value}
 					value={entry.value}
+					aria-label={entry['aria-label']}
 					disabled={entry.disabled}
 					variant={entry.variant}
 					onSelect={'onSelect' in entry ? entry.onSelect : undefined}
@@ -50,13 +51,11 @@ export const MenuEntries = ({ entries }: { entries: DsBulkActionsMenuEntry[] }) 
 export const TooltipMenuTrigger = ({
 	icon,
 	label,
+	'aria-label': ariaLabel,
 	disabled,
 	itemWidth,
 	buttonStyle,
-}: {
-	icon: IconType;
-	label: string;
-	disabled?: boolean;
+}: Pick<ActionButtonProps, 'icon' | 'label' | 'aria-label' | 'disabled'> & {
 	itemWidth: ItemWidthLayout['mode'];
 	buttonStyle?: CSSProperties;
 }) => (
@@ -66,6 +65,7 @@ export const TooltipMenuTrigger = ({
 				<ActionButton
 					icon={icon}
 					label={label}
+					aria-label={ariaLabel}
 					disabled={disabled}
 					itemWidth={itemWidth}
 					style={buttonStyle}
