@@ -93,6 +93,31 @@ describe('DsDrawer', () => {
 		await expect.element(drawer).toHaveAttribute('data-state', 'closed');
 	});
 
+	it('should render the close trigger as a small tertiary icon button', async () => {
+		await page.render(<ControlledDrawer />);
+
+		await page.getByRole('button', { name: /open drawer/i }).click();
+
+		const close = page.getByRole('button', { name: 'Close' });
+		await expect.element(close).toHaveAttribute('data-variant', 'tertiary');
+		await expect.element(close).toHaveAttribute('data-size', 'small');
+		await expect.element(close).toHaveAttribute('data-icon-only');
+		await expect.element(close).not.toHaveAttribute('aria-pressed');
+	});
+
+	it('should name the close trigger from the locale', async () => {
+		await page.render(
+			<DsDrawer open onOpenChange={vi.fn()}>
+				<DsDrawer.Header>
+					<DsDrawer.Title>Localized</DsDrawer.Title>
+					<DsDrawer.CloseTrigger locale={{ close: 'Dismiss panel' }} />
+				</DsDrawer.Header>
+			</DsDrawer>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Dismiss panel' })).toBeInTheDocument();
+	});
+
 	it('should not render or animate a drawer that was never opened', async () => {
 		await page.render(<ControlledDrawer />);
 

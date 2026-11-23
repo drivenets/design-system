@@ -92,8 +92,8 @@ export const Default: Story = {
 					<DsDrawer.Title>
 						Default Drawer <DsSystemStatus status="healthy" label="Active" />
 					</DsDrawer.Title>
-					<DsStack alignItems="center" gap="var(--xs)">
-						<DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+					<DsStack direction="row" alignItems="center" gap="var(--xs)">
+						<DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
 						<DsDivider orientation="vertical" />
 						<DsDrawer.CloseTrigger />
 					</DsStack>
@@ -174,8 +174,8 @@ export const WithTabs: Story = {
 					<DsDrawer.Title>
 						Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
 					</DsDrawer.Title>
-					<DsStack alignItems="center" gap="var(--xs)">
-						<DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+					<DsStack direction="row" alignItems="center" gap="var(--xs)">
+						<DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
 						<DsDivider orientation="vertical" />
 						<DsDrawer.CloseTrigger />
 					</DsStack>
@@ -418,11 +418,11 @@ export const ToggleFullSize: Story = {
 				>
 					<DsDrawer.Header>
 						<DsDrawer.Title>Expandable Drawer</DsDrawer.Title>
-						<DsStack alignItems="center" gap="var(--xs)">
+						<DsStack direction="row" alignItems="center" gap="var(--xs)">
 							<DsButtonV3
 								variant="tertiary"
 								icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'}
-								size="tiny"
+								size="small"
 								aria-label={isFullScreen ? 'Collapse' : 'Expand'}
 								onClick={toggleFullScreen}
 							/>
