@@ -53,15 +53,28 @@ export const isExplicitColumnWidth = (
  *
  * Explicit columns get a fixed `width` plus `minWidth` and `flexShrink: 0` so they
  * enforce horizontal overflow on the table container. Fill columns grow evenly via
- * `flex: 1`.
+ * `flex: 1`, shrink down to `fillMinWidth`, and never widen the table past that.
  */
-export const getColumnSizeStyle = (columnSize: number, isExplicit: boolean): CSSProperties => {
+export const getColumnSizeStyle = (
+	columnSize: number,
+	isExplicit: boolean,
+	fillMinWidth: number = RESIZE_MIN_COLUMN_WIDTH,
+): CSSProperties => {
 	if (isExplicit) {
 		return { width: columnSize, minWidth: columnSize, flexShrink: 0 };
 	}
 
-	return { flex: 1, minWidth: 0 };
+	// The table is `width: max-content`; a zero width keeps fill cell content out of that size.
+	return { flex: 1, minWidth: fillMinWidth, width: 0 };
 };
+
+/**
+ * Narrowest width of a fill column: its `minSize` when wider than the resize minimum.
+ * TanStack merges a default `minSize` onto every column, so a smaller authored one
+ * cannot be told apart from it.
+ */
+export const getFillColumnMinWidth = (column: { columnDef: { minSize?: number } }): number =>
+	Math.max(column.columnDef.minSize ?? 0, RESIZE_MIN_COLUMN_WIDTH);
 
 export const getHeaderSizeCssVar = (headerId: string): string => `--header-${headerId}-size`;
 
@@ -88,12 +101,13 @@ export const getHeaderCellSizeStyle = (
 	columnSize: number,
 	isExplicit: boolean,
 	resizeSizingReady: boolean,
+	fillMinWidth?: number,
 ): CSSProperties => {
 	if (resizeSizingReady) {
 		return getResizableHeaderStyle(headerId);
 	}
 
-	return getColumnSizeStyle(columnSize, isExplicit);
+	return getColumnSizeStyle(columnSize, isExplicit, fillMinWidth);
 };
 
 export const getBodyCellSizeStyle = (
@@ -101,12 +115,13 @@ export const getBodyCellSizeStyle = (
 	columnSize: number,
 	isExplicit: boolean,
 	resizeSizingReady: boolean,
+	fillMinWidth?: number,
 ): CSSProperties => {
 	if (resizeSizingReady) {
 		return getResizableColumnStyle(columnId);
 	}
 
-	return getColumnSizeStyle(columnSize, isExplicit);
+	return getColumnSizeStyle(columnSize, isExplicit, fillMinWidth);
 };
 
 /**

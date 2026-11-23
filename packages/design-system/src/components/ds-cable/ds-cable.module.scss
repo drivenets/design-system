@@ -1,0 +1,120 @@
+$line-width: 2px;
+$selected-line-width: 3px;
+$hit-area-width: 16px;
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
+$hover-overlay: rgb(0 0 0 / 30%);
+$elevation-hover: drop-shadow(0 2px 6px rgb(0 0 0 / 22%));
+$elevation-selected: drop-shadow(0 2px 7px rgb(0 0 0 / 24%));
+$z-index-selected: 1;
+$z-index-hover: 2;
+
+.root {
+	--cable-color: var(--color-dap-brand-400);
+
+	display: block;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	pointer-events: none;
+
+	&[data-type='iof'] {
+		--cable-color: var(--color-dap-data-deep-fuchsia);
+	}
+
+	&[data-type='loop'] {
+		--cable-color: var(--color-dap-gray-500);
+	}
+
+	&[data-type='tie'] {
+		--cable-color: var(--color-dap-purple-900);
+	}
+
+	&[data-line='dotted'] .line {
+		stroke-dasharray: 1 4;
+	}
+
+	&[data-line='dashed'] .line {
+		stroke-dasharray: 10 11;
+		stroke-dashoffset: 5;
+	}
+
+	&[data-selected] {
+		z-index: $z-index-selected;
+
+		.line {
+			stroke-width: $selected-line-width;
+			filter: $elevation-selected;
+		}
+	}
+
+	&:hover,
+	&:focus-within {
+		z-index: $z-index-hover;
+	}
+}
+
+.line,
+.hitArea,
+.focusRing,
+.focusGap {
+	fill: none;
+	stroke-linecap: round;
+}
+
+.line {
+	stroke: var(--cable-color);
+	stroke-width: $line-width;
+	transition:
+		stroke 0.2s,
+		stroke-width 0.2s;
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.cable {
+	outline: none;
+	cursor: pointer;
+
+	&:hover .line,
+	&:focus-visible .line {
+		filter: $elevation-hover;
+	}
+
+	&:hover:not([aria-current='true']) .line,
+	&:focus-visible:not([aria-current='true']) .line {
+		stroke: color-mix(in srgb, var(--cable-color), $hover-overlay);
+	}
+
+	&:focus-visible {
+		.focusRing,
+		.focusGap {
+			display: inline;
+		}
+	}
+}
+
+.hitArea {
+	stroke: transparent;
+	stroke-width: $hit-area-width;
+	pointer-events: stroke;
+}
+
+.focusRing,
+.focusGap {
+	display: none;
+}
+
+.focusRing {
+	stroke: var(--outline-moderate);
+	stroke-width: $selected-line-width + ($focus-ring-offset + $focus-ring-width) * 2;
+}
+
+.focusGap {
+	stroke: var(--background);
+	stroke-width: $selected-line-width + $focus-ring-offset * 2;
+}

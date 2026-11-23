@@ -40,6 +40,7 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
 	small: 36,
 	medium: 48,
 	large: 64,
+	auto: 48,
 };
 
 /**
@@ -300,9 +301,9 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 						!virtualized && styles.dataTableContainer,
 						virtualized && styles.virtualizedContainer,
 					)}
-					// Size containment drops the content width too; keep the column track as the
+					// Size containment drops the content width; keep the column track as the
 					// intrinsic width so a fit-content parent still sizes to the columns.
-					style={virtualized ? { containIntrinsicInlineSize: table.getTotalSize() } : undefined}
+					style={{ containIntrinsicInlineSize: table.getTotalSize() }}
 				>
 					<DragWrapper>
 						<Table

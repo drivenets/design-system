@@ -135,4 +135,36 @@ describe('DsVerticalTabs', () => {
 		await expect.element(page.getByText(/selected tab content: category/i)).toBeVisible();
 		expect(onValueChange).toHaveBeenCalledWith('category');
 	});
+
+	it('marks the selected tab with a blue background and a blue right border', async () => {
+		await page.render(
+			<DsVerticalTabs value="status">
+				<DsVerticalTabs.List>
+					<DsVerticalTabs.Tab value="status">Status</DsVerticalTabs.Tab>
+					<DsVerticalTabs.Tab value="category">Category</DsVerticalTabs.Tab>
+				</DsVerticalTabs.List>
+			</DsVerticalTabs>,
+		);
+
+		const statusTab = page.getByRole('tab', { name: /status/i });
+		await expect.element(statusTab).toHaveAttribute('data-selected');
+
+		const selected = getComputedStyle(statusTab.element());
+		const unselected = getComputedStyle(page.getByRole('tab', { name: /category/i }).element());
+
+		await expect.poll(() => selected.backgroundColor).toBe(resolveColor('--background-active-status'));
+		await expect.poll(() => selected.borderRightColor).toBe(resolveColor('--border-action-primary'));
+		expect(selected.borderRightWidth).toBe('2px');
+		expect(unselected.borderRightWidth).toBe(selected.borderRightWidth);
+		expect(unselected.borderRightColor).not.toBe(selected.borderRightColor);
+	});
 });
+
+const resolveColor = (token: string) => {
+	const probe = document.createElement('div');
+	probe.style.color = `var(${token})`;
+	document.body.append(probe);
+	const { color } = getComputedStyle(probe);
+	probe.remove();
+	return color;
+};

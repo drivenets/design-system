@@ -6,6 +6,7 @@ import { DsTypography } from '../../ds-typography';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { generateChangeNotes } from './common/story-notes-data';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Resizable Columns',
@@ -209,4 +210,26 @@ export const PersistedWidths: Story = {
 			</DsStack>
 		);
 	},
+};
+
+/**
+ * Resizable columns with `rowSize="auto"`. Narrow the Notes column and its text
+ * wraps onto more lines, growing the rows; widen it and the rows shrink back.
+ */
+export const AutoRowHeight: Story = {
+	render: () => (
+		<DsTable
+			bordered
+			fullWidth
+			stickyHeader
+			resizableColumns
+			rowSize="auto"
+			data={generateChangeNotes(6)}
+			columns={[
+				{ accessorKey: 'change', header: 'Change', cell: (info) => info.getValue(), size: 140 },
+				{ accessorKey: 'owner', header: 'Owner', cell: (info) => info.getValue(), size: 200 },
+				{ accessorKey: 'notes', header: 'Notes', cell: (info) => info.getValue(), size: 420 },
+			]}
+		/>
+	),
 };

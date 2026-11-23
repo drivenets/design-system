@@ -69,12 +69,13 @@ export const getBulkActionItems = (children: ReactNode): ReactElement<DsBulkActi
 };
 
 export const itemToOverflowEntry = (item: DsBulkActionsItemProps, index: number): DsBulkActionsMenuEntry => {
-	const { icon, label, disabled } = item;
+	const { icon, label, disabled, 'aria-label': ariaLabel } = item;
 
 	if (isMenuItemProps(item)) {
 		return {
 			value: `overflow-${String(index)}`,
 			label,
+			'aria-label': ariaLabel,
 			icon,
 			disabled,
 			menu: item.menu,
@@ -84,6 +85,7 @@ export const itemToOverflowEntry = (item: DsBulkActionsItemProps, index: number)
 	return {
 		value: `overflow-${String(index)}`,
 		label,
+		'aria-label': ariaLabel,
 		icon,
 		disabled,
 		onSelect: item.onClick,
