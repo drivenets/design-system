@@ -35,7 +35,7 @@ const showActions = instance.getBoolean('Show Actions');
 const closableAttr = closable ? ' closable' : '';
 const titleLine = showTitle ? `\n\t<DsAlertBanner.Title>Title</DsAlertBanner.Title>` : '';
 const actionsBlock = showActions
-	? `\n\t<DsAlertBanner.Actions>\n\t\t<DsButtonV3 variant="secondary" size="small">Action</DsButtonV3>\n\t</DsAlertBanner.Actions>`
+	? `\n\t<DsAlertBanner.Actions>\n\t\t<DsButtonV3 variant="secondary" size="small">Action</DsButtonV3>\n\t\t<DsButtonV3 variant="tertiary" size="small">Action</DsButtonV3>\n\t</DsAlertBanner.Actions>`
 	: '';
 
 export default {

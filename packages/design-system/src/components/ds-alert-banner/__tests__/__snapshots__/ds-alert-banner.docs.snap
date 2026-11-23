@@ -185,15 +185,14 @@ const Closable = () => <DsAlertBanner
   </DsAlertBanner.Body>
   <DsAlertBanner.Actions>
     <DsButtonV3
-      color="error"
       size="small"
-      variant="primary"
+      variant="secondary"
     >
       Proceed
     </DsButtonV3>
     <DsButtonV3
       size="small"
-      variant="secondary"
+      variant="tertiary"
     >
       Skip
     </DsButtonV3>
@@ -206,9 +205,9 @@ const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant
     <DsAlertBanner.Body>You successfully read this important alert message. Choose how you want to proceed.
                     </DsAlertBanner.Body>
     <DsAlertBanner.Actions>
-        <DsButtonV3 color="error" variant="primary" size="small">Proceed
+        <DsButtonV3 variant="secondary" size="small">Proceed
                             </DsButtonV3>
-        <DsButtonV3 variant="secondary" size="small">Skip
+        <DsButtonV3 variant="tertiary" size="small">Skip
                             </DsButtonV3>
     </DsAlertBanner.Actions>
 </DsAlertBanner>;
