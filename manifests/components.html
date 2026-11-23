@@ -626,7 +626,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -866,16 +866,16 @@ the Controlled story).</div>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Attach follow-up actions with `DsAlertBanner.Actions`. Keep the primary action
-first and limit the count so the banner stays scannable.</div>
+              <div class="hint">Attach follow-up actions with `DsAlertBanner.Actions`: a small `secondary`
+button for the main action first, then a small `tertiary` button for the other.</div>
               <pre><code>const WithActions = () =&gt; &lt;DsAlertBanner open onOpenChange={fn()} inline variant=&quot;warning&quot; icon=&quot;warning&quot;&gt;
     &lt;DsAlertBanner.Title&gt;Attention needed&lt;/DsAlertBanner.Title&gt;
     &lt;DsAlertBanner.Body&gt;You successfully read this important alert message. Choose how you want to proceed.
                     &lt;/DsAlertBanner.Body&gt;
     &lt;DsAlertBanner.Actions&gt;
-        &lt;DsButtonV3 color=&quot;error&quot; variant=&quot;primary&quot; size=&quot;small&quot;&gt;Proceed
+        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;Proceed
                             &lt;/DsButtonV3&gt;
-        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;Skip
+        &lt;DsButtonV3 variant=&quot;tertiary&quot; size=&quot;small&quot;&gt;Skip
                             &lt;/DsButtonV3&gt;
     &lt;/DsAlertBanner.Actions&gt;
 &lt;/DsAlertBanner&gt;;</code></pre>

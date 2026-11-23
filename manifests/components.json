@@ -193,8 +193,8 @@
         {
           "id": "components-alertbanner--with-actions",
           "name": "With Actions",
-          "snippet": "const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant=\"warning\" icon=\"warning\">\n    <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>\n    <DsAlertBanner.Body>You successfully read this important alert message. Choose how you want to proceed.\n                    </DsAlertBanner.Body>\n    <DsAlertBanner.Actions>\n        <DsButtonV3 color=\"error\" variant=\"primary\" size=\"small\">Proceed\n                            </DsButtonV3>\n        <DsButtonV3 variant=\"secondary\" size=\"small\">Skip\n                            </DsButtonV3>\n    </DsAlertBanner.Actions>\n</DsAlertBanner>;",
-          "description": "Attach follow-up actions with `DsAlertBanner.Actions`. Keep the primary action\nfirst and limit the count so the banner stays scannable."
+          "snippet": "const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant=\"warning\" icon=\"warning\">\n    <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>\n    <DsAlertBanner.Body>You successfully read this important alert message. Choose how you want to proceed.\n                    </DsAlertBanner.Body>\n    <DsAlertBanner.Actions>\n        <DsButtonV3 variant=\"secondary\" size=\"small\">Proceed\n                            </DsButtonV3>\n        <DsButtonV3 variant=\"tertiary\" size=\"small\">Skip\n                            </DsButtonV3>\n    </DsAlertBanner.Actions>\n</DsAlertBanner>;",
+          "description": "Attach follow-up actions with `DsAlertBanner.Actions`: a small `secondary`\nbutton for the main action first, then a small `tertiary` button for the other."
         },
         {
           "id": "components-alertbanner--without-title",
@@ -36580,6 +36580,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5879
+    "durationMs": 4531
   }
 }
