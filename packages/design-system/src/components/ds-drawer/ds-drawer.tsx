@@ -2,12 +2,14 @@ import { type CSSProperties, type ReactNode, Fragment } from 'react';
 import { Dialog, type DialogRootProps } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import type { DsDrawerProps } from './ds-drawer.types';
+import type { DsDrawerCloseTriggerProps, DsDrawerProps } from './ds-drawer.types';
 import styles from './ds-drawer.module.scss';
-import { DsIcon } from '../ds-icon';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsTypography } from '../ds-typography';
 import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { useResponsiveValue } from '../../utils/responsive';
+
+const DEFAULT_CLOSE_TRIGGER_LOCALE = Object.freeze({ close: 'Close' });
 
 const DsDrawerRoot = ({
 	open,
@@ -108,9 +110,16 @@ const Title = ({
 	</Dialog.Title>
 );
 
-const CloseTrigger = ({ style, className }: { style?: CSSProperties; className?: string }) => (
-	<Dialog.CloseTrigger style={style} className={classNames(styles.closeTrigger, className)}>
-		<DsIcon icon="close" size="small" />
+const CloseTrigger = ({ style, className, locale }: DsDrawerCloseTriggerProps) => (
+	<Dialog.CloseTrigger asChild>
+		<DsButtonV3
+			variant="tertiary"
+			size="small"
+			icon="close"
+			style={style}
+			className={className}
+			aria-label={locale?.close ?? DEFAULT_CLOSE_TRIGGER_LOCALE.close}
+		/>
 	</Dialog.CloseTrigger>
 );
 

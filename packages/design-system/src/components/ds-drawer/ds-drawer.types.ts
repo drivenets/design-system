@@ -61,3 +61,15 @@ export interface DsDrawerProps extends Pick<DialogProps, 'closeOnEscape' | 'clos
 	 */
 	children: ReactNode;
 }
+
+export interface DsDrawerCloseTriggerProps {
+	style?: CSSProperties;
+	className?: string;
+	locale?: {
+		/**
+		 * Accessible name of the icon-only close button.
+		 * @default 'Close'
+		 */
+		close?: string;
+	};
+}

@@ -18,8 +18,8 @@
                     <DsDrawer.Title>
                         Default Drawer <DsSystemStatus status="healthy" label="Active" />
                     </DsDrawer.Title>
-                    <DsStack alignItems="center" gap="var(--xs)">
-                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                    <DsStack direction="row" alignItems="center" gap="var(--xs)">
+                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
                         <DsDivider orientation="vertical" />
                         <DsDrawer.CloseTrigger />
                     </DsStack>
@@ -82,8 +82,8 @@ const Default = () => {
                         <DsDrawer.Title>
                             Default Drawer <DsSystemStatus status="healthy" label="Active" />
                         </DsDrawer.Title>
-                        <DsStack alignItems="center" gap="var(--xs)">
-                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                        <DsStack direction="row" alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
                             <DsDivider orientation="vertical" />
                             <DsDrawer.CloseTrigger />
                         </DsStack>
@@ -155,8 +155,8 @@ const Default = () => {
                     <DsDrawer.Title>
                         Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
                     </DsDrawer.Title>
-                    <DsStack alignItems="center" gap="var(--xs)">
-                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                    <DsStack direction="row" alignItems="center" gap="var(--xs)">
+                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
                         <DsDivider orientation="vertical" />
                         <DsDrawer.CloseTrigger />
                     </DsStack>
@@ -205,8 +205,8 @@ const WithTabs = () => {
                         <DsDrawer.Title>
                             Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
                         </DsDrawer.Title>
-                        <DsStack alignItems="center" gap="var(--xs)">
-                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                        <DsStack direction="row" alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="small" aria-label="Expand" />
                             <DsDivider orientation="vertical" />
                             <DsDrawer.CloseTrigger />
                         </DsStack>
@@ -673,8 +673,8 @@ const Responsive = function Render() {
                 <DsDrawer {...args} open={isOpen} onOpenChange={setIsOpen} columns={isFullScreen ? 12 : args.columns || 4}>
                     <DsDrawer.Header>
                         <DsDrawer.Title>Expandable Drawer</DsDrawer.Title>
-                        <DsStack alignItems="center" gap="var(--xs)">
-                            <DsButtonV3 variant="tertiary" icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'} size="tiny" aria-label={isFullScreen ? 'Collapse' : 'Expand'} onClick={toggleFullScreen} />
+                        <DsStack direction="row" alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'} size="small" aria-label={isFullScreen ? 'Collapse' : 'Expand'} onClick={toggleFullScreen} />
                             <DsDivider orientation="vertical" />
                             <DsDrawer.CloseTrigger />
                         </DsStack>
@@ -713,11 +713,11 @@ const ToggleFullSize = (args: DsDrawerProps) => {
                 columns={isFullScreen ? 12 : args.columns || 4}>
                 <DsDrawer.Header>
                     <DsDrawer.Title>Expandable Drawer</DsDrawer.Title>
-                    <DsStack alignItems="center" gap="var(--xs)">
+                    <DsStack direction="row" alignItems="center" gap="var(--xs)">
                         <DsButtonV3
                             variant="tertiary"
                             icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'}
-                            size="tiny"
+                            size="small"
                             aria-label={isFullScreen ? 'Collapse' : 'Expand'}
                             onClick={toggleFullScreen} />
                         <DsDivider orientation="vertical" />
