@@ -56,6 +56,10 @@ export default defineConfig({
 			},
 			{
 				extends: true,
+				plugins: [
+					reactCompilerRolldownPlugin(), // Must be first.
+					react(),
+				],
 				test: {
 					name: 'jsdom',
 					include: [testPattern('jsdom')],

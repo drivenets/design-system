@@ -20,6 +20,7 @@ globalThis.ResizeObserver = class {
 
 Element.prototype.scrollTo = vi.fn();
 Element.prototype.scrollIntoView = vi.fn();
+HTMLCanvasElement.prototype.getContext = vi.fn(() => null);
 
 afterEach(() => {
 	cleanup();

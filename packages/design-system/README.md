@@ -77,13 +77,14 @@ globalThis.ResizeObserver = class {
 
 Element.prototype.scrollTo = vi.fn();
 Element.prototype.scrollIntoView = vi.fn();
+HTMLCanvasElement.prototype.getContext = vi.fn(() => null);
 ```
 
-Without them, most components throw `window.matchMedia is not a function` on render, `DsSelect` throws on open, and components that measure their content throw `ResizeObserver is not defined`.
+Without them, most components throw `window.matchMedia is not a function` on render, `DsSelect` throws when it opens, and components that measure their content throw `ResizeObserver is not defined`. The `getContext` stub only silences JSDOM's "Not implemented" message from `DsCodeInput`.
 
 Known limitations, because JSDOM does no layout:
 
-- Elements have no size, so a virtualized `DsTable` renders no data rows. Pass `virtualized={false}` in tests that check rows.
+- Elements have no size, so a `DsTable` with `virtualized` set renders no data rows. Leave `virtualized` off in tests that check rows.
 - Truncation (tooltips on truncated text), overlay positioning and scroll behavior can't be asserted. Cover them in a real browser (for example Vitest browser mode or Playwright).
 - Responsive layouts always render the medium breakpoint, since the `matchMedia` stub above never matches.
 
