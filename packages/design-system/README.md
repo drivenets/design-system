@@ -49,3 +49,42 @@ export const App = () => {
   );
 };
 ```
+
+## Testing with JSDOM
+
+Components render and respond to user events in JSDOM-based test runners (Vitest or Jest with `jsdom`). JSDOM lacks a few browser APIs the components use, so add these stubs to your test setup file:
+
+```typescript
+// vitest.setup.ts (with Jest, use jest.fn() instead of vi.fn())
+import { vi } from 'vitest';
+
+window.matchMedia = vi.fn((query: string) => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  dispatchEvent: vi.fn(() => false),
+}));
+
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+Element.prototype.scrollTo = vi.fn();
+Element.prototype.scrollIntoView = vi.fn();
+```
+
+Without them, most components throw `window.matchMedia is not a function` on render, `DsSelect` throws on open, and components that measure their content throw `ResizeObserver is not defined`.
+
+Known limitations, because JSDOM does no layout:
+
+- Elements have no size, so a virtualized `DsTable` renders no data rows. Pass `virtualized={false}` in tests that check rows.
+- Truncation (tooltips on truncated text), overlay positioning and scroll behavior can't be asserted. Cover them in a real browser (for example Vitest browser mode or Playwright).
+- Responsive layouts always render the medium breakpoint, since the `matchMedia` stub above never matches.
+
+Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and drive them with `@testing-library/user-event`. The design system runs the same scenarios in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom).

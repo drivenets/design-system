@@ -57,6 +57,15 @@ export default defineConfig({
 			{
 				extends: true,
 				test: {
+					name: 'jsdom',
+					include: [testPattern('jsdom')],
+					environment: 'jsdom',
+					setupFiles: ['./vitest/setup.jsdom.ts'],
+				},
+			},
+			{
+				extends: true,
+				test: {
 					name: 'requires-build',
 					include: [testPattern('requires-build')],
 					isolate: false,
@@ -172,6 +181,6 @@ export default defineConfig({
 	},
 });
 
-function testPattern(type: 'unit' | 'requires-build' | 'browser' | 'docs') {
+function testPattern(type: 'unit' | 'jsdom' | 'requires-build' | 'browser' | 'docs') {
 	return `**/*.${type}.test.{ts,tsx}`;
 }
