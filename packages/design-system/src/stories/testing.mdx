@@ -43,11 +43,13 @@ Without them:
 
 Jest 29 and 30 ship jsdom 20 and 26.
 
-- Before jsdom 30 there is no `CSS.escape`, so keyboard navigation in `DsAutocomplete` and `DsRadioGroup` throws
-  `CSS is not defined`. `@testing-library/jest-dom` installs a polyfill; without it, install `css.escape` and import it
-  in your setup file.
+- Before jsdom 30 there is no `CSS.escape`. Keyboard navigation in `DsAutocomplete` and `DsRadioGroup`, and
+  `DsTable` column sizing, call it and throw `CSS is not defined`. `@testing-library/jest-dom` installs a polyfill;
+  without it, install `css.escape` and import it in your setup file.
 - Before jsdom 27, highlighted option text is split, so `DsAutocomplete` options are named "Ban ana" instead of
-  "Banana". Query them by text, or use jsdom 27 or later.
+  "Banana". Match on text content instead
+  (`getByRole('option', { name: (_name, element) => element.textContent.includes('Banana') })`), or use jsdom 27 or
+  later.
 
 ## CSS imports in Jest
 
@@ -68,5 +70,5 @@ If a test imports `@drivenets/design-system/index.min.css`, map CSS files to a s
 ## Writing tests
 
 Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and
-drive them with `@testing-library/user-event`. The design system runs its own scenarios with exactly this setup in
-[`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom).
+drive them with `@testing-library/user-event`. The design system runs its own scenarios with exactly this setup, on
+jsdom 26 and the latest jsdom, in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom).

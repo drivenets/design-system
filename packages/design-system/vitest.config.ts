@@ -69,6 +69,20 @@ export default defineConfig({
 			},
 			{
 				extends: true,
+				plugins: [
+					reactCompilerRolldownPlugin(), // Must be first.
+					react(),
+				],
+				test: {
+					name: 'jsdom-26',
+					include: [testPattern('jsdom')],
+					environment: 'jsdom',
+					setupFiles: ['./vitest/setup.jsdom.ts'],
+					execArgv: ['--import', './vitest/jsdom-26.mjs'],
+				},
+			},
+			{
+				extends: true,
 				test: {
 					name: 'requires-build',
 					include: [testPattern('requires-build')],

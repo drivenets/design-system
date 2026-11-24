@@ -165,9 +165,14 @@ describe('Components in JSDOM', () => {
 
 		await userEvent.type(screen.getByRole('combobox'), 'b');
 
-		expect(screen.queryByRole('option', { name: /Apple/ })).toBeNull();
+		expect(
+			screen.queryByRole('option', { name: (_name, element) => element.textContent.includes('Apple') }),
+		).toBeNull();
 
-		await userEvent.click(await screen.findByRole('option', { name: /Banana/ }));
+		// jsdom < 27 splits the highlighted label in the accessible name ("Ban ana"), so match on text content.
+		await userEvent.click(
+			await screen.findByRole('option', { name: (_name, element) => element.textContent.includes('Banana') }),
+		);
 
 		expect(onValueChange).toHaveBeenCalledWith('banana');
 	});

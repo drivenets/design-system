@@ -10,6 +10,8 @@ export const allowConsoleMessages = (...patterns: RegExp[]) => {
 export const getUnexpectedConsoleMessages = () =>
 	messages.filter((message) => !allowed.some((pattern) => pattern.test(message)));
 
+// Only sees console.error/warn calls. jsdom reports its own "Not implemented" errors through its virtual
+// console straight to stderr, so those don't fail a test.
 export const failOnConsole = () => {
 	beforeEach(() => {
 		messages.length = 0;

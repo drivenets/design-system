@@ -23,8 +23,9 @@ globalThis.ResizeObserver = class {
 Element.prototype.scrollTo = () => {};
 Element.prototype.scrollIntoView = () => {};
 
+// Hooks run in reverse order, so registering this first checks console output after cleanup() unmounts.
+failOnConsole();
+
 afterEach(() => {
 	cleanup();
 });
-
-failOnConsole();
