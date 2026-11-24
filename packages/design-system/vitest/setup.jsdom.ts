@@ -2,7 +2,7 @@ import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 import { failOnConsole } from './jsdom-console';
 
-// The consumer setup documented in README.md ("Testing with JSDOM"). Keep the two in sync.
+// The consumer setup documented in src/stories/testing.mdx (Guidelines/Testing). Keep the two in sync.
 window.matchMedia = (query: string) => ({
 	matches: false,
 	media: query,
