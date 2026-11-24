@@ -23,15 +23,28 @@ export const resolveResponsiveValue = <T>(value: ResponsiveValue<T>, breakpoint:
 
 const MEDIA_QUERY = `(min-width: ${String(BREAKPOINT_LG)}px)`;
 
+// JSDOM has no matchMedia; consumers' tests render the server breakpoint instead of crashing.
+const hasMatchMedia = () => typeof window.matchMedia === 'function';
+
 const subscribe = (callback: () => void) => {
+	if (!hasMatchMedia()) {
+		return () => undefined;
+	}
+
 	const mql = window.matchMedia(MEDIA_QUERY);
 	mql.addEventListener('change', callback);
 	return () => mql.removeEventListener('change', callback);
 };
 
-const getSnapshot = (): Breakpoint => (window.matchMedia(MEDIA_QUERY).matches ? 'lg' : 'md');
-
 const getServerSnapshot = (): Breakpoint => 'lg';
+
+const getSnapshot = (): Breakpoint => {
+	if (!hasMatchMedia()) {
+		return getServerSnapshot();
+	}
+
+	return window.matchMedia(MEDIA_QUERY).matches ? 'lg' : 'md';
+};
 
 export const useBreakpoint = (): Breakpoint =>
 	useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

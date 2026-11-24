@@ -25,7 +25,10 @@ export const DsCommentThread = ({
 	const hasOverflow = useScrollOverflow(scrollContainerRef, messages.length);
 
 	useEffect(() => {
-		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+		// JSDOM has no scrollIntoView.
+		if (typeof bottomRef.current?.scrollIntoView === 'function') {
+			bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+		}
 	}, [messages.length]);
 
 	const isCurrentUserMessage = (author: CommentAuthor): boolean => currentUser?.id === author.id;
