@@ -56,21 +56,21 @@ Run these Figma MCP calls **in parallel**:
 
 ### Step 2: Check existing components (DS MCP)
 
-Call `**list-all-documentation**` (or degraded substitute). Scan for an existing **Component** that matches the Figma frame.
+Call `docs-list` (or degraded substitute). Scan for an existing **Component** that matches the Figma frame.
 
-| Match                                              | Action                                                                                                                                                                           |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Exact / near match                                 | `**get-documentation`\*\* on that component — extend or compose; do not scaffold a duplicate folder. Capture before screenshots first ([create-pr](../create-pr/SCREENSHOTS.md)) |
-| Fuzzy (e.g. Figma "Primary Button" vs `ds-button`) | Stop and ask the user: extend existing vs new component                                                                                                                          |
-| No match                                           | Continue to Step 3                                                                                                                                                               |
+| Match                                              | Action                                                                                                                                                             |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Exact / near match                                 | `docs-show` on that component — extend or compose; do not scaffold a duplicate folder. Capture before screenshots first ([create-pr](../create-pr/SCREENSHOTS.md)) |
+| Fuzzy (e.g. Figma "Primary Button" vs `ds-button`) | Stop and ask the user: extend existing vs new component                                                                                                            |
+| No match                                           | Continue to Step 3                                                                                                                                                 |
 
 **Degraded mode substitutes**
 
-| DS MCP tool                      | Local substitute                                                                                            |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `list-all-documentation`         | `packages/design-system/src/components/` + alphabetical exports in `packages/design-system/src/index.ts`    |
-| `get-documentation` (Guidelines) | `packages/design-system/src/styles/_root.scss`, [scss](../scss/SKILL.md), [CONTEXT.md](../../../CONTEXT.md) |
-| `get-documentation` (component)  | Read `packages/design-system/src/components/ds-{name}/` + stories                                           |
+| DS MCP tool              | Local substitute                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `docs-list`              | `packages/design-system/src/components/` + alphabetical exports in `packages/design-system/src/index.ts`    |
+| `docs-show` (Guidelines) | `packages/design-system/src/styles/_root.scss`, [scss](../scss/SKILL.md), [CONTEXT.md](../../../CONTEXT.md) |
+| `docs-show` (component)  | Read `packages/design-system/src/components/ds-{name}/` + stories                                           |
 
 ### Step 3: Load DS guidelines (mandatory)
 
@@ -78,8 +78,8 @@ Guidelines are the source of truth — mandatory pre-step.
 
 **Before writing any code** (components, CSS, inline styles, or token references), you MUST:
 
-1. Identify all `Guidelines/*` doc IDs from the `**list-all-documentation`\*\* output (Step 2).
-2. Call `**get-documentation**` for EVERY `Guidelines/*` doc that is relevant to the task (if in doubt, read it).
+1. Identify all `Guidelines/*` doc IDs from the `docs-list` output (Step 2).
+2. Call `docs-show` for EVERY `Guidelines/*` doc that is relevant to the task (if in doubt, read it).
 
 **NEVER** skip this step. **NEVER** write CSS values, token names, spacing, colors, typography, or layout code from memory or from Figma raw output. The guidelines override all other sources including Figma markup.
 
@@ -87,7 +87,7 @@ Guidelines are the source of truth — mandatory pre-step.
 
 - Never assume component props, variants, or API shape — retrieve documentation before using a component.
 - If a component, prop, or token is not documented, do not invent it. Report that it was not found.
-- Only reference IDs returned by `**list-all-documentation`\*\*. Do not guess IDs.
+- Only reference IDs returned by `docs-list`. Do not guess IDs.
 
 **Degraded mode:** when DS MCP is unavailable, read the local substitutes in Step 2 before writing any code.
 

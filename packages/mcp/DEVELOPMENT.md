@@ -43,7 +43,7 @@ printf '%s\n' \
   | node packages/mcp/dist/cli.js
 ```
 
-You should see a JSON-RPC `tools/list` response containing `list-all-documentation`, `get-documentation`, and `get-documentation-for-story`.
+You should see a JSON-RPC `tools/list` response containing `docs-list`, `docs-show`, and `docs-show-story`.
 
 ### Optional extras
 
@@ -81,7 +81,7 @@ Manifest paths:
 **Custom manifest URL**
 
 ```bash
-node packages/mcp/dist/cli.js --manifests-url https://example.com/manifests
+node packages/mcp/dist/cli.js --manifests-url https://example.com
 ```
 
 **MCP Inspector**

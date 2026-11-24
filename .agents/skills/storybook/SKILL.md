@@ -139,7 +139,7 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - **Story JSDoc** — plain prose explaining _why_ to use the variant, not only what it renders. Do NOT add `@summary` to a story: Autodocs renders a story's leading JSDoc verbatim under the title, so the tag shows as literal text. The manifest falls back to the description.
 - **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
 - **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
-- **Verify manifest snippets** — with Storybook running (`pnpm start`), use local MCP (`http://localhost:6006/mcp` or `--manifests-url http://localhost:6006`): `list-all-documentation`, `get-documentation` / `get-documentation-for-story`. Confirm manifest render snippets use `<DsX>` not HOC names, descriptions have no `@summary`, `!manifest` stories are absent. This checks **agent-facing** snippets only — not the Autodocs Show code panel. Not `packages/mcp`, which serves published docs to DS _consumers_.
+- **Verify manifest snippets** — with Storybook running (`pnpm start`), use local MCP (`http://localhost:6006/mcp` or `--manifests-url http://localhost:6006`): `docs-list`, `docs-show` / `docs-show-story`. Confirm manifest render snippets use `<DsX>` not HOC names, descriptions have no `@summary`, `!manifest` stories are absent. This checks **agent-facing** snippets only — not the Autodocs Show code panel. Not `packages/mcp`, which serves published docs to DS _consumers_.
 - **Verify Show code** — run the global docs snippet test per [docs-tests](../docs-tests/SKILL.md). Published `@drivenets/design-system-mcp` serves DS consumers and may lag local edits.
 
 ## Related
