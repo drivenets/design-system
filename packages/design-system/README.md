@@ -52,40 +52,34 @@ export const App = () => {
 
 ## Testing with JSDOM
 
-Components render and respond to user events in JSDOM-based test runners (Vitest or Jest with `jsdom`). JSDOM lacks a few browser APIs the components use, so add these stubs to your test setup file:
+Components render and respond to user events in JSDOM-based test runners (Vitest or Jest with `jsdom`). Overlays such as `DsSelect`, `DsAutocomplete`, `DsTabs` and `DsSlider` use two browser APIs that JSDOM lacks, so add these stubs to your test setup file:
 
 ```typescript
-// vitest.setup.ts (with Jest, use jest.fn() instead of vi.fn())
-import { vi } from 'vitest';
-
-window.matchMedia = vi.fn((query: string) => ({
-  matches: false,
-  media: query,
-  onchange: null,
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  addListener: vi.fn(),
-  removeListener: vi.fn(),
-  dispatchEvent: vi.fn(() => false),
-}));
-
+// vitest.setup.ts or jest.setup.ts
 globalThis.ResizeObserver = class {
   observe() {}
   unobserve() {}
   disconnect() {}
 };
 
-Element.prototype.scrollTo = vi.fn();
-Element.prototype.scrollIntoView = vi.fn();
-HTMLCanvasElement.prototype.getContext = vi.fn(() => null);
+Element.prototype.scrollTo = () => {};
 ```
 
-Without them, most components throw `window.matchMedia is not a function` on render, `DsSelect` throws when it opens, and components that measure their content throw `ResizeObserver is not defined`. The `getContext` stub only silences JSDOM's "Not implemented" message from `DsCodeInput`.
+Without them, opening a select or autocomplete throws `ResizeObserver is not defined`, and `DsSelect` never commits the chosen option.
 
-Known limitations, because JSDOM does no layout:
+Older JSDOM versions (Jest 29 and 30 ship jsdom 20 and 26):
 
-- Elements have no size, so a `DsTable` with `virtualized` set renders no data rows. Leave `virtualized` off in tests that check rows.
+- jsdom < 30 has no `CSS.escape`, so keyboard navigation in `DsAutocomplete` and `DsRadioGroup` throws `CSS is not defined`. `@testing-library/jest-dom` installs a polyfill; without it, install `css.escape` and import it in your setup file.
+- jsdom < 27 splits highlighted option text, so `DsAutocomplete` options are named "Ban ana" instead of "Banana". Query them by text, or use jsdom 27 or later.
+
+If a test imports `@drivenets/design-system/index.min.css`, map CSS files to a stub in Jest (`moduleNameMapper: { '\\.css$': '<rootDir>/style-stub.js' }`). Vitest handles CSS imports on its own.
+
+Known limitations:
+
+- JSDOM does no layout. Elements have no size, so a `DsTable` with `virtualized` set renders no data rows. Leave `virtualized` off in tests that check rows.
 - Truncation (tooltips on truncated text), overlay positioning and scroll behavior can't be asserted. Cover them in a real browser (for example Vitest browser mode or Playwright).
-- Responsive layouts always render the medium breakpoint, since the `matchMedia` stub above never matches.
+- Without `matchMedia`, responsive props resolve to the `lg` breakpoint. Stub `window.matchMedia` to test the `md` breakpoint.
+- The `DsSlider` thumb appears one tick after render, so find it with `findByRole('slider')`.
+- `DsCodeInput` logs JSDOM's "Not implemented: HTMLCanvasElement's getContext()" message. It is harmless.
 
-Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and drive them with `@testing-library/user-event`. The design system runs the same scenarios in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom).
+Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and drive them with `@testing-library/user-event`. The design system runs the same scenarios in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom), with only the stubs above.

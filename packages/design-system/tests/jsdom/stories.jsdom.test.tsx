@@ -2,7 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import preview from '../../.storybook/preview';
 import { act, render } from '@testing-library/react';
 import type { ComponentType } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { allowConsoleMessages, getUnexpectedConsoleMessages } from '../../vitest/jsdom-console';
 
 type StoryModule = Parameters<typeof composeStories>[0];
 type ComposedStory = ComponentType & { load: () => Promise<void> };
@@ -17,34 +18,19 @@ const knownIssues = [
 	{ file: '/ds-code-input/', message: /node is `null` or `undefined`/ },
 ];
 
-const isKnownIssue = (file: string, message: string) =>
-	knownIssues.some((issue) => file.includes(issue.file) && issue.message.test(message));
-
-const consoleMessages: string[] = [];
-
-beforeEach(() => {
-	consoleMessages.length = 0;
-
-	for (const method of ['error', 'warn'] as const) {
-		vi.spyOn(console, method).mockImplementation((...args: unknown[]) => {
-			consoleMessages.push(args.map(String).join(' '));
-		});
-	}
-});
-
-afterEach(() => {
-	vi.restoreAllMocks();
-});
-
 describe.each(Object.entries(storyModules))('%s', (file, storyModule) => {
 	it.each(Object.entries<ComposedStory>(composeStories(storyModule, preview)))(
 		'%s renders without errors or warnings',
 		async (_name, Story) => {
+			allowConsoleMessages(
+				...knownIssues.filter((issue) => file.includes(issue.file)).map((issue) => issue.message),
+			);
+
 			await Story.load();
 			render(<Story />);
 			await act(async () => {});
 
-			expect(consoleMessages.filter((message) => !isKnownIssue(file, message))).toEqual([]);
+			expect(getUnexpectedConsoleMessages()).toEqual([]);
 		},
 	);
 });

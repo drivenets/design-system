@@ -1,27 +1,18 @@
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach } from 'vitest';
+import { failOnConsole } from './jsdom-console';
 
-window.matchMedia = vi.fn((query: string) => ({
-	matches: false,
-	media: query,
-	onchange: null,
-	addEventListener: vi.fn(),
-	removeEventListener: vi.fn(),
-	addListener: vi.fn(),
-	removeListener: vi.fn(),
-	dispatchEvent: vi.fn(() => false),
-}));
-
+// The consumer setup documented in README.md ("Testing with JSDOM"). Keep the two in sync.
 globalThis.ResizeObserver = class {
 	observe() {}
 	unobserve() {}
 	disconnect() {}
 };
 
-Element.prototype.scrollTo = vi.fn();
-Element.prototype.scrollIntoView = vi.fn();
-HTMLCanvasElement.prototype.getContext = vi.fn(() => null);
+Element.prototype.scrollTo = () => {};
 
 afterEach(() => {
 	cleanup();
 });
+
+failOnConsole();

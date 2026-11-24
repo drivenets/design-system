@@ -1,8 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import {
+	DsAutocomplete,
 	DsButton,
 	DsCheckbox,
 	DsDrawer,
@@ -11,11 +13,26 @@ import {
 	DsPopover,
 	DsRadioGroup,
 	DsSelect,
+	DsTable,
 	DsTabs,
 	DsTextInput,
+	DsTimePicker,
 	DsToggle,
 	DsTooltip,
 } from '../../src';
+
+type Device = { id: string; name: string; status: string };
+
+const deviceColumns: ColumnDef<Device>[] = [
+	{ accessorKey: 'name', header: 'Name' },
+	{ accessorKey: 'status', header: 'Status' },
+];
+
+const devices: Device[] = [
+	{ id: '1', name: 'edge-1', status: 'Online' },
+	{ id: '2', name: 'edge-2', status: 'Offline' },
+	{ id: '3', name: 'core-1', status: 'Online' },
+];
 
 const ModalExample = () => {
 	const [open, setOpen] = useState(false);
@@ -132,6 +149,49 @@ describe('Components in JSDOM', () => {
 
 		expect(onValueChange).toHaveBeenCalledWith('banana');
 		expect(screen.getByRole('combobox').textContent).toContain('Banana');
+	});
+
+	it('filters and selects an option from an autocomplete', async () => {
+		const onValueChange = vi.fn();
+		render(
+			<DsAutocomplete
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'banana', label: 'Banana' },
+				]}
+				onValueChange={onValueChange}
+			/>,
+		);
+
+		await userEvent.type(screen.getByRole('combobox'), 'b');
+
+		expect(screen.queryByRole('option', { name: /Apple/ })).toBeNull();
+
+		await userEvent.click(await screen.findByRole('option', { name: /Banana/ }));
+
+		expect(onValueChange).toHaveBeenCalledWith('banana');
+	});
+
+	it('picks an hour in a time picker', async () => {
+		render(<DsTimePicker defaultValue={new Date(2026, 0, 1, 10, 30)} />);
+
+		await userEvent.click(screen.getByRole('button', { name: 'Open time picker' }));
+		const hours = await screen.findByRole('listbox', { name: 'Hour' });
+		await userEvent.click(within(hours).getByRole('option', { name: '11' }));
+
+		expect(screen.getByPlaceholderText('hh:mm AM/PM')).toHaveProperty('value', '11:30 AM');
+	});
+
+	it('renders table rows and handles a row click', async () => {
+		const onRowClick = vi.fn();
+		render(<DsTable columns={deviceColumns} data={devices} onRowClick={onRowClick} />);
+
+		expect(screen.getByRole('columnheader', { name: /Name/ })).toBeTruthy();
+		expect(screen.getAllByRole('row')).toHaveLength(devices.length + 1);
+
+		await userEvent.click(screen.getByRole('cell', { name: 'edge-2' }));
+
+		expect(onRowClick).toHaveBeenCalledWith(devices[1]);
 	});
 
 	it('switches tabs', async () => {
