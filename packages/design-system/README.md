@@ -52,10 +52,21 @@ export const App = () => {
 
 ## Testing with JSDOM
 
-Components render and respond to user events in JSDOM-based test runners (Vitest or Jest with `jsdom`). Overlays such as `DsSelect`, `DsAutocomplete`, `DsTabs` and `DsSlider` use two browser APIs that JSDOM lacks, so add these stubs to your test setup file:
+Components render and respond to user events in JSDOM-based test runners (Vitest or Jest with `jsdom`). JSDOM lacks a few browser APIs the components use, so add these stubs to your test setup file:
 
 ```typescript
 // vitest.setup.ts or jest.setup.ts
+window.matchMedia = (query: string) => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addEventListener: () => {},
+  removeEventListener: () => {},
+  addListener: () => {},
+  removeListener: () => {},
+  dispatchEvent: () => false,
+});
+
 globalThis.ResizeObserver = class {
   observe() {}
   unobserve() {}
@@ -63,9 +74,15 @@ globalThis.ResizeObserver = class {
 };
 
 Element.prototype.scrollTo = () => {};
+Element.prototype.scrollIntoView = () => {};
 ```
 
-Without them, opening a select or autocomplete throws `ResizeObserver is not defined`, and `DsSelect` never commits the chosen option.
+Without them:
+
+- Components with responsive props (`DsButton`, `DsStack`, `DsGrid`, `DsDrawer`, `DsPanel` and anything built on them, such as `DsDatePicker` and `DsTable`) throw `window.matchMedia is not a function` on render.
+- Opening `DsSelect`, `DsAutocomplete` or another positioned overlay throws `ResizeObserver is not defined`, and so do components that measure their content, such as `DsTable`.
+- `DsSelect` never commits the chosen option, and `DsTimePicker` throws when it opens (`scrollTo`).
+- `DsCommentThread` throws on render (`scrollIntoView`).
 
 Older JSDOM versions (Jest 29 and 30 ship jsdom 20 and 26):
 
@@ -78,8 +95,8 @@ Known limitations:
 
 - JSDOM does no layout. Elements have no size, so a `DsTable` with `virtualized` set renders no data rows. Leave `virtualized` off in tests that check rows.
 - Truncation (tooltips on truncated text), overlay positioning and scroll behavior can't be asserted. Cover them in a real browser (for example Vitest browser mode or Playwright).
-- Without `matchMedia`, responsive props resolve to the `lg` breakpoint. Stub `window.matchMedia` to test the `md` breakpoint.
+- The `matchMedia` stub never matches, so responsive props resolve to the `md` breakpoint. Return `matches: true` to test `lg`.
 - The `DsSlider` thumb appears one tick after render, so find it with `findByRole('slider')`.
 - `DsCodeInput` logs JSDOM's "Not implemented: HTMLCanvasElement's getContext()" message. It is harmless.
 
-Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and drive them with `@testing-library/user-event`. The design system runs the same scenarios in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom), with only the stubs above.
+Query components by role and accessible name (`getByRole('combobox')`, `getByRole('dialog', { name: 'Title' })`) and drive them with `@testing-library/user-event`. The design system runs its own scenarios with exactly this setup in [`tests/jsdom`](https://github.com/drivenets/design-system/tree/main/packages/design-system/tests/jsdom).

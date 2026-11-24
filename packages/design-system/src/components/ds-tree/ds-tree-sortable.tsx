@@ -186,14 +186,7 @@ const EMPTY_SNAPSHOT = { active: null, drop: null };
 
 const subscribeNever = () => () => undefined;
 
-// JSDOM has no matchMedia.
-const hasMatchMedia = () => typeof window.matchMedia === 'function';
-
 const subscribeReducedMotion = (onChange: () => void) => {
-	if (!hasMatchMedia()) {
-		return () => undefined;
-	}
-
 	const query = window.matchMedia(REDUCED_MOTION_QUERY);
 	query.addEventListener('change', onChange);
 
@@ -203,7 +196,7 @@ const subscribeReducedMotion = (onChange: () => void) => {
 const usePrefersReducedMotion = () =>
 	useSyncExternalStore(
 		subscribeReducedMotion,
-		() => hasMatchMedia() && window.matchMedia(REDUCED_MOTION_QUERY).matches,
+		() => window.matchMedia(REDUCED_MOTION_QUERY).matches,
 		() => false,
 	);
 
