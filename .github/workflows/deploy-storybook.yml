@@ -46,7 +46,11 @@ jobs:
       - name: Deploy
         run: |
           git checkout gh-pages
-          rm -rf ./*
+
+          # Also clear dotfiles and files ignored on `main` (e.g. `.turbo`) so only the Storybook build is committed.
+          git rm -r --quiet .
+          git clean -dfx --quiet
+
           cp -r /tmp/storybook-static/* ./
 
           git add .
