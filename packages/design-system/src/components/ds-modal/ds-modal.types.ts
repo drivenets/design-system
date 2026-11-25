@@ -96,3 +96,15 @@ export interface DsModalFullScreenTriggerProps {
 	style?: CSSProperties;
 	className?: string;
 }
+
+export interface DsModalCloseTriggerProps {
+	style?: CSSProperties;
+	className?: string;
+	locale?: {
+		/**
+		 * Accessible name of the icon-only close button.
+		 * @default 'Close'
+		 */
+		close?: string;
+	};
+}

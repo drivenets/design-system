@@ -2,15 +2,17 @@ import type { CSSProperties, ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import type { DsModalFullScreenTriggerProps, DsModalProps } from './ds-modal.types';
+import type { DsModalCloseTriggerProps, DsModalFullScreenTriggerProps, DsModalProps } from './ds-modal.types';
 import { DsModalContext, useDsModalContext } from './ds-modal.context';
 import styles from './ds-modal.module.scss';
 import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { useControlled } from '../../utils/use-controlled';
-import { DsIcon } from '../ds-icon';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsTypography } from '../ds-typography';
 
 const noop = () => undefined;
+
+const DEFAULT_CLOSE_TRIGGER_LOCALE = Object.freeze({ close: 'Close' });
 
 /**
  * Composable modal dialog.
@@ -119,9 +121,16 @@ const Title = ({
 	</Dialog.Title>
 );
 
-const CloseTrigger = ({ style, className }: { style?: CSSProperties; className?: string }) => (
-	<Dialog.CloseTrigger style={style} className={className}>
-		<DsIcon icon="close" size="small"></DsIcon>
+const CloseTrigger = ({ style, className, locale }: DsModalCloseTriggerProps) => (
+	<Dialog.CloseTrigger asChild>
+		<DsButtonV3
+			variant="tertiary"
+			size="small"
+			icon="close"
+			style={style}
+			className={className}
+			aria-label={locale?.close ?? DEFAULT_CLOSE_TRIGGER_LOCALE.close}
+		/>
 	</Dialog.CloseTrigger>
 );
 
@@ -138,18 +147,17 @@ const FullScreenTrigger = ({
 	const { fullScreen, setFullScreen } = useDsModalContext();
 
 	return (
-		// Rendered like CloseTrigger so both header icons look identical
-		<button
+		<DsButtonV3
 			ref={ref}
-			type="button"
+			variant="tertiary"
+			size="small"
+			icon={fullScreen ? 'close_fullscreen' : 'open_in_full'}
 			style={style}
 			className={classNames(styles.fullScreenTrigger, className)}
 			aria-label={ariaLabel}
 			aria-pressed={fullScreen}
 			onClick={() => setFullScreen(!fullScreen)}
-		>
-			<DsIcon icon={fullScreen ? 'close_fullscreen' : 'open_in_full'} size="small" />
-		</button>
+		/>
 	);
 };
 
