@@ -11,6 +11,11 @@ import logoUrl from './assets/logo.svg';
 
 <Meta title="Overview" />
 
+export const agentSetupPrompt = `Set up this repo's coding agents for the DriveNets Design System.
+If @drivenets/design-system isn't a dependency yet, install it with the repo's package manager.
+Then read node_modules/@drivenets/design-system/skills/drivenets-design-system/setup.md and follow it.
+If that file doesn't exist, the installed version is too old: tell me, and don't upgrade without asking.`;
+
 <div className={`${styles.root} sb-unstyled`}>
 
 <div className={styles.hero}>
@@ -128,18 +133,38 @@ export default [
 <div>
   <div className={styles.sectionHeader}>
     <DsIcon icon="smart_toy" size="medium" />
-    <DsTypography variant="heading2">Design System MCP</DsTypography>
+    <DsTypography variant="heading2">Set up your coding agent</DsTypography>
   </div>
 
 <DsTypography variant="body-md-reg" asChild className={styles.sectionDescription}>
 	<span>
-		Give your AI assistant (Cursor, Claude Code, Codex, …) access to live component docs, props, and code
-		snippets straight from this Storybook. The command below adds the MCP server to every IDE on your machine.
+		Paste this prompt into your coding agent (Cursor, Claude Code, Codex, …) from your app's root. The agent
+		follows a setup guide that ships with the package: it connects the design system MCP server for the
+		project, turns on the ESLint plugin, and adds a short AGENTS.md block that points agents at the design
+		system skill.
 	</span>
 </DsTypography>
 
   <div className={styles.steps}>
     <div className={styles.step}>
+      <Source dark code={agentSetupPrompt} language="text" />
+      <DsTypography variant="body-sm-reg" asChild className={styles.docsLink}>
+        <a
+          href="https://github.com/drivenets/design-system/tree/main/packages/design-system#ai-coding-agents"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          What the setup does →
+        </a>
+      </DsTypography>
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">Only want the MCP server?</DsTypography>
+      <DsTypography variant="body-sm-reg" className={styles.stepHint}>
+        Give your agent live component docs, props and code snippets from this Storybook. This adds the MCP server to
+        every IDE on your machine:
+      </DsTypography>
       <Source dark code="npx add-mcp@latest -g @drivenets/design-system-mcp" language="bash" />
       <DsTypography variant="body-sm-reg" asChild className={styles.docsLink}>
         <a
@@ -151,6 +176,7 @@ export default [
         </a>
       </DsTypography>
     </div>
+
   </div>
 </div>
 

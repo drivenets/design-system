@@ -49,3 +49,30 @@ export const App = () => {
   );
 };
 ```
+
+## AI coding agents
+
+To set up your app's coding agents (Cursor, Claude Code, Codex, …) to use the design system, paste this prompt into your agent from the app's root:
+
+```text
+Set up this repo's coding agents for the DriveNets Design System.
+If @drivenets/design-system isn't a dependency yet, install it with the repo's package manager.
+Then read node_modules/@drivenets/design-system/skills/drivenets-design-system/setup.md and follow it.
+If that file doesn't exist, the installed version is too old: tell me, and don't upgrade without asking.
+```
+
+The agent follows [`setup.md`](https://github.com/drivenets/design-system/blob/main/packages/design-system/skills/drivenets-design-system/setup.md), which ships with the package. It:
+
+- connects the design system MCP server, [`@drivenets/design-system-mcp`](https://github.com/drivenets/design-system/tree/main/packages/mcp), for the project;
+- turns on the [ESLint plugin](https://github.com/drivenets/design-system/tree/main/packages/eslint-plugin)'s recommended rules, and asks you before changing existing code they flag;
+- adds a short block to `AGENTS.md` that points agents at the design system skill, [`SKILL.md`](https://github.com/drivenets/design-system/blob/main/packages/design-system/skills/drivenets-design-system/SKILL.md).
+
+Both files come from the installed package, so they match your version. Run the prompt again after upgrading to refresh the `AGENTS.md` block.
+
+To install the skill natively in agents that support [skills](https://skills.sh), run:
+
+```bash
+npx skills add drivenets/design-system --skill drivenets-design-system
+```
+
+That copy follows the repository's `main` branch, not your installed version.
