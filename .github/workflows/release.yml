@@ -112,6 +112,7 @@ jobs:
           path: |
             packages/*/dist
             packages/design-system/manifests
+            packages/design-system/docs
           if-no-files-found: error
           retention-days: 1
           include-hidden-files: false
@@ -142,7 +143,10 @@ jobs:
           path: packages
 
       - name: Check agent docs
-        run: test -s packages/design-system/manifests/components.json && test -s packages/design-system/manifests/docs.json
+        run: |
+          test -s packages/design-system/manifests/components.json
+          test -s packages/design-system/manifests/docs.json
+          test -s packages/design-system/docs/llms.txt
 
       - name: Publish
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2

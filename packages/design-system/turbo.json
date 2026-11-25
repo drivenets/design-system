@@ -17,7 +17,7 @@
 		},
 		"build:agent-docs": {
 			"dependsOn": ["build:storybook"],
-			"outputs": ["manifests/**"]
+			"outputs": ["manifests/**", "docs/**"]
 		},
 		"test:visual": {
 			"env": ["PW_WS_ENDPOINT"],

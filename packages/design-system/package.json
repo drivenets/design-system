@@ -25,6 +25,7 @@
 		"CHANGELOG.md",
 		"LICENSE",
 		"./dist",
+		"./docs",
 		"./manifests",
 		"./src",
 		"!**/__tests__",

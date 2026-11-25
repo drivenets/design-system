@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -203,6 +203,7 @@ describe('buildAgentDocs', () => {
 		const storybookManifests = join(packageRoot, 'storybook-static', 'manifests');
 		const docs = { v: 0, docs: { overview: { id: 'overview', name: 'Docs', content: '# Overview' } } };
 		mkdirSync(storybookManifests, { recursive: true });
+		writeFileSync(join(packageRoot, 'package.json'), JSON.stringify({ version: '0.29.0' }));
 		writeFileSync(
 			join(storybookManifests, 'components.json'),
 			JSON.stringify(
@@ -235,5 +236,33 @@ describe('buildAgentDocs', () => {
 			},
 		});
 		expect(readFileSync(join(packageRoot, 'manifests', 'docs.json'), 'utf8')).toBe(JSON.stringify(docs));
+	});
+
+	it('replaces docs/ with llms.txt and a Markdown page per component and guideline', async () => {
+		// Arrange.
+		const storybookManifests = join(packageRoot, 'storybook-static', 'manifests');
+		const docs = {
+			v: 0,
+			docs: { 'overview--docs': { id: 'overview--docs', name: 'Docs', title: 'Overview' } },
+		};
+		mkdirSync(storybookManifests, { recursive: true });
+		writeFileSync(join(packageRoot, 'package.json'), JSON.stringify({ version: '0.29.0' }));
+		writeFileSync(join(storybookManifests, 'components.json'), JSON.stringify(createComponentsManifest()));
+		writeFileSync(join(storybookManifests, 'docs.json'), JSON.stringify(docs));
+
+		mkdirSync(join(packageRoot, 'docs', 'components'), { recursive: true });
+		writeFileSync(join(packageRoot, 'docs', 'components', 'removed.md'), '# Removed');
+
+		// Act.
+		await buildAgentDocs(packageRoot);
+
+		// Assert.
+		const docsDir = join(packageRoot, 'docs');
+		expect(existsSync(join(docsDir, 'components', 'removed.md'))).toBe(false);
+		expect(readFileSync(join(docsDir, 'llms.txt'), 'utf8')).toMatch(
+			/^# @drivenets\/design-system 0\.29\.0\n/,
+		);
+		expect(readFileSync(join(docsDir, 'components', 'button.md'), 'utf8')).toMatch(/^# DsButton\n/);
+		expect(readFileSync(join(docsDir, 'guidelines', 'overview.md'), 'utf8')).toMatch(/^# Overview\n/);
 	});
 });
