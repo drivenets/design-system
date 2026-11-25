@@ -141,6 +141,30 @@ describe('DsModal', () => {
 		await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
 	});
 
+	it('renders the close trigger as a small tertiary icon button', async () => {
+		await page.render(<ModalExample />);
+
+		await page.getByRole('button', { name: /open modal/i }).click();
+
+		const close = page.getByRole('dialog').getByRole('button', { name: 'Close' });
+		await expect.element(close).toHaveAttribute('data-variant', 'tertiary');
+		await expect.element(close).toHaveAttribute('data-size', 'small');
+		await expect.element(close).toHaveAttribute('data-icon-only');
+	});
+
+	it('names the close trigger from the locale', async () => {
+		await page.render(
+			<DsModal open onOpenChange={vi.fn()}>
+				<DsModal.Header>
+					<DsModal.Title>Localized</DsModal.Title>
+					<DsModal.CloseTrigger locale={{ close: 'Dismiss dialog' }} />
+				</DsModal.Header>
+			</DsModal>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Dismiss dialog' })).toBeInTheDocument();
+	});
+
 	it('closes and reports the change when Escape is pressed', async () => {
 		const onOpenChange = vi.fn();
 		await page.render(<ModalExample onOpenChange={onOpenChange} />);
@@ -224,6 +248,15 @@ describe('DsModal full screen', () => {
 		await expect.poll(() => getModalStyle().width).not.toBe(viewportWidth());
 		expect(onFullScreenChange).toHaveBeenLastCalledWith(false);
 		expect(onFullScreenChange).toHaveBeenCalledTimes(2);
+	});
+
+	it('renders the full screen trigger as a small tertiary icon button', async () => {
+		await page.render(<FullScreenModal />);
+
+		await expect.element(fullScreenTrigger()).toHaveAttribute('data-variant', 'tertiary');
+		await expect.element(fullScreenTrigger()).toHaveAttribute('data-size', 'small');
+		await expect.element(fullScreenTrigger()).toHaveAttribute('data-icon-only');
+		await expect.element(fullScreenTrigger()).not.toHaveAttribute('data-selected');
 	});
 
 	it('starts full screen when defaultFullScreen is set', async () => {
