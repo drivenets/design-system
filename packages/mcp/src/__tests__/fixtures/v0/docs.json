@@ -1,0 +1,13 @@
+{
+	"v": 0,
+	"docs": {
+		"guidelines-z-index--docs": {
+			"id": "guidelines-z-index--docs",
+			"name": "Docs",
+			"path": "./src/stories/z-index.mdx",
+			"title": "Guidelines/Z-index",
+			"content": "import { Meta } from '@storybook/addon-docs/blocks';\n\n<Meta title=\"Guidelines/Z-index\" />\n\n# Z-index\n\nPortaled overlays stack in tiers. Each tier is a CSS custom property on `:root`, so an app can place its own\noverlays between the DS tiers, or move a tier, without reading the compiled CSS.\n\nTokens come in two layers, like the colors: value tokens hold the numbers, and tier tokens point at them. Components\nand apps read the tier tokens.\n\n| Tier token           | Value token      | Default | Tier                                    | Read by today    |\n| -------------------- | ---------------- | ------- | --------------------------------------- | ---------------- |\n| `--z-index-popover`  | `--z-index-1000` | `1000`  | Popovers anchored to page content       | `DsPopover`      |\n| `--z-index-drawer`   | `--z-index-1200` | `1200`  | Drawer panels                           | —                |\n| `--z-index-modal`    | `--z-index-1200` | `1200`  | Modal and dialog content                | —                |\n| `--z-index-dropdown` | `--z-index-9999` | `9999`  | Select, autocomplete and dropdown menus | `DsAutocomplete` |\n| `--z-index-tooltip`  | `--z-index-9999` | `9999`  | Tooltips                                | —                |\n\nOverlays are moving onto these tokens one component at a time. Until a component reads its token, overriding the\ntoken doesn't move that component.\n\n## Placing an app overlay\n\nRead the tokens instead of copying their numbers:\n\n```css\n.app-banner {\n\tz-index: calc(var(--z-index-modal) + 1);\n}\n```\n\n## Moving a tier\n\nOverride the token on `:root`:\n\n```css\n:root {\n\t--z-index-popover: 1100;\n}\n```\n",
+			"summary": "# Z-index Portaled overlays stack in tiers. Each tier is a CSS custom property on `:root`,..."
+		}
+	}
+}

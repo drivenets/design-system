@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { cachified, type CacheEntry } from '@epic-web/cachified';
 import type { StorybookContext } from '@storybook/mcp';
 
-const DEFAULT_MANIFESTS_URL = 'https://drivenets.github.io/design-system';
+export const DEFAULT_MANIFESTS_URL = 'https://drivenets.github.io/design-system';
 const DEFAULT_TTL_MS = 10 * 60 * 1000;
 
 export interface ManifestProviderOptions {
