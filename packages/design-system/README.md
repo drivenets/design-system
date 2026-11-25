@@ -49,3 +49,7 @@ export const App = () => {
   );
 };
 ```
+
+## Testing with JSDOM
+
+Components work in JSDOM-based test runners (Vitest or Jest with `jsdom`) once your test setup stubs a few browser APIs. See [Guidelines/Testing](https://drivenets.github.io/design-system/?path=/docs/guidelines-testing--docs) for the setup and known limitations.

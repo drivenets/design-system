@@ -56,6 +56,33 @@ export default defineConfig({
 			},
 			{
 				extends: true,
+				plugins: [
+					reactCompilerRolldownPlugin(), // Must be first.
+					react(),
+				],
+				test: {
+					name: 'jsdom',
+					include: [testPattern('jsdom')],
+					environment: 'jsdom',
+					setupFiles: ['./vitest/setup.jsdom.ts'],
+				},
+			},
+			{
+				extends: true,
+				plugins: [
+					reactCompilerRolldownPlugin(), // Must be first.
+					react(),
+				],
+				test: {
+					name: 'jsdom-26',
+					include: [testPattern('jsdom')],
+					environment: 'jsdom',
+					setupFiles: ['./vitest/setup.jsdom.ts'],
+					execArgv: ['--import', './vitest/jsdom-26.mjs'],
+				},
+			},
+			{
+				extends: true,
 				test: {
 					name: 'requires-build',
 					include: [testPattern('requires-build')],
@@ -172,6 +199,6 @@ export default defineConfig({
 	},
 });
 
-function testPattern(type: 'unit' | 'requires-build' | 'browser' | 'docs') {
+function testPattern(type: 'unit' | 'jsdom' | 'requires-build' | 'browser' | 'docs') {
 	return `**/*.${type}.test.{ts,tsx}`;
 }
