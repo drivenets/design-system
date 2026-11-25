@@ -432,6 +432,9 @@ importers:
       '@storybook/addon-vitest':
         specifier: ^10.6.7
         version: 10.6.7(@vitest/browser-playwright@5.1.1)(@vitest/browser@5.0.0)(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(prettier@2.8.8)(react@19.3.1))(vitest@5.1.1)
+      '@storybook/mcp':
+        specifier: 10.6.7
+        version: 10.6.7(@typescript/typescript6@6.0.2)
       '@storybook/react-vite':
         specifier: ^10.6.7
         version: 10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(@typescript/typescript6@6.0.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(prettier@2.8.8)(react@19.3.1))(supports-color@8.1.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(less@4.6.4)(sass-embedded@1.108.2)(sass@1.104.0)(stylus@0.62.0(supports-color@8.1.1))(yaml@2.9.0))
@@ -543,6 +546,9 @@ importers:
       typescript-plugin-css-modules:
         specifier: ^5.3.0
         version: 5.3.0(@typescript/typescript6@6.0.2)(supports-color@8.1.1)
+      valibot:
+        specifier: ^1.5.0
+        version: 1.5.0(@typescript/typescript6@6.0.2)
       vite:
         specifier: 8.3.8
         version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(less@4.6.4)(sass-embedded@1.108.2)(sass@1.104.0)(stylus@0.62.0(supports-color@8.1.1))(yaml@2.9.0)

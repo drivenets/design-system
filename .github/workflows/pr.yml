@@ -153,6 +153,10 @@ jobs:
       - name: Run Storybook docs snippet tests
         run: pnpm test:storybook-docs --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
 
+      # Same step as the release build, so a manifest that can't be packaged fails here first.
+      - name: Build agent docs
+        run: pnpm build:agent-docs --affected
+
       - name: Upload JUnit report
         if: ${{ !cancelled() }}
         uses: ./.github/actions/upload-junit

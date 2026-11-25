@@ -101,11 +101,18 @@ jobs:
       - name: Build packages
         run: pnpm build
 
+      # Docs for AI agents, shipped in the `@drivenets/design-system` tarball so they match the published version.
+      - name: Build agent docs
+        run: pnpm build:agent-docs
+
       - name: Upload build
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-build
-          path: packages/*/dist
+          path: |
+            packages/*/dist
+            packages/design-system/manifests
+            packages/design-system/docs
           if-no-files-found: error
           retention-days: 1
           include-hidden-files: false
@@ -134,6 +141,12 @@ jobs:
         with:
           name: release-build
           path: packages
+
+      - name: Check agent docs
+        run: |
+          test -s packages/design-system/manifests/components.json
+          test -s packages/design-system/manifests/docs.json
+          test -s packages/design-system/docs/llms.txt
 
       - name: Publish
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
