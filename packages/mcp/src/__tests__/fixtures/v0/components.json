@@ -1,0 +1,516 @@
+{
+	"v": 0,
+	"components": {
+		"components-button": {
+			"id": "components-button",
+			"name": "DsButtonNew",
+			"path": "./src/components/ds-button/versions/ds-button-new/ds-button-new.stories.tsx",
+			"jsDocTags": {},
+			"description": "Design system Button component",
+			"reactDocgen": {
+				"description": "Design system Button component",
+				"methods": [],
+				"displayName": "DsButton",
+				"actualName": "DsButton",
+				"exportName": "default",
+				"props": {
+					"buttonType": {
+						"required": false,
+						"tsType": {
+							"name": "unknown[number]",
+							"raw": "(typeof buttonTypes)[number]"
+						},
+						"description": "Type of the button\n@default 'primary'"
+					},
+					"variant": {
+						"required": false,
+						"tsType": {
+							"name": "unknown[number]",
+							"raw": "(typeof buttonVariants)[number]"
+						},
+						"description": "Visual variant of the button\n@default 'filled'",
+						"defaultValue": {
+							"value": "'filled'",
+							"computed": false
+						}
+					},
+					"size": {
+						"required": false,
+						"tsType": {
+							"name": "unknown[number]",
+							"raw": "(typeof buttonSizes)[number]"
+						},
+						"description": "Size of the button\n@default 'medium'",
+						"defaultValue": {
+							"value": "'medium'",
+							"computed": false
+						}
+					},
+					"disabled": {
+						"required": false,
+						"tsType": {
+							"name": "boolean"
+						},
+						"description": "Whether the button is disabled\n@default false",
+						"defaultValue": {
+							"value": "false",
+							"computed": false
+						}
+					},
+					"contentClassName": {
+						"required": false,
+						"tsType": {
+							"name": "string"
+						},
+						"description": "Class name for the button content"
+					}
+				}
+			},
+			"stories": [
+				{
+					"id": "components-button--default-button",
+					"name": "Default Button",
+					"snippet": "const DefaultButton = () => <DsButtonNew\n    onClick={fn()}\n    buttonType=\"primary\"\n    variant=\"filled\"\n    size=\"large\"\n    disabled={false}>(<>\n        <DsIcon icon=\"check_circle\" size=\"tiny\" aria-hidden=\"true\" />\n        {defaultButtonText}\n        <DsIcon icon=\"keyboard_arrow_down\" size=\"tiny\" aria-hidden=\"true\" />\n    </>)</DsButtonNew>;",
+					"warning": "Incomplete snippet: `defaultButtonText` could not be resolved statically."
+				},
+				{
+					"id": "components-button--with-spinner",
+					"name": "With Spinner",
+					"snippet": "const WithSpinner = () => <DsButtonNew\n    onClick={fn()}\n    buttonType=\"primary\"\n    variant=\"filled\"\n    size=\"large\"\n    disabled={false}>(<>\n        <DsSpinner />\n        {defaultButtonText}\n        <DsIcon icon=\"keyboard_arrow_down\" size=\"tiny\" aria-hidden=\"true\" />\n    </>)</DsButtonNew>;",
+					"warning": "Incomplete snippet: `defaultButtonText` could not be resolved statically."
+				},
+				{
+					"id": "components-button--showcase",
+					"name": "Showcase",
+					"snippet": "const Showcase = function Render() {\n    const defaultButtonChildren = (\n        <>\n            <DsIcon icon=\"check_circle\" size=\"tiny\" />\n            {defaultButtonText}\n            <DsIcon icon=\"keyboard_arrow_down\" size=\"tiny\" />\n        </>\n    );\n    const iconButtonChildren = <DsIcon icon=\"check_circle\" size=\"tiny\" />;\n\n    // Helper to check if a buttonType-variant combo is supported (based on SCSS class existence)\n    const supportedCombos = [\n        'primary-filled',\n        // 'primary-ghost',\n        'primary-danger',\n        'secondary-filled',\n        'secondary-ghost',\n        'secondary-danger',\n        'tertiary-filled',\n        'tertiary-ghost',\n        'tertiary-danger',\n        'tertiary-dark',\n        'primary-dark',\n        'secondary-dark',\n        'secondary-light-dark',\n    ];\n    const isSupported = (buttonType: string, variant: string) =>\n        supportedCombos.includes(`${buttonType}-${variant}`);\n\n    const rowDefs = [\n        { label: 'Primary', buttonType: 'primary', icon: false },\n        { label: 'Secondary', buttonType: 'secondary', icon: false },\n        { label: 'Secondary-Light', buttonType: 'secondary-light', icon: false, variant: 'dark' },\n        { label: 'Tertiary', buttonType: 'tertiary', icon: false },\n        { label: 'Icon Primary', buttonType: 'primary', icon: true },\n        { label: 'Icon Secondary', buttonType: 'secondary', icon: true },\n        { label: 'Icon Tertiary', buttonType: 'tertiary', icon: true },\n        { label: 'Icon Primary Dark', buttonType: 'primary', icon: true, variant: 'dark' },\n        { label: 'Icon Secondary Dark', buttonType: 'secondary', icon: true, variant: 'dark' },\n        { label: 'Icon Tertiary Dark', buttonType: 'tertiary', icon: true, variant: 'dark' },\n    ];\n\n    const variants = buttonVariants;\n    const sizes = buttonSizes;\n    const states = [false, true]; // false = default, true = disabled\n\n    return (\n        <div className={styles.showcaseContainer}>\n            <table className={styles.showcaseTable}>\n                <thead>\n                    <tr>\n                        <th className={styles.showcaseHeader}></th>\n                        {variants.map((variant) => (\n                            <th key={variant} colSpan={sizes.length * states.length} className={styles.showcaseHeader}>\n                                {variant.charAt(0).toUpperCase() + variant.slice(1)}\n                            </th>\n                        ))}\n                    </tr>\n                    <tr>\n                        <th className={styles.showcaseHeader}></th>\n                        {variants.map((variant) =>\n                            sizes.map((size) =>\n                                states.map((disabled) => (\n                                    <th\n                                        key={`${variant}-${size}-${disabled ? 'disabled' : 'default'}`}\n                                        className={styles.showcaseHeader}\n                                    >\n                                        {`${size}${disabled ? ' (disabled)' : ''}`}\n                                    </th>\n                                )),\n                            ),\n                        )}\n                    </tr>\n                </thead>\n                <tbody>\n                    {rowDefs.map((row) => (\n                        <tr key={row.label}>\n                            <td className={styles.showcaseCellBold}>{row.label}</td>\n                            {variants\n                                .map((variant) =>\n                                    sizes.map((size) =>\n                                        states.map((disabled) => {\n                                            if (!isSupported(row.buttonType, variant)) {\n                                                return (\n                                                    <td\n                                                        key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}\n                                                        className={styles.showcaseCell}\n                                                    ></td>\n                                                );\n                                            }\n                                            return (\n                                                <td\n                                                    key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}\n                                                    className={classNames(styles.showcaseCell, {\n                                                        [styles.showcaseCellDark]: variant === 'dark',\n                                                    })}\n                                                >\n                                                    <div className={styles.showcaseCellInline}>\n                                                        <DsButtonNew\n                                                            buttonType={row.buttonType as (typeof buttonTypes)[number]}\n                                                            variant={variant}\n                                                            size={size}\n                                                            disabled={disabled}\n                                                        >\n                                                            {row.icon ? iconButtonChildren : defaultButtonChildren}\n                                                        </DsButtonNew>\n                                                    </div>\n                                                </td>\n                                            );\n                                        }),\n                                    ),\n                                )\n                                .flat()}\n                        </tr>\n                    ))}\n                </tbody>\n            </table>\n        </div>\n    );\n};"
+				}
+			],
+			"import": "import { DsButtonNew, DsIcon, DsSpinner } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';\nimport { DsIcon } from '../../../ds-icon';\nimport { DsSpinner } from '../../../ds-spinner';"
+		},
+		"components-grid": {
+			"id": "components-grid",
+			"name": "DsGrid",
+			"path": "./src/components/ds-grid/ds-grid.stories.tsx",
+			"jsDocTags": {},
+			"reactDocgen": {
+				"description": "",
+				"methods": [],
+				"displayName": "DsGridBase",
+				"actualName": "DsGridBase",
+				"exportName": "DsGridBase",
+				"props": {
+					"children": {
+						"required": true,
+						"tsType": {
+							"name": "ReactNode"
+						},
+						"description": ""
+					},
+					"rows": {
+						"required": false,
+						"tsType": {
+							"name": "union",
+							"raw": "1 | 2 | 4 | 6 | 8",
+							"elements": [
+								{
+									"name": "literal",
+									"value": "1"
+								},
+								{
+									"name": "literal",
+									"value": "2"
+								},
+								{
+									"name": "literal",
+									"value": "4"
+								},
+								{
+									"name": "literal",
+									"value": "6"
+								},
+								{
+									"name": "literal",
+									"value": "8"
+								}
+							]
+						},
+						"description": "Number of rows in the grid (defaults to 1)"
+					},
+					"columns": {
+						"required": false,
+						"tsType": {
+							"name": "union",
+							"raw": "2 | 4 | 6 | 8 | 10 | 12",
+							"elements": [
+								{
+									"name": "literal",
+									"value": "2"
+								},
+								{
+									"name": "literal",
+									"value": "4"
+								},
+								{
+									"name": "literal",
+									"value": "6"
+								},
+								{
+									"name": "literal",
+									"value": "8"
+								},
+								{
+									"name": "literal",
+									"value": "10"
+								},
+								{
+									"name": "literal",
+									"value": "12"
+								}
+							]
+						},
+						"description": "Number of columns in the grid (defaults to 12)"
+					},
+					"gutter": {
+						"required": false,
+						"tsType": {
+							"name": "union",
+							"raw": "number | string",
+							"elements": [
+								{
+									"name": "number"
+								},
+								{
+									"name": "string"
+								}
+							]
+						},
+						"description": "Gap between grid cells.\nA number is treated as px. A string is used as-is (e.g. `\"1rem\"`, `\"var(--grid-gutter)\"`).\nCSS default (when omitted): `16px` — set by `$gutter` in `_grid-variables.scss`."
+					},
+					"margin": {
+						"required": false,
+						"tsType": {
+							"name": "union",
+							"raw": "number | string",
+							"elements": [
+								{
+									"name": "number"
+								},
+								{
+									"name": "string"
+								}
+							]
+						},
+						"description": "Padding around the grid container.\nA number is treated as px (uniform). A string is used as-is (e.g. `\"16px 20px\"`, `\"var(--grid-margin)\"`).\nCSS default (when omitted): `16px 20px` — set by `$margin-y $margin-x` in `_grid-variables.scss`."
+					},
+					"className": {
+						"required": false,
+						"tsType": {
+							"name": "string"
+						},
+						"description": ""
+					},
+					"style": {
+						"required": false,
+						"tsType": {
+							"name": "CSSProperties"
+						},
+						"description": ""
+					}
+				}
+			},
+			"subcomponents": {
+				"DsGridItem": {
+					"name": "DsGridItem",
+					"path": "./src/components/ds-grid/index.ts",
+					"import": "import { DsGridItem } from '@drivenets/design-system';",
+					"jsDocTags": {},
+					"reactDocgen": {
+						"description": "",
+						"methods": [],
+						"displayName": "DsGridBase",
+						"actualName": "DsGridBase",
+						"exportName": "DsGridBase",
+						"props": {
+							"children": {
+								"required": true,
+								"tsType": {
+									"name": "ReactNode"
+								},
+								"description": ""
+							},
+							"rows": {
+								"required": false,
+								"tsType": {
+									"name": "union",
+									"raw": "1 | 2 | 4 | 6 | 8",
+									"elements": [
+										{
+											"name": "literal",
+											"value": "1"
+										},
+										{
+											"name": "literal",
+											"value": "2"
+										},
+										{
+											"name": "literal",
+											"value": "4"
+										},
+										{
+											"name": "literal",
+											"value": "6"
+										},
+										{
+											"name": "literal",
+											"value": "8"
+										}
+									]
+								},
+								"description": "Number of rows in the grid (defaults to 1)"
+							},
+							"columns": {
+								"required": false,
+								"tsType": {
+									"name": "union",
+									"raw": "2 | 4 | 6 | 8 | 10 | 12",
+									"elements": [
+										{
+											"name": "literal",
+											"value": "2"
+										},
+										{
+											"name": "literal",
+											"value": "4"
+										},
+										{
+											"name": "literal",
+											"value": "6"
+										},
+										{
+											"name": "literal",
+											"value": "8"
+										},
+										{
+											"name": "literal",
+											"value": "10"
+										},
+										{
+											"name": "literal",
+											"value": "12"
+										}
+									]
+								},
+								"description": "Number of columns in the grid (defaults to 12)"
+							},
+							"gutter": {
+								"required": false,
+								"tsType": {
+									"name": "union",
+									"raw": "number | string",
+									"elements": [
+										{
+											"name": "number"
+										},
+										{
+											"name": "string"
+										}
+									]
+								},
+								"description": "Gap between grid cells.\nA number is treated as px. A string is used as-is (e.g. `\"1rem\"`, `\"var(--grid-gutter)\"`).\nCSS default (when omitted): `16px` — set by `$gutter` in `_grid-variables.scss`."
+							},
+							"margin": {
+								"required": false,
+								"tsType": {
+									"name": "union",
+									"raw": "number | string",
+									"elements": [
+										{
+											"name": "number"
+										},
+										{
+											"name": "string"
+										}
+									]
+								},
+								"description": "Padding around the grid container.\nA number is treated as px (uniform). A string is used as-is (e.g. `\"16px 20px\"`, `\"var(--grid-margin)\"`).\nCSS default (when omitted): `16px 20px` — set by `$margin-y $margin-x` in `_grid-variables.scss`."
+							},
+							"className": {
+								"required": false,
+								"tsType": {
+									"name": "string"
+								},
+								"description": ""
+							},
+							"style": {
+								"required": false,
+								"tsType": {
+									"name": "CSSProperties"
+								},
+								"description": ""
+							}
+						}
+					}
+				}
+			},
+			"stories": [
+				{
+					"id": "components-grid--default",
+					"name": "Default",
+					"snippet": "const Default = () => <DsGrid className={styles.myGrid} rows={6}>\n    <DsGridItem className={styles.card} colSpan={4}>\n        <div>Element 1</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={4} rowSpan={2}>\n        <div>Element 2</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={4} rowSpan={2}>\n        <div>Element 3</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={4} rowSpan={2}>\n        <div>Element 4</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={4} rowSpan={2} rowStart={5} colStart={2}>\n        <div>Element 5</div>\n    </DsGridItem>\n</DsGrid>;"
+				},
+				{
+					"id": "components-grid--responsive",
+					"name": "Responsive",
+					"snippet": "const Responsive = () => <DsGrid\n    className={styles.myGrid}\n    gutter={{ lg: 16, md: 8 }}\n    margin={{ lg: '16px 20px', md: 8 }}\n    rows={4}>\n    <DsGridItem className={styles.card} colSpan={{ lg: 4, md: 6 }}>\n        <div>Card 1 — lg:4 md:6</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={{ lg: 4, md: 6 }}>\n        <div>Card 2 — lg:4 md:6</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={{ lg: 4, md: 12 }}>\n        <div>Card 3 — lg:4 md:12</div>\n    </DsGridItem>\n    <DsGridItem\n        className={styles.card}\n        colSpan={{ lg: 6, md: 12 }}\n        rowSpan={{ lg: 2, md: 1 }}>\n        <div>Card 4 — lg:6×2 md:12×1</div>\n    </DsGridItem>\n    <DsGridItem className={styles.card} colSpan={{ lg: 6, md: 12 }}>\n        <div>Card 5 — lg:6 md:12</div>\n    </DsGridItem>\n</DsGrid>;"
+				},
+				{
+					"id": "components-grid--navigation-layout",
+					"name": "Navigation Layout",
+					"snippet": "const NavigationLayout = () => {\n    const [isCollapsed, setIsCollapsed] = useState(false);\n\n    return (\n        <DsStack direction=\"column\" className={styles.layout}>\n            <DsStack direction=\"row\" className={styles.header}>\n                <DsStack alignItems=\"center\" justifyContent=\"center\" className={styles.logo}>\n                    <DsButtonV3\n                        variant=\"secondary\"\n                        size=\"small\"\n                        onClick={() => setIsCollapsed(!isCollapsed)}>Toggle\n                                                </DsButtonV3>\n                </DsStack>\n                <div className={styles.title} />\n            </DsStack>\n            <DsStack direction=\"row\" className={styles.main}>\n                <div\n                    className={classNames(styles.sidebar, { [styles.collapsed]: isCollapsed })} />\n                <DsStack direction=\"column\" className={styles.contentWrapper}>\n                    <DsGrid className={styles.navigationGrid} rows={4}>\n                        <DsGridItem className={styles.card} colSpan={4}>\n                            <div>Dashboard Card 1</div>\n                        </DsGridItem>\n                        <DsGridItem className={styles.card} colSpan={4}>\n                            <div>Dashboard Card 2</div>\n                        </DsGridItem>\n                        <DsGridItem className={styles.card} colSpan={4}>\n                            <div>Dashboard Card 3</div>\n                        </DsGridItem>\n                        <DsGridItem className={styles.card} colSpan={6}>\n                            <div>Dashboard Card 4</div>\n                        </DsGridItem>\n                        <DsGridItem className={styles.card} colSpan={6}>\n                            <div>Dashboard Card 5</div>\n                        </DsGridItem>\n                    </DsGrid>\n                </DsStack>\n            </DsStack>\n        </DsStack>\n    );\n};"
+				}
+			],
+			"import": "import { DsButtonV3, DsGrid, DsGridItem, DsStack } from '@drivenets/design-system';\nimport styles from './ds-grid.stories.module.scss';"
+		},
+		"components-card": {
+			"id": "components-card",
+			"name": "DsCard.Root",
+			"path": "./src/components/ds-card/ds-card.stories.tsx",
+			"jsDocTags": {},
+			"error": {
+				"name": "No component definition found",
+				"message": "File: ./src/components/ds-card/index.ts\nError:\nNo suitable component definition found."
+			},
+			"stories": [
+				{
+					"id": "components-card--default",
+					"name": "Default",
+					"snippet": "const Default = () => <DsCard.Root size=\"medium\">\n    <DsCard.Header>Card Title</DsCard.Header>\n    <DsCard.Body>Card content goes here</DsCard.Body>\n</DsCard.Root>;",
+					"description": "Default card is a static display container with no interactions."
+				},
+				{
+					"id": "components-card--small",
+					"name": "Small",
+					"snippet": "const Small = () => <DsCard.Root size=\"small\">\n    <DsCard.Header>Small Card</DsCard.Header>\n    <DsCard.Body>Compact content area</DsCard.Body>\n</DsCard.Root>;",
+					"description": "Small width (224px). Use for compact lists or side panels."
+				},
+				{
+					"id": "components-card--large",
+					"name": "Large",
+					"snippet": "const Large = () => <DsCard.Root size=\"large\">\n    <DsCard.Header>Large Card</DsCard.Header>\n    <DsCard.Body>Room for richer content and multiple sections</DsCard.Body>\n</DsCard.Root>;",
+					"description": "Large width (368px). Use for detail panels and metric-heavy layouts."
+				},
+				{
+					"id": "components-card--with-header-and-footer",
+					"name": "With Header And Footer",
+					"snippet": "const WithHeaderAndFooter = () => <DsCard.Root size=\"large\">\n    <DsCard.Header className={styles.headerRow}>\n        <DsTypography variant=\"heading3\">Card Title</DsTypography>\n        <DsStatusBadge icon=\"check_circle\" status=\"active\" ghost />\n    </DsCard.Header>\n    <DsCard.Body>\n        <DsStack direction=\"column\" gap=\"var(--3xs)\">\n            <DsTypography variant=\"body-md-bold\">12 of 12 Devices</DsTypography>\n            <DsTypography variant=\"body-sm-reg\">Success 10 | Failed 1 | Skipped 1</DsTypography>\n        </DsStack>\n    </DsCard.Body>\n    <DsCard.Footer className={styles.footer}>\n        <DsTypography variant=\"body-sm-reg\">Last updated: 2 min ago</DsTypography>\n    </DsCard.Footer>\n</DsCard.Root>;",
+					"description": "Compose header, body, and footer slots for structured card layouts.\n`styles.*` classes are story-only layout helpers — not part of the DsCard API."
+				},
+				{
+					"id": "components-card--step-card",
+					"name": "Step Card",
+					"snippet": "const StepCard = () => <DsCard.Root size=\"large\">\n    <DsCard.Header className={styles.headerRow}>\n        <DsTypography variant=\"heading3\">Canary</DsTypography>\n        <DsStatusBadge icon=\"check_circle\" status=\"active\" label=\"Complete\" />\n    </DsCard.Header>\n    <DsCard.Body>\n        <DsStack direction=\"column\" gap=\"var(--3xs)\">\n            <DsTypography variant=\"body-md-bold\">12 of 12 Devices</DsTypography>\n            <DsTypography variant=\"body-sm-reg\" color=\"secondary\">Success 10 | Failed 1 | Skipped 1\n                                    </DsTypography>\n        </DsStack>\n    </DsCard.Body>\n    <DsCard.Body className={styles.dataList}>\n        <DsTypography variant=\"body-sm-reg\">Config Push</DsTypography>\n        <DsTypography variant=\"body-sm-reg\" color=\"success\">Complete\n                            </DsTypography>\n        <DsTypography variant=\"body-sm-reg\">Dwell Time (60 min.)</DsTypography>\n        <DsTypography variant=\"body-sm-reg\" color=\"success\">Complete\n                            </DsTypography>\n        <DsTypography variant=\"body-sm-reg\">Failed</DsTypography>\n        <DsTypography variant=\"body-sm-reg\" color=\"secondary\">1 (8%)\n                            </DsTypography>\n        <DsTypography variant=\"body-sm-reg\">Failure threshold</DsTypography>\n        <DsTypography variant=\"body-sm-reg\" color=\"secondary\">5 or 10%\n                            </DsTypography>\n        <DsTypography variant=\"body-sm-reg\">Threshold state</DsTypography>\n        <DsTypography variant=\"body-sm-reg\" color=\"secondary\">Normal\n                            </DsTypography>\n    </DsCard.Body>\n</DsCard.Root>;",
+					"description": "A realistic step card showing deployment status with detailed metrics.\n`styles.*` classes are story-only layout helpers — not part of the DsCard API."
+				},
+				{
+					"id": "components-card--selectable",
+					"name": "Selectable",
+					"snippet": "const Selectable = () => <DsCard.Root selectable selected={false}>\n    <DsCard.Header>Selectable Card</DsCard.Header>\n    <DsCard.Body>Click to select this card</DsCard.Body>\n</DsCard.Root>;",
+					"description": "Selectable cards act as buttons. Pair `selectable` with a controlled `selected` prop\nand wire `onClick` to update selection — see Selectable Controlled."
+				},
+				{
+					"id": "components-card--highlight-selected",
+					"name": "Highlight Selected",
+					"snippet": "const HighlightSelected = () => <DsCard.Root selectable selected highlightSelected>\n    <DsCard.Header>Highlighted Card</DsCard.Header>\n    <DsCard.Body>This card has a highlighted background when selected</DsCard.Body>\n</DsCard.Root>;",
+					"description": "When `highlightSelected` is true, selected cards display a highlighted background color."
+				},
+				{
+					"id": "components-card--selectable-controlled",
+					"name": "Selectable Controlled",
+					"snippet": "const SelectableControlled = () => {\n    const [selected, setSelected] = useState(false);\n\n    return (\n        <DsCard.Root selectable selected={selected} onClick={() => setSelected(!selected)}>\n            <DsCard.Header>Controlled Card</DsCard.Header>\n            <DsCard.Body>{selected ? 'Selected! Click to deselect.' : 'Click to select.'}</DsCard.Body>\n        </DsCard.Root>\n    );\n};",
+					"description": "Wire `selected` and `onClick` to local state for a controlled selectable card.\nMCP snippet shows the evaluated render body — use that pattern in product code."
+				},
+				{
+					"id": "components-card--disabled",
+					"name": "Disabled",
+					"snippet": "const Disabled = () => <DsCard.Root selectable selected={false} disabled>\n    <DsCard.Header>Unavailable step</DsCard.Header>\n    <DsCard.Body>Cannot select this card.</DsCard.Body>\n</DsCard.Root>;",
+					"description": "Disabled cards cannot be interacted with and are visually dimmed."
+				},
+				{
+					"id": "components-card--collapsible",
+					"name": "Collapsible",
+					"snippet": "const Collapsible = () => {\n    const [expanded, setExpanded] = useState(true);\n\n    return (\n        <DsCard.Root size=\"large\" className={styles.collapseRoot}>\n            <DsCard.Header className={styles.collapseHeader}>\n                <button\n                    type=\"button\"\n                    className={styles.collapsibleButton}\n                    onClick={() => setExpanded(!expanded)}\n                    aria-expanded={expanded}>\n                    <DsIcon\n                        icon=\"expand_more\"\n                        className={styles.collapsibleIcon}\n                        data-expanded={expanded} />\n                </button>\n                <DsTypography variant=\"heading3\">Collapsible Card</DsTypography>\n            </DsCard.Header>\n            <DsCard.Body className={styles.collapsibleContent} data-collapsed={!expanded}>\n                <div className={styles.collapsibleContentInner}>\n                    <DsTypography variant=\"body-md-reg\">This content can be collapsed by clicking the header. The height animates smoothly using CSS\n                                                    Grid.\n                                                </DsTypography>\n                </div>\n            </DsCard.Body>\n        </DsCard.Root>\n    );\n};",
+					"description": "Collapsible card pattern using composition. Click the header to toggle body visibility.\nThis is not built-in functionality — use local state to implement.\n`styles.*` classes are story-only layout helpers — not part of the DsCard API."
+				}
+			],
+			"import": "import { DsCard, DsIcon, DsStack, DsStatusBadge, DsTypography } from '@drivenets/design-system';"
+		},
+		"components-spinner": {
+			"id": "components-spinner",
+			"name": "DsSpinner",
+			"path": "./src/components/ds-spinner/ds-spinner.stories.tsx",
+			"jsDocTags": {},
+			"description": "Design system Spinner component",
+			"reactDocgen": {
+				"description": "Design system Spinner component",
+				"methods": [],
+				"displayName": "DsSpinner",
+				"actualName": "DsSpinner",
+				"exportName": "default",
+				"props": {
+					"size": {
+						"required": false,
+						"tsType": {
+							"name": "unknown[number]",
+							"raw": "(typeof spinnerSizes)[number]"
+						},
+						"description": "The size of the spinner\n@default 'medium'",
+						"defaultValue": {
+							"value": "'medium'",
+							"computed": false
+						}
+					},
+					"className": {
+						"required": false,
+						"tsType": {
+							"name": "string"
+						},
+						"description": "Additional CSS class names"
+					},
+					"style": {
+						"required": false,
+						"tsType": {
+							"name": "ReactCSSProperties",
+							"raw": "React.CSSProperties"
+						},
+						"description": "Additional styles to apply to the component",
+						"defaultValue": {
+							"value": "{}",
+							"computed": false
+						}
+					}
+				}
+			},
+			"stories": [
+				{
+					"id": "components-spinner--default",
+					"name": "Default",
+					"snippet": "const Default = () => <DsSpinner size=\"medium\" />;",
+					"description": "Default medium spinner for general-purpose loading states."
+				},
+				{
+					"id": "components-spinner--small",
+					"name": "Small",
+					"snippet": "const Small = () => <DsSpinner size=\"small\" />;",
+					"description": "Compact spinner for dense layouts, inline placement, or small containers."
+				},
+				{
+					"id": "components-spinner--large",
+					"name": "Large",
+					"snippet": "const Large = () => <DsSpinner size=\"large\" />;",
+					"description": "Prominent spinner for full-page or large-surface loading states."
+				}
+			],
+			"import": "import { DsSpinner, DsStack, DsTypography } from '@drivenets/design-system';"
+		}
+	}
+}

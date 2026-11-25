@@ -46,6 +46,21 @@ args = ["-y", "@drivenets/design-system-mcp"]
 
 ## Manifest source
 
-Manifests are fetched from `https://drivenets.github.io/design-system/manifests/*.json` (the published DS Storybook on GitHub Pages — always latest). They're cached in-memory for the lifetime of the process; concurrent requests for the same manifest share a single in-flight promise; rejected requests are evicted so the next call retries.
+The server serves the docs of the `@drivenets/design-system` version your project has installed. At startup it looks for `node_modules/@drivenets/design-system/manifests/` in the project directory and each parent directory, so hoisted and pnpm installs both work.
 
-If the network is unreachable, tool calls return an error.
+If the installed version has no manifests (0.28.x and older) or the package isn't found, it falls back to `https://drivenets.github.io/design-system/manifests/*.json`, the Storybook on GitHub Pages built from unreleased `main`. That may document components or props your version doesn't have.
+
+The server appends a "Docs Source" note to its instructions saying which of the two the agent gets, and logs the source to stderr.
+
+Manifests are cached in memory for 10 minutes. After that, calls get the cached copy while a refresh runs in the background, and a failed refresh keeps the last good copy. If the first load fails (for example, Pages is unreachable), tool calls return an error.
+
+## Options
+
+| Flag                     | Default               | Description                                                                                                                                                         |
+| ------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--project-dir <path>`   | the working directory | Where to look for the installed design system. Set it when your client doesn't start the server in the project, or the design system is installed in a sub-package. |
+| `--manifests-dir <path>` |                       | Read `components.json` and `docs.json` from this directory only.                                                                                                    |
+| `--manifests-url <url>`  |                       | Fetch `<url>/manifests/*.json` instead, e.g. `http://localhost:6006` for a local Storybook.                                                                         |
+| `--ttl-ms <ms>`          | `600000`              | How long a loaded manifest stays fresh before a background refresh.                                                                                                 |
+
+`--manifests-dir` and `--manifests-url` take precedence over the installed design system. To always use the hosted docs, pass `--manifests-url https://drivenets.github.io/design-system`.

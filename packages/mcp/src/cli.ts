@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util';
 import { createServer } from './server.js';
+import { DEFAULT_MANIFESTS_URL } from './manifest-provider.js';
+import { resolveManifestsSource } from './manifests-source.js';
+import serverInstructions from './instructions.md';
 import pkgJson from '../package.json' with { type: 'json' };
 
 let values: Record<string, string | boolean | undefined>;
@@ -10,6 +13,7 @@ try {
 		options: {
 			'manifests-url': { type: 'string' },
 			'manifests-dir': { type: 'string' },
+			'project-dir': { type: 'string' },
 			'ttl-ms': { type: 'string' },
 		},
 		strict: true,
@@ -30,12 +34,22 @@ if (typeof rawTtl === 'string' && rawTtl !== '') {
 	ttlMs = n === 0 ? undefined : n;
 }
 
+const source = resolveManifestsSource({
+	manifestsUrl: values['manifests-url'] as string | undefined,
+	manifestsDir: values['manifests-dir'] as string | undefined,
+	projectDir: (values['project-dir'] as string | undefined) ?? process.cwd(),
+});
+
+process.stderr.write(
+	`design-system-mcp: reading docs from ${source.manifestsDir ?? source.manifestsUrl ?? DEFAULT_MANIFESTS_URL}\n`,
+);
+
 const server = await createServer({
 	name: pkgJson.name,
 	version: pkgJson.version,
 	description: pkgJson.description,
-	manifestsUrl: values['manifests-url'] as string | undefined,
-	manifestsDir: values['manifests-dir'] as string | undefined,
+	instructions: serverInstructions,
+	...source,
 	ttlMs,
 });
 
