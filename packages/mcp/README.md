@@ -38,14 +38,22 @@ args = ["-y", "@drivenets/design-system-mcp"]
 
 ## Tools exposed
 
-| Tool (MCP name)               | Description                                            |
-| ----------------------------- | ------------------------------------------------------ |
-| `list-all-documentation`      | List every component and docs entry with IDs           |
-| `get-documentation`           | Full props, stories, and code snippets for a component |
-| `get-documentation-for-story` | Docs for a specific story variant                      |
+| Tool (MCP name)   | Description                                            |
+| ----------------- | ------------------------------------------------------ |
+| `docs-list`       | List every component and docs entry with IDs           |
+| `docs-show`       | Full props, stories, and code snippets for a component |
+| `docs-show-story` | Docs for a specific story variant                      |
 
 ## Manifest source
 
-Manifests are fetched from `https://drivenets.github.io/design-system/manifests/*.json` (the published DS Storybook on GitHub Pages — always latest). They're cached in-memory for the lifetime of the process; concurrent requests for the same manifest share a single in-flight promise; rejected requests are evicted so the next call retries.
+Manifests are fetched from `https://drivenets.github.io/design-system/manifests/*.json` (the published DS Storybook on GitHub Pages, built from `main`). They're cached in memory for 10 minutes. After that, calls get the cached copy while a refresh runs in the background, and a failed refresh keeps the last good copy.
 
-If the network is unreachable, tool calls return an error.
+If the first fetch fails (for example, the network is unreachable), tool calls return an error.
+
+## Options
+
+| Flag                     | Description                                                   |
+| ------------------------ | ------------------------------------------------------------- |
+| `--manifests-dir <path>` | Read `components.json` and `docs.json` from a local directory |
+| `--manifests-url <url>`  | Fetch from `<url>/manifests/*.json` instead of GitHub Pages   |
+| `--ttl-ms <ms>`          | How long a cached manifest stays fresh (default: 10 minutes)  |

@@ -52,19 +52,19 @@
 │    │                                                                │
 │    │  McpServer (tmcp) + ValibotJsonSchemaAdapter                   │
 │    │  registers:                                                    │
-│    │    list-all-documentation                                      │
-│    │    get-documentation                                           │
-│    │    get-documentation-for-story                                 │
+│    │    docs-list                                                   │
+│    │    docs-show                                                   │
+│    │    docs-show-story                                             │
 │    │                                                                │
 │    ▼                                                                │
 │  StdioTransport(server).listen({ manifestProvider })                │
 │    │                                                                │
 │    │  per-request manifestProvider(request, path, source):          │
-│    │    cache hit (within TTL)? → return shared in-flight Promise   │
-│    │    miss:                                                       │
+│    │    cached? → return it; if past TTL, refresh in background     │
+│    │    miss (first load, concurrent loads share one Promise):      │
 │    │      - manifestsDir set?  → readFile(manifestsDir/<file>)      │
 │    │      - otherwise          → fetch(<baseUrl>/manifests/<file>)  │
-│    │      on rejection → evict so next call retries                 │
+│    │      failed refresh → keep serving the last good value         │
 │    │                                                                │
 │    ▼                                                                │
 │  process.stdin / process.stdout  (JSON-RPC line-delimited)          │
@@ -86,12 +86,12 @@
 
 ## File map
 
-| File                       | Responsibility                                                                                                                                  |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/cli.ts`               | Entrypoint. Parses flags / env, builds options, calls `createServer().start()`.                                                                 |
-| `src/server.ts`            | Reusable `createServer()`. Builds the `McpServer`, registers the three Storybook tools, wires `StdioTransport`.                                 |
-| `src/manifest-provider.ts` | Fetch remote (default) or read local dir (`--manifests-dir`); in-memory cache with optional TTL; dedupes concurrent loads; evicts on rejection. |
-| `tsdown.config.ts`         | Builds ESM `dist/cli.js` + `dist/server.js` with type declarations.                                                                             |
+| File                       | Responsibility                                                                                                                               |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/cli.ts`               | Entrypoint. Parses flags / env, builds options, calls `createServer().start()`.                                                              |
+| `src/server.ts`            | Reusable `createServer()`. Builds the `McpServer`, registers the three Storybook tools, wires `StdioTransport`.                              |
+| `src/manifest-provider.ts` | Fetch remote (default) or read local dir (`--manifests-dir`); stale-while-revalidate in-memory cache (10 min TTL); dedupes concurrent loads. |
+| `tsdown.config.ts`         | Bundles `src/cli.ts` (with `server.ts`) into ESM `dist/cli.js` + `dist/cli.d.ts`.                                                            |
 
 There is intentionally no manifest snapshot baked into the npm tarball. The published gh-pages URL is the single source of truth and is updated by `deploy-storybook.yml` on every push to `main`, so the published MCP server is always one fetch away from the latest manifests.
 
@@ -151,7 +151,7 @@ Developer pushes to main
   → end users running `npx @drivenets/design-system-mcp` fetch from that URL on demand
 ```
 
-The `release.yml` pipeline that publishes this package to npm is fully independent of the storybook deploy. The npm tarball contains only `dist/{cli,server}.js` and their `.d.ts` files; it never embeds a frozen copy of the manifests. Consumers always see the latest manifests from gh-pages.
+The `release.yml` pipeline that publishes this package to npm is fully independent of the storybook deploy. The npm tarball contains `dist/cli.js`, its `.d.ts` and `src/`; it never embeds a frozen copy of the manifests. Consumers always see the latest manifests from gh-pages.
 
 If gh-pages is unreachable and the consumer didn't set `--manifests-dir`, tool calls return an error.
 
@@ -169,7 +169,6 @@ If gh-pages is unreachable and the consumer didn't set `--manifests-dir`, tool c
 
 ```
 @storybook/addon-mcp    (addon — preset that enables manifests + dev /mcp route)
-  └─ @storybook/mcp     (protocol handler — exposes addList/addGet/addGetStoryDocumentationTool)
 
 packages/mcp
   ├─ @storybook/mcp       (registers three Storybook tools on a tmcp server)
@@ -182,7 +181,8 @@ Note: `@storybook/addon-mcp` is a dependency of the **Storybook project**
 (`packages/design-system`), not of this MCP server. This server only depends on
 `@storybook/mcp` and the `tmcp` stack.
 
-Tools are exposed to clients as `list-all-documentation`,
-`get-documentation`, and `get-documentation-for-story` (the `storybook_` group
-prefix used by `createStorybookMcpHandler` is intentionally not applied here —
-this server only exposes Storybook tools, so no namespacing is needed).
+Tools are exposed to clients as `docs-list`, `docs-show`, and `docs-show-story`
+(the names `@storybook/mcp` exports as `LIST_TOOL_NAME`, `GET_TOOL_NAME` and
+`GET_STORY_TOOL_NAME`). `src/__tests__/instructions.test.ts` fails if
+`src/instructions.md` names any other tool, so a rename upstream is caught on
+the dependency bump.
