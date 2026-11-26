@@ -1,10 +1,12 @@
 @use '../../styles/grid-variables' as grid-vars;
 
+$backdrop-offset-below-drawer: 200;
+
 .backdrop {
 	position: absolute;
 	inset: 0;
 	background: var(--Background-background-overlay, rgba(0, 26, 71, 0.2));
-	z-index: 1000;
+	z-index: calc(var(--z-index-drawer, 1200) - $backdrop-offset-below-drawer);
 
 	&[data-state='open'] {
 		animation: 0.3s fade-in-backdrop ease-in-out both;
@@ -49,7 +51,7 @@
 	bottom: 0;
 	background: var(--background);
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
-	z-index: 1200;
+	z-index: var(--z-index-drawer, 1200);
 	pointer-events: auto;
 	overflow: hidden;
 	transition:

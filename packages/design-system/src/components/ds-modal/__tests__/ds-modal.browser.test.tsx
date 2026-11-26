@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsModal from '../ds-modal';
 import type { DsModalProps } from '../ds-modal.types';
 import styles from '../ds-modal.module.scss';
+import { findElement, readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 const ModalExample = ({ onOpenChange }: { onOpenChange?: (open: boolean) => void } = {}) => {
 	const [open, setOpen] = useState(false);
@@ -330,5 +331,39 @@ describe('DsModal full screen', () => {
 		await rerender(<FullScreenModal columns={3} />);
 		await fullScreenTrigger().click();
 		await expect.poll(() => getModalStyle().width).toBe(columnsWidth);
+	});
+});
+
+describe('DsModal stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const renderOpenModal = async () => {
+		await page.render(
+			<DsModal open onOpenChange={() => {}}>
+				<DsModal.Body>Modal body</DsModal.Body>
+			</DsModal>,
+		);
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+
+		return {
+			content: page.getByRole('dialog').element(),
+			backdrop: await findElement('[data-scope="dialog"][data-part="backdrop"]'),
+		};
+	};
+
+	it('stacks the content at 1200 and the backdrop just below it by default', async () => {
+		const { content, backdrop } = await renderOpenModal();
+
+		expect(readZIndex(content)).toBe(1200);
+		expect(readZIndex(backdrop)).toBe(1199);
+	});
+
+	it('moves the content and backdrop with --z-index-modal', async () => {
+		setZIndexTier('modal', 1500);
+
+		const { content, backdrop } = await renderOpenModal();
+
+		expect(readZIndex(content)).toBe(1500);
+		expect(readZIndex(backdrop)).toBe(1499);
 	});
 });

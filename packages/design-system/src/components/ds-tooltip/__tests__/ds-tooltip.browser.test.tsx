@@ -1,8 +1,9 @@
 import { createRef } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTooltip from '../ds-tooltip';
 import { DsPopover } from '../../ds-popover';
+import { readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 describe('DsTooltip', () => {
 	it('should show tooltip on hover', async () => {
@@ -317,5 +318,30 @@ describe('DsTooltip disabled', () => {
 			.element(page.getByRole('tooltip', { name: 'First' }), { timeout: 0 })
 			.not.toBeInTheDocument();
 		await expect.element(page.getByRole('tooltip', { name: 'First' })).toBeVisible();
+	});
+});
+
+describe('DsTooltip stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const renderOpenTooltip = async () => {
+		await page.render(
+			<DsTooltip content="Tooltip text" defaultOpen>
+				<button type="button">Trigger</button>
+			</DsTooltip>,
+		);
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
+
+		return page.getByRole('tooltip').element();
+	};
+
+	it('stacks at 9999 by default', async () => {
+		expect(readZIndex(await renderOpenTooltip())).toBe(9999);
+	});
+
+	it('moves with --z-index-tooltip', async () => {
+		setZIndexTier('tooltip', 5000);
+
+		expect(readZIndex(await renderOpenTooltip())).toBe(5000);
 	});
 });

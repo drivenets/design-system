@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDatePicker from '../ds-date-picker';
 import { modalContainers } from '../../../../vitest/modal-containers';
+import { findElement, readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 describe('DsDatePicker', () => {
 	beforeEach(() => {
@@ -235,5 +236,39 @@ describe.each(modalContainers)('DsDatePicker inside $container', ({ Container })
 
 		await expect.element(page.getByRole('grid')).toBeVisible();
 		await expect.element(page.getByRole('button', { name: /Choose.*January 20, 2026/i })).toBeVisible();
+	});
+});
+
+describe('DsDatePicker stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const openCalendarAndTimePicker = async () => {
+		await page.render(<DsDatePicker defaultValue={new Date('2024-12-25T14:30:00')} withTime />);
+
+		await page.getByRole('button', { name: /open calendar/i }).click();
+		const calendar = await findElement('[data-scope="date-picker"][data-part="content"]');
+		await expect.element(page.elementLocator(calendar)).toBeVisible();
+
+		await page.getByRole('button', { name: /open time picker/i }).click();
+		const timePicker = await findElement('[data-scope="popover"][data-part="content"]');
+		await expect.element(page.elementLocator(timePicker)).toBeVisible();
+
+		return { calendar, timePicker };
+	};
+
+	it('stacks the calendar at 9999 and its time picker just above it by default', async () => {
+		const { calendar, timePicker } = await openCalendarAndTimePicker();
+
+		expect(readZIndex(calendar)).toBe(9999);
+		expect(readZIndex(timePicker)).toBe(10000);
+	});
+
+	it('moves the calendar and time picker with --z-index-dropdown', async () => {
+		setZIndexTier('dropdown', 5000);
+
+		const { calendar, timePicker } = await openCalendarAndTimePicker();
+
+		expect(readZIndex(calendar)).toBe(5000);
+		expect(readZIndex(timePicker)).toBe(5001);
 	});
 });

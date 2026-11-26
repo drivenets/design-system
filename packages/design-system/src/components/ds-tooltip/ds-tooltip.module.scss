@@ -16,7 +16,7 @@
 	border-radius: var(--3xs);
 	max-width: 384px;
 	overflow-wrap: break-word;
-	z-index: 9999;
+	z-index: var(--z-index-tooltip, 9999);
 }
 
 .text {

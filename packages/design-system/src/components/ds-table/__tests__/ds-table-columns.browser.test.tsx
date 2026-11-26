@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsModal } from '../../ds-modal';
@@ -8,6 +8,7 @@ import DsTable from '../ds-table';
 import type { DsDataTableProps } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { COLUMN_DISPLAY_COLUMN_ID, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
+import { readZIndex, resetZIndexTiers, setZIndexTier } from '../../../../vitest/z-index-tiers';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
@@ -913,5 +914,28 @@ describe('DsTable - Columns', () => {
 				await expect.element(columnsDialog().getByRole('status')).toHaveTextContent('Nothing found');
 			});
 		});
+	});
+});
+
+describe('DsTable - Columns stacking', () => {
+	afterEach(resetZIndexTiers);
+
+	const openColumnDisplay = async () => {
+		await page.render(<DsTable columns={columns} data={defaultData} columnDisplay />);
+
+		await page.getByRole('button', { name: 'Columns' }).click();
+		await expect.element(page.getByRole('dialog', { name: 'Columns' })).toBeVisible();
+
+		return page.getByRole('dialog', { name: 'Columns' }).element();
+	};
+
+	it('stacks the column display at 9999 by default', async () => {
+		expect(readZIndex(await openColumnDisplay())).toBe(9999);
+	});
+
+	it('moves the column display with --z-index-dropdown', async () => {
+		setZIndexTier('dropdown', 5000);
+
+		expect(readZIndex(await openColumnDisplay())).toBe(5000);
 	});
 });
