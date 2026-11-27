@@ -518,13 +518,21 @@ const newEnumCondition = (
 	field: string,
 	operator: DsFilterOperatorValue,
 	value: ReadonlyArray<string>,
-): DsFilterCondition => ({
-	kind: 'field',
-	id: expect.any(String) as string,
-	field,
-	operator,
-	value,
-});
+): DsFilterCondition => {
+	const schema = DIALOG_FIELDS.find((item) => item.id === field);
+	const options = schema?.type === 'enum' ? (schema.options ?? []) : [];
+
+	return {
+		kind: 'field',
+		id: expect.any(String) as string,
+		field,
+		operator,
+		value,
+		options: value.map(
+			(item) => options.find((option) => option.value === item) ?? { value: item, label: item },
+		),
+	};
+};
 
 const ConditionsBar = (props: DsFiltersBarProps) => (
 	<DsFiltersBar defaultExpanded fields={DIALOG_FIELDS} {...props} />

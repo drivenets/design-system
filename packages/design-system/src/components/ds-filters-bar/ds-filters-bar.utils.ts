@@ -109,19 +109,48 @@ export interface DsFilterConditionDescription {
 
 const RANGE_SEPARATOR = ' – ';
 
+/**
+ * Where a selected option's label comes from: the condition's snapshot for a field that loads its
+ * options, the field's own options otherwise, so renaming a static option renames its chips
+ */
+export const preferredOptions = (
+	field: Extract<DsFilterResolvedScalarField, { type: 'enum' }>,
+	snapshot: ReadonlyArray<DsFilterOption>,
+): ReadonlyArray<DsFilterOption> =>
+	field.loadOptions ? [...snapshot, ...field.options] : [...field.options, ...snapshot];
+
+/**
+ * The document a field's `loadOptions` gets: `document` without the conditions on that field, so
+ * every view passes the same draft whatever the field itself holds
+ */
+export const draftForField = (
+	document: DsFilterDocument,
+	field: string,
+	subfield: string | undefined,
+): DsFilterDocument => ({
+	...document,
+	conditions: document.conditions.filter(
+		(condition) => condition.kind !== 'field' || condition.field !== field || condition.subfield !== subfield,
+	),
+});
+
 const labelFor = (options: ReadonlyArray<DsFilterOption>, value: string) =>
 	options.find((option) => option.value === value)?.label ?? value;
 
 export const isRange = (value: DsFilterValue): value is DsFilterRange<number> | DsFilterRange<string> =>
 	typeof value === 'object' && 'from' in value;
 
-const formatValue = (value: DsFilterValue, field: DsFilterResolvedScalarField | undefined): string => {
+const formatValue = (
+	value: DsFilterValue,
+	field: DsFilterResolvedScalarField | undefined,
+	snapshot: ReadonlyArray<DsFilterOption> = [],
+): string => {
 	if (isRange(value)) {
 		return [value.from ?? '', value.to ?? ''].map(String).join(RANGE_SEPARATOR).trim();
 	}
 
 	if (typeof value === 'object') {
-		const options = field?.type === 'enum' ? field.options : [];
+		const options = field?.type === 'enum' ? preferredOptions(field, snapshot) : snapshot;
 
 		return value.map((item) => labelFor(options, item)).join(', ');
 	}
@@ -161,7 +190,7 @@ export const describeCondition = (
 		fieldPath,
 		operator: operator?.label ?? condition.operator,
 		operatorSymbol: operator?.symbol ?? condition.operator,
-		value: formatValue(condition.value, scalarField),
+		value: formatValue(condition.value, scalarField, condition.options),
 	};
 };
 
@@ -277,7 +306,7 @@ const scalarTab = (
 	schema: DsFilterResolvedScalarField,
 	parent?: DsFilterResolvedField,
 ): DsFiltersBarFiltersDialogTab | null => {
-	if (schema.type === 'enum' && !schema.options.length) {
+	if (schema.type === 'enum' && !schema.options.length && !schema.loadOptions) {
 		return null;
 	}
 
@@ -296,7 +325,7 @@ const scalarTab = (
 
 /**
  * One tab per top-level scalar field and per compound subfield, in `fields` order. Enum fields
- * without options are skipped.
+ * with neither options nor `loadOptions` are skipped.
  */
 export const filtersDialogTabs = (
 	fields: ReadonlyArray<DsFilterResolvedField>,
@@ -311,7 +340,8 @@ export const filtersDialogTabs = (
 /**
  * Top-level enum tabs: the only ones whose options can be pinned, since a pin names no subfield
  */
-const canPinOptions = (tab: DsFiltersBarFiltersDialogTab) => tab.schema.type === 'enum' && !tab.subfield;
+export const canPinOptions = (tab: DsFiltersBarFiltersDialogTab) =>
+	tab.schema.type === 'enum' && !tab.subfield && !tab.schema.loadOptions;
 
 const isEntryOf = (entry: DsFiltersBarFiltersDialogEntry, tab: DsFiltersBarFiltersDialogTab) =>
 	entry.field === tab.field && entry.subfield === tab.subfield && entry.type === tab.schema.type;
@@ -447,6 +477,7 @@ const seedEntry = (
 					...empty,
 					operator: first.operator as DsFilterEnumOperator,
 					selected: first.value as ReadonlyArray<string>,
+					...(first.options && { selectedOptions: first.options }),
 					pinned,
 				}
 			: { ...empty, pinned };
@@ -563,7 +594,24 @@ const isSameValue = (a: DsFilterValue, b: DsFilterValue): boolean => {
 const isSameSaved = (a: SavedCondition | null, b: SavedCondition | null) =>
 	a === null || b === null ? a === b : a.operator === b.operator && isSameValue(a.value, b.value);
 
+/**
+ * The checked options of an enum entry, in value order, labeled as `preferredOptions` says, else
+ * named by their value
+ */
+const selectedOptionsOf = (
+	entry: DsFiltersBarFiltersDialogEnumEntry,
+	tab: DsFiltersBarFiltersDialogTab,
+): ReadonlyArray<DsFilterOption> => {
+	const schema = schemaOf(tab);
+	const known = schema.type === 'enum' ? preferredOptions(schema, entry.selectedOptions ?? []) : [];
+
+	return entry.selected.map(
+		(value) => known.find((option) => option.value === value) ?? { value, label: value },
+	);
+};
+
 const toCondition = (
+	tab: DsFiltersBarFiltersDialogTab,
 	entry: DsFiltersBarFiltersDialogEntry,
 	saved: Pick<DsFilterFieldCondition, 'operator' | 'value'>,
 	id: string,
@@ -573,6 +621,7 @@ const toCondition = (
 	field: entry.field,
 	...(entry.subfield ? { subfield: entry.subfield } : {}),
 	...saved,
+	...(entry.type === 'enum' && { options: selectedOptionsOf(entry, tab) }),
 });
 
 /**
@@ -603,7 +652,7 @@ export const fromFiltersDialogValue = (
 			const entry = entries.find((item) => isEntryOf(item, tab));
 			const saved = entry && entryCondition(entry);
 
-			return entry && saved ? [[tab.id, { entry, saved }] as const] : [];
+			return entry && saved ? [[tab.id, { tab, entry, saved }] as const] : [];
 		}),
 	);
 	const placed = new Set<string>();
@@ -623,12 +672,12 @@ export const fromFiltersDialogValue = (
 
 		placed.add(tab.id);
 
-		return [toCondition(commit.entry, commit.saved, condition.id)];
+		return [toCondition(commit.tab, commit.entry, commit.saved, condition.id)];
 	});
 
 	const added = [...committed.entries()]
 		.filter(([tabId]) => changedTabs.has(tabId) && !placed.has(tabId))
-		.map(([, commit]) => toCondition(commit.entry, commit.saved, createConditionId()));
+		.map(([, commit]) => toCondition(commit.tab, commit.entry, commit.saved, createConditionId()));
 
 	const pinEntries = entries.filter(
 		(entry): entry is DsFiltersBarFiltersDialogEnumEntry => entry.type === 'enum' && !entry.subfield,

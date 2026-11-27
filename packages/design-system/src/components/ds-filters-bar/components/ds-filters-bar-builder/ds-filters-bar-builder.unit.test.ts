@@ -112,6 +112,7 @@ describe('query builder draft', () => {
 			field: 'status',
 			operator: '=',
 			value: ['active'],
+			options: [{ value: 'active', label: 'Active' }],
 		});
 	});
 
@@ -151,7 +152,14 @@ describe('query builder draft', () => {
 describe('builderDraftFromCondition', () => {
 	it.each<DsFilterFieldCondition>([
 		{ kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'AAA' },
-		{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['pending'] },
+		{
+			kind: 'field',
+			id: 'c2',
+			field: 'status',
+			operator: '!=',
+			value: ['pending'],
+			options: [{ value: 'pending', label: 'Pending' }],
+		},
 		{ kind: 'field', id: 'c3', field: 'parents', operator: '>', value: 12.5 },
 		{ kind: 'field', id: 'c4', field: 'lastRun', operator: '=', value: 'today' },
 	])('fills every step from a condition the builder can hold: $field', (condition) => {

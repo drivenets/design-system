@@ -61,7 +61,24 @@ export type DsFilterOperators<TValue extends DsFilterOperatorValue> = ReadonlyAr
 export interface DsFilterOption {
 	value: string;
 	label: string;
+	/**
+	 * Host metadata, such as the ids behind a name. A condition keeps it with the selected option, so
+	 * a saved filter stores it too: keep it serializable.
+	 */
+	data?: unknown;
 }
+
+/**
+ * Loads the options of a field from the server while the user types. `draft` is the document the
+ * open dialog would save now, without the conditions on this field, so a field can depend on
+ * another. The bar debounces `search` and aborts `signal` when a newer request starts or the list
+ * closes.
+ */
+export type DsFilterOptionsLoader = (
+	search: string,
+	draft: DsFilterDocument,
+	signal: AbortSignal,
+) => Promise<ReadonlyArray<DsFilterOption>>;
 
 export const dateFilterPresets = [
 	'today',
@@ -93,7 +110,17 @@ export interface DsFilterEnumField extends DsFilterFieldBase {
 	 * @default enumFilterOperators
 	 */
 	operators?: DsFilterOperators<DsFilterEnumOperator>;
-	options: ReadonlyArray<DsFilterOption>;
+	/**
+	 * With `loadOptions`, these only name values in chips and the summary when a condition has no
+	 * snapshot of its options.
+	 * @default []
+	 */
+	options?: ReadonlyArray<DsFilterOption>;
+	/**
+	 * Lists the options from the server instead of `options`. Checked options stay listed and
+	 * selected when a newer result leaves them out.
+	 */
+	loadOptions?: DsFilterOptionsLoader;
 }
 
 export interface DsFilterTextField extends DsFilterFieldBase {
@@ -163,7 +190,9 @@ type Resolved<TField extends DsFilterScalarField, TValue extends DsFilterOperato
  * Internal: a field with every operator and preset spelled out, as the bar's parts read it
  */
 export type DsFilterResolvedScalarField =
-	| Resolved<DsFilterEnumField, DsFilterEnumOperator>
+	| (Omit<Resolved<DsFilterEnumField, DsFilterEnumOperator>, 'options'> & {
+			options: ReadonlyArray<DsFilterOption>;
+	  })
 	| Resolved<DsFilterTextField, DsFilterTextOperator>
 	| Resolved<DsFilterNumberField, DsFilterComparisonOperator>
 	| (Omit<Resolved<DsFilterDateField, DsFilterComparisonOperator>, 'presets'> & {
@@ -222,6 +251,12 @@ export interface DsFilterFieldCondition {
 	 */
 	operator: DsFilterOperatorValue;
 	value: DsFilterValue;
+	/**
+	 * The selected options of an enum value, with their labels and `data`, so chips and the host
+	 * need no option list. The filters dialog and the query builder fill it on every enum condition
+	 * they save. Chips take labels from it first only on a field with `loadOptions`.
+	 */
+	options?: ReadonlyArray<DsFilterOption>;
 }
 
 /**

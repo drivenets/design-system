@@ -8,7 +8,7 @@ import {
 } from '../../ds-filters-bar.utils';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
 import { FiltersDialog, type DsFiltersBarFiltersDialogValue } from '../ds-filters-bar-filters-dialog';
-import type { DsFiltersBarConditionsSlotProps } from '../../ds-filters-bar.types';
+import { emptyFilterDocument, type DsFiltersBarConditionsSlotProps } from '../../ds-filters-bar.types';
 
 const EMPTY_DRAFT: DsFiltersBarFiltersDialogValue = Object.freeze([]);
 
@@ -64,6 +64,14 @@ export const Conditions = ({ ref, className, style }: DsFiltersBarConditionsSlot
 				open={open}
 				tabs={filtersDialogTabs(fields)}
 				value={draft}
+				draft={
+					open
+						? {
+								...emptyFilterDocument,
+								conditions: fromFiltersDialogValue(fields, conditions, pins, draft).conditions,
+							}
+						: undefined
+				}
 				initialTab={initialTab}
 				locale={locale.conditions}
 				onOpenChange={setOpen}

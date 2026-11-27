@@ -62,6 +62,7 @@ export const resolveScalarField = (
 		case 'enum':
 			return {
 				...field,
+				options: field.options ?? [],
 				operators: resolveOperators(field.operators, enumFilterOperators, locale.operators.enum),
 			};
 		case 'text':

@@ -29,6 +29,7 @@ export type {
 	DsFilterOperators,
 	DsFilterOperatorValue,
 	DsFilterOption,
+	DsFilterOptionsLoader,
 	DsFilterPin,
 	DsFilterRange,
 	DsFilterResolvedOperator,

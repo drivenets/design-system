@@ -132,6 +132,13 @@ $transition-duration: 0.2s;
 	width: 100%;
 }
 
+.loadState {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	color: var(--font-secondary);
+}
+
 .optionPin {
 	transition:
 		color $transition-duration ease-in-out,

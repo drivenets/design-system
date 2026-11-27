@@ -83,6 +83,13 @@ $dialog-max-width: 90vw;
 	gap: var(--xs);
 }
 
+.loadState {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	color: var(--font-secondary);
+}
+
 .visuallyHidden {
 	@include mixins.visually-hidden;
 }

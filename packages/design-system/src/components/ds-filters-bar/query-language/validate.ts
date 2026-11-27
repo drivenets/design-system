@@ -153,7 +153,9 @@ export const validate = (
 		switch (scalar.type) {
 			case 'enum':
 				return clause.values.map(
-					(value) => findOption(scalar.options, value.text)?.value ?? fail('unknownOption', value),
+					(value) =>
+						findOption(scalar.options, value.text)?.value ??
+						(scalar.loadOptions ? value.text : fail('unknownOption', value)),
 				);
 			case 'number': {
 				const value = Number(first.text);

@@ -331,7 +331,9 @@ describe('DsFiltersBar builder editing a condition', () => {
 		await choice('Pending').click();
 		await choice('Save query').click();
 
-		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(conditions({ ...STATUS_BOTH, value: ['pending'] }));
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(
+			conditions({ ...STATUS_BOTH, value: ['pending'], options: [{ value: 'pending', label: 'Pending' }] }),
+		);
 		await expect.element(dialog()).not.toBeInTheDocument();
 		await expect.element(chip('Status').getByText('Pending', { exact: true })).toBeVisible();
 		expect(page.getByRole('button', { name: /^Remove filter: / }).elements()).toHaveLength(1);

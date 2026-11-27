@@ -2,10 +2,11 @@ import type {
 	DsFilterResolvedField,
 	DsFilterFieldCondition,
 	DsFilterOperatorValue,
+	DsFilterOption,
 	DsFilterResolvedScalarField,
 	DsFilterValue,
 } from '../../ds-filters-bar.types';
-import { isRange } from '../../ds-filters-bar.utils';
+import { isRange, preferredOptions } from '../../ds-filters-bar.utils';
 import type { DsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 
 const COMPLETE_NUMBER = /^-?\d+(\.\d+)?$/;
@@ -22,6 +23,11 @@ export interface BuilderDraft {
 	 * Selected enum option. Absent for every other field type.
 	 */
 	optionValue: string | null;
+	/**
+	 * The selected enum option as it was listed, kept for its label and `data` once the list
+	 * changes
+	 */
+	selectedOption: DsFilterOption | null;
 	/**
 	 * Text filtering the current list of choices. Unused while the input is the value itself.
 	 */
@@ -65,6 +71,7 @@ export const emptyBuilderDraft = (): BuilderDraft => ({
 	operator: null,
 	valueText: '',
 	optionValue: null,
+	selectedOption: null,
 	query: '',
 });
 
@@ -101,6 +108,48 @@ const offeredFields = (
 		const field = fields.find((item) => item.id === id);
 
 		return field ? [field] : [];
+	});
+};
+
+/**
+ * The scalar field the draft has reached, or `null` before one is chosen
+ */
+export const builderScalar = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	draft: BuilderDraft,
+): DsFilterResolvedScalarField | null => resolveField(fields, draft)?.scalar ?? null;
+
+/**
+ * `fields` with the draft's enum field listing `loaded` instead of its own options, and the
+ * selected option kept first when `loaded` leaves it out
+ */
+export const withLoadedOptions = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	draft: BuilderDraft,
+	loaded: ReadonlyArray<DsFilterOption>,
+): ReadonlyArray<DsFilterResolvedField> => {
+	const { selectedOption } = draft;
+	const kept =
+		selectedOption && !loaded.some((option) => option.value === selectedOption.value) ? [selectedOption] : [];
+	const options = [...kept, ...loaded];
+	const replace = (scalar: DsFilterResolvedScalarField): DsFilterResolvedScalarField =>
+		scalar.type === 'enum' && scalar.loadOptions ? { ...scalar, options } : scalar;
+
+	return fields.map((field) => {
+		if (field.id !== draft.fieldId) {
+			return field;
+		}
+
+		if (field.type !== 'compound') {
+			return replace(field);
+		}
+
+		return {
+			...field,
+			subfields: field.subfields.map((subfield) =>
+				subfield.id === draft.subfieldId ? replace(subfield) : subfield,
+			),
+		};
 	});
 };
 
@@ -178,8 +227,9 @@ const operatorChoices = (scalar: DsFilterResolvedScalarField, query: string): Re
 
 const optionChoices = (scalar: DsFilterResolvedScalarField, query: string): ReadonlyArray<BuilderChoice> => {
 	if (scalar.type === 'enum') {
+		// The loader already searched, possibly by more than the label.
 		return scalar.options
-			.filter((option) => matchesQuery(option.label, query))
+			.filter((option) => !!scalar.loadOptions || matchesQuery(option.label, query))
 			.map((option) => ({ kind: 'option', id: option.value, label: option.label }));
 	}
 
@@ -194,13 +244,30 @@ const optionChoices = (scalar: DsFilterResolvedScalarField, query: string): Read
 	return [];
 };
 
+const selectedOptionOf = (
+	scalar: DsFilterResolvedScalarField,
+	draft: BuilderDraft,
+): DsFilterOption | null => {
+	if (scalar.type !== 'enum' || !draft.optionValue) {
+		return null;
+	}
+
+	const listed = scalar.options.find((option) => option.value === draft.optionValue);
+
+	if (listed || !scalar.loadOptions) {
+		return listed ?? null;
+	}
+
+	return draft.selectedOption?.value === draft.optionValue ? draft.selectedOption : null;
+};
+
 const valueLabel = (scalar: DsFilterResolvedScalarField | null, draft: BuilderDraft): string | null => {
 	if (!scalar) {
 		return null;
 	}
 
 	if (scalar.type === 'enum') {
-		return scalar.options.find((option) => option.value === draft.optionValue)?.label ?? null;
+		return selectedOptionOf(scalar, draft)?.label ?? null;
 	}
 
 	const text = draft.valueText.trim();
@@ -328,6 +395,7 @@ export const describeBuilderStep = (
 const clearedValue = {
 	valueText: '',
 	optionValue: null,
+	selectedOption: null,
 	query: '',
 } as const;
 
@@ -391,7 +459,7 @@ export const chooseBuilderOption = (
 			return draft;
 		}
 
-		return { ...draft, query: '', optionValue: option.value };
+		return { ...draft, query: '', optionValue: option.value, selectedOption: option };
 	}
 
 	if (choice.kind === 'option' && resolved.scalar?.type === 'date') {
@@ -448,11 +516,9 @@ export const toFieldCondition = (
 	};
 
 	if (scalar.type === 'enum') {
-		if (!draft.optionValue || !scalar.options.some((option) => option.value === draft.optionValue)) {
-			return null;
-		}
+		const option = selectedOptionOf(scalar, draft);
 
-		return { ...base, value: [draft.optionValue] };
+		return option ? { ...base, value: [option.value], options: [option] } : null;
 	}
 
 	const text = draft.valueText.trim();
@@ -482,17 +548,29 @@ const sameValue = (a: DsFilterValue, b: DsFilterValue): boolean => {
 
 const valueDraft = (
 	scalar: DsFilterResolvedScalarField,
-	value: DsFilterValue,
-): Pick<BuilderDraft, 'valueText' | 'optionValue'> => {
+	condition: DsFilterFieldCondition,
+): Pick<BuilderDraft, 'valueText' | 'optionValue' | 'selectedOption'> => {
+	const { value } = condition;
+
 	if (typeof value === 'string' || typeof value === 'number') {
-		return { valueText: scalar.type === 'enum' ? '' : String(value), optionValue: null };
+		return {
+			valueText: scalar.type === 'enum' ? '' : String(value),
+			optionValue: null,
+			selectedOption: null,
+		};
 	}
 
 	if (isRange(value) || scalar.type !== 'enum') {
-		return { valueText: '', optionValue: null };
+		return { valueText: '', optionValue: null, selectedOption: null };
 	}
 
-	return { valueText: '', optionValue: value[0] ?? null };
+	const [optionValue = null] = value;
+	const listed = optionValue
+		? preferredOptions(scalar, condition.options ?? []).find((option) => option.value === optionValue)
+		: undefined;
+	const unlisted = optionValue && scalar.loadOptions ? { value: optionValue, label: optionValue } : null;
+
+	return { valueText: '', optionValue, selectedOption: listed ?? unlisted };
 };
 
 /**
@@ -526,7 +604,7 @@ export const builderDraftFromCondition = (
 	}
 
 	const withOperator: BuilderDraft = { ...base, operator: condition.operator };
-	const filled: BuilderDraft = { ...withOperator, ...valueDraft(scalar, condition.value) };
+	const filled: BuilderDraft = { ...withOperator, ...valueDraft(scalar, condition) };
 	const rebuilt = toFieldCondition(fields, filled);
 
 	return rebuilt && sameValue(rebuilt.value, condition.value) ? filled : withOperator;

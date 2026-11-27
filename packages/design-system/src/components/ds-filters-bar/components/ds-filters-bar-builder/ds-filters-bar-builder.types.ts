@@ -31,6 +31,22 @@ export interface DsFiltersBarBuilderLocale {
 	selectValue?: string;
 	valuePlaceholder?: string;
 	save?: string;
+	/**
+	 * Shown while a field's `loadOptions` runs
+	 */
+	loading?: string;
+	/**
+	 * Shown when a field's `loadOptions` finds no options
+	 */
+	noOptions?: string;
+	/**
+	 * Shown when a field's `loadOptions` fails
+	 */
+	loadError?: string;
+	/**
+	 * Button that runs a failed `loadOptions` again
+	 */
+	retry?: string;
 }
 
 export const defaultDsFiltersBarBuilderLocale: Required<DsFiltersBarBuilderLocale> = Object.freeze({
@@ -47,4 +63,8 @@ export const defaultDsFiltersBarBuilderLocale: Required<DsFiltersBarBuilderLocal
 	selectValue: 'Select a value',
 	valuePlaceholder: 'Value',
 	save: 'Save query',
+	loading: 'Loading…',
+	noOptions: 'No results',
+	loadError: 'Could not load the options',
+	retry: 'Try again',
 });
