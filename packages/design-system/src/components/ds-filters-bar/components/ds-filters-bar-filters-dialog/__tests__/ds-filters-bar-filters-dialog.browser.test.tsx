@@ -11,7 +11,9 @@ import type {
 } from '../ds-filters-bar-filters-dialog.types';
 import type { DsFilterEnumField, DsFilterScalarField } from '../../../ds-filters-bar.types';
 
-const STATUS: DsFilterEnumField = {
+const ACTIVE = { value: 'active', label: 'Active' };
+
+const STATUS = {
 	id: 'status',
 	label: 'Status',
 	type: 'enum',
@@ -20,13 +22,13 @@ const STATUS: DsFilterEnumField = {
 		{ value: '!=', label: 'not equals', symbol: '≠' },
 	],
 	options: [
-		{ value: 'active', label: 'Active' },
+		ACTIVE,
 		{ value: 'deprecated', label: 'Deprecated' },
 		{ value: 'inactive', label: 'Inactive' },
 		{ value: 'pending', label: 'Pending' },
 		{ value: 'draft', label: 'Draft' },
 	],
-};
+} satisfies DsFilterEnumField;
 
 const WORKFLOW: DsFilterEnumField = {
 	id: 'workflow',
@@ -261,15 +263,17 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 		await optionCheckbox('Active').click();
 
+		const checked = entry({ field: 'status', selected: ['active'], selectedOptions: [ACTIVE] });
+
 		await expect.element(optionCheckbox('Active')).toBeChecked();
-		expect(onChange).toHaveBeenLastCalledWith(entry({ field: 'status', selected: ['active'] }), [
-			entry({ field: 'status', selected: ['active'] }),
-		]);
+		expect(onChange).toHaveBeenLastCalledWith(checked, [checked]);
 
 		await optionCheckbox('Active').click();
 
+		const unchecked = entry({ field: 'status', selectedOptions: [] });
+
 		await expect.element(optionCheckbox('Active')).not.toBeChecked();
-		expect(onChange).toHaveBeenLastCalledWith(entry({ field: 'status' }), [entry({ field: 'status' })]);
+		expect(onChange).toHaveBeenLastCalledWith(unchecked, [unchecked]);
 	});
 
 	it('fires onChange when an option is pinned and unpinned', async () => {
@@ -361,7 +365,11 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 		await optionCheckbox('Pending').click();
 
-		const changed = entry({ field: 'status', selected: ['pending'] });
+		const changed = entry({
+			field: 'status',
+			selected: ['pending'],
+			selectedOptions: [{ value: 'pending', label: 'Pending' }],
+		});
 
 		expect(onChange).toHaveBeenCalledExactlyOnceWith(changed, [workflow, changed]);
 	});
@@ -374,7 +382,11 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 		await optionCheckbox('Pending').click();
 
-		const changed = { ...status, selected: ['draft', 'pending'] };
+		const changed = {
+			...status,
+			selected: ['draft', 'pending'],
+			selectedOptions: [{ value: 'pending', label: 'Pending' }],
+		};
 
 		expect(onChange).toHaveBeenCalledExactlyOnceWith(changed, [changed, result]);
 	});
@@ -387,7 +399,9 @@ describe('DsFiltersBar.FiltersDialog', () => {
 		await optionCheckbox('Active').click();
 		await page.getByRole('button', { name: 'Save filters' }).click();
 
-		expect(onSave).toHaveBeenCalledExactlyOnceWith([entry({ field: 'status', selected: ['active'] })]);
+		expect(onSave).toHaveBeenCalledExactlyOnceWith([
+			entry({ field: 'status', selected: ['active'], selectedOptions: [ACTIVE] }),
+		]);
 		expect(onOpenChange).toHaveBeenCalledExactlyOnceWith(false);
 		await expect.element(dialog()).not.toBeInTheDocument();
 	});

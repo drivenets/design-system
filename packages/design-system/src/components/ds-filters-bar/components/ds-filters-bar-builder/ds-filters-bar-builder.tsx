@@ -7,18 +7,21 @@ import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import { createConditionId } from '../../ds-filters-bar.utils';
+import { useOptionLoader } from '../../use-option-loader';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
-import type { DsFiltersBarBuilderSlotProps } from '../../ds-filters-bar.types';
+import { emptyFilterDocument, type DsFiltersBarBuilderSlotProps } from '../../ds-filters-bar.types';
 import {
 	type BuilderChoice,
 	type BuilderDraft,
 	type BuilderPathSegment,
 	builderDraftFromCondition,
+	builderScalar,
 	chooseBuilderOption,
 	describeBuilderStep,
 	emptyBuilderDraft,
 	setBuilderInput,
 	toFieldCondition,
+	withLoadedOptions,
 } from './ds-filters-bar-builder.utils';
 import styles from './ds-filters-bar-builder.module.scss';
 
@@ -79,13 +82,29 @@ const SelectionPath = ({ segments, clearLabel, onClear }: SelectionPathProps) =>
  * drops the draft.
  */
 export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBarBuilderSlotProps) => {
-	const { fields, query, locale: barLocale, addCondition, updateCondition } = useDsFiltersBarContext();
+	const {
+		fields: schemaFields,
+		conditions,
+		query,
+		locale: barLocale,
+		addCondition,
+		updateCondition,
+	} = useDsFiltersBarContext();
 	const locale = barLocale.builder;
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(emptyBuilderDraft);
 	// The condition being edited, or `null` while adding one
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const inputId = useId();
+	const scalar = open ? builderScalar(schemaFields, draft) : null;
+	const loadOptions = scalar?.type === 'enum' ? scalar.loadOptions : undefined;
+	const loader = useOptionLoader({
+		load: loadOptions,
+		search: draft.query,
+		draft: { ...emptyFilterDocument, conditions: conditions.filter((item) => item.id !== editingId) },
+		scope: [draft.fieldId, draft.subfieldId].join('.'),
+	});
+	const fields = loadOptions ? withLoadedOptions(schemaFields, draft, loader.items) : schemaFields;
 
 	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
 	// A dialog left open would come back with a stale draft once the query clears.
@@ -203,6 +222,26 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 									/>
 								))}
 							</div>
+							{loadOptions && (
+								<>
+									<div className={styles.loadState} role="status">
+										{loader.status === 'loading' && (
+											<DsTypography variant="body-sm-reg">{locale.loading}</DsTypography>
+										)}
+										{loader.status === 'ready' && !view.choices.length && (
+											<DsTypography variant="body-sm-reg">{locale.noOptions}</DsTypography>
+										)}
+									</div>
+									{loader.status === 'error' && (
+										<div className={styles.loadState} role="alert">
+											<DsTypography variant="body-sm-reg">{locale.loadError}</DsTypography>
+											<DsButtonV3 variant="secondary" size="small" onClick={loader.retry}>
+												{locale.retry}
+											</DsButtonV3>
+										</div>
+									)}
+								</>
+							)}
 						</div>
 					)}
 				</DsModal.Body>

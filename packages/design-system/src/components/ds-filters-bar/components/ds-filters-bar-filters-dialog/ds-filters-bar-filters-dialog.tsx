@@ -12,13 +12,18 @@ import { DsSelect } from '../../../ds-select';
 import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { DsVerticalTabs } from '../../../ds-vertical-tabs';
-import type {
-	DsFilterRange,
-	DsFilterResolvedOperator,
-	DsFilterResolvedScalarField,
+import {
+	emptyFilterDocument,
+	type DsFilterDocument,
+	type DsFilterOption,
+	type DsFilterOptionsLoader,
+	type DsFilterRange,
+	type DsFilterResolvedOperator,
+	type DsFilterResolvedScalarField,
 } from '../../ds-filters-bar.types';
-import { emptyFiltersDialogEntry, isFiltersDialogEntrySet } from '../../ds-filters-bar.utils';
+import { canPinOptions, emptyFiltersDialogEntry, isFiltersDialogEntrySet } from '../../ds-filters-bar.utils';
 import { resolveScalarField } from '../../resolve-fields';
+import { useOptionLoader } from '../../use-option-loader';
 import {
 	type DsFiltersBarFiltersDialogDateEntry,
 	type DsFiltersBarFiltersDialogEntry,
@@ -191,18 +196,110 @@ interface PanelProps<TEntry extends DsFiltersBarFiltersDialogEntry> {
 
 interface EnumPanelProps extends PanelProps<DsFiltersBarFiltersDialogEnumEntry> {
 	search: string;
+	draft: DsFilterDocument;
 	onSearchChange: (search: string) => void;
 }
 
-const EnumPanel = ({ tab, entry, search, locale, onSearchChange, onEntryChange }: EnumPanelProps) => {
+const toggleOption = (
+	list: ReadonlyArray<DsFilterOption>,
+	option: DsFilterOption,
+	on: boolean,
+): ReadonlyArray<DsFilterOption> => [
+	...list.filter((item) => item.value !== option.value),
+	...(on ? [option] : []),
+];
+
+interface OptionListProps {
+	tab: ResolvedTab;
+	entry: DsFiltersBarFiltersDialogEnumEntry;
+	options: ReadonlyArray<DsFilterOption>;
+	children?: ReactNode;
+	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
+}
+
+const OptionList = ({ tab, entry, options, children, onEntryChange }: OptionListProps) => {
+	const canPin = canPinOptions(tab);
+
+	return (
+		<div className={styles.options} role="group" aria-label={tab.label}>
+			{options.map((option) => (
+				<DsCheckbox
+					key={option.value}
+					size="large"
+					className={styles.option}
+					label={option.label}
+					checked={entry.selected.includes(option.value)}
+					actions={
+						canPin && (
+							<DsPinToggle
+								className={styles.optionPin}
+								itemLabel={option.label}
+								pinned={entry.pinned.includes(option.value)}
+								onPinnedChange={(next) =>
+									onEntryChange({ ...entry, pinned: toggle(entry.pinned, option.value, next) })
+								}
+							/>
+						)
+					}
+					onCheckedChange={(checked) =>
+						onEntryChange({
+							...entry,
+							selected: toggle(entry.selected, option.value, checked === true),
+							selectedOptions: toggleOption(entry.selectedOptions ?? [], option, checked === true),
+						})
+					}
+				/>
+			))}
+			{children}
+		</div>
+	);
+};
+
+interface LoadedOptionListProps extends Omit<OptionListProps, 'options' | 'children'> {
+	loadOptions: DsFilterOptionsLoader;
+	search: string;
+	draft: DsFilterDocument;
+	locale: Locale;
+}
+
+/**
+ * Checked options the latest result leaves out stay listed first, so they can still be unchecked
+ */
+const LoadedOptionList = ({ loadOptions, search, draft, locale, ...listProps }: LoadedOptionListProps) => {
+	const { tab, entry } = listProps;
+	const { status, items, retry } = useOptionLoader({ load: loadOptions, search, draft, scope: tab.id });
+	const missing = (entry.selectedOptions ?? []).filter(
+		(option) => entry.selected.includes(option.value) && !items.some((item) => item.value === option.value),
+	);
+	const options = [...missing, ...items];
+
+	return (
+		<OptionList {...listProps} options={options}>
+			<div className={styles.loadState} role="status">
+				{status === 'loading' && <DsTypography variant="body-sm-reg">{locale.loading}</DsTypography>}
+				{status === 'ready' && !options.length && (
+					<DsTypography variant="body-sm-reg">{locale.noOptions}</DsTypography>
+				)}
+			</div>
+			{status === 'error' && (
+				<div className={styles.loadState} role="alert">
+					<DsTypography variant="body-sm-reg">{locale.loadError}</DsTypography>
+					<DsButtonV3 variant="secondary" size="small" onClick={retry}>
+						{locale.retry}
+					</DsButtonV3>
+				</div>
+			)}
+		</OptionList>
+	);
+};
+
+const EnumPanel = ({ tab, entry, search, draft, locale, onSearchChange, onEntryChange }: EnumPanelProps) => {
 	if (tab.schema.type !== 'enum') {
 		return null;
 	}
 
+	const { loadOptions, options } = tab.schema;
 	const query = search.trim().toLowerCase();
-	const visibleOptions = tab.schema.options.filter((option) => option.label.toLowerCase().includes(query));
-	// A pin names a field, never a subfield.
-	const canPin = !tab.subfield;
 
 	return (
 		<>
@@ -228,35 +325,24 @@ const EnumPanel = ({ tab, entry, search, locale, onSearchChange, onEntryChange }
 				</LabeledInput>
 			</div>
 
-			<div className={styles.options} role="group" aria-label={tab.label}>
-				{visibleOptions.map((option) => (
-					<DsCheckbox
-						key={option.value}
-						size="large"
-						className={styles.option}
-						label={option.label}
-						checked={entry.selected.includes(option.value)}
-						actions={
-							canPin && (
-								<DsPinToggle
-									className={styles.optionPin}
-									itemLabel={option.label}
-									pinned={entry.pinned.includes(option.value)}
-									onPinnedChange={(next) =>
-										onEntryChange({ ...entry, pinned: toggle(entry.pinned, option.value, next) })
-									}
-								/>
-							)
-						}
-						onCheckedChange={(checked) =>
-							onEntryChange({
-								...entry,
-								selected: toggle(entry.selected, option.value, checked === true),
-							})
-						}
-					/>
-				))}
-			</div>
+			{loadOptions ? (
+				<LoadedOptionList
+					tab={tab}
+					entry={entry}
+					loadOptions={loadOptions}
+					search={search}
+					draft={draft}
+					locale={locale}
+					onEntryChange={onEntryChange}
+				/>
+			) : (
+				<OptionList
+					tab={tab}
+					entry={entry}
+					options={options.filter((option) => option.label.toLowerCase().includes(query))}
+					onEntryChange={onEntryChange}
+				/>
+			)}
 		</>
 	);
 };
@@ -437,18 +523,21 @@ interface TabPanelProps {
 	tab: DsFiltersBarFiltersDialogTab;
 	entry: DsFiltersBarFiltersDialogEntry;
 	search: string;
+	draft: DsFilterDocument;
 	locale: Locale;
 	onSearchChange: (search: string) => void;
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
 }
 
-const TabPanel = ({ tab, entry, search, onSearchChange, ...rest }: TabPanelProps) => {
+const TabPanel = ({ tab, entry, search, draft, onSearchChange, ...rest }: TabPanelProps) => {
 	// The bar passes resolved fields; a tab built elsewhere gets the default operators and presets.
 	const props = { ...rest, tab: { ...tab, schema: resolveScalarField(tab.schema) } };
 
 	switch (entry.type) {
 		case 'enum':
-			return <EnumPanel entry={entry} search={search} onSearchChange={onSearchChange} {...props} />;
+			return (
+				<EnumPanel entry={entry} search={search} draft={draft} onSearchChange={onSearchChange} {...props} />
+			);
 		case 'text':
 			return <TextPanel entry={entry} {...props} />;
 		case 'number':
@@ -466,6 +555,7 @@ export const FiltersDialog = ({
 	open,
 	tabs,
 	value,
+	draft = emptyFilterDocument,
 	initialTab,
 	locale: localeProp,
 	className,
@@ -548,6 +638,7 @@ export const FiltersDialog = ({
 								tab={activeTab}
 								entry={getEntry(value, activeTab)}
 								search={search}
+								draft={draft}
 								locale={locale}
 								onSearchChange={setSearch}
 								onEntryChange={handleEntryChange}

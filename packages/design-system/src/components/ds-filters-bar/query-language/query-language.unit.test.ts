@@ -97,6 +97,18 @@ describe('parseFilterQuery', () => {
 		]);
 	});
 
+	it('takes any value of a field with loadOptions, since its options are not known up front', () => {
+		const fields: ReadonlyArray<DsFilterField> = [
+			...FIELDS,
+			{ type: 'enum', id: 'editors', label: 'Editors', loadOptions: () => Promise.resolve([]) },
+		];
+		const result = parseFilterQuery('editors IN (u-1, u-2)', fields);
+
+		expect(result.ok && withoutIds(result.conditions)).toEqual([
+			{ kind: 'field', field: 'editors', operator: 'IN', value: ['u-1', 'u-2'] },
+		]);
+	});
+
 	it('names a compound subfield with a dot', () => {
 		expect(withoutIds(conditionsOf('input.vendor !~ "cisco systems"'))).toEqual([
 			{ kind: 'field', field: 'input', subfield: 'vendor', operator: '!~', value: 'cisco systems' },

@@ -1,7 +1,9 @@
 import type { CSSProperties } from 'react';
 import type {
 	DsFilterComparisonOperator,
+	DsFilterDocument,
 	DsFilterEnumOperator,
+	DsFilterOption,
 	DsFilterResolvedOperator,
 	DsFilterRange,
 	DsFilterScalarField,
@@ -55,6 +57,11 @@ export interface DsFiltersBarFiltersDialogEnumEntry extends DsFiltersBarFiltersD
 	 * Checked option values
 	 */
 	selected: ReadonlyArray<string>;
+	/**
+	 * Checked options as the dialog listed them, so Save keeps their labels and `data` when the
+	 * field's options do not have them
+	 */
+	selectedOptions?: ReadonlyArray<DsFilterOption>;
 	/**
 	 * Pinned option values. Always empty for a compound field's subfield, which cannot be pinned.
 	 */
@@ -153,6 +160,22 @@ export interface DsFiltersBarFiltersDialogLocale {
 	 * Accessible name of the pin icon on a tab that has pinned options
 	 */
 	pinned?: string;
+	/**
+	 * Shown while a field's `loadOptions` runs
+	 */
+	loading?: string;
+	/**
+	 * Shown when the option list is empty
+	 */
+	noOptions?: string;
+	/**
+	 * Shown when a field's `loadOptions` fails
+	 */
+	loadError?: string;
+	/**
+	 * Button that runs a failed `loadOptions` again
+	 */
+	retry?: string;
 }
 
 export const defaultDsFiltersBarFiltersDialogLocale: Required<DsFiltersBarFiltersDialogLocale> =
@@ -172,6 +195,10 @@ export const defaultDsFiltersBarFiltersDialogLocale: Required<DsFiltersBarFilter
 		presets: (fieldLabel: string) => `${fieldLabel} presets`,
 		selectedCount: (count: number) => `${String(count)} selected`,
 		pinned: 'Pinned',
+		loading: 'Loading…',
+		noOptions: 'No results',
+		loadError: 'Could not load the options',
+		retry: 'Try again',
 	});
 
 /**
@@ -188,6 +215,11 @@ export interface DsFiltersBarFiltersDialogProps {
 	 * May be sparse, in any order
 	 */
 	value: DsFiltersBarFiltersDialogValue;
+	/**
+	 * The document Save would produce from `value`, passed to a field's `loadOptions`
+	 * @default emptyFilterDocument
+	 */
+	draft?: DsFilterDocument;
 	/**
 	 * `DsFiltersBarFiltersDialogTab.id` selected each time the dialog opens. Falls back to the first
 	 * tab.

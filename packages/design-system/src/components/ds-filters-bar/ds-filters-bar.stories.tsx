@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 import { DsTable } from '../ds-table';
+import { DsTypography } from '../ds-typography';
 import {
 	DsFiltersBar,
 	emptyFilterDocument,
@@ -441,6 +442,105 @@ export const Pinned: Story = {
 			getPinCount={(pin) => (pin.value === 'deprecated' ? 0 : 8)}
 		/>
 	),
+};
+
+/**
+ * Editors are searched on the server while the user types: `loadOptions` gets the search, the open
+ * draft and an abort signal, and the bar shows loading, empty and error states. Here the mock server
+ * answers after a short delay, narrows Editors to the Team checked in the same dialog, and fails
+ * for the search `error`. Each condition keeps a snapshot of its selected options, so the chip below
+ * shows names without a request, and the host reads each editor's instance ids from `data`.
+ */
+export const LoadedOptions: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render() {
+		const [value, setValue] = useState<DsFilterDocument>({
+			conditions: [
+				{
+					kind: 'field',
+					id: 'editors-1',
+					field: 'editors',
+					operator: 'IN',
+					value: ['u-1'],
+					options: [
+						{ value: 'u-1', label: 'Alice Moss', data: { team: 'core', instances: ['i-10', 'i-11'] } },
+					],
+				},
+			],
+			query: null,
+		});
+		const instances = value.conditions.flatMap((condition) =>
+			condition.kind === 'field' && condition.field === 'editors'
+				? (condition.options ?? []).flatMap((option) => (option.data as { instances: string[] }).instances)
+				: [],
+		);
+
+		return (
+			<DsStack direction="column" gap="var(--standard)">
+				<DsFiltersBar
+					fields={[
+						{
+							type: 'enum',
+							id: 'team',
+							label: 'Team',
+							options: [
+								{ value: 'core', label: 'Core' },
+								{ value: 'edge', label: 'Edge' },
+							],
+						},
+						{
+							type: 'enum',
+							id: 'editors',
+							label: 'Editors',
+							operators: ['IN', 'NOT IN'],
+							loadOptions: (search, draft, signal) =>
+								new Promise((resolve, reject) => {
+									const timer = setTimeout(() => {
+										if (search === 'error') {
+											reject(new Error('The editors service is down'));
+
+											return;
+										}
+
+										const teams = draft.conditions.flatMap((condition) =>
+											condition.kind === 'field' && condition.field === 'team'
+												? (condition.value as ReadonlyArray<string>)
+												: [],
+										);
+										const editors = [
+											{
+												value: 'u-1',
+												label: 'Alice Moss',
+												data: { team: 'core', instances: ['i-10', 'i-11'] },
+											},
+											{ value: 'u-2', label: 'Bruno Hale', data: { team: 'core', instances: ['i-20'] } },
+											{ value: 'u-3', label: 'Carla Reed', data: { team: 'edge', instances: ['i-30'] } },
+											{ value: 'u-4', label: 'Dan Ortiz', data: { team: 'edge', instances: [] } },
+										];
+
+										resolve(
+											editors.filter(
+												(editor) =>
+													editor.label.toLowerCase().includes(search.toLowerCase()) &&
+													(!teams.length || teams.includes(editor.data.team)),
+											),
+										);
+									}, 600);
+
+									signal.addEventListener('abort', () => clearTimeout(timer));
+								}),
+						},
+					]}
+					value={value}
+					defaultExpanded
+					onValueChange={setValue}
+				/>
+				<DsTypography variant="body-sm-reg">Instances: {instances.join(', ') || 'none'}</DsTypography>
+			</DsStack>
+		);
+	},
 };
 
 /**

@@ -720,7 +720,17 @@ describe('fromFiltersDialogValue', () => {
 
 		expect(result.conditions).toEqual([
 			search,
-			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'deprecated'] },
+			{
+				kind: 'field',
+				id: 'c1',
+				field: 'status',
+				operator: '!=',
+				value: ['active', 'deprecated'],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+				],
+			},
 			unknown,
 			mismatched,
 		]);
