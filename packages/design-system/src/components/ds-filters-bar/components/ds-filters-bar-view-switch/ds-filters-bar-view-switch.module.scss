@@ -1,13 +1,3 @@
-@use '../../../../styles/mixin' as mixins;
-
 .viewSwitch {
 	flex-shrink: 0;
-}
-
-.viewSwitchItem {
-	display: flex;
-}
-
-.visuallyHidden {
-	@include mixins.visually-hidden;
 }

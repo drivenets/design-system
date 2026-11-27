@@ -196,6 +196,11 @@ export const deviceSavedFilters: ReadonlyArray<DsFiltersBarSavedFilter> = [
 	{
 		id: 'saved-attention',
 		name: 'Needs attention',
-		document: { query: 'status = "inactive" OR (status = "pending" AND ports > 40)' },
+		document: {
+			conditions: [
+				{ kind: 'field', field: 'status', operator: 'IN', value: ['inactive', 'pending'] },
+				{ kind: 'field', field: 'ports', operator: '>', value: 40 },
+			],
+		},
 	},
 ];

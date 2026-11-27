@@ -29,13 +29,13 @@ const meta: Meta<typeof DsFiltersBar> = {
 			description: {
 				component: `
 Filters a table or list. One component renders every part: the collapsed summary, and when expanded
-the saved-filters picker, search, view switch, the active view (filter chips, query builder or
-advanced query), save and clear all, with the pinned row below. Every view edits one **Filter
-document**, \`{ conditions, query }\`, checked against \`fields\`.
+the saved-filters picker, search, view switch, the active view (filter chips or query builder),
+save and clear all, with the pinned row below. Both views edit one **Filter document**,
+\`{ conditions }\`, checked against \`fields\`.
 
 A field lists \`operators\` only to narrow its type's built-in set, by value; their words come from
 \`locale.operators\`. A date field lists built-in \`presets\` such as \`'last7Days'\` by value. A
-document you pass in may leave out \`query\` and condition ids; the bar always reports full ones.
+document you pass in may leave out condition ids; the bar always reports full ones.
 
 The bar never filters rows. Evaluate the document yourself, or with \`useFilteredRows\` for data held
 on the client, and pass back \`resultCount\` and \`getPinCount\`. Persist **Saved filters** through
@@ -83,7 +83,12 @@ export const Default: Story = {
 			{
 				id: 'saved-attention',
 				name: 'Needs attention',
-				document: { query: 'status = "inactive" OR ports > 40' },
+				document: {
+					conditions: [
+						{ kind: 'field', field: 'status', operator: '=', value: ['inactive'] },
+						{ kind: 'field', field: 'ports', operator: '>', value: 40 },
+					],
+				},
 			},
 		]);
 
@@ -149,7 +154,7 @@ export const Default: Story = {
 /**
  * The full loop, with the bar as a sibling above `DsTable`. The story controls the document and the
  * active toggles, and `useFilteredRows` turns them into the table's rows, the summary count and
- * each pin's count. Every edit — a chip, a builder condition, a typed query, a loaded **Saved
+ * each pin's count. Every edit — a chip, a builder condition, a search, a loaded **Saved
  * filter**, a pinned toggle, Clear all — changes the table.
  *
  * Keep the matcher's inputs stable: `fields` and `now` live at module scope, the document and
@@ -288,13 +293,11 @@ export const Localized: Story = {
 					search: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' },
 					viewSwitch: {
 						label: 'Presentation',
-						views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },
-						lockedView: 'Remove the custom query to switch',
+						views: { filters: 'Quick filters', builder: 'Guided query' },
 					},
 					chips: { addFilter: 'Add refinement' },
 					conditions: { title: 'Refinements', save: 'Apply' },
 					builder: { title: 'Build a condition', save: 'Add condition' },
-					query: { label: 'Query editor', help: 'Syntax' },
 					savedFilters: {
 						savedFilters: 'Presets',
 						saveFilter: 'Save preset',
@@ -352,13 +355,12 @@ export const SearchOnly: Story = {
 };
 
 /**
- * `views` limits the view switch to the listed views, in their usual order. With one view the
- * switch is hidden.
+ * `views` limits the view switch to the listed views. With one view, as here, the switch is hidden.
  */
 export const Views: Story = {
 	args: {
 		defaultExpanded: true,
-		views: ['filters', 'advanced'],
+		views: ['builder'],
 		fields: [
 			{
 				type: 'enum',
@@ -374,30 +376,6 @@ export const Views: Story = {
 		defaultValue: {
 			conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }],
 		},
-	},
-};
-
-/**
- * A query with `OR` or parentheses cannot be shown as conditions, so it becomes the document's
- * only source: the bar shows the advanced view, disables search, and locks the filters and builder
- * views until the query is cleared.
- */
-export const AdvancedQuery: Story = {
-	args: {
-		defaultExpanded: true,
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'inactive', label: 'Inactive' },
-				],
-			},
-			{ type: 'number', id: 'ports', label: 'Ports', operators: ['=', '>', '<'] },
-		],
-		defaultValue: { query: 'status = "inactive" OR ports > 40' },
 	},
 };
 
@@ -446,7 +424,7 @@ export const Pinned: Story = {
 /**
  * The product owns the items and persists them; every callback may return a Promise, and the
  * control that launched it stays loading until it settles. Save as returns the new id, which
- * becomes the **Active saved filter**. A saved **Advanced query** loads into the advanced view.
+ * becomes the **Active saved filter**.
  */
 export const SavedFilters: Story = {
 	parameters: {
@@ -462,7 +440,7 @@ export const SavedFilters: Story = {
 			{
 				id: 'core-or-edge',
 				name: 'Core or edge',
-				document: { query: 'role = "core" OR role = "edge"' },
+				document: { conditions: [{ kind: 'field', field: 'role', operator: '=', value: ['core', 'edge'] }] },
 			},
 		]);
 
@@ -523,9 +501,8 @@ export const SavedFilters: Story = {
 };
 
 /**
- * `slotProps` forwards props to one part. Here `search.ref` lets a button focus the search,
- * `builder.suggestedFields` lists Role first in the query builder, and `query.slots.help` replaces
- * the advanced view's syntax reference.
+ * `slotProps` forwards props to one part. Here `search.ref` lets a button focus the search, and
+ * `builder.suggestedFields` lists Role first in the query builder.
  */
 export const SlotProps: Story = {
 	parameters: {
@@ -569,7 +546,6 @@ export const SlotProps: Story = {
 					slotProps={{
 						search: { ref: searchRef },
 						builder: { suggestedFields: ['role', 'status'] },
-						query: { slots: { help: 'Combine clauses with AND or OR. See the product docs for more.' } },
 					}}
 				/>
 			</DsStack>

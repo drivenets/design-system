@@ -10,7 +10,7 @@ interface SummaryPhrase {
 	key: string;
 	label: string;
 	operator?: string;
-	value?: string;
+	value: string;
 	delimited: boolean;
 }
 
@@ -27,8 +27,6 @@ const toPhrase = (
 			return { key: 'savedFilter', label: locale.activeSavedFilter, value: item.name, delimited: isOnly };
 		case 'empty':
 			return { key: 'empty', label: locale.emptyLabel, value: locale.emptyValue, delimited: true };
-		case 'advancedQuery':
-			return { key: 'advancedQuery', label: locale.advancedQuery, delimited: true };
 		case 'search':
 			return { key: `search:${item.id}`, label: locale.search, value: item.value, delimited: true };
 		case 'condition':
@@ -45,26 +43,22 @@ const toPhrase = (
 /**
  * `Label: value;`, or `Label operator: value;` with the operator in italics
  */
-const renderPhrase = ({ key, label, operator, value, delimited }: SummaryPhrase) => {
-	const hasValue = value !== undefined;
-
-	return (
-		<span key={key}>
-			<span className={styles.summaryLabel}>
-				{label}
-				{hasValue && !operator && ':'}
-			</span>
-			{operator && (
-				<>
-					{' '}
-					<span className={styles.summaryOperator}>{operator}</span>:
-				</>
-			)}
-			{hasValue && ` ${value}`}
-			{delimited && ';'}
+const renderPhrase = ({ key, label, operator, value, delimited }: SummaryPhrase) => (
+	<span key={key}>
+		<span className={styles.summaryLabel}>
+			{label}
+			{!operator && ':'}
 		</span>
-	);
-};
+		{operator && (
+			<>
+				{' '}
+				<span className={styles.summaryOperator}>{operator}</span>:
+			</>
+		)}
+		{` ${value}`}
+		{delimited && ';'}
+	</span>
+);
 
 /**
  * Phrases separated by a space, so the text reads as one line for assistive tech and copy
@@ -73,14 +67,13 @@ const renderPhrases = (phrases: ReadonlyArray<SummaryPhrase>): ReactNode[] =>
 	phrases.flatMap((phrase, index) => (index ? [' ', renderPhrase(phrase)] : [renderPhrase(phrase)]));
 
 /**
- * Collapsed row. Lists the conditions from the filter document, or a fixed label while an Advanced
- * query is the source, after the **Active saved filter**'s name.
+ * Collapsed row. Lists the conditions from the filter document, after the **Active saved filter**'s
+ * name.
  */
 export const Summary = ({ ref, className, style }: DsFiltersBarSummarySlotProps) => {
 	const {
 		fields,
 		conditions,
-		query,
 		activeSavedFilter,
 		resultCount: count,
 		locale: barLocale,
@@ -88,7 +81,7 @@ export const Summary = ({ ref, className, style }: DsFiltersBarSummarySlotProps)
 	const locale = barLocale.summary;
 	const activeSavedFilterName = activeSavedFilter?.name;
 
-	const items = toSummaryItems({ conditions, query, fields, activeSavedFilterName });
+	const items = toSummaryItems({ conditions, fields, activeSavedFilterName });
 	const phrases = items.map((item) => toPhrase(item, locale, items.length === 1));
 	const savedFilter = items[0]?.kind === 'savedFilter' ? phrases[0] : undefined;
 	const documentPhrases = savedFilter ? phrases.slice(1) : phrases;

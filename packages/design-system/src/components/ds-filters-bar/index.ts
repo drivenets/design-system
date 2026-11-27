@@ -53,8 +53,6 @@ export type {
 	DsFiltersBarPinnedLocale,
 	DsFiltersBarPinnedSlotProps,
 	DsFiltersBarProps,
-	DsFiltersBarQueryLocale,
-	DsFiltersBarQuerySlotProps,
 	DsFiltersBarResolvedLocale,
 	DsFiltersBarResolvedOperatorsLocale,
 	DsFiltersBarSavedFilter,
@@ -73,18 +71,7 @@ export type {
 	DsFiltersBarViewSwitchSlotProps,
 } from './ds-filters-bar.types';
 
-export { parseFilterQuery, serializeFilterQuery, filterQueryErrorCodes } from './query-language';
-export type {
-	DsFilterQueryAnd,
-	DsFilterQueryClause,
-	DsFilterQueryError,
-	DsFilterQueryErrorCode,
-	DsFilterQueryGroup,
-	DsFilterQueryNode,
-	DsFilterQueryOr,
-	DsFilterQueryResult,
-	DsFilterQuerySearch,
-} from './query-language';
+export { serializeFilterQuery } from './query-language';
 
 export { filterRows, useFilteredRows } from './row-matcher';
 export type { DsFilterRowsOptions, DsFilterRowsResult } from './row-matcher';

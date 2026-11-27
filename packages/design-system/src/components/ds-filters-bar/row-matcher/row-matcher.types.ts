@@ -9,7 +9,7 @@ import type {
 export interface DsFilterRowsOptions<TRow> {
 	fields: ReadonlyArray<DsFilterField>;
 	/**
-	 * The **Filter document**: its conditions, or the **Advanced query** while `query` is set
+	 * The **Filter document**. A row matches when it matches every condition.
 	 */
 	value: DsFilterDocumentInput;
 	/**

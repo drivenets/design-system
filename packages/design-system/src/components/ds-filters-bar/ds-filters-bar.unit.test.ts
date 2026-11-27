@@ -18,8 +18,6 @@ import {
 	isFiltersDialogEntrySet,
 	fromFiltersDialogValue,
 	isFiltersBarView,
-	lockedViewsFor,
-	normalizeQuery,
 	removeConditionById,
 	replaceCondition,
 	resolveLocale,
@@ -60,32 +58,12 @@ const FIELDS = resolveFields([
 ]);
 
 describe('isFiltersBarView', () => {
-	it.each(['filters', 'builder', 'advanced'])('accepts %s', (value) => {
+	it.each(['filters', 'builder'])('accepts %s', (value) => {
 		expect(isFiltersBarView(value)).toBe(true);
 	});
 
-	it.each(['code', '', null])('rejects %s', (value) => {
+	it.each(['advanced', 'code', '', null])('rejects %s', (value) => {
 		expect(isFiltersBarView(value)).toBe(false);
-	});
-});
-
-describe('normalizeQuery', () => {
-	it('keeps edited text as is', () => {
-		expect(normalizeQuery(' status = "Active" ')).toBe(' status = "Active" ');
-	});
-
-	it.each(['', '   ', null])('turns %j into null', (query) => {
-		expect(normalizeQuery(query)).toBeNull();
-	});
-});
-
-describe('lockedViewsFor', () => {
-	it('locks nothing while the conditions are the source', () => {
-		expect(lockedViewsFor(null)).toEqual([]);
-	});
-
-	it('locks the filters and builder views while an edited query is the source', () => {
-		expect(lockedViewsFor('status = "Active"')).toEqual(['filters', 'builder']);
 	});
 });
 
@@ -234,7 +212,7 @@ describe('describeCondition', () => {
 
 describe('toSummaryItems', () => {
 	it('shows the empty view for an empty document', () => {
-		expect(toSummaryItems({ conditions: [], query: null, fields: FIELDS })).toEqual([{ kind: 'empty' }]);
+		expect(toSummaryItems({ conditions: [], fields: FIELDS })).toEqual([{ kind: 'empty' }]);
 	});
 
 	it('lists field conditions in order, leaving out the operator only for `=`', () => {
@@ -243,7 +221,7 @@ describe('toSummaryItems', () => {
 			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
 		];
 
-		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+		expect(toSummaryItems({ conditions, fields: FIELDS })).toEqual([
 			{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
 			{ kind: 'condition', id: 'c2', label: 'Status', operator: 'not equals', value: 'Deprecated' },
 		]);
@@ -254,7 +232,7 @@ describe('toSummaryItems', () => {
 			{ kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
 		];
 
-		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+		expect(toSummaryItems({ conditions, fields: FIELDS })).toEqual([
 			{ kind: 'condition', id: 'c1', label: 'Input › Name', operator: 'contains', value: 'WF456' },
 		]);
 	});
@@ -265,7 +243,7 @@ describe('toSummaryItems', () => {
 			{ kind: 'search', id: 'c2', text: 'AAA' },
 		];
 
-		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+		expect(toSummaryItems({ conditions, fields: FIELDS })).toEqual([
 			{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
 			{ kind: 'search', id: 'c2', value: 'AAA' },
 		]);
@@ -276,7 +254,7 @@ describe('toSummaryItems', () => {
 			{ kind: 'field', id: 'c1', field: 'parents', operator: '=', value: { from: 2, to: 5 } },
 		];
 
-		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+		expect(toSummaryItems({ conditions, fields: FIELDS })).toEqual([
 			{ kind: 'condition', id: 'c1', label: 'Parents', value: '2 – 5' },
 		]);
 	});
@@ -286,24 +264,16 @@ describe('toSummaryItems', () => {
 			{ kind: 'field', id: 'c1', field: 'removed', subfield: 'gone', operator: '!=', value: 'x' },
 		];
 
-		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+		expect(toSummaryItems({ conditions, fields: FIELDS })).toEqual([
 			{ kind: 'condition', id: 'c1', label: 'removed › gone', operator: '!=', value: 'x' },
 		]);
 	});
 
-	it('shows only the advanced query label, without its text or the conditions, while a query is the source', () => {
-		const conditions: DsFilterCondition[] = [{ kind: 'search', id: 'c1', text: 'AAA' }];
-
-		expect(toSummaryItems({ conditions, query: 'status = "active" OR parents > 2', fields: FIELDS })).toEqual(
-			[{ kind: 'advancedQuery' }],
-		);
-	});
-
 	describe('with an active saved filter', () => {
 		it('shows only the name, without the empty view, when nothing follows', () => {
-			expect(
-				toSummaryItems({ conditions: [], query: null, fields: FIELDS, activeSavedFilterName: 'Ira123' }),
-			).toEqual([{ kind: 'savedFilter', name: 'Ira123' }]);
+			expect(toSummaryItems({ conditions: [], fields: FIELDS, activeSavedFilterName: 'Ira123' })).toEqual([
+				{ kind: 'savedFilter', name: 'Ira123' },
+			]);
 		});
 
 		it('puts the name before the conditions', () => {
@@ -311,23 +281,10 @@ describe('toSummaryItems', () => {
 				{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
 			];
 
-			expect(
-				toSummaryItems({ conditions, query: null, fields: FIELDS, activeSavedFilterName: 'Ira123' }),
-			).toEqual([
+			expect(toSummaryItems({ conditions, fields: FIELDS, activeSavedFilterName: 'Ira123' })).toEqual([
 				{ kind: 'savedFilter', name: 'Ira123' },
 				{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
 			]);
-		});
-
-		it('puts the name before the advanced query', () => {
-			expect(
-				toSummaryItems({
-					conditions: [],
-					query: 'status = "active" OR parents > 2',
-					fields: FIELDS,
-					activeSavedFilterName: 'Ira123',
-				}),
-			).toEqual([{ kind: 'savedFilter', name: 'Ira123' }, { kind: 'advancedQuery' }]);
 		});
 	});
 });

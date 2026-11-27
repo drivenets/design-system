@@ -27,20 +27,17 @@ const isShortcutTarget = (target: EventTarget | null) =>
 export const Search = ({
 	value: valueProp,
 	defaultValue = '',
-	disabled: disabledProp = false,
+	disabled = false,
 	ref,
 	className,
 	style,
 	onValueChange,
 }: DsFiltersBarSearchSlotProps) => {
-	const { conditions, query, locale: barLocale, addCondition, registerSearch } = useDsFiltersBarContext();
+	const { conditions, locale: barLocale, addCondition, registerSearch } = useDsFiltersBarContext();
 	const locale = barLocale.search;
 
 	const [value, setValue] = useReportedState(valueProp, onValueChange, defaultValue);
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	// An Advanced query is the only source, so a new condition would not reach the document.
-	const disabled = disabledProp || query !== null;
 
 	const edit = (text: string) => {
 		setValue(text);

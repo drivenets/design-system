@@ -6,7 +6,6 @@ import {
 	Conditions,
 	Disclosure,
 	Pinned,
-	Query,
 	SavedFilters,
 	SaveFilter,
 	Search,
@@ -28,29 +27,26 @@ import {
 	appendCondition,
 	isEmptyDocument,
 	keepPinned,
-	lockedViewsFor,
-	normalizeQuery,
 	removeConditionById,
 	replaceCondition,
 	resolveLocale,
 	shownViewFor,
 } from './ds-filters-bar.utils';
 import { toFilterDocument } from './filter-document';
-import { serializeFilterQuery } from './query-language';
 import { resolveFields } from './resolve-fields';
 import { useReportedState } from './use-reported-state';
 
 const EMPTY_FIELDS = Object.freeze([]);
 const EMPTY_PINS: ReadonlyArray<DsFilterPin> = Object.freeze([]);
 /**
- * With no fields there is nothing to build or query, so only the filters view shows: search and
- * search chips.
+ * With no fields there is nothing to build, so only the filters view shows: search and search
+ * chips.
  */
 const SEARCH_ONLY_VIEWS: ReadonlyArray<DsFiltersBarView> = Object.freeze(['filters']);
 
 /**
- * @summary Filters a table or list by one **Filter document**: search, filter chips, a query
- * builder and an advanced query, with a pinned row of quick toggles and optional saved filters.
+ * @summary Filters a table or list by one **Filter document**: search, filter chips and a query
+ * builder, with a pinned row of quick toggles and optional saved filters.
  */
 export const DsFiltersBar = ({
 	fields = EMPTY_FIELDS,
@@ -107,7 +103,7 @@ export const DsFiltersBar = ({
 	const disclosureRef = useRef<HTMLButtonElement>(null);
 	const toolbarId = useId();
 
-	const { conditions, query } = value;
+	const { conditions } = value;
 	const activeSavedFilter = savedFilters?.items.find((item) => item.id === activeSavedFilterId);
 	const locale = resolveLocale(localeProp);
 	const resolvedFields = resolveFields(fields, locale);
@@ -116,10 +112,9 @@ export const DsFiltersBar = ({
 	const canAdd = resolvedFields.length > 0;
 	const shownViews = canAdd ? views : SEARCH_ONLY_VIEWS;
 	const switchViews = filtersBarViews.filter((item) => shownViews.includes(item));
-	// Derived, not reported: the asked-for view shows again once the query is cleared.
-	const view = shownViewFor(query, requestedView, shownViews);
+	const view = shownViewFor(requestedView, shownViews);
 
-	const setConditions = (next: ReadonlyArray<DsFilterCondition>) => setDocument({ conditions: next, query });
+	const setConditions = (next: ReadonlyArray<DsFilterCondition>) => setDocument({ conditions: next });
 
 	const setPins = (next: ReadonlyArray<DsFilterPin>) => {
 		setPinsState(next);
@@ -143,13 +138,10 @@ export const DsFiltersBar = ({
 				canAdd,
 				document: value,
 				conditions,
-				query,
-				queryText: query ?? serializeFilterQuery(conditions),
 				resetRevision,
 				pins,
 				activeToggles,
 				isEmpty: isEmptyDocument(value),
-				lockedViews: lockedViewsFor(query),
 				expanded,
 				view,
 				views: switchViews,
@@ -165,7 +157,6 @@ export const DsFiltersBar = ({
 				addCondition: (condition) => setConditions(appendCondition(conditions, condition)),
 				updateCondition: (condition) => setConditions(replaceCondition(conditions, condition)),
 				removeCondition: (id) => setConditions(removeConditionById(conditions, id)),
-				setQuery: (next) => setDocument({ conditions, query: normalizeQuery(next) }),
 				setPins,
 				setActiveToggles,
 				setActiveSavedFilterId,
@@ -193,7 +184,6 @@ export const DsFiltersBar = ({
 						{switchViews.length > 1 && <ViewSwitch {...slotProps?.viewSwitch} />}
 						{view === 'filters' && <Conditions {...slotProps?.conditions} />}
 						{view === 'builder' && <Builder {...slotProps?.builder} />}
-						{view === 'advanced' && <Query {...slotProps?.query} />}
 						{savedFilters && <SaveFilter {...slotProps?.saveFilter} />}
 						<ClearAll {...slotProps?.clearAll} />
 					</Toolbar>

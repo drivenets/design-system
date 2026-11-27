@@ -40,24 +40,18 @@ const FAILED: DsFilterCondition = {
 	value: ['failed'],
 };
 const ROUTER: DsFilterCondition = { kind: 'search', id: 'router-1', text: 'router' };
-const OR_QUERY = 'status = "active" OR status = "failed"';
 
 const NIGHT: DsFiltersBarSavedFilter = {
 	id: 'night',
 	name: 'Night shift',
-	document: { conditions: [ACTIVE], query: null },
+	document: { conditions: [ACTIVE] },
 };
 const FAILED_RUNS: DsFiltersBarSavedFilter = {
 	id: 'failed',
 	name: 'Failed runs',
-	document: { conditions: [FAILED, ROUTER], query: null },
+	document: { conditions: [FAILED, ROUTER] },
 };
-const EITHER: DsFiltersBarSavedFilter = {
-	id: 'either',
-	name: 'Either',
-	document: { conditions: [], query: OR_QUERY },
-};
-const ITEMS = [NIGHT, FAILED_RUNS, EITHER];
+const ITEMS = [NIGHT, FAILED_RUNS];
 
 const createDeferred = <T,>() => {
 	let resolve!: (value: T) => void;
@@ -179,14 +173,13 @@ describe('DsFiltersBar saved filters picker', () => {
 			.toMatchTextContent(/Filter: Failed runs/);
 	});
 
-	it('shows each item’s condition count, and none for an Advanced query', async () => {
+	it('shows each item’s condition count', async () => {
 		await page.render(<SavedFiltersBar />);
 
 		await openPicker();
 
 		await expect.element(rowMeta('Night shift').getByText('1', { exact: true })).toBeVisible();
 		await expect.element(rowMeta('Failed runs').getByText('2', { exact: true })).toBeVisible();
-		await expect.element(rowMeta('Either').getByText(/^\d+$/)).not.toBeInTheDocument();
 	});
 
 	it('marks the Active saved filter dirty once the document differs, and clean once it matches again', async () => {
@@ -202,15 +195,6 @@ describe('DsFiltersBar saved filters picker', () => {
 		await page.getByRole('button', { name: 'Remove filter: edge' }).click();
 
 		await expect.element(tag('Night shift')).toBeVisible();
-	});
-
-	it('loads a saved Advanced query into the advanced view', async () => {
-		await page.render(<SavedFiltersBar />);
-
-		await loadSavedFilter('Either');
-
-		await expect.element(page.getByRole('textbox', { name: 'Advanced query' })).toHaveValue(OR_QUERY);
-		await expect.element(page.getByRole('radio', { name: 'Filters', exact: true })).toBeDisabled();
 	});
 
 	it('clears the document and the Active saved filter from the tag', async () => {
@@ -286,12 +270,6 @@ describe('DsFiltersBar saving filters', () => {
 		await expect.element(saveButton()).toBeEnabled();
 	});
 
-	it('enables the save button while an Advanced query is the source', async () => {
-		await page.render(<SavedFiltersBar defaultValue={EITHER.document} />);
-
-		await expect.element(saveButton()).toBeEnabled();
-	});
-
 	it('follows slotProps.saveFilter.disabled over the empty document', async () => {
 		await page.render(<SavedFiltersBar slotProps={{ saveFilter: { disabled: false } }} />);
 
@@ -347,7 +325,6 @@ describe('DsFiltersBar saving filters', () => {
 
 		expect(onUpdate).toHaveBeenCalledExactlyOnceWith('night', {
 			conditions: [ACTIVE, expect.objectContaining({ kind: 'search', text: 'edge' })],
-			query: null,
 		});
 	});
 

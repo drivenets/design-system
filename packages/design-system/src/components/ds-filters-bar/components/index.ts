@@ -8,4 +8,3 @@ export { Toolbar } from './ds-filters-bar-toolbar';
 export { ViewSwitch } from './ds-filters-bar-view-switch';
 export { Builder } from './ds-filters-bar-builder';
 export { Conditions } from './ds-filters-bar-conditions';
-export { Query } from './ds-filters-bar-query';

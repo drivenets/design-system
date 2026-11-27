@@ -14,28 +14,17 @@ const EMPTY_DRAFT: DsFiltersBarFiltersDialogValue = Object.freeze([]);
 
 /**
  * Filters view: the add-filter button with its filters dialog, and one chip per condition. A field
- * chip switches its operator in place, and opens the filters dialog on its field's tab. Renders
- * nothing while an Advanced query is the source.
+ * chip switches its operator in place, and opens the filters dialog on its field's tab.
  *
  * Owns the dialog draft: seeded from the filter document on open, written back only on Save, and
  * dropped on any other close.
  */
 export const Conditions = ({ ref, className, style }: DsFiltersBarConditionsSlotProps) => {
-	const { fields, conditions, query, pins, locale, setConditions, setPins } = useDsFiltersBarContext();
+	const { fields, conditions, pins, locale, setConditions, setPins } = useDsFiltersBarContext();
 
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(EMPTY_DRAFT);
 	const [initialTab, setInitialTab] = useState<string | undefined>(undefined);
-
-	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
-	// A dialog left open would come back with a stale draft once the query clears.
-	if (query !== null) {
-		if (open) {
-			setOpen(false);
-		}
-
-		return null;
-	}
 
 	const handleOpen = (tabId?: string) => {
 		setDraft(toFiltersDialogValue(fields, conditions, pins));

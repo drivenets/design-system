@@ -8,14 +8,11 @@ import type {
 import { afterSettled, documentKey } from '../ds-filters-bar.utils';
 import { toFilterDocument } from '../filter-document';
 
-/**
- * An Advanced query has no condition count, so its item shows none.
- */
-const toItem = ({ id, name, document: input }: DsFiltersBarSavedFilter): DsSavedFilterItem => {
-	const document = toFilterDocument(input);
-
-	return document.query === null ? { id, name, count: document.conditions.length } : { id, name };
-};
+const toItem = ({ id, name, document }: DsFiltersBarSavedFilter): DsSavedFilterItem => ({
+	id,
+	name,
+	count: document.conditions?.length ?? 0,
+});
 
 /**
  * Picker for **Saved filters**. Choosing one loads its document; clearing the active one also

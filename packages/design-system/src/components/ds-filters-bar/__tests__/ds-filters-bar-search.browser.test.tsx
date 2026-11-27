@@ -23,9 +23,8 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 ];
 
 const AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
-const OR_QUERY = 'status = "active" OR status = "pending"';
 
-const withAAA: DsFilterDocument = { conditions: [AAA], query: null };
+const withAAA: DsFilterDocument = { conditions: [AAA] };
 
 const SearchBar = (props: DsFiltersBarProps) => <DsFiltersBar defaultExpanded fields={FIELDS} {...props} />;
 
@@ -34,7 +33,6 @@ const clearButton = (name = 'Clear search') => page.getByRole('button', { name, 
 const chip = (text: string) => page.getByRole('button', { name: text, exact: true });
 const removeChip = (text: string) =>
 	page.getByRole('button', { name: `Remove filter: ${text}`, exact: true });
-const clearAll = () => page.getByRole('button', { name: 'Clear all', exact: true });
 
 const searchTexts = (document: DsFilterDocument | undefined) =>
 	document?.conditions.map((condition) => (condition.kind === 'search' ? condition.text : ''));
@@ -54,7 +52,6 @@ describe('DsFiltersBar search adding a search', () => {
 
 		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
 			conditions: [expect.objectContaining({ kind: 'search', text: 'AAA' })],
-			query: null,
 		});
 		await expect.element(searchInput()).toHaveValue('');
 		await expect.element(chip('AAA')).toBeVisible();
@@ -91,14 +88,6 @@ describe('DsFiltersBar search adding a search', () => {
 		await submit('BBB');
 
 		expect(searchTexts(onValueChange.mock.lastCall?.[0])).toEqual(['AAA', 'BBB']);
-	});
-
-	it('writes a search into the Advanced query as a quoted string', async () => {
-		await page.render(<SearchBar defaultView="advanced" />);
-
-		await submit('AAA');
-
-		await expect.element(page.getByRole('textbox', { name: 'Advanced query' })).toHaveValue('"AAA"');
 	});
 });
 
@@ -183,16 +172,6 @@ describe('DsFiltersBar search disabled', () => {
 
 		await expect.element(searchInput()).toBeDisabled();
 	});
-
-	it('is disabled while an Advanced query is the source, until it is cleared', async () => {
-		await page.render(<SearchBar defaultValue={{ conditions: [], query: OR_QUERY }} />);
-
-		await expect.element(searchInput()).toBeDisabled();
-
-		await clearAll().click();
-
-		await expect.element(searchInput()).toBeEnabled();
-	});
 });
 
 describe('DsFiltersBar search chips', () => {
@@ -203,7 +182,7 @@ describe('DsFiltersBar search chips', () => {
 
 		await removeChip('AAA').click();
 
-		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [], query: null });
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [] });
 		await expect.element(chip('AAA')).not.toBeInTheDocument();
 	});
 
@@ -215,7 +194,7 @@ describe('DsFiltersBar search chips', () => {
 		await searchInput().fill('draft');
 		await chip('AAA').click();
 
-		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [], query: null });
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [] });
 		await expect.element(chip('AAA')).not.toBeInTheDocument();
 		await expect.element(searchInput()).toHaveValue('AAA');
 		await expect.element(searchInput()).toHaveFocus();
