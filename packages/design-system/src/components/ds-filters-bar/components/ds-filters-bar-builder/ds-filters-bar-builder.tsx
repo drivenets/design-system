@@ -6,17 +6,19 @@ import { DsTag } from '../../../ds-tag';
 import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
-import { createConditionId } from '../../ds-filters-bar.utils';
+import { conditionsNormalizer, createConditionId } from '../../ds-filters-bar.utils';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
 import type { DsFiltersBarBuilderSlotProps } from '../../ds-filters-bar.types';
 import {
 	type BuilderChoice,
 	type BuilderDraft,
 	type BuilderPathSegment,
+	builderDraftConditions,
 	builderDraftFromCondition,
 	chooseBuilderOption,
 	describeBuilderStep,
 	emptyBuilderDraft,
+	normalizeBuilderDraft,
 	setBuilderInput,
 	toFieldCondition,
 } from './ds-filters-bar-builder.utils';
@@ -75,16 +77,24 @@ const SelectionPath = ({ segments, clearLabel, onClear }: SelectionPathProps) =>
  * source.
  *
  * Owns the dialog and its draft: empty when opened from the add button, filled from the condition
- * when opened from a field chip. Save adds or replaces that one condition and closes; any other close
- * drops the draft.
+ * when opened from a field chip. Each change passes the conditions Save would leave through the
+ * host's `normalizeDraft`. Save adds or replaces that one condition, keeps what `normalizeDraft`
+ * changed, and closes; any other close drops the draft.
  */
 export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBarBuilderSlotProps) => {
-	const { fields, query, locale: barLocale, addCondition, updateCondition } = useDsFiltersBarContext();
+	const {
+		fields,
+		document,
+		conditions,
+		query,
+		locale: barLocale,
+		normalizeDraft,
+		setConditions,
+	} = useDsFiltersBarContext();
 	const locale = barLocale.builder;
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(emptyBuilderDraft);
-	// The condition being edited, or `null` while adding one
-	const [editingId, setEditingId] = useState<string | null>(null);
+	const [conditionId, setConditionId] = useState('');
 	const inputId = useId();
 
 	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
@@ -97,13 +107,31 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 		return null;
 	}
 
-	const view = describeBuilderStep(fields, draft, suggestedFields, locale);
-	const condition = toFieldCondition(fields, draft);
+	const builtOf = (next: BuilderDraft) => {
+		const built = toFieldCondition(fields, next);
 
-	const openWith = (next: BuilderDraft, id: string | null) => {
+		return built && { ...built, id: conditionId };
+	};
+	const normalizeConditions = conditionsNormalizer(document, normalizeDraft);
+	const condition = builtOf(draft);
+	const draftConditions = open
+		? builderDraftConditions(conditions, condition, normalizeConditions)
+		: conditions;
+	// The value step replaces the built condition's value, so its options are judged without it.
+	const optionsDraft = { ...document, conditions: draftConditions.filter((item) => item.id !== conditionId) };
+	const view = describeBuilderStep(fields, draft, suggestedFields, locale, optionsDraft);
+
+	const openWith = (next: BuilderDraft, id: string) => {
 		setDraft(next);
-		setEditingId(id);
+		setConditionId(id);
 		setOpen(true);
+	};
+
+	const update = (next: BuilderDraft) => {
+		const built = builtOf(next);
+		const normalized = builderDraftConditions(conditions, built, normalizeConditions);
+
+		setDraft(normalizeBuilderDraft(fields, next, built, normalized));
 	};
 
 	const save = () => {
@@ -111,17 +139,16 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 			return;
 		}
 
-		if (editingId) {
-			updateCondition({ ...condition, id: editingId });
-		} else {
-			addCondition({ ...condition, id: createConditionId() });
-		}
-
+		setConditions(builderDraftConditions(conditions, condition, normalizeConditions));
 		setOpen(false);
 	};
 
 	const choose = (choice: BuilderChoice) => {
-		setDraft(chooseBuilderOption(fields, draft, choice));
+		if (choice.disabled) {
+			return;
+		}
+
+		update(chooseBuilderOption(fields, draft, choice));
 	};
 
 	const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -139,7 +166,7 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 
 		const [onlyChoice] = view.choices;
 
-		if (view.choices.length === 1 && onlyChoice) {
+		if (view.choices.length === 1 && onlyChoice && !onlyChoice.disabled) {
 			choose(onlyChoice);
 		}
 	};
@@ -151,7 +178,7 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 			className={className}
 			style={style}
 			canEdit={(chip) => fields.some((field) => field.id === chip.field)}
-			onAdd={() => openWith(emptyBuilderDraft(), null)}
+			onAdd={() => openWith(emptyBuilderDraft(), createConditionId())}
 			onEdit={(chip) => openWith(builderDraftFromCondition(fields, chip), chip.id)}
 		>
 			<DsModal open={open} dividers closeOnInteractOutside className={styles.dialog} onOpenChange={setOpen}>
@@ -170,7 +197,7 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 					<SelectionPath
 						segments={view.path}
 						clearLabel={locale.clear}
-						onClear={() => setDraft(emptyBuilderDraft())}
+						onClear={() => update(emptyBuilderDraft())}
 					/>
 
 					<div className={styles.search}>
@@ -183,7 +210,7 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 							value={view.inputValue}
 							placeholder={view.placeholder}
 							slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-							onValueChange={(value) => setDraft(setBuilderInput(fields, draft, value))}
+							onValueChange={(value) => update(setBuilderInput(fields, draft, value))}
 							onKeyDown={handleInputKeyDown}
 						/>
 					</div>
@@ -197,8 +224,18 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 								{view.choices.map((choice) => (
 									<DsTag
 										key={`${choice.kind}-${choice.id}`}
-										label={choice.label}
+										label={
+											choice.content === undefined ? (
+												choice.label
+											) : (
+												<>
+													<span aria-hidden>{choice.content}</span>
+													<span className={styles.visuallyHidden}>{choice.label}</span>
+												</>
+											)
+										}
 										selected={choice.id === view.selectedChoiceId}
+										disabled={choice.disabled}
 										onClick={() => choose(choice)}
 									/>
 								))}

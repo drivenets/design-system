@@ -1,13 +1,15 @@
-import { describe, expect, it } from 'vitest';
-import type { DsFilterFieldCondition } from '../../ds-filters-bar.types';
+import { describe, expect, it, vi } from 'vitest';
+import type { DsFilterCondition, DsFilterFieldCondition } from '../../ds-filters-bar.types';
 import { resolveFields } from '../../resolve-fields';
 import { defaultDsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 import {
 	type BuilderDraft,
+	builderDraftConditions,
 	builderDraftFromCondition,
 	chooseBuilderOption,
 	describeBuilderStep,
 	emptyBuilderDraft,
+	normalizeBuilderDraft,
 	setBuilderInput,
 	toFieldCondition,
 } from './ds-filters-bar-builder.utils';
@@ -225,5 +227,83 @@ describe('builderDraftFromCondition', () => {
 				value: 'x',
 			}),
 		).toEqual(emptyBuilderDraft());
+	});
+});
+
+describe('builder draft conditions', () => {
+	const STATUS: DsFilterFieldCondition = {
+		kind: 'field',
+		id: 'status-id',
+		field: 'status',
+		operator: '=',
+		value: ['active'],
+	};
+	const OUTPUT: DsFilterFieldCondition = {
+		kind: 'field',
+		id: 'output-id',
+		field: 'output',
+		operator: '=',
+		value: 'log',
+	};
+	const keep = (draft: ReadonlyArray<DsFilterCondition>) => draft;
+
+	it('adds a new condition and replaces one with the same id', () => {
+		const added = { ...STATUS, id: 'new-id' };
+		const replaced = { ...STATUS, value: ['pending'] };
+
+		expect(builderDraftConditions([OUTPUT], added, keep)).toEqual([OUTPUT, added]);
+		expect(builderDraftConditions([STATUS, OUTPUT], replaced, keep)).toEqual([replaced, OUTPUT]);
+	});
+
+	it('passes the conditions through normalizeDraft', () => {
+		const normalize = vi.fn((draft: ReadonlyArray<DsFilterCondition>) => draft.slice(1));
+
+		expect(builderDraftConditions([OUTPUT], STATUS, normalize)).toEqual([STATUS]);
+		expect(normalize).toHaveBeenCalledWith([OUTPUT, STATUS]);
+	});
+
+	it('marks enum options disabled and drawn from the field', () => {
+		const fields = resolveFields([
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
+				renderOption: (option) => `${option.label} badge`,
+				isOptionDisabled: (option, draft) => option.value === 'pending' && draft.conditions.length > 0,
+			},
+		]);
+		const draft = chooseBuilderOption(fields, emptyBuilderDraft(), {
+			kind: 'field',
+			id: 'status',
+			label: 'Status',
+		});
+
+		const view = describeBuilderStep(fields, draft, undefined, defaultDsFiltersBarBuilderLocale, {
+			conditions: [OUTPUT],
+			query: null,
+		});
+
+		expect(view.choices).toEqual([
+			{ kind: 'option', id: 'active', label: 'Active', content: 'Active badge' },
+			{ kind: 'option', id: 'pending', label: 'Pending', content: 'Pending badge', disabled: true },
+		]);
+	});
+
+	it('follows the built condition as normalizeDraft changed or removed it', () => {
+		const draft = builderDraftFromCondition(FIELDS, STATUS);
+		const changed = { ...STATUS, value: ['pending'] };
+
+		expect(normalizeBuilderDraft(FIELDS, draft, STATUS, [STATUS, OUTPUT])).toBe(draft);
+		expect(normalizeBuilderDraft(FIELDS, draft, STATUS, [changed])).toEqual(
+			builderDraftFromCondition(FIELDS, changed),
+		);
+		expect(normalizeBuilderDraft(FIELDS, draft, STATUS, [OUTPUT])).toEqual({
+			...draft,
+			optionValue: null,
+		});
 	});
 });

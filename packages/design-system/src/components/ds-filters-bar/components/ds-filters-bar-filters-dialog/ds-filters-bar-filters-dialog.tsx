@@ -13,6 +13,7 @@ import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { DsVerticalTabs } from '../../../ds-vertical-tabs';
 import type {
+	DsFilterOption,
 	DsFilterRange,
 	DsFilterResolvedOperator,
 	DsFilterResolvedScalarField,
@@ -191,10 +192,19 @@ interface PanelProps<TEntry extends DsFiltersBarFiltersDialogEntry> {
 
 interface EnumPanelProps extends PanelProps<DsFiltersBarFiltersDialogEnumEntry> {
 	search: string;
+	isOptionDisabled: (option: DsFilterOption) => boolean;
 	onSearchChange: (search: string) => void;
 }
 
-const EnumPanel = ({ tab, entry, search, locale, onSearchChange, onEntryChange }: EnumPanelProps) => {
+const EnumPanel = ({
+	tab,
+	entry,
+	search,
+	locale,
+	isOptionDisabled,
+	onSearchChange,
+	onEntryChange,
+}: EnumPanelProps) => {
 	if (tab.schema.type !== 'enum') {
 		return null;
 	}
@@ -203,6 +213,7 @@ const EnumPanel = ({ tab, entry, search, locale, onSearchChange, onEntryChange }
 	const visibleOptions = tab.schema.options.filter((option) => option.label.toLowerCase().includes(query));
 	// A pin names a field, never a subfield.
 	const canPin = !tab.subfield;
+	const { renderOption } = tab.schema;
 
 	return (
 		<>
@@ -229,33 +240,47 @@ const EnumPanel = ({ tab, entry, search, locale, onSearchChange, onEntryChange }
 			</div>
 
 			<div className={styles.options} role="group" aria-label={tab.label}>
-				{visibleOptions.map((option) => (
-					<DsCheckbox
-						key={option.value}
-						size="large"
-						className={styles.option}
-						label={option.label}
-						checked={entry.selected.includes(option.value)}
-						actions={
-							canPin && (
-								<DsPinToggle
-									className={styles.optionPin}
-									itemLabel={option.label}
-									pinned={entry.pinned.includes(option.value)}
-									onPinnedChange={(next) =>
-										onEntryChange({ ...entry, pinned: toggle(entry.pinned, option.value, next) })
-									}
-								/>
-							)
-						}
-						onCheckedChange={(checked) =>
-							onEntryChange({
-								...entry,
-								selected: toggle(entry.selected, option.value, checked === true),
-							})
-						}
-					/>
-				))}
+				{visibleOptions.map((option) => {
+					const checked = entry.selected.includes(option.value);
+
+					return (
+						<DsCheckbox
+							key={option.value}
+							size="large"
+							className={styles.option}
+							label={
+								renderOption ? (
+									<>
+										<span aria-hidden>{renderOption(option)}</span>
+										<span className={styles.visuallyHidden}>{option.label}</span>
+									</>
+								) : (
+									option.label
+								)
+							}
+							checked={checked}
+							disabled={!checked && isOptionDisabled(option)}
+							actions={
+								canPin && (
+									<DsPinToggle
+										className={styles.optionPin}
+										itemLabel={option.label}
+										pinned={entry.pinned.includes(option.value)}
+										onPinnedChange={(next) =>
+											onEntryChange({ ...entry, pinned: toggle(entry.pinned, option.value, next) })
+										}
+									/>
+								)
+							}
+							onCheckedChange={(checked) =>
+								onEntryChange({
+									...entry,
+									selected: toggle(entry.selected, option.value, checked === true),
+								})
+							}
+						/>
+					);
+				})}
 			</div>
 		</>
 	);
@@ -438,17 +463,26 @@ interface TabPanelProps {
 	entry: DsFiltersBarFiltersDialogEntry;
 	search: string;
 	locale: Locale;
+	isOptionDisabled: (option: DsFilterOption) => boolean;
 	onSearchChange: (search: string) => void;
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
 }
 
-const TabPanel = ({ tab, entry, search, onSearchChange, ...rest }: TabPanelProps) => {
+const TabPanel = ({ tab, entry, search, isOptionDisabled, onSearchChange, ...rest }: TabPanelProps) => {
 	// The bar passes resolved fields; a tab built elsewhere gets the default operators and presets.
 	const props = { ...rest, tab: { ...tab, schema: resolveScalarField(tab.schema) } };
 
 	switch (entry.type) {
 		case 'enum':
-			return <EnumPanel entry={entry} search={search} onSearchChange={onSearchChange} {...props} />;
+			return (
+				<EnumPanel
+					entry={entry}
+					search={search}
+					isOptionDisabled={isOptionDisabled}
+					onSearchChange={onSearchChange}
+					{...props}
+				/>
+			);
 		case 'text':
 			return <TextPanel entry={entry} {...props} />;
 		case 'number':
@@ -467,6 +501,7 @@ export const FiltersDialog = ({
 	tabs,
 	value,
 	initialTab,
+	isOptionDisabled,
 	locale: localeProp,
 	className,
 	style,
@@ -549,6 +584,7 @@ export const FiltersDialog = ({
 								entry={getEntry(value, activeTab)}
 								search={search}
 								locale={locale}
+								isOptionDisabled={(option) => isOptionDisabled?.(activeTab, option) ?? false}
 								onSearchChange={setSearch}
 								onEntryChange={handleEntryChange}
 							/>

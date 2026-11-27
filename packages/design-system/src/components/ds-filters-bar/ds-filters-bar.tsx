@@ -20,6 +20,8 @@ import {
 	emptyFilterDocument,
 	filtersBarViews,
 	type DsFilterCondition,
+	type DsFilterDocument,
+	type DsFilterDocumentInput,
 	type DsFilterPin,
 	type DsFiltersBarProps,
 	type DsFiltersBarView,
@@ -42,6 +44,7 @@ import { useReportedState } from './use-reported-state';
 
 const EMPTY_FIELDS = Object.freeze([]);
 const EMPTY_PINS: ReadonlyArray<DsFilterPin> = Object.freeze([]);
+const keepDraft = (draft: DsFilterDocument): DsFilterDocumentInput => draft;
 /**
  * With no fields there is nothing to build or query, so only the filters view shows: search and
  * search chips.
@@ -68,6 +71,7 @@ export const DsFiltersBar = ({
 	savedFilters,
 	resultCount,
 	getPinCount,
+	normalizeDraft = keepDraft,
 	locale: localeProp,
 	slotProps,
 	ref,
@@ -160,6 +164,7 @@ export const DsFiltersBar = ({
 				activeSavedFilter,
 				resultCount,
 				getPinCount,
+				normalizeDraft,
 				setDocument,
 				setConditions,
 				addCondition: (condition) => setConditions(appendCondition(conditions, condition)),

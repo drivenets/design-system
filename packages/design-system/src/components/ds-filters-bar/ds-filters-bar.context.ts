@@ -2,6 +2,7 @@ import { createContext, useContext, type RefObject } from 'react';
 import type {
 	DsFilterCondition,
 	DsFilterDocument,
+	DsFilterDocumentInput,
 	DsFilterPin,
 	DsFilterResolvedField,
 	DsFiltersBarResolvedLocale,
@@ -80,6 +81,10 @@ export interface DsFiltersBarContextValue {
 	activeSavedFilter: DsFiltersBarSavedFilter | undefined;
 	resultCount: number | undefined;
 	getPinCount: ((pin: DsFilterPin) => number) | undefined;
+	/**
+	 * The host's rule for the open dialog's draft; returns the draft unchanged when the host gives none
+	 */
+	normalizeDraft: (draft: DsFilterDocument) => DsFilterDocumentInput;
 	/**
 	 * Replaces the whole document and reports it once
 	 */
