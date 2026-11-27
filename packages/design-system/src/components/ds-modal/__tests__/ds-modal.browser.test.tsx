@@ -169,6 +169,32 @@ describe('DsModal', () => {
 		expect(onOpenChange).not.toHaveBeenCalled();
 	});
 
+	it('draws a full-width border in the border color under the header', async () => {
+		await page.render(<ModalExample />);
+
+		await page.getByRole('button', { name: /open modal/i }).click();
+		const dialog = page.getByRole('dialog');
+		await expect.element(dialog).toBeVisible();
+
+		const header = dialog.getByRole('heading', { name: /modal title/i }).element().parentElement;
+		if (!header) {
+			throw new Error('header not found');
+		}
+
+		const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border');
+		const swatch = document.createElement('div');
+		swatch.style.color = borderColor;
+		document.body.append(swatch);
+		const expectedColor = getComputedStyle(swatch).color;
+		swatch.remove();
+
+		const style = getComputedStyle(header);
+		expect(style.borderBottomStyle).toBe('solid');
+		expect(style.borderBottomWidth).toBe('1px');
+		expect(style.borderBottomColor).toBe(expectedColor);
+		expect(header.offsetWidth).toBe((dialog.element() as HTMLElement).offsetWidth);
+	});
+
 	it('should release body scroll-lock when unmounted while open', async () => {
 		await page.render(<UnmountWhileOpenModal />);
 

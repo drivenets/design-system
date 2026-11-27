@@ -2,7 +2,7 @@ $pad-y: var(--standard);
 $full-screen-pad-x: 40px;
 $max-width: 90vw;
 $border-size: 1px;
-$border: $border-size solid var(--border-secondary);
+$border: $border-size solid var(--border);
 $resize-transition: 0.2s ease-in-out;
 $trigger-divider-height: 16px;
 
@@ -127,22 +127,9 @@ $trigger-divider-height: 16px;
 	display: flex;
 	align-items: center;
 	gap: var(--xs);
-	position: relative;
 	background: inherit;
 	flex-shrink: 0;
-
-	&::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: var(--ds-modal-pad-x);
-		right: var(--ds-modal-pad-x);
-		height: $border-size;
-		background: var(--border-secondary);
-		transition:
-			left $resize-transition,
-			right $resize-transition;
-	}
+	border-bottom: $border;
 }
 
 .footer {
@@ -188,19 +175,8 @@ $trigger-divider-height: 16px;
 	margin-left: auto;
 }
 
-// Dividers mode: full-width borders on header and footer
-.content[data-dividers] {
-	.header {
-		border-bottom: $border;
-
-		&::after {
-			display: none;
-		}
-	}
-
-	.footer {
-		border-top: $border;
-	}
+.content[data-dividers] .footer {
+	border-top: $border;
 }
 
 // Width classes derived from DS grid
