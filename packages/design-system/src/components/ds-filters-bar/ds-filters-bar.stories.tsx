@@ -2,12 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
+import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
 import { DsTable } from '../ds-table';
 import {
 	DsFiltersBar,
 	emptyFilterDocument,
 	filtersBarViews,
 	useFilteredRows,
+	type DsFilterCondition,
 	type DsFilterDocument,
 	type DsFilterPin,
 	type DsFiltersBarSavedFilter,
@@ -399,6 +401,125 @@ export const AdvancedQuery: Story = {
 		],
 		defaultValue: { query: 'status = "inactive" OR ports > 40' },
 	},
+};
+
+/**
+ * `renderOption` draws an enum field's option rows, in the filters dialog and the query builder,
+ * with a status badge. Chips, the collapsed summary and saved filters still show the
+ * option's `label`.
+ */
+export const CustomOptionRows: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: () => (
+		<DsFiltersBar
+			defaultExpanded
+			fields={[
+				{
+					type: 'enum',
+					id: 'result',
+					label: 'Result',
+					options: [
+						{ value: 'passed', label: 'Passed' },
+						{ value: 'warning', label: 'Warning' },
+						{ value: 'failed', label: 'Failed' },
+					],
+					renderOption: (option) => (
+						<DsStatusBadgeV2
+							size="small"
+							label={option.label}
+							phase={
+								option.value === 'passed'
+									? 'result-succeeded'
+									: option.value === 'warning'
+										? 'result-warning'
+										: 'result-failed'
+							}
+						/>
+					),
+				},
+			]}
+			defaultValue={{
+				conditions: [{ kind: 'field', field: 'result', operator: 'IN', value: ['failed'] }],
+			}}
+		/>
+	),
+};
+
+/**
+ * Rules across fields act while the filters dialog or query builder is open, before Save.
+ * `isOptionDisabled` disables Regular and Moved while Type is only Scheduled. `normalizeDraft`
+ * runs after each change: checking Regular or Moved sets Type to Recurrent.
+ */
+export const CoupledFields: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: () => (
+		<DsFiltersBar
+			defaultExpanded
+			fields={[
+				{
+					type: 'enum',
+					id: 'type',
+					label: 'Type',
+					options: [
+						{ value: 'scheduled', label: 'Scheduled' },
+						{ value: 'recurrent', label: 'Recurrent' },
+					],
+				},
+				{
+					type: 'enum',
+					id: 'recurrence',
+					label: 'Recurrence',
+					options: [
+						{ value: 'regular', label: 'Regular' },
+						{ value: 'moved', label: 'Moved' },
+					],
+					isOptionDisabled: (_option, draft) =>
+						draft.conditions.some(
+							(condition) =>
+								condition.kind === 'field' &&
+								condition.field === 'type' &&
+								Array.isArray(condition.value) &&
+								condition.value.length === 1 &&
+								condition.value[0] === 'scheduled',
+						),
+				},
+			]}
+			normalizeDraft={(draft) => {
+				const { conditions } = draft;
+				const isOnlyScheduled = (condition: DsFilterCondition) =>
+					condition.kind === 'field' &&
+					condition.field === 'type' &&
+					Array.isArray(condition.value) &&
+					condition.value.length === 1 &&
+					condition.value[0] === 'scheduled';
+
+				if (conditions.some(isOnlyScheduled)) {
+					return {
+						...draft,
+						conditions: conditions.filter(
+							(condition) => condition.kind !== 'field' || condition.field !== 'recurrence',
+						),
+					};
+				}
+
+				if (!conditions.some((condition) => condition.kind === 'field' && condition.field === 'recurrence')) {
+					return draft;
+				}
+
+				const others = conditions.filter(
+					(condition) => condition.kind !== 'field' || condition.field !== 'type',
+				);
+				return {
+					...draft,
+					conditions: [...others, { kind: 'field', field: 'type', operator: 'IN', value: ['recurrent'] }],
+				};
+			}}
+		/>
+	),
 };
 
 /**

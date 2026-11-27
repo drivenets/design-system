@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
 	defaultDsFiltersBarLocale,
 	type DsFilterCondition,
+	type DsFilterDocument,
 	type DsFilterFieldCondition,
 	type DsFilterPin,
 } from './ds-filters-bar.types';
@@ -10,6 +11,7 @@ import {
 	conditionDialogTab,
 	conditionOperators,
 	conditionText,
+	conditionsNormalizer,
 	createConditionId,
 	createSearchCondition,
 	describeCondition,
@@ -19,6 +21,7 @@ import {
 	fromFiltersDialogValue,
 	isFiltersBarView,
 	lockedViewsFor,
+	normalizeFiltersDialogValue,
 	normalizeQuery,
 	removeConditionById,
 	replaceCondition,
@@ -974,5 +977,113 @@ const unfrozenPaths = (value: unknown, path = 'locale'): string[] => {
 describe('defaultDsFiltersBarLocale', () => {
 	it('is frozen deeply', () => {
 		expect(unfrozenPaths(defaultDsFiltersBarLocale)).toEqual([]);
+	});
+});
+
+describe('normalizeFiltersDialogValue', () => {
+	const TYPE_FIELDS = resolveFields([
+		{
+			type: 'enum',
+			id: 'type',
+			label: 'Type',
+			options: [
+				{ value: 'scheduled', label: 'Scheduled' },
+				{ value: 'recurrent', label: 'Recurrent' },
+			],
+		},
+		{
+			type: 'enum',
+			id: 'recurrence',
+			label: 'Recurrence',
+			options: [
+				{ value: 'regular', label: 'Regular' },
+				{ value: 'moved', label: 'Moved' },
+			],
+		},
+		{ type: 'text', id: 'name', label: 'Name' },
+	]);
+	const setRecurrent = (draft: ReadonlyArray<DsFilterCondition>): ReadonlyArray<DsFilterCondition> => [
+		...draft.filter((condition) => condition.kind !== 'field' || condition.field !== 'type'),
+		{ kind: 'field', id: 'type-id', field: 'type', operator: 'IN', value: ['recurrent'] },
+	];
+
+	it('returns the value as it is when the host keeps the draft', () => {
+		const value = [{ field: 'name', type: 'text', operator: '~', text: '' }] satisfies ReturnType<
+			typeof toFiltersDialogValue
+		>;
+
+		expect(normalizeFiltersDialogValue(TYPE_FIELDS, [], [], value, (draft) => draft)).toBe(value);
+	});
+
+	it('seeds the tab whose condition the host changed, and keeps its pins', () => {
+		const value = toFiltersDialogValue(TYPE_FIELDS, [], [{ field: 'type', value: 'scheduled' }]).concat({
+			field: 'recurrence',
+			type: 'enum',
+			operator: '=',
+			selected: ['regular'],
+			pinned: [],
+		});
+
+		const normalized = normalizeFiltersDialogValue(
+			TYPE_FIELDS,
+			[],
+			[{ field: 'type', value: 'scheduled' }],
+			value,
+			setRecurrent,
+		);
+
+		expect(normalized).toContainEqual({
+			field: 'type',
+			type: 'enum',
+			operator: 'IN',
+			selected: ['recurrent'],
+			pinned: ['scheduled'],
+		});
+		expect(normalized).toContainEqual(value[1]);
+	});
+
+	it('keeps an entry with an operator and no value on a tab the host left alone', () => {
+		const pending = { field: 'name', type: 'text', operator: '=', text: '' } as const;
+
+		const normalized = normalizeFiltersDialogValue(TYPE_FIELDS, [], [], [pending], setRecurrent);
+
+		expect(normalized).toContainEqual(pending);
+	});
+
+	it('empties the tab whose conditions the host removed', () => {
+		const value = [
+			{ field: 'recurrence', type: 'enum', operator: '=', selected: ['moved'], pinned: [] },
+		] satisfies ReturnType<typeof toFiltersDialogValue>;
+
+		const normalized = normalizeFiltersDialogValue(TYPE_FIELDS, [], [], value, () => []);
+
+		expect(normalized).toEqual([
+			{ field: 'recurrence', type: 'enum', operator: '=', selected: [], pinned: [] },
+		]);
+	});
+});
+
+describe('conditionsNormalizer', () => {
+	const STATUS: DsFilterCondition = {
+		kind: 'field',
+		id: 'a',
+		field: 'status',
+		operator: '=',
+		value: ['active'],
+	};
+	const document = { conditions: [], query: null };
+
+	it('hands the host the document with the draft conditions, and returns the draft when kept', () => {
+		const normalizeDraft = vi.fn((draft: DsFilterDocument) => draft);
+		const draft = [STATUS];
+
+		expect(conditionsNormalizer(document, normalizeDraft)(draft)).toBe(draft);
+		expect(normalizeDraft).toHaveBeenCalledWith({ conditions: draft, query: null });
+	});
+
+	it("returns the host's conditions when it changes the document", () => {
+		const normalize = conditionsNormalizer(document, (draft) => ({ ...draft, conditions: [] }));
+
+		expect(normalize([STATUS])).toEqual([]);
 	});
 });

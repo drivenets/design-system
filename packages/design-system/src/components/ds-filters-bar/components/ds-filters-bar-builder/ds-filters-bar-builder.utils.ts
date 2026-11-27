@@ -1,9 +1,13 @@
-import type {
-	DsFilterResolvedField,
-	DsFilterFieldCondition,
-	DsFilterOperatorValue,
-	DsFilterResolvedScalarField,
-	DsFilterValue,
+import type { ReactNode } from 'react';
+import {
+	emptyFilterDocument,
+	type DsFilterCondition,
+	type DsFilterDocument,
+	type DsFilterResolvedField,
+	type DsFilterFieldCondition,
+	type DsFilterOperatorValue,
+	type DsFilterResolvedScalarField,
+	type DsFilterValue,
 } from '../../ds-filters-bar.types';
 import { isRange } from '../../ds-filters-bar.utils';
 import type { DsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
@@ -32,6 +36,11 @@ export interface BuilderChoice {
 	kind: 'field' | 'subfield' | 'operator' | 'option';
 	id: string;
 	label: string;
+	/**
+	 * What the choice shows instead of `label`, from the field's `renderOption`
+	 */
+	content?: ReactNode;
+	disabled?: boolean;
 }
 
 export interface BuilderPathSegment {
@@ -176,11 +185,24 @@ const operatorChoices = (scalar: DsFilterResolvedScalarField, query: string): Re
 		.filter((operator) => matchesQuery(operator.label, query))
 		.map((operator) => ({ kind: 'operator', id: operator.value, label: operator.label }));
 
-const optionChoices = (scalar: DsFilterResolvedScalarField, query: string): ReadonlyArray<BuilderChoice> => {
+const optionChoices = (
+	scalar: DsFilterResolvedScalarField,
+	query: string,
+	draft: DsFilterDocument,
+	selected: string | null,
+): ReadonlyArray<BuilderChoice> => {
 	if (scalar.type === 'enum') {
+		const { renderOption, isOptionDisabled } = scalar;
+
 		return scalar.options
 			.filter((option) => matchesQuery(option.label, query))
-			.map((option) => ({ kind: 'option', id: option.value, label: option.label }));
+			.map((option) => ({
+				kind: 'option',
+				id: option.value,
+				label: option.label,
+				...(renderOption ? { content: renderOption(option) } : {}),
+				...(option.value !== selected && isOptionDisabled?.(option, draft) ? { disabled: true } : {}),
+			}));
 	}
 
 	if (scalar.type === 'date') {
@@ -260,12 +282,14 @@ const selectedChoiceId = (scalar: DsFilterResolvedScalarField | null, draft: Bui
 
 /**
  * What the dialog shows for the current draft: the input, the caption, and the choices.
+ * `optionsDraft` is the document enum options are disabled against.
  */
 export const describeBuilderStep = (
 	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 	suggestedFields: ReadonlyArray<string> | undefined,
 	locale: Locale,
+	optionsDraft: DsFilterDocument = emptyFilterDocument,
 ): BuilderStepView => {
 	const resolved = resolveField(fields, draft);
 	const step = stepOf(resolved, draft);
@@ -307,7 +331,9 @@ export const describeBuilderStep = (
 		};
 	}
 
-	const choices = scalar ? optionChoices(scalar, scalar.type === 'enum' ? draft.query : '') : [];
+	const choices = scalar
+		? optionChoices(scalar, scalar.type === 'enum' ? draft.query : '', optionsDraft, draft.optionValue)
+		: [];
 	const searchingOptions = scalar?.type === 'enum';
 	const presetLabel =
 		scalar?.type === 'date'
@@ -530,4 +556,59 @@ export const builderDraftFromCondition = (
 	const rebuilt = toFieldCondition(fields, filled);
 
 	return rebuilt && sameValue(rebuilt.value, condition.value) ? filled : withOperator;
+};
+
+/**
+ * The conditions Save would leave: the built condition added, or in place of the one with its
+ * `id`, then passed through `normalizeConditions`. With no complete condition yet, the
+ * conditions as they are.
+ */
+export const builderDraftConditions = (
+	conditions: ReadonlyArray<DsFilterCondition>,
+	built: DsFilterFieldCondition | null,
+	normalizeConditions: (draft: ReadonlyArray<DsFilterCondition>) => ReadonlyArray<DsFilterCondition>,
+): ReadonlyArray<DsFilterCondition> => {
+	if (!built) {
+		return normalizeConditions(conditions);
+	}
+
+	const exists = conditions.some((condition) => condition.id === built.id);
+	const applied = exists
+		? conditions.map((condition) => (condition.id === built.id ? built : condition))
+		: [...conditions, built];
+
+	return normalizeConditions(applied);
+};
+
+/**
+ * The builder draft after the host's `normalizeDraft`: the draft that edits the built condition as
+ * the host changed it, `draft` at its value step with the value cleared when the host removed it,
+ * else `draft` as it is.
+ */
+export const normalizeBuilderDraft = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	draft: BuilderDraft,
+	built: DsFilterFieldCondition | null,
+	normalized: ReadonlyArray<DsFilterCondition>,
+): BuilderDraft => {
+	if (!built) {
+		return draft;
+	}
+
+	const changed = normalized.find((condition) => condition.id === built.id);
+
+	if (changed?.kind !== 'field') {
+		return { ...draft, valueText: '', optionValue: null, query: '' };
+	}
+
+	if (
+		changed.field === built.field &&
+		changed.subfield === built.subfield &&
+		changed.operator === built.operator &&
+		sameValue(changed.value, built.value)
+	) {
+		return draft;
+	}
+
+	return builderDraftFromCondition(fields, changed);
 };

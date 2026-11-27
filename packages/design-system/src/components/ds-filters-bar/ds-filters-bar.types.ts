@@ -94,6 +94,19 @@ export interface DsFilterEnumField extends DsFilterFieldBase {
 	 */
 	operators?: DsFilterOperators<DsFilterEnumOperator>;
 	options: ReadonlyArray<DsFilterOption>;
+	/**
+	 * Draws an option row in the filters dialog and the query builder, for example with a status
+	 * badge. Chips, the summary and saved filters still show `label`. The row keeps `label` as its
+	 * accessible name and hides this content from screen readers, so it must not be interactive.
+	 * @default the option's `label`
+	 */
+	renderOption?: (option: DsFilterOption) => ReactNode;
+	/**
+	 * Disables an option while a filters dialog or query builder is open. `draft` is the document
+	 * Save would produce now; in the query builder it leaves out the condition being built, since
+	 * picking an option replaces its value. A checked option stays enabled, so it can be unchecked.
+	 */
+	isOptionDisabled?: (option: DsFilterOption, draft: DsFilterDocument) => boolean;
 }
 
 export interface DsFilterTextField extends DsFilterFieldBase {
@@ -753,6 +766,16 @@ export interface DsFiltersBarProps {
 	 * Count shown on a pin's toggle, which is disabled at 0 unless switched on. Omit to show no counts.
 	 */
 	getPinCount?: (pin: DsFilterPin) => number;
+	/**
+	 * Applies rules across fields while the filters dialog or the query builder is open: for example,
+	 * checking an option of one field sets another field. Runs after each change in them and again
+	 * on their Save, so it must be pure and keep a draft it already normalized as it is. It does not
+	 * run when they open, or for edits outside them, such as removing a chip.
+	 *
+	 * `draft` is the document Save would produce now; only its conditions are used. Return `draft`
+	 * itself to keep it. A condition you add may leave out `id`.
+	 */
+	normalizeDraft?: (draft: DsFilterDocument) => DsFilterDocumentInput;
 	locale?: DsFiltersBarLocale;
 	/**
 	 * Props forwarded to one part

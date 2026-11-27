@@ -15,6 +15,7 @@ import {
 	type DsFilterComparisonOperator,
 	type DsFilterCondition,
 	type DsFilterDocument,
+	type DsFilterDocumentInput,
 	type DsFilterEnumOperator,
 	type DsFiltersBarLocale,
 	type DsFiltersBarResolvedLocale,
@@ -646,6 +647,65 @@ export const fromFiltersDialogValue = (
 	);
 
 	return { conditions: [...kept, ...added], pins: [...keptPins, ...addedPins] };
+};
+
+/**
+ * The host's `normalizeDraft` on conditions alone, for the parts that edit them. Returns `draft`
+ * itself when the host keeps the document, and gives an id to each condition the host added
+ * without one.
+ */
+export const conditionsNormalizer =
+	(document: DsFilterDocument, normalizeDraft: (draft: DsFilterDocument) => DsFilterDocumentInput) =>
+	(draft: ReadonlyArray<DsFilterCondition>): ReadonlyArray<DsFilterCondition> => {
+		const input = { ...document, conditions: draft };
+		const output = normalizeDraft(input);
+
+		if (output === input) {
+			return draft;
+		}
+
+		return (output.conditions ?? []).map((condition): DsFilterCondition => ({
+			...condition,
+			id: condition.id ?? createConditionId(),
+		}));
+	};
+
+/**
+ * The dialog value after the host's `normalizeDraft`. Tabs whose saved condition the host changed
+ * are seeded again from its draft, keeping their pins; every other tab keeps its entry as it is, so
+ * an operator picked without a value survives.
+ */
+export const normalizeFiltersDialogValue = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	conditions: ReadonlyArray<DsFilterCondition>,
+	pins: ReadonlyArray<DsFilterPin>,
+	value: DsFiltersBarFiltersDialogValue,
+	normalizeConditions: (draft: ReadonlyArray<DsFilterCondition>) => ReadonlyArray<DsFilterCondition>,
+): DsFiltersBarFiltersDialogValue => {
+	const draft = fromFiltersDialogValue(fields, conditions, pins, value).conditions;
+	const normalized = normalizeConditions(draft);
+
+	if (normalized === draft) {
+		return value;
+	}
+
+	const reseeded = toFiltersDialogValue(fields, normalized, []);
+
+	return filtersDialogTabs(fields).flatMap((tab): DsFiltersBarFiltersDialogEntry[] => {
+		const current = value.find((entry) => isEntryOf(entry, tab));
+		const next = reseeded.find((entry) => isEntryOf(entry, tab));
+		const savedOf = (entry: DsFiltersBarFiltersDialogEntry | undefined) => entry && entryCondition(entry);
+
+		if (isSameSaved(savedOf(current) ?? null, savedOf(next) ?? null)) {
+			return current ? [current] : [];
+		}
+
+		const seeded = next ?? emptyFiltersDialogEntry(tab);
+
+		return [
+			current?.type === 'enum' && seeded.type === 'enum' ? { ...seeded, pinned: current.pinned } : seeded,
+		];
+	});
 };
 
 /**

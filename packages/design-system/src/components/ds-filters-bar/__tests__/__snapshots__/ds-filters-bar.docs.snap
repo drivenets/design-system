@@ -750,6 +750,204 @@ const AdvancedQuery = () => <DsFiltersBar
     ]}
     defaultValue={{ query: 'status = "inactive" OR ports > 40' }} />;
 
+## Custom Option Rows
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFiltersBar defaultExpanded fields={[{
+    type: 'enum',
+    id: 'result',
+    label: 'Result',
+    options: [{
+      value: 'passed',
+      label: 'Passed'
+    }, {
+      value: 'warning',
+      label: 'Warning'
+    }, {
+      value: 'failed',
+      label: 'Failed'
+    }],
+    renderOption: option => <DsStatusBadgeV2 size="small" label={option.label} phase={option.value === 'passed' ? 'result-succeeded' : option.value === 'warning' ? 'result-warning' : 'result-failed'} />
+  }]} defaultValue={{
+    conditions: [{
+      kind: 'field',
+      field: 'result',
+      operator: 'IN',
+      value: ['failed']
+    }]
+  }} />
+}
+
+### MCP manifest
+const CustomOptionRows = () => (
+    <DsFiltersBar
+        defaultExpanded
+        fields={[
+            {
+                type: 'enum',
+                id: 'result',
+                label: 'Result',
+                options: [
+                    { value: 'passed', label: 'Passed' },
+                    { value: 'warning', label: 'Warning' },
+                    { value: 'failed', label: 'Failed' },
+                ],
+                renderOption: (option) => (
+                    <DsStatusBadgeV2
+                        size="small"
+                        label={option.label}
+                        phase={
+                            option.value === 'passed'
+                                ? 'result-succeeded'
+                                : option.value === 'warning'
+                                    ? 'result-warning'
+                                    : 'result-failed'
+                        }
+                    />
+                ),
+            },
+        ]}
+        defaultValue={{
+            conditions: [{ kind: 'field', field: 'result', operator: 'IN', value: ['failed'] }],
+        }}
+    />
+);
+
+## Coupled Fields
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFiltersBar defaultExpanded fields={[{
+    type: 'enum',
+    id: 'type',
+    label: 'Type',
+    options: [{
+      value: 'scheduled',
+      label: 'Scheduled'
+    }, {
+      value: 'recurrent',
+      label: 'Recurrent'
+    }]
+  }, {
+    type: 'enum',
+    id: 'recurrence',
+    label: 'Recurrence',
+    options: [{
+      value: 'regular',
+      label: 'Regular'
+    }, {
+      value: 'moved',
+      label: 'Moved'
+    }],
+    isOptionDisabled: (_option, draft) => draft.conditions.some(condition => condition.kind === 'field' && condition.field === 'type' && Array.isArray(condition.value) && condition.value.length === 1 && condition.value[0] === 'scheduled')
+  }]} normalizeDraft={draft => {
+    const {
+      conditions
+    } = draft;
+    const isOnlyScheduled = (condition: DsFilterCondition) => condition.kind === 'field' && condition.field === 'type' && Array.isArray(condition.value) && condition.value.length === 1 && condition.value[0] === 'scheduled';
+    if (conditions.some(isOnlyScheduled)) {
+      return {
+        ...draft,
+        conditions: conditions.filter(condition => condition.kind !== 'field' || condition.field !== 'recurrence')
+      };
+    }
+    if (!conditions.some(condition => condition.kind === 'field' && condition.field === 'recurrence')) {
+      return draft;
+    }
+    const others = conditions.filter(condition => condition.kind !== 'field' || condition.field !== 'type');
+    return {
+      ...draft,
+      conditions: [...others, {
+        kind: 'field',
+        field: 'type',
+        operator: 'IN',
+        value: ['recurrent']
+      }]
+    };
+  }} />
+}
+
+### MCP manifest
+const CoupledFields = () => (
+    <DsFiltersBar
+        defaultExpanded
+        fields={[
+            {
+                type: 'enum',
+                id: 'type',
+                label: 'Type',
+                options: [
+                    { value: 'scheduled', label: 'Scheduled' },
+                    { value: 'recurrent', label: 'Recurrent' },
+                ],
+            },
+            {
+                type: 'enum',
+                id: 'recurrence',
+                label: 'Recurrence',
+                options: [
+                    { value: 'regular', label: 'Regular' },
+                    { value: 'moved', label: 'Moved' },
+                ],
+                isOptionDisabled: (_option, draft) =>
+                    draft.conditions.some(
+                        (condition) =>
+                            condition.kind === 'field' &&
+                            condition.field === 'type' &&
+                            Array.isArray(condition.value) &&
+                            condition.value.length === 1 &&
+                            condition.value[0] === 'scheduled',
+                    ),
+            },
+        ]}
+        normalizeDraft={(draft) => {
+            const { conditions } = draft;
+            const isOnlyScheduled = (condition: DsFilterCondition) =>
+                condition.kind === 'field' &&
+                condition.field === 'type' &&
+                Array.isArray(condition.value) &&
+                condition.value.length === 1 &&
+                condition.value[0] === 'scheduled';
+
+            if (conditions.some(isOnlyScheduled)) {
+                return {
+                    ...draft,
+                    conditions: conditions.filter(
+                        (condition) => condition.kind !== 'field' || condition.field !== 'recurrence',
+                    ),
+                };
+            }
+
+            if (!conditions.some((condition) => condition.kind === 'field' && condition.field === 'recurrence')) {
+                return draft;
+            }
+
+            const others = conditions.filter(
+                (condition) => condition.kind !== 'field' || condition.field !== 'type',
+            );
+            return {
+                ...draft,
+                conditions: [...others, { kind: 'field', field: 'type', operator: 'IN', value: ['recurrent'] }],
+            };
+        }}
+    />
+);
+
 ## Pinned
 
 ### Show code

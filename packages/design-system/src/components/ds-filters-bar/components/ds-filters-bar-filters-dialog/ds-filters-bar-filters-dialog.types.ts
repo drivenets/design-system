@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import type {
 	DsFilterComparisonOperator,
 	DsFilterEnumOperator,
+	DsFilterOption,
 	DsFilterResolvedOperator,
 	DsFilterRange,
 	DsFilterScalarField,
@@ -193,6 +194,10 @@ export interface DsFiltersBarFiltersDialogProps {
 	 * tab.
 	 */
 	initialTab?: string;
+	/**
+	 * Disables an option of an enum tab
+	 */
+	isOptionDisabled?: (tab: DsFiltersBarFiltersDialogTab, option: DsFilterOption) => boolean;
 	locale?: DsFiltersBarFiltersDialogLocale;
 	className?: string;
 	style?: CSSProperties;
