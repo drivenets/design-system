@@ -158,6 +158,7 @@ export const Default: Story = {
  * `now`, which is fixed here so the rows never change; omit it to count from the current time.
  */
 export const WithTable: Story = {
+	tags: ['!visual'],
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},

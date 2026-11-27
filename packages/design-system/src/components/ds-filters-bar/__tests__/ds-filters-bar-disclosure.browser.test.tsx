@@ -1,7 +1,12 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent, type Locator } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import type { DsFilterField, DsFiltersBarProps } from '../ds-filters-bar.types';
+import type {
+	DsFilterCondition,
+	DsFilterField,
+	DsFiltersBarProps,
+	DsFiltersBarSavedFiltersConfig,
+} from '../ds-filters-bar.types';
 
 const FIELDS: ReadonlyArray<DsFilterField> = [
 	{
@@ -12,6 +17,25 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 		options: [{ value: 'active', label: 'Active' }],
 	},
 ];
+
+const SAVED_FILTERS: DsFiltersBarSavedFiltersConfig = {
+	items: [{ id: 'night', name: 'Night shift', document: { conditions: [], query: null } }],
+	onSaveAs: vi.fn(),
+	onUpdate: vi.fn(),
+	onRename: vi.fn(),
+	onDelete: vi.fn(),
+};
+
+const ACTIVE: DsFilterCondition = {
+	kind: 'field',
+	id: 'active-1',
+	field: 'status',
+	operator: '=',
+	value: ['active'],
+};
+const ROUTER: DsFilterCondition = { kind: 'search', id: 'router-1', text: 'router' };
+
+const CONTROL_HEIGHT_PX = 28;
 
 const DisclosureBar = (props: DsFiltersBarProps) => (
 	<DsFiltersBar fields={FIELDS} resultCount={18} {...props} />
@@ -39,6 +63,28 @@ const rectOf = (target: Locator | HTMLElement) =>
 	(target instanceof HTMLElement ? target : target.element()).getBoundingClientRect();
 
 const LAYOUT_TOLERANCE_PX = 1;
+
+// A toolbar control's box is the toolbar item that holds it, e.g. the tag around the Saved filters button.
+const toolbarItemOf = (locator: Locator): HTMLElement => {
+	let element = locator.element() as HTMLElement;
+
+	while (element.parentElement && element.parentElement.dataset.part !== 'toolbar') {
+		element = element.parentElement;
+	}
+
+	return element;
+};
+
+const expectOnControlLine = (controls: Record<string, Locator | HTMLElement>, line: DOMRect) => {
+	for (const [name, control] of Object.entries(controls)) {
+		const rect = rectOf(control);
+
+		expect
+			.soft(Math.abs(rect.height - CONTROL_HEIGHT_PX), `${name} height`)
+			.toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+		expect.soft(Math.abs(rect.top - line.top), `${name} top`).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+	}
+};
 
 // Summary and Toolbar slide in when they mount; measure where they settle.
 const settleAnimations = () => Promise.all(document.getAnimations().map((animation) => animation.finished));
@@ -178,5 +224,75 @@ describe('DsFiltersBar disclosure layout', () => {
 		);
 		expect(Math.abs(pinned.left - disclosure.left)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
 		expect(Math.abs(pinned.right - summary.right)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+	});
+
+	describe('toolbar controls', () => {
+		const savedFiltersTag = () =>
+			toolbarItemOf(page.getByRole('button', { name: 'Saved filters', exact: true }));
+		const viewSwitch = () => page.getByRole('radiogroup', { name: 'Filter view' });
+		const addButton = () => page.getByRole('button', { name: 'Add filter', exact: true });
+
+		beforeEach(async () => {
+			await page.viewport(1280, 720);
+		});
+
+		it('lines up saved filters, search, view switch, add button and chips on one 28 px line', async () => {
+			await page.render(
+				<DisclosureBar
+					defaultExpanded
+					savedFilters={SAVED_FILTERS}
+					views={['filters', 'builder', 'advanced']}
+					defaultValue={{ conditions: [ACTIVE, ROUTER], query: null }}
+				/>,
+			);
+
+			await expect.element(addButton()).toBeVisible();
+			await settleAnimations();
+
+			const disclosure = rectOf(hideButton());
+
+			expect(Math.abs(disclosure.height - CONTROL_HEIGHT_PX)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+			expectOnControlLine(
+				{
+					savedFilters: savedFiltersTag(),
+					search: toolbarItemOf(searchInput()),
+					viewSwitch: viewSwitch(),
+					addButton: addButton(),
+					fieldChip: page.getByRole('button', { name: /^Status/ }).first(),
+					searchChip: page.getByRole('button', { name: /router/ }).first(),
+				},
+				disclosure,
+			);
+		});
+
+		it('keeps the advanced query on the same 28 px line', async () => {
+			await page.render(
+				<DisclosureBar
+					defaultExpanded
+					savedFilters={SAVED_FILTERS}
+					views={['filters', 'advanced']}
+					defaultView="advanced"
+				/>,
+			);
+
+			const query = page.getByRole('textbox', { name: 'Advanced query' });
+
+			await expect.element(query).toBeVisible();
+			await settleAnimations();
+
+			expectOnControlLine(
+				{ savedFilters: savedFiltersTag(), query: toolbarItemOf(query), viewSwitch: viewSwitch() },
+				rectOf(hideButton()),
+			);
+		});
+
+		it('keeps the collapsed bar on one 28 px line', async () => {
+			await page.render(<DisclosureBar savedFilters={SAVED_FILTERS} />);
+
+			await expect.element(showButton()).toBeVisible();
+			await settleAnimations();
+
+			expect(Math.abs(rectOf(region()).height - CONTROL_HEIGHT_PX)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+		});
 	});
 });

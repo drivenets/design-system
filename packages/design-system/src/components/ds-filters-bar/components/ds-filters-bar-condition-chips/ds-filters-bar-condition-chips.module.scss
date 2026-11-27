@@ -1,3 +1,5 @@
+@use '../../styles/variables';
+
 $operator-border-width: 1px;
 $operator-radius: 4px;
 $operator-focus-width: 2px;
@@ -38,4 +40,10 @@ $transition-duration: 0.2s;
 
 .operatorText {
 	color: var(--font-main);
+}
+
+// Doubled to outrank the tag's own padding.
+.chip.chip {
+	height: variables.$control-height;
+	padding-block: 0;
 }
