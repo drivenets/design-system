@@ -1,6 +1,5 @@
 import type {
 	DsFilterCondition,
-	DsFilterDocument,
 	DsFilterFieldCondition,
 	DsFilterOperatorValue,
 	DsFilterPin,
@@ -10,7 +9,6 @@ import type {
 	DsFilterValue,
 } from '../ds-filters-bar.types';
 import { toFilterDocument } from '../filter-document';
-import { parseFilterQuery, type DsFilterQueryNode } from '../query-language';
 import { resolveFields } from '../resolve-fields';
 import { builtInPresetDays, type DayInterval as Interval } from './date-presets';
 import type { DsFilterRowsOptions, DsFilterRowsResult } from './row-matcher.types';
@@ -204,9 +202,6 @@ const dateInterval = <TRow>(
 const matchesInterval = (actual: number, operator: DsFilterOperatorValue, interval: Interval | null) =>
 	interval !== null && compareToInterval(actual, operator, interval);
 
-/**
- * One clause, the same shape whether it came from a **Filter condition** or a query AST node
- */
 const matchesClause = <TRow extends object>(row: TRow, clause: FieldClause, context: MatchContext<TRow>) => {
 	const scalar = scalarOf(context.fields, clause.field, clause.subfield);
 
@@ -246,48 +241,6 @@ const matchesCondition = <TRow extends object>(
 ) =>
 	condition.kind === 'search' ? matchesSearch(row, condition.text) : matchesClause(row, condition, context);
 
-const matchesNode = <TRow extends object>(
-	row: TRow,
-	node: DsFilterQueryNode,
-	context: MatchContext<TRow>,
-): boolean => {
-	switch (node.kind) {
-		case 'clause':
-			return matchesClause(row, node, context);
-		case 'search':
-			return matchesSearch(row, node.text);
-		case 'and':
-			return node.children.every((child) => matchesNode(row, child, context));
-		case 'or':
-			return node.children.some((child) => matchesNode(row, child, context));
-		case 'group':
-			return matchesNode(row, node.child, context);
-		default:
-			return false;
-	}
-};
-
-/**
- * Whether a row matches the **Filter document**. An invalid query never reaches the document, so
- * one that fails to parse filters nothing.
- */
-const documentMatcher = <TRow extends object>(
-	{ conditions, query }: DsFilterDocument,
-	context: MatchContext<TRow>,
-): ((row: TRow) => boolean) => {
-	if (query === null) {
-		return (row) => conditions.every((condition) => matchesCondition(row, condition, context));
-	}
-
-	const parsed = parseFilterQuery(query, context.fields);
-
-	if (!parsed.ok) {
-		return () => true;
-	}
-
-	return (row) => matchesNode(row, parsed.node, context);
-};
-
 /**
  * A pin is a field option, so on an enum field it means `= option`, and on a date field `= preset`
  */
@@ -326,7 +279,10 @@ export const filterRows = <TRow extends object>(
 	}: DsFilterRowsOptions<TRow>,
 ): DsFilterRowsResult<TRow> => {
 	const context: MatchContext<TRow> = { fields: resolveFields(fields), getValue, resolveDatePreset, now };
-	const documentRows = rows.filter(documentMatcher(toFilterDocument(value), context));
+	const { conditions } = toFilterDocument(value);
+	const documentRows = rows.filter((row) =>
+		conditions.every((condition) => matchesCondition(row, condition, context)),
+	);
 	// The bar hides pins on fields missing from `fields`, so their toggles do not narrow either.
 	const toggleGroups = groupByField(
 		activeToggles.filter((pin) => context.fields.some((field) => field.id === pin.field)),

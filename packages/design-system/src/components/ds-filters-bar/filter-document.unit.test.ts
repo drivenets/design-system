@@ -6,19 +6,14 @@ describe('toFilterDocument', () => {
 	it('returns a full document as it is', () => {
 		const document: DsFilterDocument = {
 			conditions: [{ kind: 'search', id: 'a', text: 'router' }],
-			query: null,
 		};
 
 		expect(toFilterDocument(document)).toBe(document);
 		expect(toFilterDocument(emptyFilterDocument)).toBe(emptyFilterDocument);
 	});
 
-	it('fills in missing conditions and query', () => {
-		expect(toFilterDocument({})).toEqual({ conditions: [], query: null });
-		expect(toFilterDocument({ query: 'a = 1 OR b = 2' })).toEqual({
-			conditions: [],
-			query: 'a = 1 OR b = 2',
-		});
+	it('fills in missing conditions', () => {
+		expect(toFilterDocument({})).toStrictEqual({ conditions: [] });
 	});
 
 	it('gives a condition without an id one from its position', () => {
@@ -36,7 +31,6 @@ describe('toFilterDocument', () => {
 				{ kind: 'field', id: 'status', field: 'status', operator: '=', value: ['active'] },
 				{ kind: 'field', id: 'filter-condition-2', field: 'ports', operator: '>', value: 10 },
 			],
-			query: null,
 		});
 	});
 

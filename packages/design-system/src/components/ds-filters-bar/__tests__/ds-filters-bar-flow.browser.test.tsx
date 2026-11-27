@@ -51,8 +51,6 @@ const PINS: ReadonlyArray<DsFilterPin> = [
 	{ field: 'status', value: 'failed' },
 ];
 
-const OR_QUERY = 'status = failed OR name ~ switch';
-
 // A product screen: it keeps the document, the switched-on pins and the saved filters, filters its
 // rows with the row matcher, and feeds the counts back to the bar.
 const DevicesScreen = () => {
@@ -110,20 +108,11 @@ const deviceNames = () =>
 
 const tag = (name: string) => page.getByRole('button', { name, exact: true });
 const searchInput = () => page.getByRole('textbox', { name: 'Search' });
-const queryField = () => page.getByRole('textbox', { name: 'Advanced query' });
 const saveFilterButton = () => page.getByRole('button', { name: 'Save filter', exact: true });
 const clearAllButton = () => page.getByRole('button', { name: 'Clear all', exact: true });
-const viewItem = (name: string) => page.getByRole('radio', { name, exact: true });
 // A toggle's name is its option label followed by its count.
 const toggle = (label: string) => page.getByRole('button', { name: new RegExp(`^${label}\\s*\\d+$`) });
 const region = () => page.getByRole('region', { name: 'Filters' });
-
-// Ark renders the radio as a visually hidden input outside the viewport, so fire a native click
-// on the element directly instead of a Playwright pointer click.
-const selectView = async (name: string) => {
-	await expect.element(viewItem(name)).toBeInTheDocument();
-	(viewItem(name).element() as HTMLElement).click();
-};
 
 const search = async (text: string) => {
 	await searchInput().fill(text);
@@ -200,27 +189,5 @@ describe('DsFiltersBar flow', () => {
 		await page.getByRole('menuitem', { name: 'Update “Routers”' }).click();
 
 		await expect.element(tag('Routers')).toBeVisible();
-	});
-
-	it('filters by an Advanced query, saves it and loads it back into the locked advanced view', async () => {
-		await page.render(<DevicesScreen />);
-
-		await selectView('Advanced query');
-		await queryField().fill(OR_QUERY);
-
-		await expect.poll(deviceNames).toEqual(['edge-router', 'tor-switch', 'spine-switch']);
-		await expect.element(viewItem('Filters')).toBeDisabled();
-
-		await saveAsNew('Failed or switches');
-		await clearAllButton().click();
-
-		await expect.poll(deviceNames).toHaveLength(DEVICES.length);
-		await expect.element(viewItem('Filters')).toBeEnabled();
-
-		await loadSavedFilter('Failed or switches');
-
-		await expect.element(queryField()).toHaveValue(OR_QUERY);
-		await expect.element(viewItem('Query builder')).toBeDisabled();
-		await expect.poll(deviceNames).toEqual(['edge-router', 'tor-switch', 'spine-switch']);
 	});
 });

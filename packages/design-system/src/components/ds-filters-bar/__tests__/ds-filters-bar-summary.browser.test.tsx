@@ -90,11 +90,9 @@ const DURATION_RANGE: DsFilterCondition = {
 };
 const SEARCH_AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
 
-const OR_QUERY = 'status = "active" OR status = "pending"';
 const SAVED_FILTER = 'Ira123';
 
-const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items, query: null });
-const orQuery: DsFilterDocument = { conditions: [], query: OR_QUERY };
+const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items });
 
 // The summary names the Active saved filter, whatever document the bar holds.
 const activeSavedFilter: DsFiltersBarSavedFiltersConfig = {
@@ -181,17 +179,6 @@ describe('DsFiltersBar summary text', () => {
 		await expect.element(region()).toMatchTextContent(summaryOf('Status: Active;', 'Search: AAA;'));
 	});
 
-	it('reads `Advanced query;` without conditions or query text while an Advanced query is the source', async () => {
-		await page.render(
-			<SummaryBar defaultValue={{ conditions: [STATUS], query: OR_QUERY }} resultCount={18} />,
-		);
-
-		await expect.element(region()).toMatchTextContent(summaryOf('Advanced query;', '(18)'));
-		await expect.element(region()).not.toMatchTextContent('Status');
-		await expect.element(region()).not.toMatchTextContent('OR');
-		await expect.element(region()).not.toMatchTextContent('View: All');
-	});
-
 	it('reads `Filter: <name>;` without `View: All` when the saved filter has nothing after it', async () => {
 		await page.render(
 			<SummaryBar defaultValue={conditions()} resultCount={18} savedFilters={activeSavedFilter} />,
@@ -213,15 +200,6 @@ describe('DsFiltersBar summary text', () => {
 		await expect
 			.element(region())
 			.toMatchTextContent(summaryOf(`Filter: ${SAVED_FILTER}`, 'Status: Active;', 'Search: AAA;', '(18)'));
-		await expect.element(region()).not.toMatchTextContent(`${SAVED_FILTER};`);
-	});
-
-	it('drops the `;` after the saved filter name when an Advanced query follows', async () => {
-		await page.render(<SummaryBar defaultValue={orQuery} savedFilters={activeSavedFilter} />);
-
-		await expect
-			.element(region())
-			.toMatchTextContent(summaryOf(`Filter: ${SAVED_FILTER}`, 'Advanced query;'));
 		await expect.element(region()).not.toMatchTextContent(`${SAVED_FILTER};`);
 	});
 
@@ -341,15 +319,6 @@ describe('DsFiltersBar summary locale', () => {
 		await expect.element(region()).toMatchTextContent(summaryOf(`Saved view: ${SAVED_FILTER}`, 'Text: AAA;'));
 		await expect.element(region()).not.toMatchTextContent('Filter:');
 		await expect.element(region()).not.toMatchTextContent('Search:');
-	});
-
-	it('replaces the advanced query label', async () => {
-		await page.render(
-			<SummaryBar defaultValue={orQuery} locale={{ summary: { advancedQuery: 'Custom query' } }} />,
-		);
-
-		await expect.element(region()).toMatchTextContent('Custom query;');
-		await expect.element(region()).not.toMatchTextContent('Advanced query');
 	});
 });
 

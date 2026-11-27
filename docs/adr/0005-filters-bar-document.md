@@ -1,5 +1,5 @@
 ---
-status: superseded in part by ADR-0006 (query parsing and serialization)
+status: superseded in part by ADR-0009 (the Advanced query, view locking and `formatQuery`)
 ---
 
 # Filters bar owns the filter document, not the query language

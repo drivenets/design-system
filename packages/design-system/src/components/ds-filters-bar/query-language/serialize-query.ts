@@ -46,8 +46,7 @@ const serializeFieldCondition = (condition: DsFilterFieldCondition): string => {
 };
 
 /**
- * Writes the conditions in the query language, joined by `AND`. The output parses back to the
- * same conditions, except that a range comes back as two clauses.
+ * Writes the conditions as query text, joined by `AND`. Nothing parses it back.
  */
 export const serializeFilterQuery = (conditions: ReadonlyArray<DsFilterCondition>): string =>
 	conditions

@@ -150,7 +150,7 @@ const clause = (
 type MatchOptions = Partial<Omit<DsFilterRowsOptions<Device>, 'value'>>;
 
 const matchConditions = (conditions: ReadonlyArray<DsFilterCondition>, options: MatchOptions = {}) =>
-	filterRows(ROWS, { fields: FIELDS, value: { conditions, query: null }, ...options });
+	filterRows(ROWS, { fields: FIELDS, value: { conditions }, ...options });
 
 const namesMatching = (conditions: ReadonlyArray<DsFilterCondition>, options?: MatchOptions) =>
 	matchConditions(conditions, options).rows.map((row) => row.name);
@@ -334,7 +334,7 @@ describe('filterRows', () => {
 
 			const { rows: matched } = filterRows(rows, {
 				fields: FIELDS,
-				value: { conditions: [clause('input', '=', 'cisco', 'vendor')], query: null },
+				value: { conditions: [clause('input', '=', 'cisco', 'vendor')] },
 				getValue: (row, field, subfield) => row[`${field}.${subfield ?? ''}` as keyof typeof row],
 			});
 
@@ -344,29 +344,6 @@ describe('filterRows', () => {
 
 	it('matches nothing for a field missing from the schema', () => {
 		expect(namesMatching([clause('owner', '!=', 'nobody')])).toEqual([]);
-	});
-
-	describe('advanced query', () => {
-		const namesMatchingQuery = (query: string, conditions: ReadonlyArray<DsFilterCondition> = []) =>
-			filterRows(ROWS, { fields: FIELDS, value: { conditions, query } }).rows.map((row) => row.name);
-
-		it('evaluates OR', () => {
-			expect(namesMatchingQuery('status = active OR latency > 100')).toEqual(['Edge router', 'Lab firewall']);
-		});
-
-		it('evaluates groups, AND and search text', () => {
-			expect(namesMatchingQuery('(status = pending OR status = offline) AND "lab"')).toEqual([
-				'Lab firewall',
-			]);
-		});
-
-		it('ignores the conditions while a query is set', () => {
-			expect(namesMatchingQuery('status = pending', [search('router')])).toEqual(['Core switch']);
-		});
-
-		it('keeps every row for a query that does not parse', () => {
-			expect(namesMatchingQuery('status = = active')).toEqual(ROWS.map((row) => row.name));
-		});
 	});
 
 	describe('active toggles', () => {
@@ -598,16 +575,6 @@ describe('filterRows', () => {
 			expect(rows.map((event) => event.name)).toEqual(['september 1', 'september 30']);
 			expect(getPinCount({ field: 'at', value: 'last7Days' })).toBe(2);
 		});
-
-		it('resolves a preset written in an advanced query', () => {
-			const { rows } = filterRows(EVENTS, {
-				fields: PRESET_FIELDS,
-				value: { query: 'at = "Yesterday" OR at = today' },
-				now: NOW,
-			});
-
-			expect(rows.map((event) => event.name)).toEqual(['october 14', 'october 15']);
-		});
 	});
 
 	describe('shorthand fields and documents', () => {
@@ -623,7 +590,7 @@ describe('filterRows', () => {
 			{ type: 'number', id: 'latency', label: 'Latency' },
 		];
 
-		it('matches a document whose conditions have no ids and that has no query', () => {
+		it('matches a document whose conditions have no ids', () => {
 			const { rows } = filterRows(ROWS, {
 				fields: SHORTHAND_FIELDS,
 				value: { conditions: [{ kind: 'field', field: 'latency', operator: '>=', value: 50 }] },
@@ -634,24 +601,6 @@ describe('filterRows', () => {
 
 		it('keeps every row for an empty input document', () => {
 			expect(filterRows(ROWS, { fields: SHORTHAND_FIELDS, value: {} }).rows).toEqual(ROWS);
-		});
-
-		it('parses a query against the built-in operators of a field that lists none', () => {
-			const { rows } = filterRows(ROWS, {
-				fields: SHORTHAND_FIELDS,
-				value: { query: 'name ~ "router" OR latency > 100' },
-			});
-
-			expect(rows.map((row) => row.name)).toEqual(['Edge router', 'Lab firewall']);
-		});
-
-		it('rejects, and so ignores, a query operator the field narrowed away', () => {
-			const { rows } = filterRows(ROWS, {
-				fields: SHORTHAND_FIELDS,
-				value: { query: 'status = active OR latency > 100' },
-			});
-
-			expect(rows).toEqual(ROWS);
 		});
 	});
 });

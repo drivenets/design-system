@@ -71,31 +71,20 @@ const SelectionPath = ({ segments, clearLabel, onClear }: SelectionPathProps) =>
  * decides the steps: compound: subfield, then operator and value; text, number and date: operator,
  * then value; enum: value. Date presets and enum options are offered on the value step. A condition
  * the dialog cannot hold, such as several enum values or a range, opens at its value step with the
- * value empty. Save and close keep the builder view. Renders nothing while an Advanced query is the
- * source.
+ * value empty. Save and close keep the builder view.
  *
  * Owns the dialog and its draft: empty when opened from the add button, filled from the condition
  * when opened from a field chip. Save adds or replaces that one condition and closes; any other close
  * drops the draft.
  */
 export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBarBuilderSlotProps) => {
-	const { fields, query, locale: barLocale, addCondition, updateCondition } = useDsFiltersBarContext();
+	const { fields, locale: barLocale, addCondition, updateCondition } = useDsFiltersBarContext();
 	const locale = barLocale.builder;
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(emptyBuilderDraft);
 	// The condition being edited, or `null` while adding one
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const inputId = useId();
-
-	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
-	// A dialog left open would come back with a stale draft once the query clears.
-	if (query !== null) {
-		if (open) {
-			setOpen(false);
-		}
-
-		return null;
-	}
 
 	const view = describeBuilderStep(fields, draft, suggestedFields, locale);
 	const condition = toFieldCondition(fields, draft);

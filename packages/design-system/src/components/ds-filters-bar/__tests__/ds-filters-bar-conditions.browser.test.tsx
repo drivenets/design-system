@@ -101,9 +101,7 @@ const REMOVED: DsFilterCondition = {
 };
 const AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
 
-const OR_QUERY = 'status = "active" OR status = "pending"';
-
-const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items, query: null });
+const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items });
 
 const ConditionsBar = (props: DsFiltersBarProps) => (
 	<DsFiltersBar defaultExpanded fields={FIELDS} {...props} />
@@ -323,51 +321,5 @@ describe('DsFiltersBar filters view chip click', () => {
 		await chip('owner').click();
 
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
-	});
-});
-
-describe('DsFiltersBar filters view while an Advanced query is the source', () => {
-	it('shows no chips and no add button until the query is cleared', async () => {
-		await page.render(<ConditionsBar defaultValue={{ conditions: [STATUS, AAA], query: OR_QUERY }} />);
-
-		await expect.element(addFilterButton()).not.toBeInTheDocument();
-		await expect.element(removeButton('AAA')).not.toBeInTheDocument();
-		await expect.element(removeButton('Status not equals Active, Pending')).not.toBeInTheDocument();
-
-		await page.getByRole('button', { name: 'Clear all', exact: true }).click();
-
-		await expect.element(addFilterButton()).toBeVisible();
-	});
-
-	it('closes an open filters dialog when a query takes over', async () => {
-		const onValueChange = vi.fn();
-		const { rerender } = await page.render(
-			<ConditionsBar value={conditions(TRIGGER)} onValueChange={onValueChange} />,
-		);
-
-		await addFilterButton().click();
-		await expect.element(filtersDialog()).toBeVisible();
-
-		await rerender(
-			<ConditionsBar value={{ conditions: [TRIGGER], query: OR_QUERY }} onValueChange={onValueChange} />,
-		);
-		await rerender(<ConditionsBar value={conditions(TRIGGER)} onValueChange={onValueChange} />);
-
-		await expect.element(addFilterButton()).toBeVisible();
-		await expect.element(filtersDialog()).not.toBeInTheDocument();
-	});
-
-	it('brings the kept conditions back once the query is dropped', async () => {
-		const onValueChange = vi.fn();
-		const { rerender } = await page.render(
-			<ConditionsBar value={{ conditions: [STATUS], query: OR_QUERY }} onValueChange={onValueChange} />,
-		);
-
-		await expect.element(removeButton('Status not equals Active, Pending')).not.toBeInTheDocument();
-
-		await rerender(<ConditionsBar value={conditions(STATUS)} onValueChange={onValueChange} />);
-
-		await expect.element(removeButton('Status not equals Active, Pending')).toBeVisible();
-		await expect.element(addFilterButton()).toBeVisible();
 	});
 });

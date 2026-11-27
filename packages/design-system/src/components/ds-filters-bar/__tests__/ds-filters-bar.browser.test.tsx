@@ -45,13 +45,12 @@ const STATUS: DsFilterFieldCondition = {
 	value: ['active'],
 };
 const SEARCH: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
-const OR_QUERY = 'status = "active" OR status = "pending"';
 const PINS: ReadonlyArray<DsFilterPin> = [{ field: 'status', value: 'active' }];
 
 const savedFiltersConfig = (
 	overrides: Partial<DsFiltersBarSavedFiltersConfig> = {},
 ): DsFiltersBarSavedFiltersConfig => ({
-	items: [{ id: 'night', name: 'Night shift', document: { conditions: [STATUS], query: null } }],
+	items: [{ id: 'night', name: 'Night shift', document: { conditions: [STATUS] } }],
 	onSaveAs: vi.fn(() => 'new'),
 	onUpdate: vi.fn(),
 	onRename: vi.fn(),
@@ -63,7 +62,6 @@ const region = (name = 'Filters') => page.getByRole('region', { name });
 const showButton = () => page.getByRole('button', { name: 'Show filters', exact: true });
 const hideButton = () => page.getByRole('button', { name: 'Hide filters', exact: true });
 const searchInput = () => page.getByRole('textbox', { name: 'Search' });
-const queryField = () => page.getByRole('textbox', { name: 'Advanced query' });
 const addFilterButton = (name = 'Add filter') => page.getByRole('button', { name, exact: true });
 const clearAllButton = () => page.getByRole('button', { name: 'Clear all', exact: true });
 const saveFilterButton = () => page.getByRole('button', { name: 'Save filter', exact: true });
@@ -123,7 +121,7 @@ describe('DsFiltersBar composition', () => {
 			<DsFiltersBar
 				fields={FIELDS}
 				defaultExpanded
-				defaultValue={{ conditions: [SEARCH], query: null }}
+				defaultValue={{ conditions: [SEARCH] }}
 				savedFilters={savedFiltersConfig()}
 			/>,
 		);
@@ -169,14 +167,13 @@ describe('DsFiltersBar composition', () => {
 		await expect.element(searchInput()).toBeVisible();
 		await expect.element(viewSwitch()).not.toBeInTheDocument();
 		await expect.element(addFilterButton()).not.toBeInTheDocument();
-		await expect.element(queryField()).not.toBeInTheDocument();
 
 		await search('router');
 
 		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
 			conditions: [expect.objectContaining({ kind: 'search', text: 'router' })],
-			query: null,
 		});
+		expect(onValueChange.mock.calls[0]?.[0]).not.toHaveProperty('query');
 	});
 });
 
@@ -188,7 +185,7 @@ describe('DsFiltersBar filter document', () => {
 			<DsFiltersBar
 				fields={FIELDS}
 				defaultExpanded
-				defaultValue={{ conditions: [STATUS], query: null }}
+				defaultValue={{ conditions: [STATUS] }}
 				onValueChange={onValueChange}
 			/>,
 		);
@@ -197,7 +194,6 @@ describe('DsFiltersBar filter document', () => {
 
 		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
 			conditions: [STATUS, expect.objectContaining({ kind: 'search', text: 'AAA' })],
-			query: null,
 		});
 
 		await removeChip('Status equals Active').click();
@@ -205,26 +201,7 @@ describe('DsFiltersBar filter document', () => {
 		expect(onValueChange).toHaveBeenCalledTimes(2);
 		expect(onValueChange).toHaveBeenLastCalledWith({
 			conditions: [expect.objectContaining({ kind: 'search', text: 'AAA' })],
-			query: null,
 		});
-	});
-
-	it('reports a query and its conditions together in one document', async () => {
-		const onValueChange = vi.fn();
-
-		await page.render(
-			<DsFiltersBar
-				fields={FIELDS}
-				defaultExpanded
-				defaultView="advanced"
-				defaultValue={{ conditions: [STATUS], query: null }}
-				onValueChange={onValueChange}
-			/>,
-		);
-
-		await queryField().fill(OR_QUERY);
-
-		await expect.poll(() => onValueChange.mock.calls).toEqual([[{ conditions: [STATUS], query: OR_QUERY }]]);
 	});
 
 	it('reports the next document and keeps the controlled value', async () => {
@@ -234,7 +211,7 @@ describe('DsFiltersBar filter document', () => {
 			<DsFiltersBar
 				fields={FIELDS}
 				defaultExpanded
-				value={{ conditions: [STATUS], query: null }}
+				value={{ conditions: [STATUS] }}
 				onValueChange={onValueChange}
 			/>,
 		);
@@ -283,11 +260,11 @@ describe('DsFiltersBar UI state', () => {
 		);
 
 		await showButton().click();
-		await selectView('Advanced query');
+		await selectView('Query builder');
 
 		expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(true);
-		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
-		await expect.element(queryField()).toBeVisible();
+		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('builder');
+		await expect.element(viewItem('Query builder')).toBeChecked();
 	});
 
 	it('reports expanded and view changes and keeps the controlled values', async () => {
@@ -304,55 +281,13 @@ describe('DsFiltersBar UI state', () => {
 
 		await rerender(<DsFiltersBar {...props} expanded />);
 
-		await selectView('Advanced query');
+		await selectView('Query builder');
 
-		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
-		await expect.element(addFilterButton()).toBeVisible();
-		await expect.element(queryField()).not.toBeInTheDocument();
-	});
+		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('builder');
 
-	it.each(['filters', 'builder'] as const)(
-		'shows the advanced view while a query overrides the asked-for %s view, then that view after clear',
-		async (defaultView) => {
-			const onViewChange = vi.fn();
+		await addFilterButton().click();
 
-			await page.render(
-				<DsFiltersBar
-					fields={FIELDS}
-					defaultExpanded
-					defaultView={defaultView}
-					defaultValue={{ conditions: [], query: OR_QUERY }}
-					onViewChange={onViewChange}
-				/>,
-			);
-
-			await expect.element(viewItem('Advanced query')).toBeChecked();
-			await expect.element(queryField()).toHaveValue(OR_QUERY);
-
-			await clearAllButton().click();
-
-			await expect.element(queryField()).not.toBeInTheDocument();
-			await expect.element(viewItem(defaultView === 'filters' ? 'Filters' : 'Query builder')).toBeChecked();
-			expect(onViewChange).not.toHaveBeenCalled();
-		},
-	);
-
-	it('shows the advanced view over a controlled view without reporting a change', async () => {
-		const onViewChange = vi.fn();
-
-		await page.render(
-			<DsFiltersBar
-				fields={FIELDS}
-				defaultExpanded
-				view="builder"
-				value={{ conditions: [], query: OR_QUERY }}
-				onViewChange={onViewChange}
-			/>,
-		);
-
-		await expect.element(queryField()).toHaveValue(OR_QUERY);
-		await expect.element(viewItem('Advanced query')).toBeChecked();
-		expect(onViewChange).not.toHaveBeenCalled();
+		await expect.element(page.getByRole('dialog', { name: 'Filters' })).toBeVisible();
 	});
 });
 
@@ -388,12 +323,6 @@ describe('DsFiltersBar slotProps', () => {
 		{ slot: 'viewSwitch', anchor: () => viewSwitch().element() },
 		{ slot: 'conditions', anchor: () => addFilterButton().element() },
 		{ slot: 'builder', props: { defaultView: 'builder' }, anchor: () => addFilterButton().element() },
-		{
-			slot: 'query',
-			props: { defaultView: 'advanced' },
-			anchor: () => queryField().element(),
-			refTo: 'anchor',
-		},
 		{ slot: 'clearAll', anchor: () => clearAllButton().element() },
 		{ slot: 'pinned', anchor: () => pinnedGroup('Status').element() },
 	];
@@ -408,7 +337,7 @@ describe('DsFiltersBar slotProps', () => {
 				<DsFiltersBar
 					fields={FIELDS}
 					defaultExpanded
-					defaultValue={{ conditions: [SEARCH], query: null }}
+					defaultValue={{ conditions: [SEARCH] }}
 					defaultPins={PINS}
 					savedFilters={savedFiltersConfig()}
 					slotProps={slotProps}
@@ -544,7 +473,7 @@ const ControlledConditionsBar = ({
 	onValueChange,
 	onPinsChange,
 }: ControlledConditionsBarProps) => {
-	const [value, setValue] = useState<DsFilterDocument>({ conditions: initialConditions, query: null });
+	const [value, setValue] = useState<DsFilterDocument>({ conditions: initialConditions });
 	const [pins, setPins] = useState(initialPins);
 
 	return (
@@ -612,9 +541,7 @@ describe('DsFiltersBar filters view add filter', () => {
 
 describe('DsFiltersBar filters dialog', () => {
 	it('opens a dialog with one tab per field, in fields order', async () => {
-		await page.render(
-			<ConditionsBar defaultValue={{ conditions: [SEARCH_CONDITION, PARENTS_CONDITION], query: null }} />,
-		);
+		await page.render(<ConditionsBar defaultValue={{ conditions: [SEARCH_CONDITION, PARENTS_CONDITION] }} />);
 
 		await addFilterButton().click();
 
@@ -683,7 +610,6 @@ describe('DsFiltersBar filters dialog', () => {
 				newEnumCondition('status', '!=', ['active', 'pending']),
 				newEnumCondition('trigger', '=', ['manual']),
 			],
-			query: null,
 		});
 		expect(onPinsChange).toHaveBeenCalledExactlyOnceWith([
 			{ field: 'status', value: 'deprecated' },
@@ -715,7 +641,6 @@ describe('DsFiltersBar filters dialog', () => {
 				PARENTS_CONDITION,
 				newEnumCondition('workflow', 'IN', ['deploy']),
 			],
-			query: null,
 		});
 	});
 
@@ -733,7 +658,6 @@ describe('DsFiltersBar filters dialog', () => {
 							value: ['deprecated', 'pending'],
 						},
 					],
-					query: null,
 				}}
 				defaultPins={[
 					{ field: 'status', value: 'draft' },
@@ -774,7 +698,6 @@ describe('DsFiltersBar filters dialog', () => {
 
 		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
 			conditions: [newEnumCondition('status', '!=', ['draft'])],
-			query: null,
 		});
 		expect(onPinsChange).toHaveBeenCalledExactlyOnceWith([{ field: 'status', value: 'pending' }]);
 

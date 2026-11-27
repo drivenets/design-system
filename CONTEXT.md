@@ -189,20 +189,12 @@ The **Component** (`DsFiltersBar`) that renders the **Filter views**, the pinned
 _Avoid_: filter toolbar, search bar
 
 **Filter document**:
-The single state a **Filters bar** filters by: either its **Filter conditions** or an **Advanced query**, never both. **Pins** are not part of it.
+The single state a **Filters bar** filters by: its **Filter conditions**. **Pins** are not part of it.
 _Avoid_: filter state, s.filters, working copy
 
-**Advanced query**:
-Text in the **Query language** that the user edited and that is valid but not a **Compatible query**, so it replaces the **Filter conditions** as the source of the **Filter document**.
-_Avoid_: DQL, JQL, code (as the concept name), query override
-
 **Query language**:
-The design system's one filter grammar (`field op value` clauses, `AND`/`OR`, parentheses, free-text strings), validated against the **Field schema**.
+The text the design system writes **Filter conditions** as (`field op value` clauses and free-text strings, joined by `AND`); nothing parses it back.
 _Avoid_: DQL, JQL, query syntax (as a product-specific name)
-
-**Compatible query**:
-A valid query made only of clauses joined by `AND`, so it maps one-to-one onto **Filter conditions**.
-_Avoid_: simple query, flat query
 
 **Field schema**:
 The consumer's description of what can be filtered — each field's type, options, **Date presets** or subfields, and optionally the operators it narrows its type's built-in set to; the type decides what a **Filter condition** on that field can hold.
@@ -213,7 +205,7 @@ A named span of days a date field offers, such as `last7Days`: built-in, resolve
 _Avoid_: quick date, relative date (as the concept name)
 
 **Filter view**:
-One of the three presentations of the same **Filter document** — `filters`, `builder`, `advanced` — switched by the view switch. Switching changes the presentation only.
+One of the two presentations of the same **Filter document** — `filters`, `builder` — switched by the view switch. Switching changes the presentation only.
 _Avoid_: mode, segment, tab, code view
 
 **Pin**:
@@ -288,17 +280,12 @@ _Avoid_: maintenance branch, hotfix branch
 - A **Filters bar** has zero or one **Active saved filter**
 - A **Saved filter** contains zero or more **Filter conditions**
 - A **Filters bar** has one **Filter document**; every **Filter view** reads and writes it
-- A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
-- A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
-- Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
-- A **Filter summary** describes whichever source drives the **Filter document**: it lists the **Filter conditions**, or, while an **Advanced query** is the source, names it without repeating its text
-- While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
-- While an **Advanced query** is the source, the **Filters bar** shows the advanced **Filter view** whichever view was asked for; the asked-for view comes back when the query is cleared
+- A **Filter document** is driven by its **Filter conditions** only: they combine with `AND`, and the values inside one condition with `OR`
+- A **Filter summary** lists the **Filter conditions**
 - A **Filter condition** names a field from the **Field schema**, or is free search text
-- Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
+- Anything that adds filters to a **Filters bar** writes **Filter conditions** — the query builder too
 - The filters and builder **Filter views** show the same chips for the **Filter conditions**; they differ only in the dialog that adding a condition or clicking a chip opens — the filters dialog or the query builder
 - A **Pin** shows as a toggle in the pinned row; turning it on narrows the results the **Filter document** produced. Like the **Pin** itself, whether it is on lives outside the **Filter document** and never appears in the **Filter summary**
-- A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
 - A **Filters bar** owns which **Pins** are switched on and its **Active saved filter**; clearing it empties the **Filter document**, switches every **Pin** off and drops the **Active saved filter**, but keeps the **Pins**
 - A **Row matcher** serves client-side data only; a server-filtered product evaluates the **Filter document** itself and passes the counts to the **Filters bar**
 
@@ -337,8 +324,8 @@ _Avoid_: maintenance branch, hotfix branch
 > **Dev:** "Should we export `DsSavedFilters` from the package?"
 > **Domain expert:** "No — that's an **Internal component** of the **Filters bar**. Keep it out of the barrel; product gets **Saved filters** through the bar, not as its own **Component**."
 
-> **Dev:** "The user typed `status = \"A\" OR status = \"B\"` — do we lock the other views?"
-> **Domain expert:** "Yes. Any `OR` means it isn't a **Compatible query**, so it becomes the **Advanced query** and locks filters and builder. `status IN (\"A\", \"B\")` is compatible and stays as **Filter conditions**."
+> **Dev:** "The user wants status A or status B — where do they type the `OR`?"
+> **Domain expert:** "Nowhere. That's one **Filter condition** with two values, `status IN (\"A\", \"B\")`. **Filter conditions** combine with `AND`; there is no query text to edit."
 
 > **Dev:** "Is the number on the row how many **Saved filters** the user has?"
 > **Domain expert:** "No — that's **Filter condition** count on that **Saved filter**. The list length is how many snapshots exist; `count` is how many clauses that snapshot holds."
@@ -353,6 +340,5 @@ _Avoid_: maintenance branch, hotfix branch
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
 - "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.
 - "Column manager" (AR-100688, Figma) and `columnDisplay` (code) name the same popup — resolved: say **Column display**.
-- The filters-bar design says the query builder locks the other views like the **Advanced query** does, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
-- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an **Advanced query**; a **Compatible query** is converted into conditions rather than kept as text.
-- "Valid query" was used both for syntax-correct text and for text the other views can show — resolved: validity is grammar plus **Field schema**; whether the other views can show it is **Compatible query**.
+- The filters-bar design says the query builder locks the other views, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
+- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** holds **Filter conditions** only; query text is written from them for display and never read back ([ADR 0009](docs/adr/0009-filters-bar-drops-advanced-query.md)).

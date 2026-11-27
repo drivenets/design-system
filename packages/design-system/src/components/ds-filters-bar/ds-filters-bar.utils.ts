@@ -38,19 +38,8 @@ import {
 const ID_RANDOM_WORDS = 2;
 const HEX_RADIX = 16;
 
-const QUERY_LOCKED_VIEWS: ReadonlyArray<DsFiltersBarView> = Object.freeze(['filters', 'builder']);
-const NO_LOCKED_VIEWS: ReadonlyArray<DsFiltersBarView> = Object.freeze([]);
-
 export const isFiltersBarView = (value: string | null): value is DsFiltersBarView =>
 	filtersBarViews.some((view) => view === value);
-
-/**
- * Blank query text is not an edited query: it hands control back to the conditions.
- */
-export const normalizeQuery = (query: string | null): string | null => (query?.trim() ? query : null);
-
-export const lockedViewsFor = (query: string | null): ReadonlyArray<DsFiltersBarView> =>
-	query === null ? NO_LOCKED_VIEWS : QUERY_LOCKED_VIEWS;
 
 /**
  * Random, so ids stay unique across reloads and conditions restored from a **Saved filter**.
@@ -171,7 +160,6 @@ export const describeCondition = (
  */
 export type DsFiltersBarSummaryItem =
 	| { kind: 'empty' }
-	| { kind: 'advancedQuery' }
 	| { kind: 'savedFilter'; name: string }
 	| { kind: 'search'; id: string; value: string }
 	| {
@@ -187,7 +175,6 @@ export type DsFiltersBarSummaryItem =
 
 export interface DsFiltersBarSummarySource {
 	conditions: ReadonlyArray<DsFilterCondition>;
-	query: string | null;
 	fields: ReadonlyArray<DsFilterResolvedField>;
 	activeSavedFilterName?: string;
 }
@@ -217,19 +204,15 @@ const toSummaryCondition = (
 };
 
 /**
- * Orders the collapsed summary: the **Active saved filter** first, then the Advanced query label or
- * the conditions. `View: All` only shows when there is neither a saved filter nor anything to list.
+ * Orders the collapsed summary: the **Active saved filter** first, then the conditions. `View: All`
+ * only shows when there is neither a saved filter nor anything to list.
  */
 export const toSummaryItems = ({
 	conditions,
-	query,
 	fields,
 	activeSavedFilterName,
 }: DsFiltersBarSummarySource): DsFiltersBarSummaryItem[] => {
-	const items: DsFiltersBarSummaryItem[] =
-		query === null
-			? conditions.map((condition) => toSummaryCondition(condition, fields))
-			: [{ kind: 'advancedQuery' }];
+	const items = conditions.map((condition) => toSummaryCondition(condition, fields));
 
 	if (activeSavedFilterName) {
 		return [{ kind: 'savedFilter', name: activeSavedFilterName }, ...items];
@@ -418,7 +401,7 @@ export const emptyFiltersDialogEntry = (
 };
 
 /**
- * The `>=` and `<=` pair a range comes back as from the query language, as one range
+ * A `>=` and a `<=` condition on one field, such as two the builder added, read as one range
  */
 const rangeFromPair = (
 	conditions: ReadonlyArray<DsFilterFieldCondition>,
@@ -682,8 +665,8 @@ const resolveOperatorsLocale = (
 };
 
 /**
- * Each section merged over its defaults, one level deep; the view names, the query's errors and
- * operators, and each operator's words deeper
+ * Each section merged over its defaults, one level deep; the view names and each operator's words
+ * deeper
  */
 export const resolveLocale = (locale: DsFiltersBarLocale | undefined): DsFiltersBarResolvedLocale => {
 	const defaults = defaultDsFiltersBarLocale;
@@ -702,12 +685,6 @@ export const resolveLocale = (locale: DsFiltersBarLocale | undefined): DsFilters
 		chips: { ...defaults.chips, ...locale?.chips },
 		conditions: { ...defaults.conditions, ...locale?.conditions },
 		builder: { ...defaults.builder, ...locale?.builder },
-		query: {
-			...defaults.query,
-			...locale?.query,
-			errors: { ...defaults.query.errors, ...locale?.query?.errors },
-			operators: { ...defaults.query.operators, ...locale?.query?.operators },
-		},
 		savedFilters: { ...defaults.savedFilters, ...locale?.savedFilters },
 		clearAll: { ...defaults.clearAll, ...locale?.clearAll },
 		pinned: { ...defaults.pinned, ...locale?.pinned },
@@ -716,30 +693,20 @@ export const resolveLocale = (locale: DsFiltersBarLocale | undefined): DsFilters
 	};
 };
 
-export const isEmptyDocument = (document: DsFilterDocument) =>
-	document.query === null && document.conditions.length === 0;
+export const isEmptyDocument = (document: DsFilterDocument) => document.conditions.length === 0;
 
 /**
  * Two documents with the same key filter the same way, whatever their condition ids
  */
-export const documentKey = (document: DsFilterDocument): string =>
-	document.query ?? serializeFilterQuery(document.conditions);
+export const documentKey = (document: DsFilterDocument): string => serializeFilterQuery(document.conditions);
 
 /**
- * The view shown: `advanced` while a query is set, even when not listed, so the query stays
- * visible and clearable; else the asked-for view if listed; else the first listed one.
+ * The asked-for view if listed, else the first listed one
  */
 export const shownViewFor = (
-	query: string | null,
 	requested: DsFiltersBarView,
 	views: ReadonlyArray<DsFiltersBarView>,
-): DsFiltersBarView => {
-	if (query !== null) {
-		return 'advanced';
-	}
-
-	return views.includes(requested) ? requested : (views[0] ?? requested);
-};
+): DsFiltersBarView => (views.includes(requested) ? requested : (views[0] ?? requested));
 
 export const isSamePin = (a: DsFilterPin, b: DsFilterPin) => a.field === b.field && a.value === b.value;
 

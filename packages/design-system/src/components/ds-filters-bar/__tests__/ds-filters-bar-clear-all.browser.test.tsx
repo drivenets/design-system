@@ -25,8 +25,7 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 ];
 
 const SEARCH: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
-const withSearch: DsFilterDocument = { conditions: [SEARCH], query: null };
-const withQuery: DsFilterDocument = { conditions: [], query: 'status = "A" OR status = "B"' };
+const withSearch: DsFilterDocument = { conditions: [SEARCH] };
 const ACTIVE: DsFilterPin = { field: 'status', value: 'A' };
 
 const savedFilters = (
@@ -67,13 +66,10 @@ describe('DsFiltersBar clear all', () => {
 		await expect.element(clearAll()).toBeVisible();
 	});
 
-	it.each([
-		{ source: 'conditions', defaultValue: withSearch },
-		{ source: 'an Advanced query', defaultValue: withQuery },
-	])('empties a document driven by $source, reporting it once', async ({ defaultValue }) => {
+	it('empties the document, reporting it once', async () => {
 		const onValueChange = vi.fn();
 
-		await page.render(<ClearAllBar defaultValue={defaultValue} onValueChange={onValueChange} />);
+		await page.render(<ClearAllBar defaultValue={withSearch} onValueChange={onValueChange} />);
 
 		await clearAll().click();
 
@@ -121,11 +117,8 @@ describe('DsFiltersBar clear all', () => {
 		await expect.element(page.getByRole('button', { name: 'Saved filters', exact: true })).toBeVisible();
 	});
 
-	it.each([
-		{ source: 'conditions', defaultValue: withSearch },
-		{ source: 'an Advanced query', defaultValue: withQuery },
-	])('moves focus to the search input after clearing $source', async ({ defaultValue }) => {
-		await page.render(<ClearAllBar defaultValue={defaultValue} />);
+	it('moves focus to the search input after clearing', async () => {
+		await page.render(<ClearAllBar defaultValue={withSearch} />);
 
 		await clearAll().click();
 

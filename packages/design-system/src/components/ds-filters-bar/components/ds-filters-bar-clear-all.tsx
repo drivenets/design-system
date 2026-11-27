@@ -29,7 +29,7 @@ export const ClearAll = ({ ref, className, style }: DsFiltersBarClearAllSlotProp
 	}
 
 	const handleClick = () => {
-		// Flushed so the button is gone and Search, no longer locked by a query, can take focus.
+		// Flushed so the button is gone before Search takes focus.
 		flushSync(() => {
 			clear();
 

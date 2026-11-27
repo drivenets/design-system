@@ -32,7 +32,17 @@
       id: 'saved-attention',
       name: 'Needs attention',
       document: {
-        query: 'status = "inactive" OR ports > 40'
+        conditions: [{
+          kind: 'field',
+          field: 'status',
+          operator: '=',
+          value: ['inactive']
+        }, {
+          kind: 'field',
+          field: 'ports',
+          operator: '>',
+          value: 40
+        }]
       }
     }]);
     return <DsFiltersBar fields={[{
@@ -130,7 +140,12 @@ const Default = function Render() {
         {
             id: 'saved-attention',
             name: 'Needs attention',
-            document: { query: 'status = "inactive" OR ports > 40' },
+            document: {
+                conditions: [
+                    { kind: 'field', field: 'status', operator: '=', value: ['inactive'] },
+                    { kind: 'field', field: 'ports', operator: '>', value: 40 },
+                ],
+            },
         },
     ]);
 
@@ -408,10 +423,8 @@ const WithTable = function Render() {
         label: 'Presentation',
         views: {
           filters: 'Quick filters',
-          builder: 'Guided query',
-          advanced: 'Query editor'
-        },
-        lockedView: 'Remove the custom query to switch'
+          builder: 'Guided query'
+        }
       },
       chips: {
         addFilter: 'Add refinement'
@@ -423,10 +436,6 @@ const WithTable = function Render() {
       builder: {
         title: 'Build a condition',
         save: 'Add condition'
-      },
-      query: {
-        label: 'Query editor',
-        help: 'Syntax'
       },
       savedFilters: {
         savedFilters: 'Presets',
@@ -528,13 +537,11 @@ const Localized = function Render() {
                 search: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' },
                 viewSwitch: {
                     label: 'Presentation',
-                    views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },
-                    lockedView: 'Remove the custom query to switch',
+                    views: { filters: 'Quick filters', builder: 'Guided query' },
                 },
                 chips: { addFilter: 'Add refinement' },
                 conditions: { title: 'Refinements', save: 'Apply' },
                 builder: { title: 'Build a condition', save: 'Add condition' },
-                query: { label: 'Query editor', help: 'Syntax' },
                 savedFilters: {
                     savedFilters: 'Presets',
                     saveFilter: 'Save preset',
@@ -671,15 +678,14 @@ const SearchOnly = () => <DsFiltersBar
     }
   ]}
   views={[
-    'filters',
-    'advanced'
+    'builder'
   ]}
 />
 
 ### MCP manifest
 const Views = () => <DsFiltersBar
     defaultExpanded
-    views={['filters', 'advanced']}
+    views={['builder']}
     fields={[
         {
             type: 'enum',
@@ -695,60 +701,6 @@ const Views = () => <DsFiltersBar
     defaultValue={{
         conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }],
     }} />;
-
-## Advanced Query
-
-### Show code
-<DsFiltersBar
-  defaultExpanded
-  defaultValue={{
-    query: 'status = "inactive" OR ports > 40'
-  }}
-  fields={[
-    {
-      id: 'status',
-      label: 'Status',
-      options: [
-        {
-          label: 'Active',
-          value: 'active'
-        },
-        {
-          label: 'Inactive',
-          value: 'inactive'
-        }
-      ],
-      type: 'enum'
-    },
-    {
-      id: 'ports',
-      label: 'Ports',
-      operators: [
-        '=',
-        '>',
-        '<'
-      ],
-      type: 'number'
-    }
-  ]}
-/>
-
-### MCP manifest
-const AdvancedQuery = () => <DsFiltersBar
-    defaultExpanded
-    fields={[
-        {
-            type: 'enum',
-            id: 'status',
-            label: 'Status',
-            options: [
-                { value: 'active', label: 'Active' },
-                { value: 'inactive', label: 'Inactive' },
-            ],
-        },
-        { type: 'number', id: 'ports', label: 'Ports', operators: ['=', '>', '<'] },
-    ]}
-    defaultValue={{ query: 'status = "inactive" OR ports > 40' }} />;
 
 ## Pinned
 
@@ -857,7 +809,12 @@ const Pinned = () => (
       id: 'core-or-edge',
       name: 'Core or edge',
       document: {
-        query: 'role = "core" OR role = "edge"'
+        conditions: [{
+          kind: 'field',
+          field: 'role',
+          operator: '=',
+          value: ['core', 'edge']
+        }]
       }
     }]);
 
@@ -932,7 +889,7 @@ const SavedFilters = function Render() {
         {
             id: 'core-or-edge',
             name: 'Core or edge',
-            document: { query: 'role = "core" OR role = "edge"' },
+            document: { conditions: [{ kind: 'field', field: 'role', operator: '=', value: ['core', 'edge'] }] },
         },
     ]);
 
@@ -1044,11 +1001,6 @@ const SavedFilters = function Render() {
         },
         builder: {
           suggestedFields: ['role', 'status']
-        },
-        query: {
-          slots: {
-            help: 'Combine clauses with AND or OR. See the product docs for more.'
-          }
         }
       }} />
             </DsStack>;
@@ -1094,7 +1046,6 @@ const SlotProps = function Render() {
                 slotProps={{
                     search: { ref: searchRef },
                     builder: { suggestedFields: ['role', 'status'] },
-                    query: { slots: { help: 'Combine clauses with AND or OR. See the product docs for more.' } },
                 }}
             />
         </DsStack>

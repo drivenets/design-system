@@ -37,14 +37,6 @@ export interface DsFiltersBarContextValue {
 	document: DsFilterDocument;
 	conditions: ReadonlyArray<DsFilterCondition>;
 	/**
-	 * Advanced query, or `null` while the conditions are the source
-	 */
-	query: string | null;
-	/**
-	 * What the advanced view shows: the query, or the conditions written in the query language
-	 */
-	queryText: string;
-	/**
 	 * Changes on every explicit clear, even when the document is already empty
 	 */
 	resetRevision: number;
@@ -53,15 +45,8 @@ export interface DsFiltersBarContextValue {
 	 * Switched-on toggles whose pin still exists, on a field `fields` has
 	 */
 	activeToggles: ReadonlyArray<DsFilterPin>;
-	/**
-	 * No conditions and no edited query
-	 */
 	isEmpty: boolean;
-	lockedViews: ReadonlyArray<DsFiltersBarView>;
 	expanded: boolean;
-	/**
-	 * The view shown: `advanced` while an Advanced query is the source
-	 */
 	view: DsFiltersBarView;
 	/**
 	 * Views the view switch offers, in Figma order
@@ -91,11 +76,6 @@ export interface DsFiltersBarContextValue {
 	 */
 	updateCondition: (condition: DsFilterCondition) => void;
 	removeCondition: (id: string) => void;
-	/**
-	 * Setting text makes the query the source; blank text or `null` hands control back to the
-	 * conditions.
-	 */
-	setQuery: (query: string | null) => void;
 	/**
 	 * Also switches off the toggles of removed pins
 	 */

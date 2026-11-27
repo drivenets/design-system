@@ -66,8 +66,6 @@ const STATUS_BOTH: DsFilterCondition = {
 };
 const SEARCH: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'BBB' };
 
-const OR_QUERY = 'status = "active" OR status = "pending"';
-
 const dialog = () => page.getByRole('dialog', { name: 'Query builder' });
 const choice = (name: string) => page.getByRole('button', { name, exact: true });
 const field = () => page.getByRole('textbox', { name: 'Search field' });
@@ -87,7 +85,7 @@ const selectView = async (name: string) => {
 	(viewItem(name).element() as HTMLElement).click();
 };
 
-const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items, query: null });
+const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items });
 
 const Harness = (props: DsFiltersBarProps) => (
 	<DsFiltersBar
@@ -392,35 +390,6 @@ describe('DsFiltersBar builder closing', () => {
 
 		await expect.element(choice('Name')).not.toBeInTheDocument();
 		await expect.element(choice('Input')).toBeVisible();
-	});
-});
-
-describe('DsFiltersBar builder while an Advanced query is the source', () => {
-	it('shows no chips and no add button', async () => {
-		await page.render(<Harness defaultValue={{ conditions: [INPUT_NAME], query: OR_QUERY }} />);
-
-		await expect.element(addFilterButton()).not.toBeInTheDocument();
-		await expect.element(chip('Input › Name')).not.toBeInTheDocument();
-	});
-
-	it('closes an open dialog when a query takes over', async () => {
-		const onValueChange = vi.fn();
-		const { rerender } = await page.render(
-			<Harness value={conditions(INPUT_NAME)} onValueChange={onValueChange} />,
-		);
-
-		await addFilterButton().click();
-		await expect.element(dialog()).toBeVisible();
-
-		await rerender(
-			<Harness value={{ conditions: [INPUT_NAME], query: OR_QUERY }} onValueChange={onValueChange} />,
-		);
-		await expect.element(addFilterButton()).not.toBeInTheDocument();
-
-		await rerender(<Harness value={conditions(INPUT_NAME)} onValueChange={onValueChange} />);
-
-		await expect.element(addFilterButton()).toBeVisible();
-		await expect.element(dialog()).not.toBeInTheDocument();
 	});
 });
 

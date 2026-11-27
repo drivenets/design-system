@@ -1,3 +1,7 @@
+---
+status: superseded by ADR-0009
+---
+
 # Filters bar owns the query language
 
 The advanced view parses and validates query text in one design-system grammar (the **Query language**), and only valid queries reach `DsFiltersBar.Root`. A **Compatible query** (clauses joined only by `AND`) is converted into **Filter conditions**, so no view locks. Any other valid query (`OR`, parentheses) becomes the **Advanced query** and locks the filters and builder views. The bar also serializes conditions back to query text itself, which replaces the consumer's `formatQuery`. Validation is driven only by the **Field schema**, and each field type's allowed operators come from a fixed set (`= != > >= < <= IN NOT IN ~ !~`). This supersedes the "bar never parses the query" clause of [ADR 0005](0005-filters-bar-document.md); the single-active-source **Filter document** still stands.

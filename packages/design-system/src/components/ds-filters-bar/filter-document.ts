@@ -3,9 +3,7 @@ import type { DsFilterCondition, DsFilterDocument, DsFilterDocumentInput } from 
 const POSITION_ID_PREFIX = 'filter-condition-';
 
 const hasEveryId = (input: DsFilterDocumentInput): input is DsFilterDocument =>
-	input.conditions !== undefined &&
-	input.query !== undefined &&
-	input.conditions.every((condition) => condition.id !== undefined);
+	input.conditions !== undefined && input.conditions.every((condition) => condition.id !== undefined);
 
 /**
  * The full **Filter document** for `input`. A condition without an `id` gets
@@ -36,5 +34,5 @@ export const toFilterDocument = (input: DsFilterDocumentInput): DsFilterDocument
 		return { ...condition, id };
 	});
 
-	return { conditions: withIds, query: input.query ?? null };
+	return { conditions: withIds };
 };

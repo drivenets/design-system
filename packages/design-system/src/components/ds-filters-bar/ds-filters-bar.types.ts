@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { CSSProperties, Ref } from 'react';
 import { defaultDsSavedFiltersLocale, type DsSavedFiltersLocale } from '../ds-saved-filters';
 import {
 	defaultDsFiltersBarBuilderLocale,
@@ -12,11 +12,6 @@ import {
 	defaultDsFiltersBarFiltersDialogLocale,
 	type DsFiltersBarFiltersDialogLocale,
 } from './components/ds-filters-bar-filters-dialog/ds-filters-bar-filters-dialog.types';
-import {
-	defaultDsFiltersBarQueryLocale,
-	type DsFiltersBarQueryLocale,
-} from './components/ds-filters-bar-query/ds-filters-bar-query.types';
-import type { DsFilterQueryErrorCode } from './query-language/query-language.types';
 
 export const filterOperatorValues = ['=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', '~', '!~'] as const;
 export type DsFilterOperatorValue = (typeof filterOperatorValues)[number];
@@ -230,15 +225,10 @@ export interface DsFilterFieldCondition {
 export type DsFilterCondition = DsFilterSearchCondition | DsFilterFieldCondition;
 
 /**
- * The **Filter document**: what the bar filters by. `query` is `null` while the conditions are the
- * source; while set, it alone filters and the conditions are ignored.
+ * The **Filter document**: what the bar filters by, its **Filter conditions** only
  */
 export interface DsFilterDocument {
 	conditions: ReadonlyArray<DsFilterCondition>;
-	/**
-	 * Advanced query: a valid query the conditions cannot hold (one with `OR` or parentheses)
-	 */
-	query: string | null;
 }
 
 export interface DsFilterSearchConditionInput extends Omit<DsFilterSearchCondition, 'id'> {
@@ -264,15 +254,10 @@ export interface DsFilterDocumentInput {
 	 * @default []
 	 */
 	conditions?: ReadonlyArray<DsFilterConditionInput>;
-	/**
-	 * @default null
-	 */
-	query?: string | null;
 }
 
 export const emptyFilterDocument: DsFilterDocument = Object.freeze({
 	conditions: Object.freeze([]),
-	query: null,
 });
 
 /**
@@ -284,7 +269,7 @@ export interface DsFilterPin {
 	value: string;
 }
 
-export const filtersBarViews = ['filters', 'builder', 'advanced'] as const;
+export const filtersBarViews = ['filters', 'builder'] as const;
 export type DsFiltersBarView = (typeof filtersBarViews)[number];
 
 export interface DsFiltersBarSummaryLocale {
@@ -305,10 +290,6 @@ export interface DsFiltersBarSummaryLocale {
 	 * Label shown before the text of a search condition, as in `Search: AAA`
 	 */
 	search?: string;
-	/**
-	 * Shown in place of the conditions while an Advanced query is the source
-	 */
-	advancedQuery?: string;
 }
 
 export interface DsFiltersBarSearchLocale {
@@ -326,13 +307,9 @@ export interface DsFiltersBarViewSwitchLocale {
 	 * Accessible names of the icon-only items
 	 */
 	views?: Partial<Record<DsFiltersBarView, string>>;
-	/**
-	 * Tooltip and accessible description of a view locked by an edited advanced query
-	 */
-	lockedView?: string;
 }
 
-export type { DsFiltersBarBuilderLocale, DsFiltersBarQueryLocale };
+export type { DsFiltersBarBuilderLocale };
 
 /**
  * Strings of the filters dialog that the filters view opens
@@ -426,7 +403,6 @@ export interface DsFiltersBarLocale {
 	 * The query builder dialog
 	 */
 	builder?: DsFiltersBarBuilderLocale;
-	query?: DsFiltersBarQueryLocale;
 	/**
 	 * The saved-filters picker and the save button
 	 */
@@ -459,10 +435,6 @@ export interface DsFiltersBarResolvedLocale {
 	chips: Required<DsFiltersBarChipsLocale>;
 	conditions: Required<DsFiltersBarConditionsLocale>;
 	builder: Required<DsFiltersBarBuilderLocale>;
-	query: Required<Omit<DsFiltersBarQueryLocale, 'errors' | 'operators'>> & {
-		errors: Readonly<Record<DsFilterQueryErrorCode, (text: string) => string>>;
-		operators: Readonly<Record<DsFilterOperatorValue, string>>;
-	};
 	savedFilters: Required<DsFiltersBarSavedFiltersLocale>;
 	clearAll: Required<DsFiltersBarClearAllLocale>;
 	pinned: Required<DsFiltersBarPinnedLocale>;
@@ -480,7 +452,6 @@ export const defaultDsFiltersBarLocale: DsFiltersBarResolvedLocale = Object.free
 		emptyLabel: 'View',
 		emptyValue: 'All',
 		search: 'Search',
-		advancedQuery: 'Advanced query',
 	}),
 	search: Object.freeze({
 		label: 'Search',
@@ -492,14 +463,11 @@ export const defaultDsFiltersBarLocale: DsFiltersBarResolvedLocale = Object.free
 		views: Object.freeze({
 			filters: 'Filters',
 			builder: 'Query builder',
-			advanced: 'Advanced query',
 		}),
-		lockedView: 'Clear the advanced query to switch views',
 	}),
 	chips: defaultDsFiltersBarConditionChipsLocale,
 	conditions: defaultDsFiltersBarFiltersDialogLocale,
 	builder: defaultDsFiltersBarBuilderLocale,
-	query: defaultDsFiltersBarQueryLocale,
 	savedFilters: defaultDsSavedFiltersLocale,
 	clearAll: Object.freeze({ label: 'Clear all' }),
 	pinned: Object.freeze({ label: 'Pinned' }),
@@ -625,7 +593,6 @@ export interface DsFiltersBarSearchSlotProps extends DsFiltersBarPartSlotProps<H
 	 */
 	defaultValue?: string;
 	/**
-	 * Always disabled while an Advanced query is the source
 	 * @default false
 	 */
 	disabled?: boolean;
@@ -644,22 +611,6 @@ export interface DsFiltersBarBuilderSlotProps extends DsFiltersBarPartSlotProps<
 	suggestedFields?: ReadonlyArray<string>;
 }
 
-/**
- * `ref` reaches the code editor's textarea; `className` and `style` its field wrapper.
- */
-export interface DsFiltersBarQuerySlotProps extends DsFiltersBarPartSlotProps<HTMLTextAreaElement> {
-	/**
-	 * @default false
-	 */
-	disabled?: boolean;
-	slots?: {
-		/**
-		 * Replaces the content of the syntax reference, for example with a link to product docs
-		 */
-		help?: ReactNode;
-	};
-}
-
 export type DsFiltersBarClearAllSlotProps = DsFiltersBarPartSlotProps<HTMLButtonElement>;
 
 export type DsFiltersBarPinnedSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
@@ -674,7 +625,6 @@ export interface DsFiltersBarSlotProps {
 	viewSwitch?: DsFiltersBarViewSwitchSlotProps;
 	conditions?: DsFiltersBarConditionsSlotProps;
 	builder?: DsFiltersBarBuilderSlotProps;
-	query?: DsFiltersBarQuerySlotProps;
 	clearAll?: DsFiltersBarClearAllSlotProps;
 	pinned?: DsFiltersBarPinnedSlotProps;
 }
@@ -724,9 +674,7 @@ export interface DsFiltersBarProps {
 	 */
 	defaultExpanded?: boolean;
 	/**
-	 * Asked-for view. While an Advanced query is the source, the bar shows the advanced view
-	 * instead, and shows this one again once the query is cleared; `onViewChange` does not fire for
-	 * either. A view missing from `views` falls back to the first of `views`. Pair with
+	 * Shown view. A view missing from `views` falls back to the first of `views`. Pair with
 	 * `onViewChange`.
 	 */
 	view?: DsFiltersBarView;
@@ -735,9 +683,8 @@ export interface DsFiltersBarProps {
 	 */
 	defaultView?: DsFiltersBarView;
 	/**
-	 * Views the view switch offers. With one view the switch is hidden. An Advanced query still
-	 * shows the advanced view, so it stays visible and clearable.
-	 * @default ['filters', 'builder', 'advanced']
+	 * Views the view switch offers. With one view the switch is hidden.
+	 * @default ['filters', 'builder']
 	 */
 	views?: ReadonlyArray<DsFiltersBarView>;
 	/**
