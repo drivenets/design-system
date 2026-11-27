@@ -21,7 +21,7 @@ const meta: Meta<typeof DsModal> = {
 		},
 		dividers: {
 			control: 'boolean',
-			description: 'Show full-width dividers between header, body, and footer sections',
+			description: 'Show a full-width divider between the body and the footer. The header always has one.',
 		},
 		open: { table: { disable: true } },
 		onOpenChange: { table: { disable: true } },
@@ -44,7 +44,7 @@ export default meta;
 type Story = StoryObj<typeof DsModal>;
 
 /**
- * The default modal has an inset header underline and no footer border. Compose
+ * The default modal has a full-width header divider and no footer border. Compose
  * DsModal.Header, DsModal.Body, and DsModal.Footer to build a standard confirmation
  * dialog, and drive the open state from the component that renders it.
  */
@@ -86,8 +86,8 @@ export const Default: Story = {
 };
 
 /**
- * Set `dividers` to add full-width borders above the footer and below the header,
- * giving clearer visual separation when the body holds a form or scrollable content.
+ * Set `dividers` to add a full-width border above the footer, giving clearer visual
+ * separation when the body holds a form or scrollable content.
  * Compose DsFormControl fields inside DsModal.Body for standard form layouts.
  */
 export const Divided: Story = {

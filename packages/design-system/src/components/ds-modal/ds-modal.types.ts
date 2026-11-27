@@ -54,7 +54,7 @@ export interface DsModalProps extends Pick<
 	defaultFullScreen?: boolean;
 
 	/**
-	 * Show full-width dividers between header, body, and footer sections
+	 * Show a full-width divider between the body and the footer. The header always has one.
 	 * @default false
 	 */
 	dividers?: boolean;
