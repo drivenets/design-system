@@ -23,6 +23,7 @@ import {
 const meta: Meta<typeof DsFiltersBar> = {
 	title: 'Components/FiltersBar',
 	component: DsFiltersBar,
+	tags: ['visual'],
 	parameters: {
 		layout: 'padded',
 		docs: {
