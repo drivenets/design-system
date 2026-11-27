@@ -12,7 +12,7 @@
 		grid-column: 1 / -1;
 	}
 
-	// Centered on the toolbar's first line, not the whole cell: a wrapped toolbar has more lines.
+	// Sits on the toolbar's first line, not the whole cell: a wrapped toolbar has more lines.
 	> [data-part='disclosure'] {
 		position: relative;
 		z-index: 1;
@@ -20,7 +20,6 @@
 		grid-column: 1;
 		align-self: start;
 		width: variables.$disclosure-width;
-		margin-block: calc((variables.$line-height - variables.$disclosure-height) / 2);
 	}
 
 	> [data-part='summary'] {
