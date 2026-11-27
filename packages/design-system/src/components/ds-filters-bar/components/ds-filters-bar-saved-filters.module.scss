@@ -1,0 +1,7 @@
+@use '../styles/variables';
+
+// Doubled to outrank the tag's own padding.
+.savedFilters.savedFilters {
+	height: variables.$control-height;
+	padding-block: 0;
+}

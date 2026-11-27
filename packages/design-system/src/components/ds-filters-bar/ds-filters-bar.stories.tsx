@@ -23,6 +23,7 @@ import {
 const meta: Meta<typeof DsFiltersBar> = {
 	title: 'Components/FiltersBar',
 	component: DsFiltersBar,
+	tags: ['visual'],
 	parameters: {
 		layout: 'padded',
 		docs: {
@@ -157,6 +158,7 @@ export const Default: Story = {
  * `now`, which is fixed here so the rows never change; omit it to count from the current time.
  */
 export const WithTable: Story = {
+	tags: ['!visual'],
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},

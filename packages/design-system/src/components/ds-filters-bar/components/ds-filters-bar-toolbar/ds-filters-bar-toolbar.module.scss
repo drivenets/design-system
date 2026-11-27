@@ -13,7 +13,7 @@
 	// Keeps the first line the same height in every view, so the Disclosure lines up
 	&::before {
 		content: '';
-		height: variables.$line-height;
+		height: variables.$control-height;
 		margin-inline-end: calc(-1 * var(--xs));
 	}
 }

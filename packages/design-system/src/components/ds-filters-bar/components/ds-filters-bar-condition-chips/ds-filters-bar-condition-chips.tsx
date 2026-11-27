@@ -38,6 +38,7 @@ const SearchChip = ({ condition, locale }: SearchChipProps) => {
 	return (
 		<DsTag
 			selected
+			className={styles.chip}
 			label={condition.text}
 			locale={{ deleteAriaLabel: locale.removeCondition(condition.text) }}
 			slots={{ icon: <DsIcon icon="search" size="tiny" aria-hidden /> }}
@@ -133,6 +134,7 @@ const FieldChip = ({ condition, locale, onEdit }: FieldChipProps) => {
 	return (
 		<DsTag
 			selected
+			className={styles.chip}
 			variant="operator-filter"
 			label={description.fieldPath.join(FIELD_PATH_SEPARATOR)}
 			value={description.value}

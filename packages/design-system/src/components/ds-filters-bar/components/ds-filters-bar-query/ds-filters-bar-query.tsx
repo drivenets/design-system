@@ -124,6 +124,7 @@ const QueryEditor = ({ disabled = false, slots, ref, className, style }: DsFilte
 		>
 			<DsFormControl.CodeInput
 				ref={ref}
+				size="small"
 				value={activeDraft?.text ?? bar.queryText}
 				placeholder={strings.placeholder}
 				disabled={disabled}

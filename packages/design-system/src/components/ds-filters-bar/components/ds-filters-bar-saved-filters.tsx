@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { DsSavedFilters, type DsSavedFilterItem } from '../../ds-saved-filters';
 import { useDsFiltersBarContext } from '../ds-filters-bar.context';
 import type {
@@ -7,6 +8,7 @@ import type {
 } from '../ds-filters-bar.types';
 import { afterSettled, documentKey } from '../ds-filters-bar.utils';
 import { toFilterDocument } from '../filter-document';
+import styles from './ds-filters-bar-saved-filters.module.scss';
 
 /**
  * An Advanced query has no condition count, so its item shows none.
@@ -69,7 +71,7 @@ export const SavedFilters = ({ ref, className, style }: DsFiltersBarSavedFilters
 				documentKey(toFilterDocument(activeSavedFilter.document)) !== documentKey(document)
 			}
 			locale={locale.savedFilters}
-			className={className}
+			className={classNames(styles.savedFilters, className)}
 			style={style}
 			onValueChange={handleValueChange}
 			onClear={handleClear}

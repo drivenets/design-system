@@ -1,7 +1,11 @@
 @use '../../../../styles/mixin' as mixins;
+@use '../../styles/variables';
 
-.viewSwitch {
+// Doubled to outrank the segment group's own padding.
+.viewSwitch.viewSwitch {
 	flex-shrink: 0;
+	height: variables.$control-height;
+	padding-block: 0;
 }
 
 .viewSwitchItem {
