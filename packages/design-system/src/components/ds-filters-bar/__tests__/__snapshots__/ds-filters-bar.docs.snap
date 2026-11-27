@@ -196,6 +196,7 @@ const Default = function Render() {
 
 ### Show code
 {
+  tags: ['!visual'],
   parameters: {
     docs: {
       source: {
