@@ -37,7 +37,7 @@ Test paths are **package-relative**: `--filter` runs vitest with the package as 
 
 ## Visual tests (screenshots)
 
-Stories tagged `visual` (DsTable today) get a screenshot compared to committed baselines in `stories/__screenshots__/`. The browser runs in a pinned Playwright Docker container, so start it first:
+Stories tagged `visual` (DsTable, DsFiltersBar) get a screenshot compared to committed baselines in the `__screenshots__/` folder next to the stories file. The browser runs in a pinned Playwright Docker container, so start it first:
 
 ```bash
 pnpm --filter @drivenets/design-system test:visual:server
