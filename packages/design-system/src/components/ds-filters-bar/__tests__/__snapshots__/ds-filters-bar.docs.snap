@@ -937,13 +937,12 @@ const CoupledFields = () => (
                 return draft;
             }
 
-            const others = conditions.filter((condition) => condition.kind !== 'field' || condition.field !== 'type');
+            const others = conditions.filter(
+                (condition) => condition.kind !== 'field' || condition.field !== 'type',
+            );
             return {
                 ...draft,
-                conditions: [
-                    ...others,
-                    { kind: 'field', field: 'type', operator: 'IN', value: ['recurrent'] },
-                ],
+                conditions: [...others, { kind: 'field', field: 'type', operator: 'IN', value: ['recurrent'] }],
             };
         }}
     />
