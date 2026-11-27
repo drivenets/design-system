@@ -6,7 +6,7 @@ import { DsTag } from '../../../ds-tag';
 import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
-import { createConditionId } from '../../ds-filters-bar.utils';
+import { createConditionId, draftForField } from '../../ds-filters-bar.utils';
 import { useOptionLoader } from '../../use-option-loader';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
 import { emptyFilterDocument, type DsFiltersBarBuilderSlotProps } from '../../ds-filters-bar.types';
@@ -101,7 +101,11 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 	const loader = useOptionLoader({
 		load: loadOptions,
 		search: draft.query,
-		draft: { ...emptyFilterDocument, conditions: conditions.filter((item) => item.id !== editingId) },
+		draft: draftForField(
+			{ ...emptyFilterDocument, conditions: conditions.filter((item) => item.id !== editingId) },
+			draft.fieldId ?? '',
+			draft.subfieldId ?? undefined,
+		),
 		scope: [draft.fieldId, draft.subfieldId].join('.'),
 	});
 	const fields = loadOptions ? withLoadedOptions(schemaFields, draft, loader.items) : schemaFields;
@@ -157,8 +161,10 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 		}
 
 		const [onlyChoice] = view.choices;
+		// While a new search loads, the only choice may be from the previous one.
+		const isSettled = !loadOptions || loader.status === 'ready';
 
-		if (view.choices.length === 1 && onlyChoice) {
+		if (view.choices.length === 1 && onlyChoice && isSettled) {
 			choose(onlyChoice);
 		}
 	};
@@ -208,7 +214,12 @@ export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBar
 					</div>
 
 					{view.caption && (
-						<div className={styles.options} role="group" aria-label={view.caption}>
+						<div
+							className={styles.options}
+							role="group"
+							aria-label={view.caption}
+							aria-busy={!!loadOptions && loader.status === 'loading'}
+						>
 							<DsTypography variant="body-xs-reg" className={styles.caption}>
 								{view.caption}
 							</DsTypography>

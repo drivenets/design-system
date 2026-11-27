@@ -134,6 +134,24 @@ describe('condition list helpers', () => {
 });
 
 describe('describeCondition', () => {
+	it('labels a static option from the field, and a loaded one from the condition snapshot', () => {
+		const snapshot = [{ value: 'active', label: 'Old name' }];
+		const loaded = resolveFields([
+			{ type: 'enum', id: 'status', label: 'Status', loadOptions: () => Promise.resolve([]) },
+		]);
+		const condition: DsFilterCondition = {
+			kind: 'field',
+			id: 'c1',
+			field: 'status',
+			operator: '=',
+			value: ['active'],
+			options: snapshot,
+		};
+
+		expect(describeCondition(condition, FIELDS).value).toBe('Active');
+		expect(describeCondition(condition, loaded).value).toBe('Old name');
+	});
+
 	it('describes a search condition by its text only', () => {
 		expect(describeCondition({ kind: 'search', id: '1', text: 'WF456' }, FIELDS)).toEqual({
 			fieldPath: [],

@@ -260,6 +260,93 @@ describe('DsFiltersBar loadOptions', () => {
 			expect(server.loadOptions).not.toHaveBeenCalled();
 		});
 
+		it('does not load before the dialog opens, even as the first tab, and loads again on reopen', async () => {
+			const server = createServer();
+			const editorsFirst = [...fieldsWith(server.loadOptions)].reverse();
+			await page.render(<Bar fields={editorsFirst} />);
+
+			await expect.element(button('Add filter')).toBeVisible();
+			expect(server.loadOptions).not.toHaveBeenCalled();
+
+			await button('Add filter').click();
+			(await server.request(0)).resolve([ALICE]);
+			await expect.element(optionCheckbox('Alice Moss')).toBeVisible();
+
+			await button('Close').click();
+			await button('Add filter').click();
+
+			const reopened = await server.request(1);
+
+			await expect.element(loadStatus()).toHaveTextContent('Loading…');
+			reopened.resolve([BRUNO]);
+			await expect.element(optionCheckbox('Bruno Hale')).toBeVisible();
+		});
+
+		it('shows the error when loadOptions throws instead of rejecting', async () => {
+			const loadOptions = vi.fn(() => {
+				throw new Error('Bad search');
+			});
+			await page.render(<Bar fields={fieldsWith(loadOptions)} />);
+
+			await openEditorsTab();
+
+			await expect.element(page.getByRole('alert').getByText('Could not load the options')).toBeVisible();
+		});
+
+		it('keeps a checked value without a snapshot listed, labeled from the field options', async () => {
+			const server = createServer();
+			const fields = fieldsWith(server.loadOptions).map((field) =>
+				field.id === 'editors' ? { ...field, options: [ALICE] } : field,
+			);
+			await page.render(
+				<Bar
+					fields={fields}
+					defaultValue={conditions({
+						kind: 'field',
+						id: 'editors-1',
+						field: 'editors',
+						operator: 'IN',
+						value: ['u-1', 'u-9'],
+					})}
+				/>,
+			);
+
+			await expect.element(chip('Editors').getByText('Alice Moss, u-9')).toBeVisible();
+
+			await chip('Editors').click();
+			(await server.request(0)).resolve([BRUNO]);
+
+			await expect.element(optionCheckbox('Bruno Hale')).toBeVisible();
+			await expect.element(optionCheckbox('Alice Moss')).toBeChecked();
+			await expect.element(optionCheckbox('u-9')).toBeChecked();
+		});
+
+		it('leaves the field’s own conditions out of the draft', async () => {
+			const server = createServer();
+			await page.render(
+				<Bar
+					fields={fieldsWith(server.loadOptions)}
+					defaultValue={conditions({
+						kind: 'field',
+						id: 'editors-1',
+						field: 'editors',
+						operator: 'IN',
+						value: ['u-1'],
+						options: [ALICE],
+					})}
+				/>,
+			);
+
+			await openEditorsTab();
+			(await server.request(0)).resolve([ALICE, BRUNO]);
+			await optionCheckbox('Bruno Hale').click();
+			await optionSearch().fill('c');
+
+			const { draft } = await server.request(1);
+
+			expect(draft.conditions).toEqual([]);
+		});
+
 		it('hides the pin toggle on loaded options', async () => {
 			const server = createServer();
 			await page.render(<Bar fields={fieldsWith(server.loadOptions)} />);
@@ -302,6 +389,25 @@ describe('DsFiltersBar loadOptions', () => {
 					options: [BRUNO],
 				}),
 			);
+		});
+
+		it('does not pick the only choice with Enter while a new search loads', async () => {
+			const server = createServer();
+			const onValueChange = vi.fn();
+			await page.render(
+				<Bar fields={fieldsWith(server.loadOptions)} defaultView="builder" onValueChange={onValueChange} />,
+			);
+
+			await button('Add filter').click();
+			await button('Editors').click();
+			(await server.request(0)).resolve([ALICE]);
+			await expect.element(button('Alice Moss')).toBeVisible();
+
+			await page.getByRole('textbox', { name: 'Search value' }).fill('zz');
+			await userEvent.keyboard('{Enter}');
+
+			await expect.element(button('Save query')).toBeDisabled();
+			expect(onValueChange).not.toHaveBeenCalled();
 		});
 
 		it('shows the error and loads again from the retry button', async () => {

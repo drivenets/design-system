@@ -13,8 +13,8 @@ export type OptionLoaderFn<TItem> = (
 
 interface UseOptionLoaderParams<TItem> {
 	/**
-	 * Nothing loads without it, and the status stays `ready`. A new function alone does not reload,
-	 * so it may be written inline.
+	 * Nothing loads without it, and the status stays `ready`; pass none while the list is closed. A
+	 * new function alone does not reload, so it may be written inline.
 	 */
 	load: OptionLoaderFn<TItem> | undefined;
 	search: string;
@@ -65,9 +65,20 @@ export const useOptionLoader = <TItem>({
 	const [attempt, setAttempt] = useState(0);
 	const [latest, setLatest] = useState<Latest<TItem> | null>(null);
 	const [settled, setSettled] = useState<Settled | null>(null);
+	const [wasEnabled, setWasEnabled] = useState(enabled);
 	const inputsRef = useRef({ load, draft });
 	const startedRef = useRef<{ scope: string; query: string } | null>(null);
 	const key = JSON.stringify([scope, query, attempt]);
+
+	// A list opened again must not show the last session's result as ready.
+	if (enabled !== wasEnabled) {
+		setWasEnabled(enabled);
+
+		if (!enabled) {
+			setLatest(null);
+			setSettled(null);
+		}
+	}
 
 	useEffect(() => {
 		inputsRef.current = { load, draft };
@@ -75,6 +86,8 @@ export const useOptionLoader = <TItem>({
 
 	useEffect(() => {
 		if (!enabled) {
+			startedRef.current = null;
+
 			return;
 		}
 
@@ -91,19 +104,22 @@ export const useOptionLoader = <TItem>({
 				return;
 			}
 
-			current(query, currentDraft, controller.signal).then(
-				(items) => {
-					if (!controller.signal.aborted) {
-						setLatest({ scope, items });
-						setSettled({ key, failed: false });
-					}
-				},
-				() => {
-					if (!controller.signal.aborted) {
-						setSettled({ key, failed: true });
-					}
-				},
-			);
+			// A loader that throws before returning its Promise fails like one that rejects.
+			Promise.resolve()
+				.then(() => current(query, currentDraft, controller.signal))
+				.then(
+					(items) => {
+						if (!controller.signal.aborted) {
+							setLatest({ scope, items });
+							setSettled({ key, failed: false });
+						}
+					},
+					() => {
+						if (!controller.signal.aborted) {
+							setSettled({ key, failed: true });
+						}
+					},
+				);
 		};
 
 		const timer = setTimeout(run, isNewSearch ? OPTION_SEARCH_DELAY_MS : 0);

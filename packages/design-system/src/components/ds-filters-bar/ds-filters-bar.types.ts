@@ -70,8 +70,9 @@ export interface DsFilterOption {
 
 /**
  * Loads the options of a field from the server while the user types. `draft` is the document the
- * open dialog would save now, so a field can depend on another. The bar debounces `search` and
- * aborts `signal` when a newer request starts or the list closes.
+ * open dialog would save now, without the conditions on this field, so a field can depend on
+ * another. The bar debounces `search` and aborts `signal` when a newer request starts or the list
+ * closes.
  */
 export type DsFilterOptionsLoader = (
 	search: string,
@@ -252,7 +253,8 @@ export interface DsFilterFieldCondition {
 	value: DsFilterValue;
 	/**
 	 * The selected options of an enum value, with their labels and `data`, so chips and the host
-	 * need no option list. The bar fills it on every enum condition it writes.
+	 * need no option list. The filters dialog and the query builder fill it on every enum condition
+	 * they save. Chips take labels from it first only on a field with `loadOptions`.
 	 */
 	options?: ReadonlyArray<DsFilterOption>;
 }

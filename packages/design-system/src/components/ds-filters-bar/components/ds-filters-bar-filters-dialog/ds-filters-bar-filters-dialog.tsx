@@ -21,7 +21,13 @@ import {
 	type DsFilterResolvedOperator,
 	type DsFilterResolvedScalarField,
 } from '../../ds-filters-bar.types';
-import { canPinOptions, emptyFiltersDialogEntry, isFiltersDialogEntrySet } from '../../ds-filters-bar.utils';
+import {
+	canPinOptions,
+	draftForField,
+	emptyFiltersDialogEntry,
+	isFiltersDialogEntrySet,
+	preferredOptions,
+} from '../../ds-filters-bar.utils';
 import { resolveScalarField } from '../../resolve-fields';
 import { useOptionLoader } from '../../use-option-loader';
 import {
@@ -195,6 +201,7 @@ interface PanelProps<TEntry extends DsFiltersBarFiltersDialogEntry> {
 }
 
 interface EnumPanelProps extends PanelProps<DsFiltersBarFiltersDialogEnumEntry> {
+	open: boolean;
 	search: string;
 	draft: DsFilterDocument;
 	onSearchChange: (search: string) => void;
@@ -213,15 +220,16 @@ interface OptionListProps {
 	tab: ResolvedTab;
 	entry: DsFiltersBarFiltersDialogEnumEntry;
 	options: ReadonlyArray<DsFilterOption>;
+	busy?: boolean;
 	children?: ReactNode;
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
 }
 
-const OptionList = ({ tab, entry, options, children, onEntryChange }: OptionListProps) => {
+const OptionList = ({ tab, entry, options, busy = false, children, onEntryChange }: OptionListProps) => {
 	const canPin = canPinOptions(tab);
 
 	return (
-		<div className={styles.options} role="group" aria-label={tab.label}>
+		<div className={styles.options} role="group" aria-label={tab.label} aria-busy={busy}>
 			{options.map((option) => (
 				<DsCheckbox
 					key={option.value}
@@ -255,8 +263,9 @@ const OptionList = ({ tab, entry, options, children, onEntryChange }: OptionList
 	);
 };
 
-interface LoadedOptionListProps extends Omit<OptionListProps, 'options' | 'children'> {
+interface LoadedOptionListProps extends Omit<OptionListProps, 'options' | 'busy' | 'children'> {
 	loadOptions: DsFilterOptionsLoader;
+	open: boolean;
 	search: string;
 	draft: DsFilterDocument;
 	locale: Locale;
@@ -265,16 +274,30 @@ interface LoadedOptionListProps extends Omit<OptionListProps, 'options' | 'child
 /**
  * Checked options the latest result leaves out stay listed first, so they can still be unchecked
  */
-const LoadedOptionList = ({ loadOptions, search, draft, locale, ...listProps }: LoadedOptionListProps) => {
+const LoadedOptionList = ({
+	loadOptions,
+	open,
+	search,
+	draft,
+	locale,
+	...listProps
+}: LoadedOptionListProps) => {
 	const { tab, entry } = listProps;
-	const { status, items, retry } = useOptionLoader({ load: loadOptions, search, draft, scope: tab.id });
-	const missing = (entry.selectedOptions ?? []).filter(
-		(option) => entry.selected.includes(option.value) && !items.some((item) => item.value === option.value),
-	);
+	const { status, items, retry } = useOptionLoader({
+		// The dialog stays mounted while closed, so it must not load then.
+		load: open ? loadOptions : undefined,
+		search,
+		draft: draftForField(draft, tab.field, tab.subfield),
+		scope: tab.id,
+	});
+	const known = tab.schema.type === 'enum' ? preferredOptions(tab.schema, entry.selectedOptions ?? []) : [];
+	const missing = entry.selected
+		.filter((value) => !items.some((item) => item.value === value))
+		.map((value) => known.find((option) => option.value === value) ?? { value, label: value });
 	const options = [...missing, ...items];
 
 	return (
-		<OptionList {...listProps} options={options}>
+		<OptionList {...listProps} options={options} busy={status === 'loading'}>
 			<div className={styles.loadState} role="status">
 				{status === 'loading' && <DsTypography variant="body-sm-reg">{locale.loading}</DsTypography>}
 				{status === 'ready' && !options.length && (
@@ -293,7 +316,16 @@ const LoadedOptionList = ({ loadOptions, search, draft, locale, ...listProps }: 
 	);
 };
 
-const EnumPanel = ({ tab, entry, search, draft, locale, onSearchChange, onEntryChange }: EnumPanelProps) => {
+const EnumPanel = ({
+	tab,
+	entry,
+	open,
+	search,
+	draft,
+	locale,
+	onSearchChange,
+	onEntryChange,
+}: EnumPanelProps) => {
 	if (tab.schema.type !== 'enum') {
 		return null;
 	}
@@ -330,6 +362,7 @@ const EnumPanel = ({ tab, entry, search, draft, locale, onSearchChange, onEntryC
 					tab={tab}
 					entry={entry}
 					loadOptions={loadOptions}
+					open={open}
 					search={search}
 					draft={draft}
 					locale={locale}
@@ -522,6 +555,7 @@ const DatePanel = ({ tab, entry, locale, onEntryChange }: PanelProps<DsFiltersBa
 interface TabPanelProps {
 	tab: DsFiltersBarFiltersDialogTab;
 	entry: DsFiltersBarFiltersDialogEntry;
+	open: boolean;
 	search: string;
 	draft: DsFilterDocument;
 	locale: Locale;
@@ -529,14 +563,21 @@ interface TabPanelProps {
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
 }
 
-const TabPanel = ({ tab, entry, search, draft, onSearchChange, ...rest }: TabPanelProps) => {
+const TabPanel = ({ tab, entry, open, search, draft, onSearchChange, ...rest }: TabPanelProps) => {
 	// The bar passes resolved fields; a tab built elsewhere gets the default operators and presets.
 	const props = { ...rest, tab: { ...tab, schema: resolveScalarField(tab.schema) } };
 
 	switch (entry.type) {
 		case 'enum':
 			return (
-				<EnumPanel entry={entry} search={search} draft={draft} onSearchChange={onSearchChange} {...props} />
+				<EnumPanel
+					entry={entry}
+					open={open}
+					search={search}
+					draft={draft}
+					onSearchChange={onSearchChange}
+					{...props}
+				/>
 			);
 		case 'text':
 			return <TextPanel entry={entry} {...props} />;
@@ -637,6 +678,7 @@ export const FiltersDialog = ({
 								key={activeTab.id}
 								tab={activeTab}
 								entry={getEntry(value, activeTab)}
+								open={open}
 								search={search}
 								draft={draft}
 								locale={locale}

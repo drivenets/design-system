@@ -6,7 +6,7 @@ import type {
 	DsFilterResolvedScalarField,
 	DsFilterValue,
 } from '../../ds-filters-bar.types';
-import { isRange } from '../../ds-filters-bar.utils';
+import { isRange, preferredOptions } from '../../ds-filters-bar.utils';
 import type { DsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 
 const COMPLETE_NUMBER = /^-?\d+(\.\d+)?$/;
@@ -565,9 +565,12 @@ const valueDraft = (
 	}
 
 	const [optionValue = null] = value;
-	const snapshot = condition.options?.find((option) => option.value === optionValue);
+	const listed = optionValue
+		? preferredOptions(scalar, condition.options ?? []).find((option) => option.value === optionValue)
+		: undefined;
+	const unlisted = optionValue && scalar.loadOptions ? { value: optionValue, label: optionValue } : null;
 
-	return { valueText: '', optionValue, selectedOption: snapshot ?? null };
+	return { valueText: '', optionValue, selectedOption: listed ?? unlisted };
 };
 
 /**

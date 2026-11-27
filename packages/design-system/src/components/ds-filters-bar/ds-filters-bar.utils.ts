@@ -109,6 +109,31 @@ export interface DsFilterConditionDescription {
 
 const RANGE_SEPARATOR = ' – ';
 
+/**
+ * Where a selected option's label comes from: the condition's snapshot for a field that loads its
+ * options, the field's own options otherwise, so renaming a static option renames its chips
+ */
+export const preferredOptions = (
+	field: Extract<DsFilterResolvedScalarField, { type: 'enum' }>,
+	snapshot: ReadonlyArray<DsFilterOption>,
+): ReadonlyArray<DsFilterOption> =>
+	field.loadOptions ? [...snapshot, ...field.options] : [...field.options, ...snapshot];
+
+/**
+ * The document a field's `loadOptions` gets: `document` without the conditions on that field, so
+ * every view passes the same draft whatever the field itself holds
+ */
+export const draftForField = (
+	document: DsFilterDocument,
+	field: string,
+	subfield: string | undefined,
+): DsFilterDocument => ({
+	...document,
+	conditions: document.conditions.filter(
+		(condition) => condition.kind !== 'field' || condition.field !== field || condition.subfield !== subfield,
+	),
+});
+
 const labelFor = (options: ReadonlyArray<DsFilterOption>, value: string) =>
 	options.find((option) => option.value === value)?.label ?? value;
 
@@ -125,7 +150,7 @@ const formatValue = (
 	}
 
 	if (typeof value === 'object') {
-		const options = field?.type === 'enum' ? [...snapshot, ...field.options] : snapshot;
+		const options = field?.type === 'enum' ? preferredOptions(field, snapshot) : snapshot;
 
 		return value.map((item) => labelFor(options, item)).join(', ');
 	}
@@ -570,15 +595,15 @@ const isSameSaved = (a: SavedCondition | null, b: SavedCondition | null) =>
 	a === null || b === null ? a === b : a.operator === b.operator && isSameValue(a.value, b.value);
 
 /**
- * The checked options of an enum entry, in value order: as the dialog listed them, else from the
- * field's options, else named by their value
+ * The checked options of an enum entry, in value order, labeled as `preferredOptions` says, else
+ * named by their value
  */
 const selectedOptionsOf = (
 	entry: DsFiltersBarFiltersDialogEnumEntry,
 	tab: DsFiltersBarFiltersDialogTab,
 ): ReadonlyArray<DsFilterOption> => {
 	const schema = schemaOf(tab);
-	const known = [...(entry.selectedOptions ?? []), ...(schema.type === 'enum' ? schema.options : [])];
+	const known = schema.type === 'enum' ? preferredOptions(schema, entry.selectedOptions ?? []) : [];
 
 	return entry.selected.map(
 		(value) => known.find((option) => option.value === value) ?? { value, label: value },

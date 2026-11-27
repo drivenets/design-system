@@ -165,7 +165,7 @@ export interface DsFiltersBarFiltersDialogLocale {
 	 */
 	loading?: string;
 	/**
-	 * Shown when the option list is empty
+	 * Shown when a field's `loadOptions` finds no options
 	 */
 	noOptions?: string;
 	/**
