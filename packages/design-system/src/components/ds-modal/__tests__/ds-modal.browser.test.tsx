@@ -176,7 +176,7 @@ describe('DsModal', () => {
 		const dialog = page.getByRole('dialog');
 		await expect.element(dialog).toBeVisible();
 
-		const header = dialog.element().querySelector<HTMLElement>(`.${styles.header}`);
+		const header = dialog.getByRole('heading', { name: /modal title/i }).element().parentElement;
 		if (!header) {
 			throw new Error('header not found');
 		}
